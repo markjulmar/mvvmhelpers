@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{37EAC372-5684-45E2-B999-986F98EFE40D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JulMar.Windows</RootNamespace>
+    <AssemblyName>JulMar.Wpf.Helpers</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>julmar.mvvm.pfx</AssemblyOriginatorKeyFile>
+    <TargetFrameworkSubset>Client</TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\JulMar.Wpf.Helpers.xml</DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\JulMar.Wpf.Helpers.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behaviors\EventCommander.cs" />
+    <Compile Include="Behaviors\BindableCommand.cs" />
+    <Compile Include="Behaviors\HelpProvider.cs" />
+    <Compile Include="Behaviors\LifetimeEvent.cs" />
+    <Compile Include="Behaviors\RenderBehavior.cs" />
+    <Compile Include="Behaviors\SynchronizeScrollingBehavior.cs" />
+    <Compile Include="Converters\DoubleToInteger.cs" />
+    <Compile Include="Converters\KeyToResourceConverter.cs" />
+    <Compile Include="Converters\MultiConverter.cs" />
+    <Compile Include="Converters\RefreshValueConverter.cs" />
+    <Compile Include="DeferredBinder.cs" />
+    <Compile Include="Extensions\Designer.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="Interfaces\IMessageVisualizer.cs" />
+    <Compile Include="Interfaces\IUIVisualizer.cs" />
+    <Compile Include="Markup\LinearGradientBrushExtension.cs" />
+    <Compile Include="Markup\ViewModelCreatorExtension.cs" />
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Markup\FirstFocusedElementExtension.cs" />
+    <Compile Include="Converters\NullBooleanConverter.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Converters\IntegerToVisibilityConverter.cs" />
+    <Compile Include="Converters\ArrayToStringConverter.cs" />
+    <Compile Include="Converters\BooleanToBrushConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\DebugConverter.cs" />
+    <Compile Include="Converters\ListBoxItemToIndexConverter.cs" />
+    <Compile Include="Converters\MathConverter.cs" />
+    <Compile Include="Converters\NotBooleanConverter.cs" />
+    <Compile Include="Converters\NullVisibilityConverter.cs" />
+    <Compile Include="Converters\NumericToDoubleConverter.cs" />
+    <Compile Include="Interfaces\INotificationVisualizer.cs" />
+    <Compile Include="MTObservableCollection.cs" />
+    <Compile Include="Mvvm\CloseRequestEventArgs.cs" />
+    <Compile Include="Mvvm\EditingViewModel.cs" />
+    <Compile Include="Interfaces\IMessageMediator.cs" />
+    <Compile Include="Mvvm\SimpleViewModel.cs" />
+    <Compile Include="ObservableDictionary.cs" />
+    <Compile Include="PropertyObserver.cs" />
+    <Compile Include="Validations\ValidatingViewModel.cs" />
+    <Compile Include="SystemInfo.cs" />
+    <Compile Include="UI\MessageVisualizer.cs" />
+    <Compile Include="UI\TextPath.cs" />
+    <Compile Include="Mvvm\ViewModel.cs" />
+    <Compile Include="Mvvm\DelegatingCommand.cs" />
+    <Compile Include="Interfaces\IErrorVisualizer.cs" />
+    <Compile Include="Mvvm\MessageMediator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Mvvm\ServiceProvider.cs" />
+    <Compile Include="UI\WaitCursor.cs" />
+    <Compile Include="Validations\IValidator.cs" />
+    <Compile Include="Validations\RegexValidatorAttribute.cs" />
+    <Compile Include="Validations\RequiredLengthAttribute.cs" />
+    <Compile Include="Validations\RequiredAttribute.cs" />
+    <Compile Include="Validations\RequiredIntegerRange.cs" />
+    <Compile Include="Validations\ValidationManager.cs" />
+    <Compile Include="Validations\ValidatorAttribute.cs" />
+    <Compile Include="WeakReferenceList.cs" />
+    <Compile Include="UI\ErrorVisualizer.cs" />
+    <Compile Include="UI\UIVisualizer.cs" />
+    <Compile Include="UI\NotificationVisualizer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="julmar.mvvm.pfx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
