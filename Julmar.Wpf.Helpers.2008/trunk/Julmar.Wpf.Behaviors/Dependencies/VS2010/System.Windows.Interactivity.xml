@@ -214,6 +214,16 @@
             Uses the state picker, if supported, to edit this property at design time.
             </summary>
         </member>
+        <member name="F:System.Windows.Interactivity.CustomPropertyValueEditor.ElementBinding">
+            <summary>
+            Use the element binding picker, if supported, to edit this property at design time.
+            </summary>
+        </member>
+        <member name="F:System.Windows.Interactivity.CustomPropertyValueEditor.PropertyBinding">
+            <summary>
+            Use the property binding picker, if supported, to edit this property at design time.
+            </summary>
+        </member>
         <member name="T:System.Windows.Interactivity.CustomPropertyValueEditorAttribute">
             <summary>
             Associates the given editor type with the property on which the CustomPropertyValueEditor is applied.
@@ -281,6 +291,32 @@
             </summary>
             <value>The parameters to pass to the <see cref="T:System.Windows.Interactivity.TriggerBase"/> constructor.</value>
         </member>
+        <member name="M:System.Windows.Interactivity.DependencyObjectHelper.GetSelfAndAncestors(System.Windows.DependencyObject)">
+            <summary>
+            This method will use the VisualTreeHelper.GetParent method to do a depth first walk up 
+            the visual tree and return all ancestors of the specified object, including the object itself.
+            </summary>
+            <param name="dependencyObject">The object in the visual tree to find ancestors of.</param>
+            <returns>Returns itself an all ancestors in the visual tree.</returns>
+        </member>
+        <member name="T:System.Windows.Interactivity.EventObserver">
+            <summary>
+            EventObserver is designed to help manage event handlers by detatching when disposed. Creating this object will also attach in the constructor.
+            </summary>
+        </member>
+        <member name="M:System.Windows.Interactivity.EventObserver.#ctor(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            Creates an instance of EventObserver and attaches to supplied event on supplied target. Call dispose to detach.
+            </summary>
+            <param name="eventInfo">The event to attach and detach from.</param>
+            <param name="target">The target object the event is defined on. null if the method is static.</param>
+            <param name="handler">The delegate to attach to the event.</param>
+        </member>
+        <member name="M:System.Windows.Interactivity.EventObserver.Dispose">
+            <summary>
+            Detaches the handler from the event.
+            </summary>
+        </member>
         <member name="T:System.Windows.Interactivity.EventTrigger">
             <summary>
             A trigger that listens for a specified event on its source and fires when that event is fired.
@@ -292,9 +328,9 @@
             </summary>
             <typeparam name="T">The type that this trigger can be associated with.</typeparam>
             <remarks>
-            	EventTriggerBase extends TriggerBase to add knowledge of another element than the one it is attached to. 
+            	EventTriggerBase extends TriggerBase to add knowledge of another object than the one it is attached to. 
             	This allows a user to attach a Trigger/Action pair to one element and invoke the Action in response to a 
-            	change in another element somewhere else. Override OnSourceChanged to hook or unhook handlers on the source 
+            	change in another object somewhere else. Override OnSourceChanged to hook or unhook handlers on the source 
             	element, and OnAttached/OnDetaching for the associated element. The type of the Source element can be 
             	constrained by the generic type parameter. If you need control over the type of the 
             	AssociatedObject, set a TypeConstraintAttribute on your derived type.
@@ -302,7 +338,7 @@
         </member>
         <member name="T:System.Windows.Interactivity.EventTriggerBase">
             <summary>
-            Represents a trigger that can listen to an element other than its AssociatedObject.
+            Represents a trigger that can listen to an object other than its AssociatedObject.
             </summary>
             <remarks>This is an infrastructure class. Trigger authors should derive from EventTriggerBase&lt;T&gt; instead of this class.</remarks>
         </member>
@@ -365,6 +401,11 @@
             </summary>
             <value>The actions associated with this trigger.</value>
         </member>
+        <member name="E:System.Windows.Interactivity.TriggerBase.PreviewInvoke">
+            <summary>
+            Event handler for registering to PreviewInvoke
+            </summary>
+        </member>
         <member name="P:System.Windows.Interactivity.TriggerBase.System#Windows#Interactivity#IAttachedObject#AssociatedObject">
             <summary>
             Gets the associated object.
@@ -384,7 +425,7 @@
             <param name="eventArgs">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
             <remarks>Override this to provide more granular control over when actions associated with this trigger will be invoked.</remarks>
         </member>
-        <member name="M:System.Windows.Interactivity.EventTriggerBase.OnSourceChangedImpl(System.Windows.DependencyObject,System.Windows.DependencyObject)">
+        <member name="M:System.Windows.Interactivity.EventTriggerBase.OnSourceChangedImpl(System.Object,System.Object)">
             <summary>
             Called when the source changes.
             </summary>
@@ -417,6 +458,12 @@
             Gets the source type constraint.
             </summary>
             <value>The source type constraint.</value>
+        </member>
+        <member name="P:System.Windows.Interactivity.EventTriggerBase.SourceObject">
+            <summary>
+            Gets or sets the target object. If TargetObject is unset, the target will look for the object specified by TargetName. If an element referred to by TargetName cannot be found, the target will default to the AssociatedObject. This is a dependency property.
+            </summary>
+            <value>The target object.</value>
         </member>
         <member name="P:System.Windows.Interactivity.EventTriggerBase.SourceName">
             <summary>
@@ -530,7 +577,7 @@
         </member>
         <member name="T:System.Windows.Interactivity.InvokeCommandAction">
             <summary>
-            Executes a specified Action on the host Behavior when invoked.
+            Executes a specified ICommand when invoked.
             </summary>
         </member>
         <member name="T:System.Windows.Interactivity.TriggerAction`1">
@@ -641,21 +688,23 @@
             </summary>
             <param name="parameter">The parameter to the action. If the Action does not require a parameter, the parameter may be set to a null reference.</param>
         </member>
-        <member name="M:System.Windows.Interactivity.InvokeCommandAction.OnAttached">
-            <summary>
-            Called after the collection is attached to an AssociatedObject.
-            </summary>
-            <exception cref="T:System.InvalidOperationException">InvokeActionCommand must be hosted on a Behavior.</exception>
-        </member>
         <member name="P:System.Windows.Interactivity.InvokeCommandAction.CommandName">
             <summary>
             Gets or sets the name of the command this action should invoke.
             </summary>
             <value>The name of the command this action should invoke.</value>
+            <remarks>This property will be superseded by the Command property if both are set.</remarks>
+        </member>
+        <member name="P:System.Windows.Interactivity.InvokeCommandAction.Command">
+            <summary>
+            Gets or sets the command this action should invoke. This is a dependency property.
+            </summary>
+            <value>The command to execute.</value>
+            <remarks>This property will take precedence over the CommandName property if both are set.</remarks>
         </member>
         <member name="P:System.Windows.Interactivity.InvokeCommandAction.CommandParameter">
             <summary>
-            Gets or sets the command parameter.
+            Gets or sets the command parameter. This is a dependency property.
             </summary>
             <value>The command parameter.</value>
             <remarks>This is the value passed to ICommand.CanExecute and ICommand.Execute.</remarks>
@@ -736,7 +785,7 @@
             </summary>
             <remarks>This is an infrastructure class. Action authors should derive from TargetedTriggerAction&lt;T&gt; instead of this class.</remarks>
         </member>
-        <member name="M:System.Windows.Interactivity.TargetedTriggerAction.OnTargetChangedImpl(System.Windows.DependencyObject,System.Windows.DependencyObject)">
+        <member name="M:System.Windows.Interactivity.TargetedTriggerAction.OnTargetChangedImpl(System.Object,System.Object)">
             <summary>
             Called when the target changes.
             </summary>
@@ -754,17 +803,23 @@
             Called when the action is being detached from its AssociatedObject, but before it has actually occurred.
             </summary>
         </member>
+        <member name="P:System.Windows.Interactivity.TargetedTriggerAction.TargetObject">
+            <summary>
+            Gets or sets the target object. If TargetObject is unset, the target will look for the object specified by TargetName. If an element referred to by TargetName cannot be found, the target will default to the AssociatedObject. This is a dependency property.
+            </summary>
+            <value>The target object.</value>
+        </member>
         <member name="P:System.Windows.Interactivity.TargetedTriggerAction.TargetName">
             <summary>
-            Gets or sets the name of the target. If TargetName is unset or cannot be resolved, the target will default to the AssociatedObject. This is a dependency property.
+            Gets or sets the name of the object this action targets. If Target is set, this property is ignored. If Target is not set and TargetName is unset or cannot be resolved, the target will default to the AssociatedObject. This is a dependency property.
             </summary>
-            <value>The name of the target.</value>
+            <value>The name of the target object.</value>
         </member>
         <member name="P:System.Windows.Interactivity.TargetedTriggerAction.Target">
             <summary>
-            Gets the target object. If TargetName is unset or cannot be resolved, defaults to the AssociatedObject.
+            Gets the target object. If TargetObject is set, returns TargetObject. Else, if TargetName is unset or cannot be resolved, defaults to the AssociatedObject.
             </summary>
-            <value>The target.</value>
+            <value>The target object.</value>
             <remarks>In general, this property should be used in place of AssociatedObject in derived classes.</remarks>
             <exception cref="T:System.InvalidOperationException">The Target element does not satisfy the type constraint.</exception>
         </member>
@@ -869,6 +924,12 @@
             Gets the type constraint of the associated object.
             </summary>
             <value>The associated object type constraint.</value>
+        </member>
+        <member name="T:System.Windows.Interactivity.PreviewInvokeEventArgs">
+            <summary>
+            Argument pass to PreviewInvoke event. Assigning Cancelling to true, will cancel the invoke from the trigger.  
+            </summary>
+            <remarks>This is an infrastructure class. Behavior attached to a trigger base object can add their behavior as a listener to TriggerBase.PreviewInvoke</remarks>
         </member>
         <member name="T:System.Windows.Interactivity.TriggerCollection">
             <summary>
@@ -982,14 +1043,14 @@
               Looks up a localized string similar to Cannot add the same instance of &quot;{0}&quot; to a &quot;{1}&quot; more than once..
             </summary>
         </member>
+        <member name="P:ExceptionStringTable.EventTriggerBaseInvalidEventExceptionMessage">
+            <summary>
+              Looks up a localized string similar to The event &quot;{0}&quot; on type &quot;{1}&quot; has an incompatible signature. Ensure the event is public and satisfies the EventHandler delegate..
+            </summary>
+        </member>
         <member name="P:ExceptionStringTable.EventTriggerCannotFindEventNameExceptionMessage">
             <summary>
               Looks up a localized string similar to Cannot find an event named &quot;{0}&quot; on type &quot;{1}.&quot;.
-            </summary>
-        </member>
-        <member name="P:ExceptionStringTable.InvokeActionCommandMustBeHostedOnBehaviorExceptionMessage">
-            <summary>
-              Looks up a localized string similar to InvokeCommandAction must be attached to a Behavior. This can be done by adding it to the Actions collection of a Trigger in the Triggers collection of a Behavior object..
             </summary>
         </member>
         <member name="P:ExceptionStringTable.RetargetedTypeConstraintViolatedExceptionMessage">

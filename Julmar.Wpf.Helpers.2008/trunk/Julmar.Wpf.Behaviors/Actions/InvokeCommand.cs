@@ -33,8 +33,8 @@ namespace JulMar.Windows.Actions
         /// </summary>
         public ICommand Command
         {
-            get { return (ICommand)base.GetValue(CommandProperty); }
-            set { base.SetValue(CommandProperty, value); }
+            get { return (ICommand)GetValue(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
         }
 
         /// <summary>
@@ -42,8 +42,8 @@ namespace JulMar.Windows.Actions
         /// </summary>
         public object CommandParameter
         {
-            get { return base.GetValue(CommandParameterProperty); }    
-            set { base.SetValue(CommandParameterProperty, value);}
+            get { return GetValue(CommandParameterProperty); }    
+            set { SetValue(CommandParameterProperty, value);}
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace JulMar.Windows.Actions
         /// <param name="parameter">parameter (not used)</param>
         protected override void Invoke(object parameter)
         {
-            ICommand command = this.Command;
-            if ((command != null) && command.CanExecute(this.CommandParameter))
-                command.Execute(this.CommandParameter);
+            ICommand command = Command;
+            if ((command != null) && command.CanExecute(CommandParameter))
+                command.Execute(CommandParameter);
         }
     }
 }

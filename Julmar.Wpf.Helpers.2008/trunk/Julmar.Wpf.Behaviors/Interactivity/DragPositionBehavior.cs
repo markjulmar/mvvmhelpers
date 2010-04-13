@@ -43,13 +43,18 @@ namespace JulMar.Windows.Interactivity
             uie.SetValue(IsEnabledProperty, value);
         }
 
+        /// <summary>
+        /// This is called when the IsEnabled property has changed.
+        /// </summary>
+        /// <param name="dpo"></param>
+        /// <param name="e"></param>
         private static void OnIsEnabledChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
         {
             UIElement uie = dpo as UIElement;
             if (uie != null)
             {
                 var behColl = Interaction.GetBehaviors(uie);
-                var existingBehavior = behColl.FirstOrDefault(b => b.GetType() == typeof(DragPositionBehavior)) as DragPositionBehavior;
+                var existingBehavior = behColl.OfType<DragPositionBehavior>().FirstOrDefault();
                 if ((bool)e.NewValue == false && existingBehavior != null)
                 {
                     behColl.Remove(existingBehavior);
