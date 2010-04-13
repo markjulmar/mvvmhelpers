@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Windows;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
-using System.Windows.Threading;
 
 namespace JulMar.Windows.UI
 {
@@ -96,16 +95,17 @@ namespace JulMar.Windows.UI
         public bool? ShowDialog(string key, object state)
         {
             bool setOwner = false;
-            try
-            {
-                setOwner = (Application.Current != null &&
-                              Application.Current.MainWindow != null &&
-                              Dispatcher.CurrentDispatcher == Application.Current.MainWindow.Dispatcher);
-            }
-            catch(InvalidOperationException)
-            {
-                // Wrong thread.
-            }
+            // Always set to false.
+            //try
+            //{
+            //    setOwner = (Application.Current != null &&
+            //                  Application.Current.MainWindow != null &&
+            //                  Dispatcher.CurrentDispatcher == Application.Current.MainWindow.Dispatcher);
+            //}
+            //catch(InvalidOperationException)
+            //{
+            //    // Wrong thread.
+            //}
 
             Window win = CreateWindow(key, state, setOwner, null, true);
             if (win != null)

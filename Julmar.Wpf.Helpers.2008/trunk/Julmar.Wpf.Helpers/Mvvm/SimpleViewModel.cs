@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace JulMar.Windows.Mvvm
 {

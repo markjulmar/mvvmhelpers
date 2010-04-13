@@ -20,10 +20,11 @@ namespace JulMar.Windows
     /// and executes callback methods (i.e. handlers) registered for properties of that object.
     /// </summary>
     /// <typeparam name="T">The type of object to monitor for property changes.</typeparam>
-    public class PropertyObserver<T> : IWeakEventListener where T : class, INotifyPropertyChanged
+    public class PropertyObserver<T> : IDisposable, IWeakEventListener where T : class, INotifyPropertyChanged
     {
-        private readonly Dictionary<string, Action<T>> _propertyNameToHandlerMap;
-        private readonly WeakReference _propertySourceRef;
+        private readonly object _lock = new object();
+        private Dictionary<string, Action<T>> _propertyNameToHandlerMap;
+        private WeakReference _propertySourceRef;
 
         /// <summary>
         /// Initializes a new instance of PropertyObserver, which
@@ -60,8 +61,11 @@ namespace JulMar.Windows
             var propertySource = this.GetPropertySource();
             if (propertySource != null)
             {
-                _propertyNameToHandlerMap[propertyName] = handler;
-                PropertyChangedEventManager.AddListener(propertySource, this, propertyName);
+                lock (_lock)
+                {
+                    _propertyNameToHandlerMap[propertyName] = handler;
+                    PropertyChangedEventManager.AddListener(propertySource, this, propertyName);
+                }
             }
 
             return this;
@@ -84,10 +88,13 @@ namespace JulMar.Windows
             T propertySource = GetPropertySource();
             if (propertySource != null)
             {
-                if (_propertyNameToHandlerMap.ContainsKey(propertyName))
+                lock (_lock)
                 {
-                    _propertyNameToHandlerMap.Remove(propertyName);
-                    PropertyChangedEventManager.RemoveListener(propertySource, this, propertyName);
+                    if (_propertyNameToHandlerMap.ContainsKey(propertyName))
+                    {
+                        _propertyNameToHandlerMap.Remove(propertyName);
+                        PropertyChangedEventManager.RemoveListener(propertySource, this, propertyName);
+                    }
                 }
             }
 
@@ -141,24 +148,61 @@ namespace JulMar.Windows
 
                 if (String.IsNullOrEmpty(propertyName))
                 {
+                    List<Action<T>> entries;
+
+                    // Get a safe copy of the list
+                    lock (_lock)
+                    {
+                        entries = _propertyNameToHandlerMap.Values.ToList();
+                    }
+
                     // When the property name is empty, all properties are considered to be invalidated.
                     // Iterate over a copy of the list of handlers, in case a handler is registered by a callback.
-                    _propertyNameToHandlerMap
-                        .Values
-                        .ToList()
-                        .ForEach(h => h(propertySource));
+                    entries.ForEach(h => h(propertySource));
                     return true;
                 }
 
-                Action<T> handler;
-                if (_propertyNameToHandlerMap.TryGetValue(propertyName, out handler))
+                Action<T> handler = null;
+                lock (_lock)
+                {
+                    _propertyNameToHandlerMap.TryGetValue(propertyName, out handler);
+                }
+
+                if (handler != null)
                 {
                     handler(propertySource);
-                    return true;
                 }
             }
 
-            return false;
+            // WPF throws ExecutionEngineException if you return false
+            // from here during binding updates.. yikes!
+            return true;
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            lock(_lock)
+            {
+                if (_propertyNameToHandlerMap != null)
+                {
+                    T propertySource = GetPropertySource();
+                    if (propertySource != null)
+                    {
+                        foreach (var propertyName in _propertyNameToHandlerMap.Keys)
+                            PropertyChangedEventManager.RemoveListener(propertySource, this, propertyName);
+                    }
+
+                    _propertyNameToHandlerMap.Clear();
+                    _propertySourceRef.Target = null;
+                }
+            }
+        }
+
+        #endregion
     }
 }
