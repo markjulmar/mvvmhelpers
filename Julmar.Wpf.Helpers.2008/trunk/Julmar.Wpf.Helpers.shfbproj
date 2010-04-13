@@ -24,11 +24,10 @@
     <HelpTitle>WPF Helper Library</HelpTitle>
     <PresentationStyle>vs2005</PresentationStyle>
     <DocumentationSources>
-      <DocumentationSource sourceFile="vs2008.bin\Julmar.Wpf.Behaviors.dll" />
-      <DocumentationSource sourceFile="vs2008.bin\Julmar.Wpf.Behaviors.xml" />
-      <DocumentationSource sourceFile="vs2008.bin\JulMar.Wpf.Helpers.dll" />
-      <DocumentationSource sourceFile="vs2008.bin\JulMar.Wpf.Helpers.xml" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="Releases\vs2008.bin\Julmar.Wpf.Behaviors.dll" />
+<DocumentationSource sourceFile="Releases\vs2008.bin\Julmar.Wpf.Behaviors.XML" />
+<DocumentationSource sourceFile="Releases\vs2008.bin\JulMar.Wpf.Helpers.dll" />
+<DocumentationSource sourceFile="Releases\vs2008.bin\JulMar.Wpf.Helpers.xml" /></DocumentationSources>
     <HeaderText>MVVM Library for WPF</HeaderText>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="JulMar.Windows" isDocumented="True">Primary namespace with global helper classes and collections.</NamespaceSummaryItem>
@@ -54,7 +53,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\..\..\..\Program Files (x86)\Microsoft SDKs\Expression\Blend 3\Interactivity\Libraries\WPF\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>Releases\vs2008.bin\System.Windows.Interactivity.dll</HintPath>
     </Reference>
   </ItemGroup>
   <!-- Import the SHFB build targets -->
