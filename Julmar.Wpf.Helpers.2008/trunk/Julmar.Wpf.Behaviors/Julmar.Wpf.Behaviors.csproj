@@ -76,6 +76,7 @@
     <Compile Include="Actions\ApplyEffect.cs" />
     <Compile Include="Actions\ChangeThemeAction.cs" />
     <Compile Include="Actions\InvokeCommand.cs" />
+    <Compile Include="Actions\SetFocusAction.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Interactivity\BindingTrigger.cs" />
     <Compile Include="Interactivity\ClickTrigger.cs" />

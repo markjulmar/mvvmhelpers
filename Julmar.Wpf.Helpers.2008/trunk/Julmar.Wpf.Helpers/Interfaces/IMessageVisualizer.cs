@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace JulMar.Windows.Interfaces
+﻿namespace JulMar.Windows.Interfaces
 {
     /// <summary>
     /// Button types that may be used to dismiss message prompts
