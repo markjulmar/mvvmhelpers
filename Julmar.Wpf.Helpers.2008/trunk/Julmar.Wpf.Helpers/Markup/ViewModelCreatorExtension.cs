@@ -24,15 +24,20 @@ namespace JulMar.Windows.Markup
         public Type ViewModelType { get; set; }
 
         /// <summary>
+        /// Designer view model type (if different than runtime)
+        /// </summary>
+        public Type DesignerViewModelType { get; set; }
+
+        /// <summary>
         /// True to automatically dispose the VM when the view closes.
         /// Defaults to TRUE - set it to FALSE to turn this off.
         /// </summary>
         public bool DisposeOnClose { get; set; }
 
         /// <summary>
-        /// Default constructor
+        /// Common constructor
         /// </summary>
-        public ViewModelCreatorExtension()
+        protected ViewModelCreatorExtension()
         {
             DisposeOnClose = true;
         }
@@ -40,10 +45,22 @@ namespace JulMar.Windows.Markup
         /// <summary>
         /// Parameterized constructor
         /// </summary>
-        /// <param name="type">Type to create</param>
-        public ViewModelCreatorExtension(Type type) : this()
+        /// <param name="runtimeType">Type to create</param>
+        public ViewModelCreatorExtension(Type runtimeType)
+            : this()
         {
-            ViewModelType = type;
+            ViewModelType = runtimeType;
+        }
+
+        /// <summary>
+        /// Constructor used when specifying both a runtime ViewModel and
+        /// a Designer ViewModel.
+        /// </summary>
+        /// <param name="runtimeType">Runtime type</param>
+        /// <param name="designerType">Designer type</param>
+        public ViewModelCreatorExtension(Type runtimeType, Type designerType) : this(runtimeType)
+        {
+            DesignerViewModelType = designerType;
         }
 
         /// <summary>
@@ -57,13 +74,15 @@ namespace JulMar.Windows.Markup
         {
             try
             {
-                _viewModel = ViewModelType != null ? Activator.CreateInstance(ViewModelType) : null;
+                Type typeToCreate = ((Designer.InDesignMode) ? DesignerViewModelType : ViewModelType) ?? ViewModelType;
+                _viewModel = typeToCreate != null ? Activator.CreateInstance(typeToCreate) : null;
 
                 // If it's a ViewModel type, and the target is a top-level Window, then subscribe to the close request
                 // event and close the window if the view model raises the event.
                 ViewModel jvm = _viewModel as ViewModel;
                 if (jvm != null)
                 {
+                    // Get the element we are hooking up.
                     IProvideValueTarget ipvt = (IProvideValueTarget)serviceProvider.GetService(typeof(IProvideValueTarget));
                     if (ipvt != null)
                     {

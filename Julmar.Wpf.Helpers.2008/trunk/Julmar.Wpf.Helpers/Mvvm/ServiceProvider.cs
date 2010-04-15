@@ -1,8 +1,45 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
+using System.Linq;
 
 namespace JulMar.Windows.Mvvm
 {
+    /// <summary>
+    /// Interface used to populate metadata we use for services.
+    /// </summary>
+    public interface IServiceProviderMetadata
+    {
+        /// <summary>
+        /// Service Type being exported (typically an interface)
+        /// </summary>
+        Type ServiceType { get; }
+    }
+
+    /// <summary>
+    /// This attribute is used to decorate all "auto-located" services.
+    /// MEF is used to locate and bind each service with this attribute decoration.
+    /// </summary>
+    [MetadataAttribute]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class ExportServiceProviderAttribute : ExportAttribute
+    {
+        /// <summary>
+        /// Service Type being exported (typically an interface)
+        /// </summary>
+        public Type ServiceType { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="type">Service Type to export</param>
+        public ExportServiceProviderAttribute(Type type) : base(ServiceProvider.MefLocatorKey)
+        {
+            ServiceType = type;
+        }
+    }
+
     /// <summary>
     /// This class acts as a resolver for typed services (interfaces and implementations).
     /// Internally it relies on an IServiceContainer - it will create a BCL version if one is not 
@@ -19,12 +56,29 @@ namespace JulMar.Windows.Mvvm
     /// IService svc = serviceResolver<IService>.Resolve();
     /// ]]>
     /// </example>
+    [Export(typeof(IServiceProvider))]
     public class ServiceProvider : IServiceProvider, IDisposable
     {
+        /// <summary>
+        /// The MEF loader.
+        /// </summary>
+        private IDynamicLoader _mefLoader;
+
+        /// <summary>
+        /// Key used to bind exports together
+        /// </summary>
+        internal const string MefLocatorKey = "JulMar.Mvvm.ServiceProviderExport";
+
+        [ImportMany(MefLocatorKey, AllowRecomposition = true)]
+        #pragma warning disable 649
+        private IEnumerable<Lazy<object, IServiceProviderMetadata>> _locatedServices;
+        #pragma warning restore 649
+
         /// <summary>
         /// Lock
         /// </summary>
         private readonly object _lock = new object();
+
         /// <summary>
         /// Service container
         /// </summary>
@@ -55,7 +109,20 @@ namespace JulMar.Windows.Mvvm
         {
             lock (_lock)
             {
-                return (GetService(type) != null);
+                // Quick check of the container.
+                if (_serviceContainer != null
+                    && _serviceContainer.GetService(type) != null)
+                    return true;
+
+                // Not in the container - try the dynamic elements (MEF).
+                // We do not create it here, just check for the presence.  If the user
+                // actually REQUESTS the service we will create it then.
+                if (_locatedServices != null
+                    && _locatedServices.FirstOrDefault(svc => svc.Metadata.ServiceType == type) != null)
+                    return true;
+                
+                // Not found.
+                return false;
             }
         }
 
@@ -131,6 +198,13 @@ namespace JulMar.Windows.Mvvm
         {
             if (_serviceContainer == null)
                 _serviceContainer = new ServiceContainer();
+
+            if (_mefLoader == null)
+            {
+                _mefLoader = new MefLoader();
+                _mefLoader.Resolve(this);
+                _serviceContainer.AddService(typeof(IDynamicLoader), _mefLoader);
+            }
         }
 
         /// <summary>
@@ -170,8 +244,33 @@ namespace JulMar.Windows.Mvvm
         {
             lock (_lock)
             {
-                return _serviceContainer != null ? _serviceContainer.GetService(serviceType) : null;
+                EnsureServiceContainer();
+                return _serviceContainer.GetService(serviceType) ?? DynamicLoadAndAdd(serviceType);
             }
+        }
+
+        /// <summary>
+        /// This searches the located MEF components and creates it and loads it into the service container.
+        /// </summary>
+        /// <param name="serviceType">Type we are looking for</param>
+        /// <returns>Created object</returns>
+        private object DynamicLoadAndAdd(Type serviceType)
+        {
+            if (_locatedServices != null)
+            {
+                var service = _locatedServices.FirstOrDefault(svc => svc.Metadata.ServiceType == serviceType);
+                if (service != null)
+                {
+                    var value = service.Value;
+                    if (value != null)
+                    {
+                        _serviceContainer.AddService(serviceType, value);
+                        return value;
+                    }
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -185,6 +284,7 @@ namespace JulMar.Windows.Mvvm
                 if (id != null)
                     id.Dispose();
                 _serviceContainer = null;
+                _mefLoader = null;
             }
         }
     }

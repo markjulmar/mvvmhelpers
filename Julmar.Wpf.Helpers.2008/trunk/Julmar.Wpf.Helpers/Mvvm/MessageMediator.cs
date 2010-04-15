@@ -58,7 +58,8 @@ namespace JulMar.Windows.Mvvm
     /// The message handlers are organized using string-based message keys and are held in a WeakReference
     /// collection.
     /// </summary>
-    public class MessageMediator : IMessageMediator
+    [ExportServiceProvider(typeof(IMessageMediator))]
+    sealed class MessageMediator : IMessageMediator
     {
         /// <summary>
         /// This class creates a weak delegate of form Action(Of Object)

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.Composition;
 
 namespace JulMar.Windows.Interfaces
 {
@@ -21,6 +22,7 @@ namespace JulMar.Windows.Interfaces
     /// This interface defines a UI controller which can be used to display dialogs
     /// in either modal or modaless form from a ViewModel.
     /// </summary>
+    [InheritedExport]
     public interface IUIVisualizer
     {
         /// <summary>

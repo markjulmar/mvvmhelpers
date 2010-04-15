@@ -65,6 +65,7 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -94,7 +95,6 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Interfaces\IMessageMediator.cs" />
     <Compile Include="Interfaces\IMessageVisualizer.cs" />
-    <Compile Include="Interfaces\IRunningNotification.cs" />
     <Compile Include="Interfaces\IUIVisualizer.cs" />
     <Compile Include="Interfaces\IViewModelTrigger.cs" />
     <Compile Include="Markup\LinearGradientBrushExtension.cs" />
@@ -117,11 +117,11 @@
     <Compile Include="MTObservableCollection.cs" />
     <Compile Include="Mvvm\CloseRequestEventArgs.cs" />
     <Compile Include="Mvvm\EditingViewModel.cs" />
+    <Compile Include="Mvvm\MefHelpers.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
     <Compile Include="Mvvm\ViewModelTrigger.cs" />
     <Compile Include="ObservableDictionary.cs" />
     <Compile Include="PropertyObserver.cs" />
-    <Compile Include="UI\RunningNotification.cs" />
     <Compile Include="Validations\ValidatingViewModel.cs" />
     <Compile Include="SystemInfo.cs" />
     <Compile Include="UI\MessageVisualizer.cs" />

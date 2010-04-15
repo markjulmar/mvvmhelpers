@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows;
 using System.ComponentModel;
+using JulMar.Windows.Extensions;
 
 namespace JulMar.Windows.Behaviors
 {
@@ -163,6 +163,9 @@ namespace JulMar.Windows.Behaviors
         /// <param name="e">EventArgs</param>
         private static void OnLoadedEventInfoChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
+            if (Designer.InDesignMode)
+                return;
+
             var win = sender as Window;
             if (win == null)
                 throw new ArgumentException("LifetimeEvent can only be used on Window class.");
@@ -202,6 +205,9 @@ namespace JulMar.Windows.Behaviors
         /// <param name="e">EventArgs</param>
         private static void OnActivatedEventInfoChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
+            if (Designer.InDesignMode)
+                return;
+
             var win = sender as Window;
             if (win == null)
                 throw new ArgumentException("LifetimeEvent can only be used on Window class.");
@@ -235,6 +241,9 @@ namespace JulMar.Windows.Behaviors
         /// <param name="e">EventArgs</param>
         private static void OnDeactivatedEventInfoChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
+            if (Designer.InDesignMode)
+                return;
+
             var win = sender as Window;
             if (win == null)
                 throw new ArgumentException("LifetimeEvent can only be used on Window class.");
@@ -264,6 +273,9 @@ namespace JulMar.Windows.Behaviors
         /// <param name="e">EventArgs</param>
         private static void OnCloseEventInfoChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
+            if (Designer.InDesignMode)
+                return;
+
             var win = sender as Window;
             if (win == null)
                 throw new ArgumentException("LifetimeEvent can only be used on Window class.");

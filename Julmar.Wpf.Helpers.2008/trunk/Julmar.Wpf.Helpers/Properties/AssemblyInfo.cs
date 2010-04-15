@@ -6,6 +6,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompanyAttribute("JulMar Entertainment Technology, Inc.")]
 [assembly: AssemblyProductAttribute("JulMar.Wpf.Helpers")]
 [assembly: AssemblyCopyrightAttribute("(C) 2008-2010 JulMar Entertainment Technology, Inc.")]
-[assembly: AssemblyVersionAttribute("1.0.0.6")]
-[assembly: AssemblyFileVersionAttribute("1.0.0.6")]
+[assembly: AssemblyVersionAttribute("2.0.0.0")]
+[assembly: AssemblyFileVersionAttribute("2.0.0.0")]
 [assembly: ComVisibleAttribute(false)]

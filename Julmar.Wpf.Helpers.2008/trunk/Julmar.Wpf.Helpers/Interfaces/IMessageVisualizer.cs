@@ -1,4 +1,6 @@
-﻿namespace JulMar.Windows.Interfaces
+﻿using System.ComponentModel.Composition;
+
+namespace JulMar.Windows.Interfaces
 {
     /// <summary>
     /// Button types that may be used to dismiss message prompts
@@ -53,6 +55,7 @@
     /// <summary>
     /// This interface abstracts the display of MessageBox style notifications
     /// </summary>
+    [InheritedExport]
     public interface IMessageVisualizer
     {
         /// <summary>

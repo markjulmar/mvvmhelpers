@@ -1,0 +1,83 @@
+﻿<Window x:Class="TestMvvm.PropertyWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:julmar="http://www.julmar.com/wpfhelpers"
+    xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    MinWidth="300" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow" ShowInTaskbar="False"
+    ResizeMode="NoResize" Title="TestMvvm Properties" SizeToContent="WidthAndHeight"
+    julmar:HelpProvider.Filename="Julmar.Wpf.Helpers.chm">
+    
+    <Grid Background="{julmar:LinearGradientBrush AliceBlue, SkyBlue, 90}">
+        
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="Foreground" Value="DarkBlue" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="VerticalAlignment" Value="Bottom" />
+                <Setter Property="MinWidth" Value="75" />
+                <Setter Property="Margin" Value="5" />
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Grid.Column" Value="1" />
+                <Setter Property="MinWidth" Value="100" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+    
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <Label Content="Title:" />
+        <TextBox Text="{Binding Title}" julmar:HelpProvider.Keyword="Title">
+        	<Interactivity:Interaction.Behaviors>
+        		<julmar:WatermarkTextBoxBehavior Text="Enter the Title Here"/>
+        	</Interactivity:Interaction.Behaviors>
+            <TextBox.Style>
+                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                    <Setter Property="FontStyle" Value="Normal" />
+                    <Style.Triggers>
+                        <Trigger Property="julmar:WatermarkTextBoxBehavior.IsWatermarked" Value="True">
+                            <Setter Property="FontStyle" Value="Italic" />
+                            <Setter Property="Foreground" Value="LightGray" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <Label Grid.Row="1" Content="# of Shapes:" />
+        <TextBox Grid.Row="1" Text="{Binding ShapeCount, UpdateSourceTrigger=PropertyChanged}" julmar:NumericTextBoxBehavior.IsEnabled="true">
+        	<!--<Interactivity:Interaction.Behaviors>
+        		<julmar:NumericTextBoxBehavior/>
+        	</Interactivity:Interaction.Behaviors>-->
+        </TextBox>
+
+        <Label Grid.Row="2" Content="Running on:" />
+        <Label Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Foreground="Black" Content="{x:Static julmar:SystemInfo.OperatingSystem}" />
+
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" IsDefault="True">
+                <Interactivity:Interaction.Behaviors>
+                    <julmar:CloseDialogBehavior />
+                </Interactivity:Interaction.Behaviors>
+            </Button>
+            <Button Content="Cancel" IsCancel="True" />
+        </StackPanel>
+    </Grid>
+</Window>

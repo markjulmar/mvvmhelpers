@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
 using System.Windows;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
@@ -7,11 +9,65 @@ using JulMar.Windows.Mvvm;
 namespace JulMar.Windows.UI
 {
     /// <summary>
+    /// Interface used to populate metadata we use for services.
+    /// </summary>
+    public interface IUIVisualizerMetadata
+    {
+        /// <summary>
+        /// Key used to export the UI - registered with the UIVisualizer.
+        /// </summary>
+        string Key { get; }
+
+        /// <summary>
+        /// The type being exported
+        /// </summary>
+        string ExportTypeIdentity { get; }
+    }
+
+    /// <summary>
+    /// This attribute is used to decorate all "auto-located" services.
+    /// MEF is used to locate and bind each service with this attribute decoration.
+    /// </summary>
+    [MetadataAttribute]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class ExportUIVisualizerAttribute : ExportAttribute
+    {
+        /// <summary>
+        /// Key used to export the UI.
+        /// </summary>
+        public string Key { get; private set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ExportUIVisualizerAttribute(string key)
+            : base(UIVisualizer.MefLocatorKey)
+        {
+            Key = key;
+        }
+    }
+
+
+    /// <summary>
     /// This class implements the IUIVisualizer for WPF.
     /// </summary>
-    public class UIVisualizer : IUIVisualizer
+    [ExportServiceProvider(typeof(IUIVisualizer))]
+    sealed class UIVisualizer : IUIVisualizer
     {
+        /// <summary>
+        /// Key used to lookup visualizations with MEF.
+        /// </summary>
+        internal const string MefLocatorKey = "JulMar.UIVisualizer.Export";
+
+        /// <summary>
+        /// Registered UI windows
+        /// </summary>
         private readonly Dictionary<string, Type> _registeredWindows;
+
+        [ImportMany(MefLocatorKey, AllowRecomposition = true)]
+        #pragma warning disable 649
+        private IEnumerable<Lazy<object, IUIVisualizerMetadata>> _locatedVisuals;
+        #pragma warning restore 649
 
         /// <summary>
         /// Constructor
@@ -19,6 +75,37 @@ namespace JulMar.Windows.UI
         public UIVisualizer()
         {
             _registeredWindows = new Dictionary<string, Type>();
+
+            // Bind us to MEF.  We were likely not created by MEF so this needs to be done in order
+            // to get the registered windows.
+            var dynamicLoader = ViewModel.ServiceProvider.Resolve<IDynamicLoader>();
+            if (dynamicLoader != null)
+                dynamicLoader.Resolve(this);
+
+            // Go through any located visuals and register them here. We don't actually
+            // create any of the instances from MEF; we simply use it to discover the types.
+            if (_locatedVisuals != null)
+            {
+                foreach (var item in _locatedVisuals)
+                {
+                    Type type = FindType(item.Metadata.ExportTypeIdentity);
+                    if (type != null)
+                        Register(item.Metadata.Key, type);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Locates a type in a loaded assembly.
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <returns></returns>
+        private static Type FindType(string typeName)
+        {
+            return AppDomain.CurrentDomain
+                .GetAssemblies()
+                .Select(asm => asm.GetType(typeName, false))
+                .FirstOrDefault(type => type != null);
         }
 
         /// <summary>
@@ -94,20 +181,7 @@ namespace JulMar.Windows.UI
         /// <returns>True/False if UI is displayed.</returns>
         public bool? ShowDialog(string key, object state)
         {
-            bool setOwner = false;
-            // Always set to false.
-            //try
-            //{
-            //    setOwner = (Application.Current != null &&
-            //                  Application.Current.MainWindow != null &&
-            //                  Dispatcher.CurrentDispatcher == Application.Current.MainWindow.Dispatcher);
-            //}
-            //catch(InvalidOperationException)
-            //{
-            //    // Wrong thread.
-            //}
-
-            Window win = CreateWindow(key, state, setOwner, null, true);
+            Window win = CreateWindow(key, state, false, null, true);
             if (win != null)
                 return win.ShowDialog();
             

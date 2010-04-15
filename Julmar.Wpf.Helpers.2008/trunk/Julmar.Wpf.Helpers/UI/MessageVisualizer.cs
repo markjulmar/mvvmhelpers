@@ -1,12 +1,14 @@
 ﻿using System.Windows;
 using JulMar.Windows.Interfaces;
+using JulMar.Windows.Mvvm;
 
 namespace JulMar.Windows.UI
 {
     /// <summary>
     /// This class implements the IMessageVisualizer for WPF
     /// </summary>
-    public class MessageVisualizer : IMessageVisualizer
+    [ExportServiceProvider(typeof(IMessageVisualizer))]
+    sealed class MessageVisualizer : IMessageVisualizer
     {
         /// <summary>
         /// This displays a message to the user and prompts for a selection.

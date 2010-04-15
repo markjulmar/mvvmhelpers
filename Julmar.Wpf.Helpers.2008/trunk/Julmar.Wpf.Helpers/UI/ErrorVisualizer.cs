@@ -1,13 +1,15 @@
 using System.Windows;
 using JulMar.Windows.Interfaces;
 using System;
+using JulMar.Windows.Mvvm;
 
 namespace JulMar.Windows.UI
 {
     /// <summary>
     /// This implements the IErrorVisualizer for WPF.
     /// </summary>
-    public class ErrorVisualizer : IErrorVisualizer
+    [ExportServiceProvider(typeof(IErrorVisualizer))]
+    sealed class ErrorVisualizer : IErrorVisualizer
     {
         /// <summary>
         /// This displays an error to the user

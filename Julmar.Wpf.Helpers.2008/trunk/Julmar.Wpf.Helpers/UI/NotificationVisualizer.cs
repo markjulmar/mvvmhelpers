@@ -1,12 +1,14 @@
 ﻿using System;
 using JulMar.Windows.Interfaces;
+using JulMar.Windows.Mvvm;
 
 namespace JulMar.Windows.UI
 {
     /// <summary>
     /// This implements the INotificationVisualizer interface for WPF
     /// </summary>
-    public class NotificationVisualizer : INotificationVisualizer
+    [ExportServiceProvider(typeof(INotificationVisualizer))]
+    sealed class NotificationVisualizer : INotificationVisualizer
     {
         /// <summary>
         /// This provides a "Wait" support

@@ -1,6 +1,5 @@
 ﻿using System;
 using JulMar.Windows.Interfaces;
-using JulMar.Windows.UI;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -9,6 +8,11 @@ namespace JulMar.Windows.Mvvm
     /// </summary>
     public class ViewModel : SimpleViewModel, IDisposable
     {
+        /// <summary>
+        /// Key used to locate VMs through MEF.
+        /// </summary>
+        internal const string MefLocatorKey = "JulMar.ViewModel.Export";
+
         /// <summary>
         /// Service resolver for view models.  Allows derived types to add/remove
         /// services from mapping.
@@ -32,15 +36,19 @@ namespace JulMar.Windows.Mvvm
         public event EventHandler ActivateRequest;
 
         /// <summary>
-        /// This method registers known WPF services with the service provider.
+        /// Constructor - registers with the message mediator and hooks up any imports/exports
+        /// with the default MEF catalog
         /// </summary>
-        public static void RegisterKnownServiceTypes()
+        public ViewModel()
         {
-            ServiceProvider.Add(typeof(IErrorVisualizer), new ErrorVisualizer());
-            ServiceProvider.Add(typeof(IMessageVisualizer), new MessageVisualizer());
-            ServiceProvider.Add(typeof(INotificationVisualizer), new NotificationVisualizer());
-            ServiceProvider.Add(typeof(IUIVisualizer), new UIVisualizer());
-            ServiceProvider.Add(typeof(IMessageMediator), new MessageMediator());
+            // Register with the message mediator - this will locate and bind all message
+            // targets on this instance.
+            RegisterWithMessageMediator();            
+
+            // Hook up any MEF imports/exports
+            IDynamicLoader loader = Resolve<IDynamicLoader>();
+            if (loader != null)
+                loader.Resolve(this);                
         }
 
         /// <summary>

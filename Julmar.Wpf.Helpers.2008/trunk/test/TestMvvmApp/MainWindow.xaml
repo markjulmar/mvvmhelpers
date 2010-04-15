@@ -1,0 +1,185 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:julmar="http://www.julmar.com/wpfhelpers"
+    xmlns:ViewModels="clr-namespace:TestMvvm.ViewModels"
+    xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:ic="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" x:Class="TestMvvm.MainWindow"
+        
+    julmar:LifetimeEvent.Loaded="{Binding LoadedCommand}"
+    julmar:LifetimeEvent.Activated="{Binding ActivatedCommand}"
+    julmar:LifetimeEvent.Deactivated="{Binding DeactivatedCommand}"
+    julmar:LifetimeEvent.Close="{Binding CloseCommand}"
+        
+    Title="{Binding Title}" Height="300" Width="500" 
+    DataContext="{julmar:ViewModelCreator {x:Type ViewModels:WinViewModel}}">
+
+    <Window.Resources>
+        <DataTemplate x:Key="ToolTipPreview">
+            <Label Content="{Binding Value}" />
+        </DataTemplate>
+        
+        <julmar:BindableCommand x:Key="exitCommand" Command="{Binding ExitCommand}" />
+        <julmar:BindableCommand x:Key="propsCommand" Command="{Binding ShowPropertiesCommand}" />
+        
+    </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Key="X" Modifiers="Ctrl+Alt" Command="{StaticResource exitCommand}" />
+        <KeyBinding Key="r" Modifiers="Ctrl+Alt" Command="{StaticResource propsCommand}" />
+    </Window.InputBindings>
+
+    <Window.Style>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="Background" Value="{julmar:LinearGradientBrush LightGreen, SeaGreen, 65}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="False">
+                    <Setter Property="Background" Value="LightGray" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+
+    <!-- Can use this syntax: -->
+    <!--<julmar:EventCommander.Mappings>
+        <julmar:CommandEvent Event="MouseEnter" 
+                             Command="{Binding MouseEnterLeaveCommand}"
+                             CommandParameter="{Binding ElementName=itemList}" />
+        <julmar:CommandEvent Event="MouseLeave" 
+                             Command="{Binding MouseEnterLeaveCommand}"
+                             CommandParameter="{Binding ElementName=itemList}" />
+    </julmar:EventCommander.Mappings>-->
+
+    <!-- Or this syntax -->
+    <Interactivity:Interaction.Triggers>
+        <julmar:CommandEventTrigger Event="MouseEnter"
+                                    Command="{Binding MouseEnterLeaveCommand}"
+                                    CommandParameter="{Binding ElementName=itemList}" />
+        <julmar:CommandEventTrigger Event="MouseLeave"
+                                    Command="{Binding MouseEnterLeaveCommand}"
+                                    CommandParameter="{Binding ElementName=itemList}" />
+    </Interactivity:Interaction.Triggers>
+    
+    <DockPanel>
+
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="P_roperties" Command="{Binding ShowPropertiesCommand}" />
+                <Separator />
+                <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
+            </MenuItem>
+        </Menu>
+        
+        <ToolBar DockPanel.Dock="Top">
+            <Button ToolTip="App Properties" Command="{Binding ShowPropertiesCommand}">
+                <Path Width="16" Height="16" Fill="{julmar:LinearGradientBrush LightGreen, DarkGreen, 90}" Stroke="DarkGreen"
+                      Data="M1,1 L15,7.5 L1,15 Z" />
+            </Button>
+            
+            <CheckBox Content="Show Text" IsChecked="{Binding ShowText}" />
+            
+            <ComboBox>
+                <ComboBoxItem Content="Green">
+                    <Interactivity:Interaction.Triggers>
+                        <julmar:ClickTrigger ClickMode="Release">
+                        	<julmar:InvokeCommand Command="{Binding ChangeBackground}" CommandParameter="LightGreen" />
+                        </julmar:ClickTrigger>
+                    </Interactivity:Interaction.Triggers>
+                </ComboBoxItem>
+                <ComboBoxItem Content="Yellow">
+                    <Interactivity:Interaction.Triggers>
+                        <julmar:ClickTrigger ClickMode="Release">
+                        	<julmar:InvokeCommand Command="{Binding ChangeBackground}" CommandParameter="LightYellow" />
+                        </julmar:ClickTrigger>
+                    </Interactivity:Interaction.Triggers>
+                </ComboBoxItem>
+                <ComboBoxItem Content="Blue">
+                    <Interactivity:Interaction.Triggers>
+                        <julmar:ClickTrigger ClickMode="Release">
+                        	<julmar:InvokeCommand Command="{Binding ChangeBackground}" CommandParameter="LightBlue" />
+                        </julmar:ClickTrigger>
+                    </Interactivity:Interaction.Triggers>
+                </ComboBoxItem>
+            </ComboBox>
+            
+        </ToolBar>
+        
+        <Grid>
+            
+            <ItemsControl x:Name="itemList" ItemsSource="{Binding Elements}"
+                          Margin="10" BorderBrush="Black" BorderThickness="1">
+
+                <ItemsControl.InputBindings>
+                    <MouseBinding Command="{StaticResource exitCommand}" Gesture="Control+RightClick" />
+                    <MouseBinding Command="{StaticResource propsCommand}" MouseAction="MiddleClick" />
+                </ItemsControl.InputBindings>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Ellipse x:Name="el" Fill="{Binding Color}" Width="{Binding Width}" Height="{Binding Height}"
+                             Stroke="Goldenrod" StrokeThickness="0" ToolTip="Double-click to change shape properties">
+                            <Interactivity:Interaction.Triggers>
+                                <julmar:DoubleClickTrigger>
+                                    <julmar:InvokeCommand 
+                                        Command="{Binding DataContext.ShowColorDialogCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                        CommandParameter="{Binding}" />
+                                </julmar:DoubleClickTrigger>
+                            </Interactivity:Interaction.Triggers>
+                        </Ellipse>
+                        <DataTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True" >
+                                <Setter TargetName="el" Property="StrokeThickness" Value="2" />
+                            </Trigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="julmar:DragPositionBehavior.IsEnabled" Value="True" />
+                        <Setter Property="Canvas.Left" Value="{Binding X}" />
+                        <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseCaptured" Value="True">
+                                <Setter Property="Panel.ZIndex" Value="1" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas IsItemsHost="True" ClipToBounds="True" Background="{Binding BackgroundColor}">
+                            <Canvas.Effect>
+                                <DropShadowEffect />
+                            </Canvas.Effect>
+                        </Canvas>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+            </ItemsControl>
+            
+            <TextBlock Text="Here is some text!" FontSize="36pt" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin=".5,.5" FontWeight="Bold" Opacity="0" >
+            	<Interactivity:Interaction.Triggers>
+            		<julmar:BindingTrigger Binding="{Binding ShowText}" Value="True">
+            			<ic:ChangePropertyAction PropertyName="Opacity" Duration="0:0:1" Value="1"/>
+            		</julmar:BindingTrigger>
+            		<julmar:BindingTrigger Binding="{Binding ShowText}" Value="False">
+            			<ic:ChangePropertyAction PropertyName="Opacity" Value="0" Duration="0:0:1"/>
+            		</julmar:BindingTrigger>
+            	</Interactivity:Interaction.Triggers>
+            	<TextBlock.RenderTransform>
+            		<TransformGroup>
+            			<ScaleTransform/>
+            			<SkewTransform/>
+            			<RotateTransform Angle="-22.62"/>
+            			<TranslateTransform/>
+            		</TransformGroup>
+            	</TextBlock.RenderTransform>
+            </TextBlock>
+            
+        </Grid>
+
+    </DockPanel>
+       
+</Window>
