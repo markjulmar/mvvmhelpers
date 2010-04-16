@@ -33,7 +33,7 @@ namespace JulMar.Windows.UI
     public class ExportUIVisualizerAttribute : ExportAttribute
     {
         /// <summary>
-        /// Key used to export the UI.
+        /// Key used to export the View/ViewModel
         /// </summary>
         public string Key { get; private set; }
 
@@ -152,6 +152,30 @@ namespace JulMar.Windows.UI
             {
                 return _registeredWindows.Remove(key);
             }
+        }
+
+        /// <summary>
+        /// This method displays a modaless dialog associated with the given key.  The associated
+        /// VM is not connected but must be supplied through some other means.
+        /// </summary>
+        /// <param name="key">Key previously registered with the UI controller.</param>
+        /// <param name="setOwner">Set the owner of the window</param>
+        /// <param name="completedProc">Callback used when UI closes (may be null)</param>
+        /// <returns>True/False if UI is displayed</returns>
+        public bool Show(string key, bool setOwner, EventHandler<UICompletedEventArgs> completedProc)
+        {
+            return Show(key, null, setOwner, completedProc);
+        }
+
+        /// <summary>
+        /// This method displays a modal dialog associated with the given key.  The associated
+        /// VM is not connected but must be supplied through some other means.
+        /// </summary>
+        /// <param name="key">Key previously registered with the UI controller.</param>
+        /// <returns>True/False if UI is displayed.</returns>
+        public bool? ShowDialog(string key)
+        {
+            return ShowDialog(key, null);
         }
 
         /// <summary>

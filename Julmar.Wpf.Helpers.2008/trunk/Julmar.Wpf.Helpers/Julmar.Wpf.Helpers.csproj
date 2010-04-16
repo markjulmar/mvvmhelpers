@@ -119,6 +119,7 @@
     <Compile Include="Mvvm\EditingViewModel.cs" />
     <Compile Include="Mvvm\MefHelpers.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
+    <Compile Include="Mvvm\ViewModelLocator.cs" />
     <Compile Include="Mvvm\ViewModelTrigger.cs" />
     <Compile Include="ObservableDictionary.cs" />
     <Compile Include="PropertyObserver.cs" />

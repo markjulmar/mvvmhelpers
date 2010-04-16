@@ -19,6 +19,11 @@ namespace JulMar.Windows.Markup
         private object _viewModel;
 
         /// <summary>
+        /// View Model key
+        /// </summary>
+        public string Key { get; set; }
+
+        /// <summary>
         /// The Type of the view model to create
         /// </summary>
         public Type ViewModelType { get; set; }
@@ -37,7 +42,7 @@ namespace JulMar.Windows.Markup
         /// <summary>
         /// Common constructor
         /// </summary>
-        protected ViewModelCreatorExtension()
+        public ViewModelCreatorExtension()
         {
             DisposeOnClose = true;
         }
@@ -74,8 +79,8 @@ namespace JulMar.Windows.Markup
         {
             try
             {
-                Type typeToCreate = ((Designer.InDesignMode) ? DesignerViewModelType : ViewModelType) ?? ViewModelType;
-                _viewModel = typeToCreate != null ? Activator.CreateInstance(typeToCreate) : null;
+                // Create the VM
+                _viewModel = CreateOrLocateViewModel();
 
                 // If it's a ViewModel type, and the target is a top-level Window, then subscribe to the close request
                 // event and close the window if the view model raises the event.
@@ -107,6 +112,24 @@ namespace JulMar.Windows.Markup
                 // Otherwise throw it
                 throw;
             }
+        }
+
+        /// <summary>
+        /// This either creates the VM directly using the Types supplied, or looks up the VM
+        /// with MEF using the key and creates it that way.
+        /// </summary>
+        /// <returns></returns>
+        private object CreateOrLocateViewModel()
+        {
+            if (!string.IsNullOrEmpty(Key))
+            {
+                var vm = ViewModel.ServiceProvider.Resolve<ViewModelLocator>().Locate(Key);
+                if (vm != null)
+                    return vm;
+            }
+
+            Type typeToCreate = ((Designer.InDesignMode) ? DesignerViewModelType : ViewModelType) ?? ViewModelType;
+            return typeToCreate != null ? Activator.CreateInstance(typeToCreate) : null;
         }
 
         /// <summary>

@@ -13,6 +13,7 @@ namespace TestMvvm.ViewModels
     /// <summary>
     /// The ViewModel for the application
     /// </summary>
+    [ExportViewModel("MainWindow")]
     public class WinViewModel : ViewModel
     {
         #region Data

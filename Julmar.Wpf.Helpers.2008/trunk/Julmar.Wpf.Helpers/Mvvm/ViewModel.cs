@@ -9,11 +9,6 @@ namespace JulMar.Windows.Mvvm
     public class ViewModel : SimpleViewModel, IDisposable
     {
         /// <summary>
-        /// Key used to locate VMs through MEF.
-        /// </summary>
-        internal const string MefLocatorKey = "JulMar.ViewModel.Export";
-
-        /// <summary>
         /// Service resolver for view models.  Allows derived types to add/remove
         /// services from mapping.
         /// </summary>

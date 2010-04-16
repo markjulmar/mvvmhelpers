@@ -2,7 +2,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:julmar="http://www.julmar.com/wpfhelpers"
-    xmlns:ViewModels="clr-namespace:TestMvvm.ViewModels"
     xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:ic="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" x:Class="TestMvvm.MainWindow"
         
@@ -12,7 +11,7 @@
     julmar:LifetimeEvent.Close="{Binding CloseCommand}"
         
     Title="{Binding Title}" Height="300" Width="500" 
-    DataContext="{julmar:ViewModelCreator {x:Type ViewModels:WinViewModel}}">
+    DataContext="{julmar:ViewModelCreator Key=MainWindow}">
 
     <Window.Resources>
         <DataTemplate x:Key="ToolTipPreview">
@@ -41,20 +40,20 @@
     </Window.Style>
 
     <!-- Can use this syntax: -->
-    <!--<julmar:EventCommander.Mappings>
+    <julmar:EventCommander.Mappings>
         <julmar:CommandEvent Event="MouseEnter" 
                              Command="{Binding MouseEnterLeaveCommand}"
                              CommandParameter="{Binding ElementName=itemList}" />
-        <julmar:CommandEvent Event="MouseLeave" 
+        <!--<julmar:CommandEvent Event="MouseLeave" 
                              Command="{Binding MouseEnterLeaveCommand}"
-                             CommandParameter="{Binding ElementName=itemList}" />
-    </julmar:EventCommander.Mappings>-->
+                             CommandParameter="{Binding ElementName=itemList}" />-->
+    </julmar:EventCommander.Mappings>
 
     <!-- Or this syntax -->
     <Interactivity:Interaction.Triggers>
-        <julmar:CommandEventTrigger Event="MouseEnter"
+        <!--<julmar:CommandEventTrigger Event="MouseEnter"
                                     Command="{Binding MouseEnterLeaveCommand}"
-                                    CommandParameter="{Binding ElementName=itemList}" />
+                                    CommandParameter="{Binding ElementName=itemList}" />-->
         <julmar:CommandEventTrigger Event="MouseLeave"
                                     Command="{Binding MouseEnterLeaveCommand}"
                                     CommandParameter="{Binding ElementName=itemList}" />
