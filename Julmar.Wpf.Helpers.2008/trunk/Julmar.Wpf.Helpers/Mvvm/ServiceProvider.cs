@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Linq;
+using JulMar.Windows.Interfaces;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -62,7 +63,8 @@ namespace JulMar.Windows.Mvvm
         /// <summary>
         /// The MEF loader.
         /// </summary>
-        private IDynamicLoader _mefLoader;
+        [Export(typeof(IDynamicResolver))]
+        private IDynamicResolver _mefLoader = new MefLoader();
 
         /// <summary>
         /// Key used to bind exports together
@@ -83,6 +85,14 @@ namespace JulMar.Windows.Mvvm
         /// Service container
         /// </summary>
         private IServiceContainer _serviceContainer;
+
+        /// <summary>
+        /// Construct the service provider.  Resolve all the imported services.
+        /// </summary>
+        public ServiceProvider()
+        {
+            _mefLoader.Compose(this);
+        }
 
         /// <summary>
         /// This allows the user to set the container to a different type.
@@ -197,13 +207,9 @@ namespace JulMar.Windows.Mvvm
         private void EnsureServiceContainer()
         {
             if (_serviceContainer == null)
-                _serviceContainer = new ServiceContainer();
-
-            if (_mefLoader == null)
             {
-                _mefLoader = new MefLoader();
-                _mefLoader.Resolve(this);
-                _serviceContainer.AddService(typeof(IDynamicLoader), _mefLoader);
+                _serviceContainer = new ServiceContainer();
+                _serviceContainer.AddService(typeof (IDynamicResolver), _mefLoader);
             }
         }
 

@@ -64,10 +64,23 @@ namespace JulMar.Windows.UI
         /// </summary>
         private readonly Dictionary<string, Type> _registeredWindows;
 
-        [ImportMany(MefLocatorKey, AllowRecomposition = true)]
         #pragma warning disable 649
+        /// <summary>
+        /// MEF catalog - we will automatically register each view with this.
+        /// </summary>
+        [Import] private IDynamicResolver _dynamicLoader;
+
+        /// <summary>
+        /// MEF registered views
+        /// </summary>
+        [ImportMany(MefLocatorKey)]
         private IEnumerable<Lazy<object, IUIVisualizerMetadata>> _locatedVisuals;
         #pragma warning restore 649
+
+        /// <summary>
+        /// Set to true once we have loaded any dynamic visuals.
+        /// </summary>
+        private bool _haveLoadedVisuals;
 
         /// <summary>
         /// Constructor
@@ -75,24 +88,6 @@ namespace JulMar.Windows.UI
         public UIVisualizer()
         {
             _registeredWindows = new Dictionary<string, Type>();
-
-            // Bind us to MEF.  We were likely not created by MEF so this needs to be done in order
-            // to get the registered windows.
-            var dynamicLoader = ViewModel.ServiceProvider.Resolve<IDynamicLoader>();
-            if (dynamicLoader != null)
-                dynamicLoader.Resolve(this);
-
-            // Go through any located visuals and register them here. We don't actually
-            // create any of the instances from MEF; we simply use it to discover the types.
-            if (_locatedVisuals != null)
-            {
-                foreach (var item in _locatedVisuals)
-                {
-                    Type type = FindType(item.Metadata.ExportTypeIdentity);
-                    if (type != null)
-                        Register(item.Metadata.Key, type);
-                }
-            }
         }
 
         /// <summary>
@@ -226,6 +221,10 @@ namespace JulMar.Windows.UI
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("key");
 
+            // If we've not scanned for available exported views, do so now.
+            if (!_haveLoadedVisuals)
+                CheckForDynamicRegisters();
+
             Type winType;
             lock (_registeredWindows)
             {
@@ -233,13 +232,23 @@ namespace JulMar.Windows.UI
                     return null;
             }
 
+            // Create the top level window
             var win = (Window) Activator.CreateInstance(winType);
-            win.DataContext = dataContext;
             if (setOwner)
                 win.Owner = Application.Current.MainWindow;
 
+            // Register the view with MEF to resolve any imports.
+            try
+            {
+                _dynamicLoader.Compose(win);
+            }
+            catch (CompositionException)
+            {
+            }
+
             if (dataContext != null)
             {
+                win.DataContext = dataContext;
                 var bvm = dataContext as ViewModel;
 
                 // Wire up the event handlers.  Go through the dispatcher in case the window
@@ -280,6 +289,26 @@ namespace JulMar.Windows.UI
             }
 
             return win;
+        }
+
+        /// <summary>
+        /// Initialize any MEF-located views.
+        /// </summary>
+        private void CheckForDynamicRegisters()
+        {
+            if (!_haveLoadedVisuals)
+            {
+                // If we have visuals, register them
+                foreach (var item in _locatedVisuals)
+                {
+                    Type type = FindType(item.Metadata.ExportTypeIdentity);
+                    if (type != null)
+                        Register(item.Metadata.Key, type);
+                }
+
+                // Clear the collection so we don't process twice.
+                _haveLoadedVisuals = true;
+            }
         }
     }
 }

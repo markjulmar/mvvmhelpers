@@ -7,6 +7,7 @@ using JulMar.Windows.Mvvm;
 using JulMar.Windows.Behaviors;
 using System.Windows;
 using System.Windows.Controls;
+using System.ComponentModel.Composition;
 
 namespace TestMvvm.ViewModels
 {
@@ -60,6 +61,9 @@ namespace TestMvvm.ViewModels
         public ICommand ChangeBackground { get; private set; }
         #endregion
 
+        // Can import services directly, or use Resolve<IUIVisualizer>() to retrieve instance JIT
+        [Import] private IUIVisualizer _uiVisualizer;
+
         public WinViewModel()
         {
             Title = "MVVM Test";
@@ -95,7 +99,7 @@ namespace TestMvvm.ViewModels
 
         private void ShowColorDialog(Element parameter)
         {
-            Resolve<IUIVisualizer>().Show("ColorDialogVisual", new ColorDialogViewModel(parameter), true, null);
+            _uiVisualizer.Show("ColorDialogVisual", new ColorDialogViewModel(parameter), true, null);
         }
 
         private void OnClosed()
@@ -127,7 +131,7 @@ namespace TestMvvm.ViewModels
         private void ShowPropertyDialog()
         {
             var propViewModel = new AppPropertyViewModel {Title = this.Title, ShapeCount = Elements.Count};
-            bool? result = Resolve<IUIVisualizer>().ShowDialog("ShowProperties", propViewModel);
+            bool? result = _uiVisualizer.ShowDialog("ShowProperties", propViewModel);
             if (result.HasValue && result.Value)
             {
                 Title = propViewModel.Title;

@@ -1,33 +1,23 @@
 ﻿using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using JulMar.Windows.Interfaces;
 
 namespace JulMar.Windows.Mvvm
 {
     /// <summary>
-    /// This interface is exposed through the service provider to get to 
-    /// the resolver (MEF).
-    /// </summary>
-    public interface IDynamicLoader
-    {
-        /// <summary>
-        /// Used to resolve a set of targets.
-        /// </summary>
-        void Resolve(params object[] targets);
-    }
-
-    /// <summary>
     /// Managed Extension Framework Helpers
     /// </summary>
-    class MefLoader : IDynamicLoader
+    class MefLoader : IDynamicResolver
     {
         private CompositionContainer _container;
 
         /// <summary>
         /// Used to resolve a set of targets.
         /// </summary>
-        public void Resolve(params object[] targets)
+        public void Compose(params object[] targets)
         {
             if (_container == null)
                 CreateContainer();
@@ -44,18 +34,18 @@ namespace JulMar.Windows.Mvvm
 
             // Get a catalog of all the assemblies *except* this one
             var catalog = new AggregateCatalog();
-            foreach (string fname in Directory.GetFiles(@".\", "*.*"))
+            foreach (string fname in
+                Directory.GetFiles(@".\", "*.exe")
+                    .Concat(Directory.GetFiles(@".\", "*.dll"))
+                    .Where(fname => string.Compare(Path.GetFileName(fname), defaultAssembly, true) != 0))
             {
-                if (string.Compare(Path.GetFileName(fname), defaultAssembly, true) != 0)
+                try
                 {
-                    try
-                    {
-                        if (Assembly.ReflectionOnlyLoadFrom(fname) != null)
-                            catalog.Catalogs.Add(new AssemblyCatalog(fname));
-                    }
-                    catch
-                    {
-                    }
+                    if (Assembly.ReflectionOnlyLoadFrom(fname) != null)
+                        catalog.Catalogs.Add(new AssemblyCatalog(fname));
+                }
+                catch
+                {
                 }
             }
 

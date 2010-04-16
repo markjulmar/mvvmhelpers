@@ -1,5 +1,6 @@
 ﻿using System;
 using JulMar.Windows.Interfaces;
+using System.ComponentModel.Composition;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -37,29 +38,27 @@ namespace JulMar.Windows.Mvvm
         public ViewModel()
         {
             // Register with the message mediator - this will locate and bind all message
-            // targets on this instance.
-            RegisterWithMessageMediator();            
-
-            // Hook up any MEF imports/exports
-            IDynamicLoader loader = Resolve<IDynamicLoader>();
-            if (loader != null)
-                loader.Resolve(this);                
-        }
-
-        /// <summary>
-        /// This registers the instance with the message mediator.
-        /// </summary>
-        /// <returns></returns>
-        protected bool RegisterWithMessageMediator()
-        {
+            // targets on this instance. Shouldn't really need to check for existence - it should
+            // always be present, but just in case someone Unregisters it..
             var mediator = Resolve<IMessageMediator>();
             if (mediator != null)
             {
                 mediator.Register(this);
-                return true;
             }
 
-            return false;
+            // Hook up any MEF imports/exports
+            IDynamicResolver loader = Resolve<IDynamicResolver>();
+            if (loader != null)
+            {
+                try
+                {
+                    loader.Compose(this);
+                }
+                catch (CompositionException)
+                {
+                    // Can throw if in invalid state - i.e. creating VM on behalf of a view.
+                }
+            }
         }
 
         /// <summary>

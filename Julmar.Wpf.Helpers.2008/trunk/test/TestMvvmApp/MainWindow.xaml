@@ -51,12 +51,23 @@
 
     <!-- Or this syntax -->
     <Interactivity:Interaction.Triggers>
-        <!--<julmar:CommandEventTrigger Event="MouseEnter"
-                                    Command="{Binding MouseEnterLeaveCommand}"
-                                    CommandParameter="{Binding ElementName=itemList}" />-->
         <julmar:CommandEventTrigger Event="MouseLeave"
                                     Command="{Binding MouseEnterLeaveCommand}"
-                                    CommandParameter="{Binding ElementName=itemList}" />
+                                    CommandParameter="{Binding ElementName=itemList}">
+            <!-- Actions *after* command executed -->
+        </julmar:CommandEventTrigger>
+
+        <!-- Can also not specify command, but instead use Actions -->
+        <julmar:CommandEventTrigger Event="Activated">
+            <julmar:ApplyEffect Effect="{x:Null}" />
+        </julmar:CommandEventTrigger>
+        <julmar:CommandEventTrigger Event="Deactivated">
+            <julmar:ApplyEffect>
+                <julmar:ApplyEffect.Effect>
+                    <BlurEffect />
+                </julmar:ApplyEffect.Effect>
+            </julmar:ApplyEffect>
+        </julmar:CommandEventTrigger>
     </Interactivity:Interaction.Triggers>
     
     <DockPanel>

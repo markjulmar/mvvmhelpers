@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Windows.Markup;
-using JulMar.Windows.Mvvm;
-using System.Windows;
-using JulMar.Windows.Extensions;
 using System.Diagnostics;
+using System.Windows;
+using System.Windows.Markup;
+using JulMar.Windows.Extensions;
+using JulMar.Windows.Mvvm;
 
 namespace JulMar.Windows.Markup
 {
@@ -12,12 +12,19 @@ namespace JulMar.Windows.Markup
     /// </summary>
     public class ViewModelCreatorExtension : MarkupExtension
     {
-        // The window we are bound to
+        #region Private Data
+        /// <summary>
+        /// The window we are bound to
+        /// </summary>
         private Window _winTarget;
 
-        // The view model we created
+        /// <summary>
+        /// The view model we created
+        /// </summary>
         private object _viewModel;
+        #endregion
 
+        #region Public Properties
         /// <summary>
         /// View Model key
         /// </summary>
@@ -38,6 +45,7 @@ namespace JulMar.Windows.Markup
         /// Defaults to TRUE - set it to FALSE to turn this off.
         /// </summary>
         public bool DisposeOnClose { get; set; }
+        #endregion
 
         /// <summary>
         /// Common constructor
@@ -51,8 +59,7 @@ namespace JulMar.Windows.Markup
         /// Parameterized constructor
         /// </summary>
         /// <param name="runtimeType">Type to create</param>
-        public ViewModelCreatorExtension(Type runtimeType)
-            : this()
+        public ViewModelCreatorExtension(Type runtimeType) : this()
         {
             ViewModelType = runtimeType;
         }

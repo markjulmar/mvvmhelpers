@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using JulMar.Windows.Interfaces;
 using JulMar.Windows.UI;
 
 namespace JulMar.Windows.Mvvm
@@ -40,23 +41,12 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         internal const string MefLocatorKey = "JulMar.ViewModel.Export";
 
+        #pragma warning disable 649
         /// <summary>
         /// Collection of VMs
         /// </summary>
-        [ImportMany(MefLocatorKey, AllowRecomposition = true)]
-        #pragma warning disable 649
-        private IEnumerable<Lazy<object, IUIVisualizerMetadata>> _locatedVms;
+        [ImportMany(MefLocatorKey)] private IEnumerable<Lazy<object, IUIVisualizerMetadata>> _locatedVms;
         #pragma warning restore 649
-
-        /// <summary>
-        /// Constructor - registers with MEF.
-        /// </summary>
-        public ViewModelLocator()
-        {
-            var dynLoader = ViewModel.ServiceProvider.Resolve<IDynamicLoader>();
-            if (dynLoader != null)
-                dynLoader.Resolve(this);
-        }
 
         /// <summary>
         /// Finds the VM based on the key.

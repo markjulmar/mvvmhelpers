@@ -117,6 +117,7 @@
     <Compile Include="MTObservableCollection.cs" />
     <Compile Include="Mvvm\CloseRequestEventArgs.cs" />
     <Compile Include="Mvvm\EditingViewModel.cs" />
+    <Compile Include="Interfaces\IDynamicLoader.cs" />
     <Compile Include="Mvvm\MefHelpers.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
