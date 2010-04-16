@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Wpf.Behaviors.2008",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Wpf.Helpers.2008", "Julmar.Wpf.Helpers\Julmar.Wpf.Helpers.2008.csproj", "{37EAC372-5684-45E2-B999-986F98EFE40D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMvvmApp .2008", "test\TestMvvmApp\TestMvvmApp .2008.csproj", "{525EF1E9-6326-4F73-9F54-C2A72C473F99}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -23,6 +25,10 @@ Global
 		{37EAC372-5684-45E2-B999-986F98EFE40D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37EAC372-5684-45E2-B999-986F98EFE40D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37EAC372-5684-45E2-B999-986F98EFE40D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{525EF1E9-6326-4F73-9F54-C2A72C473F99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{525EF1E9-6326-4F73-9F54-C2A72C473F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{525EF1E9-6326-4F73-9F54-C2A72C473F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{525EF1E9-6326-4F73-9F54-C2A72C473F99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
