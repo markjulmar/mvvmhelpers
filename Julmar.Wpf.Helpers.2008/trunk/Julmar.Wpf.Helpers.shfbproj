@@ -25,9 +25,10 @@
     <PresentationStyle>vs2005</PresentationStyle>
     <DocumentationSources>
       <DocumentationSource sourceFile="Releases\vs2008.bin\Julmar.Wpf.Behaviors.dll" />
-<DocumentationSource sourceFile="Releases\vs2008.bin\Julmar.Wpf.Behaviors.XML" />
-<DocumentationSource sourceFile="Releases\vs2008.bin\JulMar.Wpf.Helpers.dll" />
-<DocumentationSource sourceFile="Releases\vs2008.bin\JulMar.Wpf.Helpers.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="Releases\vs2008.bin\Julmar.Wpf.Behaviors.XML" />
+      <DocumentationSource sourceFile="Releases\vs2008.bin\JulMar.Wpf.Helpers.dll" />
+      <DocumentationSource sourceFile="Releases\vs2008.bin\JulMar.Wpf.Helpers.xml" />
+    </DocumentationSources>
     <HeaderText>MVVM Library for WPF</HeaderText>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="JulMar.Windows" isDocumented="True">Primary namespace with global helper classes and collections.</NamespaceSummaryItem>
@@ -52,6 +53,9 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System.ComponentModel.Composition">
+      <HintPath>Releases\vs2008.bin\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Interactivity">
       <HintPath>Releases\vs2008.bin\System.Windows.Interactivity.dll</HintPath>
     </Reference>
