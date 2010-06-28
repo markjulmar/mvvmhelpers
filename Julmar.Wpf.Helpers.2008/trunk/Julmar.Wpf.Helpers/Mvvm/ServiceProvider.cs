@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Linq;
 using JulMar.Windows.Interfaces;
+using JulMar.Windows.Extensions;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -16,6 +17,13 @@ namespace JulMar.Windows.Mvvm
         /// Service Type being exported (typically an interface)
         /// </summary>
         Type ServiceType { get; }
+
+        /// <summary>
+        /// Only provide this service at design-time.  If set,
+        /// this service will not resolve at runtime - but will be
+        /// prioritized instead for design time.
+        /// </summary>
+        bool DesignTimeOnly { get; }
     }
 
     /// <summary>
@@ -30,6 +38,13 @@ namespace JulMar.Windows.Mvvm
         /// Service Type being exported (typically an interface)
         /// </summary>
         public Type ServiceType { get; set; }
+
+        /// <summary>
+        /// Only provide this service at design-time.  If set,
+        /// this service will not resolve at runtime - but will be
+        /// prioritized instead for design time.
+        /// </summary>
+        public bool DesignTimeOnly { get; set; }
 
         /// <summary>
         /// Constructor
@@ -127,12 +142,9 @@ namespace JulMar.Windows.Mvvm
                 // Not in the container - try the dynamic elements (MEF).
                 // We do not create it here, just check for the presence.  If the user
                 // actually REQUESTS the service we will create it then.
-                if (_locatedServices != null
-                    && _locatedServices.FirstOrDefault(svc => svc.Metadata.ServiceType == type) != null)
-                    return true;
+                return CheckLocatedServices(type) != null;
                 
                 // Not found.
-                return false;
             }
         }
 
@@ -256,26 +268,50 @@ namespace JulMar.Windows.Mvvm
         }
 
         /// <summary>
+        /// This locates a lazy service record for a give type.
+        /// </summary>
+        /// <param name="type">Type to search for</param>
+        /// <returns>Lazy object or null</returns>
+        private Lazy<object,IServiceProviderMetadata> CheckLocatedServices(Type type)
+        {
+            // No located services (MEF not initialized).
+            if (_locatedServices == null)
+                return null;
+
+            // Get a list of all services matching the type.
+            var services = _locatedServices.Where(svc => svc.Metadata.ServiceType == type);
+
+            // If we are in design mode, search for a design-time specific version.
+            // Return the first one found.
+            if (Designer.InDesignMode)
+            {
+                var foundService = services.FirstOrDefault(svc => svc.Metadata.DesignTimeOnly);
+                if (foundService != null)
+                    return foundService;
+            }
+
+            // No design-time service found, or not in design mode.  Return the first
+            // non-design time service.
+            return services.FirstOrDefault(svc => !svc.Metadata.DesignTimeOnly);
+        }
+
+        /// <summary>
         /// This searches the located MEF components and creates it and loads it into the service container.
         /// </summary>
         /// <param name="serviceType">Type we are looking for</param>
         /// <returns>Created object</returns>
         private object DynamicLoadAndAdd(Type serviceType)
         {
-            if (_locatedServices != null)
+            var service = CheckLocatedServices(serviceType);
+            if (service != null)
             {
-                var service = _locatedServices.FirstOrDefault(svc => svc.Metadata.ServiceType == serviceType);
-                if (service != null)
+                var value = service.Value;
+                if (value != null)
                 {
-                    var value = service.Value;
-                    if (value != null)
-                    {
-                        _serviceContainer.AddService(serviceType, value);
-                        return value;
-                    }
+                    _serviceContainer.AddService(serviceType, value);
+                    return value;
                 }
             }
-
             return null;
         }
 

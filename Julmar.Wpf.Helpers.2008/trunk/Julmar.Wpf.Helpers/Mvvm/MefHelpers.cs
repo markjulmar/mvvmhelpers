@@ -12,6 +12,9 @@ namespace JulMar.Windows.Mvvm
     /// </summary>
     class MefLoader : IDynamicResolver
     {
+        /// <summary>
+        /// Container used to resolve parts
+        /// </summary>
         private CompositionContainer _container;
 
         /// <summary>

@@ -132,16 +132,25 @@ namespace JulMar.Windows.Mvvm
                 {
                     var mha = (MessageMediatorTargetAttribute)att;
                     var pi = mi.GetParameters();
-                    if (pi.Length != 1)
-                        throw new InvalidCastException("Cannot cast " + mi.Name + " to Action<T> delegate type.");
+                    
+                    Type actionType;
+                    if (pi.Length == 0)
+                    {
+                        actionType = typeof (Action);
+                        if (mha.MessageKey == null)
+                            throw new ArgumentNullException("MessageKey", "MessageKey must be supplied when using simple Action type");
+                    }
+                    else if (pi.Length == 1)
+                        actionType = typeof(Action<>).MakeGenericType(pi[0].ParameterType);
+                    else
+                        throw new InvalidCastException("Cannot cast " + mi.Name + " to Action or Action<T> delegate type.");
 
-                    Type actionType = typeof(Action<>).MakeGenericType(pi[0].ParameterType);
                     object key = (mha.MessageKey) ?? actionType;
 
-                    if (mi.IsStatic)
-                        RegisterHandler(key, actionType, Delegate.CreateDelegate(actionType, mi));
-                    else
-                        RegisterHandler(key, actionType, Delegate.CreateDelegate(actionType, view, mi.Name));
+                    RegisterHandler(key, actionType,
+                                    mi.IsStatic
+                                        ? Delegate.CreateDelegate(actionType, mi)
+                                        : Delegate.CreateDelegate(actionType, view, mi.Name));
                 }
             }
         }
@@ -158,18 +167,37 @@ namespace JulMar.Windows.Mvvm
                 {
                     var mha = (MessageMediatorTargetAttribute)att;
                     var pi = mi.GetParameters();
-                    if (pi.Length != 1)
-                        throw new InvalidCastException("Cannot cast " + mi.Name + " to Action<T> delegate type.");
 
-                    Type actionType = typeof(Action<>).MakeGenericType(pi[0].ParameterType);
+                    Type actionType;
+                    if (pi.Length == 0)
+                    {
+                        actionType = typeof (Action);
+                        if (mha.MessageKey == null)
+                            throw new ArgumentNullException("MessageKey", "MessageKey must be supplied when using simple Action type");
+                    }
+                    else if (pi.Length == 1)
+                        actionType = typeof(Action<>).MakeGenericType(pi[0].ParameterType);
+                    else
+                        throw new InvalidCastException("Cannot cast " + mi.Name + " to Action or Action<T> delegate type.");
+                    
                     object key = (mha.MessageKey) ?? actionType;
 
-                    if (mi.IsStatic)
-                        UnregisterHandler(key, actionType, Delegate.CreateDelegate(actionType, mi));
-                    else
-                        UnregisterHandler(key, actionType, Delegate.CreateDelegate(actionType, view, mi.Name));
+                    UnregisterHandler(key, actionType,
+                                      mi.IsStatic
+                                          ? Delegate.CreateDelegate(actionType, mi)
+                                          : Delegate.CreateDelegate(actionType, view, mi.Name));
                 }
             }
+        }
+
+        /// <summary>
+        /// Registers a specific method with no parameters as a handler
+        /// </summary>
+        /// <param name="key">Message key</param>
+        /// <param name="handler">Handler method</param>
+        public void RegisterHandler(string key, Action handler)
+        {
+            RegisterHandler(key, handler.GetType(), handler);
         }
 
         /// <summary>
@@ -189,6 +217,16 @@ namespace JulMar.Windows.Mvvm
         public void RegisterHandler<T>(Action<T> handler)
         {
             RegisterHandler(typeof(Action<T>), handler.GetType(), handler);
+        }
+
+        /// <summary>
+        /// Unregisters simple handler
+        /// </summary>
+        /// <param name="key">Message key</param>
+        /// <param name="handler">Handler method</param>
+        public void UnregisterHandler(string key, Action handler)
+        {
+            UnregisterHandler(key, handler.GetType(), handler);
         }
 
         /// <summary>
@@ -295,6 +333,38 @@ namespace JulMar.Windows.Mvvm
         }
 
         /// <summary>
+        /// This method broadcasts a message with no parameters
+        /// </summary>
+        /// <param name="key">Message key</param>
+        /// <returns>True/False if any handlers were invoked.</returns>
+        private bool SendSimpleMessage(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException("key");
+
+            List<WeakAction> wr;
+            lock (_registeredHandlers)
+            {
+                if (!_registeredHandlers.TryGetValue(key, out wr))
+                    return false;
+            }
+
+            foreach (var cb in wr)
+            {
+                var action = cb.GetMethod() as Action;
+                if (action != null)
+                    action.Invoke();
+            }
+
+            lock (_registeredHandlers)
+            {
+                wr.RemoveAll(wa => wa.HasBeenCollected);
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// This method broadcasts a message to all message targets for a given
         /// message key and passes a parameter.
         /// </summary>
@@ -315,15 +385,15 @@ namespace JulMar.Windows.Mvvm
         /// <returns>True/False if any handlers were invoked.</returns>
         public bool SendMessage<T>(T message)
         {
+            if (typeof(T) == typeof(string))
+                SendSimpleMessage(message as string);
+
             Type actionType = typeof(Action<>).MakeGenericType(typeof(T));
             var keyList = from key in _registeredHandlers.Keys
                           where key is Type && ((Type)key).IsAssignableFrom(actionType)
                           select key;
-            bool rc = false;
-            foreach (var key in keyList)
-                rc |= SendMessage(key, message);
 
-            return rc;
+            return keyList.Aggregate(false, (current, key) => current | SendMessage(key, message));
         }
 
         /// <summary>
