@@ -1,0 +1,46 @@
+﻿<Window x:Class="MTObservableTest.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Window1" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <ListBox x:Name="taskList" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Margin="5">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <ProgressBar Minimum="0" Maximum="100" Value="{Binding PercentComplete}" Margin="5" MinWidth="100" MinHeight="15" Foreground="{Binding Color}" />
+                            <TextBlock Text="{Binding Id}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <ListBox Grid.Column="1" ItemsSource="{Binding ElementName=taskList,Path=ItemsSource}" Margin="5" />
+
+        </Grid>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Content="Start" Padding="10,3" Margin="5" Click="OnAddNewTask" />
+            <Button Content="Clear" Padding="10,3" Margin="5" Click="OnClear" />
+        </StackPanel>
+        
+        <ListBox x:Name="debugText" Grid.Row="2" Margin="5" />
+        
+    </Grid>
+</Window>

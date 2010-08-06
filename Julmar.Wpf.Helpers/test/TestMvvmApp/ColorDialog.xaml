@@ -1,0 +1,38 @@
+﻿<Window x:Class="TestMvvm.ColorDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    MinWidth="100" MaxWidth="400" MinHeight="200" WindowStyle="ToolWindow" Title="{Binding Title}" 
+    SizeToContent="WidthAndHeight">
+
+    <DockPanel>
+
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            
+            <Slider TickFrequency="10" TickPlacement="Both" Minimum="10" Maximum="500" Value="{Binding Width}" ToolTip="{Binding Width, StringFormat=D0}"  />
+            <Slider Grid.Column="1" TickFrequency="10" TickPlacement="Both" Minimum="10" Maximum="500" Value="{Binding Height}" ToolTip="{Binding Height, StringFormat=D0}" />
+
+        </Grid>
+        
+        <ListBox ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedColor}"   
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Width="20" Height="20" Fill="{Binding}" Stroke="Black" StrokeThickness="1" Margin="2" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </DockPanel>
+   
+
+</Window>

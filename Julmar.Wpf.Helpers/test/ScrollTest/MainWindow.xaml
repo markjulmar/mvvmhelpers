@@ -1,0 +1,44 @@
+﻿<Window x:Class="ScrollTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=System"
+        xmlns:int="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:julmar="http://www.julmar.com/wpfhelpers"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <ObjectDataProvider x:Key="processList" ObjectType="{x:Type diag:Process}" MethodName="GetProcesses" />
+            
+            <DataTemplate x:Key="ScrollingTemplate">
+                <Border BorderBrush="Black" CornerRadius="10" 
+                        Background="#a0000000" BorderThickness="2">
+                    <Label Content="{Binding Value}" Foreground="White" 
+                           FontWeight="Bold" FontSize="16pt" />
+                </Border>
+            </DataTemplate>
+           
+        </Grid.Resources>
+        
+        <ListBox x:Name="lb1" ItemsSource="{Binding Source={StaticResource processList}}" 
+                 DisplayMemberPath="ProcessName">
+            <int:Interaction.Behaviors>
+                <julmar:ScrollingPreviewBehavior 
+                    VerticalScrollingPreviewTemplate="{StaticResource ScrollingTemplate}"/>
+            </int:Interaction.Behaviors>            
+        </ListBox>
+
+        <ListBox ItemsSource="{Binding Source={StaticResource processList}}" 
+                 DisplayMemberPath="Id" Grid.Column="1">
+            <int:Interaction.Behaviors>
+                <julmar:ScrollingPreviewBehavior 
+                    VerticalScrollingPreviewTemplate="{StaticResource ScrollingTemplate}"/>
+                <julmar:SynchronizedScrollingBehavior Target="{Binding ElementName=lb1}" />
+            </int:Interaction.Behaviors>
+        </ListBox>
+
+    </Grid>
+</Window>
