@@ -26,7 +26,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestPrograms", "TestProgram
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Core", "Julmar.Core\Julmar.Core.csproj", "{DDB17800-0841-47A1-8AF6-89DAB38DAE98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMFolderExplorer", "test\MVVMFolderExplorer\MVVMFolderExplorer.csproj", "{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}"
+EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Julmar.Wpf.Helpers.vsmdi
 	EndGlobalSection
@@ -119,6 +125,16 @@ Global
 		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|x86.ActiveCfg = Release|Any CPU
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,5 +144,6 @@ Global
 		{306914A2-1DE7-45B3-8142-AB11A4AD2D9E} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{4910ABE3-CE97-427E-A2C3-A9BA8FF6760F} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{525EF1E9-6326-4F73-9F54-C2A72C473F99} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
+		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 	EndGlobalSection
 EndGlobal
