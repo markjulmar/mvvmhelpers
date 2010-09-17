@@ -8,7 +8,7 @@
     <ProjectGuid>{27A1A126-164D-4F26-BF55-BDAA89B97B9D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Julmar.Wpf.Helpers.UnitTests</RootNamespace>
+    <RootNamespace>JulMar.Wpf.Helpers.UnitTests</RootNamespace>
     <AssemblyName>Julmar.Wpf.Helpers.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -33,10 +33,14 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,7 +62,14 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>julmar.mvvm.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -93,15 +104,25 @@
     <Compile Include="Core\CollectionObserverTest.cs" />
     <Compile Include="MVVM\DelegatingCommandTest.cs" />
     <Compile Include="Converters\MathConverterTest.cs" />
-    <Compile Include="MVVM\MessageMediatorTest.cs" />
+    <Compile Include="Core\MessageMediatorTest.cs" />
     <Compile Include="Extensions\ObjectClonerTest.cs" />
     <Compile Include="Core\ObservableDictionaryTest.cs" />
+    <Compile Include="Core\ObservableObjectTest.cs" />
+    <Compile Include="Core\ObjectLockExtensionsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\PropertyObserverTest.cs" />
-    <Compile Include="MVVM\ServiceProviderTest.cs" />
-    <Compile Include="MVVM\UndoManagerTest.cs" />
+    <Compile Include="Core\ServiceProviderTest.cs" />
+    <Compile Include="Core\ReaderWriterLockSlimExtensionsTest.cs" />
+    <Compile Include="Undo\UndoManagerTest.cs" />
+    <Compile Include="Undo\UndoOperationSetTest.cs" />
+    <Compile Include="WeakEventHandlerTest.cs" />
+    <Compile Include="WeakReferenceListTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Julmar.Core\Julmar.Core.csproj">
+      <Project>{DDB17800-0841-47A1-8AF6-89DAB38DAE98}</Project>
+      <Name>Julmar.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Julmar.Wpf.Helpers\Julmar.Wpf.Helpers.csproj">
       <Project>{37EAC372-5684-45E2-B999-986F98EFE40D}</Project>
       <Name>Julmar.Wpf.Helpers</Name>
@@ -128,6 +149,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="julmar.mvvm.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

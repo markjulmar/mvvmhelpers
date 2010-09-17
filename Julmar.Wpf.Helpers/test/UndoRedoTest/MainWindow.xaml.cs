@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Windows;
+using System.Windows.Input;
+using JulMar.Core.Interfaces;
+using JulMar.Core.Undo;
 using JulMar.Windows.Mvvm;
-using JulMar.Windows.Undo;
-using JulMar.Windows.Interfaces;
 
 namespace WpfApplication1
 {
@@ -12,8 +14,18 @@ namespace WpfApplication1
     /// </summary>
     public partial class MainWindow : Window
     {
+        [Import]
+        private IUndoService _undoService = null;
+
         public MainWindow()
         {
+            // Make sure we get properly composed.
+            ViewModel.ServiceProvider.Resolve<IDynamicResolver>().Compose(this);
+
+            // Setup Undo/Redo key bindings.  This is not done automatically since the service is in Core.
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, (s, e) => _undoService.Undo(), (s, e) => e.CanExecute = _undoService.CanUndo));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, (s, e) => _undoService.Redo(), (s, e) => e.CanExecute = _undoService.CanRedo));
+
             DataContext = new ObservableCollection<Person> 
             { 
                 new Person("Mark",42),
@@ -22,11 +34,7 @@ namespace WpfApplication1
 
             InitializeComponent();
 
-            new CollectionChangeUndoObserver((IList)DataContext);
-        }
-
-        private void OnDGRowChanged(object sender, System.EventArgs e)
-        {
+            new CollectionChangeUndoObserver((IList)DataContext, ViewModel.ServiceProvider.Resolve<IUndoService>());
         }
     }
 

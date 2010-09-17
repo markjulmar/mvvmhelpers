@@ -1,6 +1,6 @@
-using JulMar.Windows.Interfaces;
+using JulMar.Core.Interfaces;
+using JulMar.Core.Undo;
 using JulMar.Windows.Mvvm;
-using JulMar.Windows.Undo;
 
 namespace TestMvvm.ViewModels
 {

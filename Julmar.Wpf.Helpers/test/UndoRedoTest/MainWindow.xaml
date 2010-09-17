@@ -13,8 +13,20 @@
 
         <DataGrid x:Name="dg" ItemsSource="{Binding}" AutoGenerateColumns="True"
                   CanUserAddRows="True" CanUserDeleteRows="True">
+
+            <!-- Display the row index -->
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <si:Interaction.Behaviors>
+                            <julmar:DataGridRowIndexBehavior DataGridRow="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGridRow}}}" />
+                        </si:Interaction.Behaviors>
+                    </TextBlock>
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+            
             <si:Interaction.Behaviors>
-                <julmar:DataGridDragRowBehavior Changed="OnDGRowChanged" />
+                <julmar:DataGridDragRowBehavior />
             </si:Interaction.Behaviors>
         </DataGrid>
 

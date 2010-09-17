@@ -12,9 +12,8 @@
     <AssemblyName>JulMar.Wpf.Helpers</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>julmar.mvvm.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -35,10 +34,14 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,21 +91,18 @@
     <Compile Include="Behaviors\PasswordBoxHelper.cs" />
     <Compile Include="Behaviors\RenderBehavior.cs" />
     <Compile Include="Behaviors\SynchronizeScrollingBehavior.cs" />
-    <Compile Include="CollectionObserver.cs" />
     <Compile Include="Converters\DoubleToInteger.cs" />
     <Compile Include="Converters\IntegerToBooleanConverter.cs" />
     <Compile Include="Converters\KeyToResourceConverter.cs" />
     <Compile Include="Converters\MultiConverter.cs" />
     <Compile Include="Converters\NullOrEmptyBooleanConverter.cs" />
     <Compile Include="Converters\NullOrEmptyVisibilityConverter.cs" />
+    <Compile Include="Converters\ValidationErrorConverter.cs" />
     <Compile Include="DeferredBinder.cs" />
     <Compile Include="Extensions\Designer.cs" />
-    <Compile Include="Extensions\ObjectCloner.cs" />
     <Compile Include="FrameworkElementAdorner.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="Interfaces\IMessageMediator.cs" />
     <Compile Include="Interfaces\IMessageVisualizer.cs" />
-    <Compile Include="Interfaces\ISupportUndo.cs" />
     <Compile Include="Interfaces\IUIVisualizer.cs" />
     <Compile Include="Interfaces\IViewModelTrigger.cs" />
     <Compile Include="Markup\LinearGradientBrushExtension.cs" />
@@ -110,7 +110,6 @@
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Markup\FirstFocusedElementExtension.cs" />
     <Compile Include="Converters\NullBooleanConverter.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Converters\IntegerToVisibilityConverter.cs" />
     <Compile Include="Converters\ArrayToStringConverter.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
@@ -125,19 +124,9 @@
     <Compile Include="MTObservableCollection.cs" />
     <Compile Include="Mvvm\CloseRequestEventArgs.cs" />
     <Compile Include="Mvvm\EditingViewModel.cs" />
-    <Compile Include="Interfaces\IDynamicLoader.cs" />
-    <Compile Include="Mvvm\MefHelpers.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
     <Compile Include="Mvvm\ViewModelTrigger.cs" />
-    <Compile Include="ObservableDictionary.cs" />
-    <Compile Include="PropertyObserver.cs" />
-    <Compile Include="Undo\CollectionChangeUndo.cs" />
-    <Compile Include="Undo\CollectionChangeUndoObserver.cs" />
-    <Compile Include="Undo\DelegateUndo.cs" />
-    <Compile Include="Interfaces\IUndoService.cs" />
-    <Compile Include="Undo\PropertyChangeUndo.cs" />
-    <Compile Include="Undo\UndoManager.cs" />
     <Compile Include="Validations\ValidatingViewModel.cs" />
     <Compile Include="SystemInfo.cs" />
     <Compile Include="UI\MessageVisualizer.cs" />
@@ -145,9 +134,7 @@
     <Compile Include="Mvvm\ViewModel.cs" />
     <Compile Include="Mvvm\DelegatingCommand.cs" />
     <Compile Include="Interfaces\IErrorVisualizer.cs" />
-    <Compile Include="Mvvm\MessageMediator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Mvvm\ServiceProvider.cs" />
     <Compile Include="UI\WaitCursor.cs" />
     <Compile Include="Validations\IValidator.cs" />
     <Compile Include="Validations\RegexValidatorAttribute.cs" />
@@ -156,7 +143,6 @@
     <Compile Include="Validations\RequiredIntegerRange.cs" />
     <Compile Include="Validations\ValidationManager.cs" />
     <Compile Include="Validations\ValidatorAttribute.cs" />
-    <Compile Include="WeakReferenceList.cs" />
     <Compile Include="UI\ErrorVisualizer.cs" />
     <Compile Include="UI\UIVisualizer.cs" />
     <Compile Include="UI\NotificationVisualizer.cs" />
@@ -183,7 +169,15 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Julmar.Core\Julmar.Core.csproj">
+      <Project>{DDB17800-0841-47A1-8AF6-89DAB38DAE98}</Project>
+      <Name>Julmar.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="julmar.mvvm.snk" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

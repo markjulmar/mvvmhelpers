@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using JulMar.Windows.Extensions;
+using JulMar.Core.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Data;
 
-namespace Julmar.Wpf.Helpers.UnitTests
+namespace JulMar.Wpf.Helpers.UnitTests
 {
     /// <summary>
     ///This is a test class for ObjectClonerTest and is intended
@@ -259,29 +259,6 @@ namespace Julmar.Wpf.Helpers.UnitTests
             Assert.AreSame(clone[0],clone[1]);
             Assert.AreSame(clone[1], clone[2]);
             Assert.AreSame(clone[2], clone[3]);
-        }
-
-        public class CloneableObject : ICloneable
-        {
-            public double dVal;
-            public CloneableObject(double dVal)
-            {
-                this.dVal = dVal;
-            }
-            public object Clone()
-            {
-                return this.MemberwiseClone();
-            }
-        }
-
-        [TestMethod]
-        public void CloneTest()
-        {
-            CloneableObject source = new CloneableObject(3.1415927);
-            var clone = ObjectCloner.Clone(source);
-
-            Assert.IsFalse(Object.ReferenceEquals(source,clone));
-            Assert.AreEqual(clone.dVal, source.dVal);
         }
     }
 }

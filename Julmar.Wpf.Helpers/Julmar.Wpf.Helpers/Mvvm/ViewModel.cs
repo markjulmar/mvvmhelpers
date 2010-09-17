@@ -1,6 +1,9 @@
 ﻿using System;
-using JulMar.Windows.Interfaces;
+using System.Windows.Threading;
+using JulMar.Core.Interfaces;
 using System.ComponentModel.Composition;
+using JulMar.Core.Services;
+using System.Windows;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -10,12 +13,18 @@ namespace JulMar.Windows.Mvvm
     public class ViewModel : SimpleViewModel, IDisposable
     {
         /// <summary>
-        /// Service resolver for view models.  Allows derived types to add/remove
-        /// services from mapping. This is the one service you cannot replace.
+        /// Service provider used by ViewModels.
         /// </summary>
-        public static ServiceProvider ServiceProvider
+        public static IServiceProviderEx ServiceProvider;
+
+        /// <summary>
+        /// Static constructor - executed prior to any ViewModel being used.
+        /// </summary>
+        static ViewModel()
         {
-            get { return ServiceProvider.Primary; }
+            ServiceProvider = IoCComposer.Instance.GetExportedValue<IServiceProviderEx>();
+            if (ServiceProvider == null)
+                throw new InvalidOperationException("Unable to locate Service Locator Service (IServiceProviderEx");
         }
 
         /// <summary>
@@ -50,17 +59,14 @@ namespace JulMar.Windows.Mvvm
             }
 
             // Hook up any MEF imports/exports
-            IDynamicResolver loader = Resolve<IDynamicResolver>();
-            if (loader != null)
+            try
             {
-                try
-                {
-                    loader.Compose(this);
-                }
-                catch (CompositionException)
-                {
-                    // Can throw if in invalid state - i.e. creating VM on behalf of a view.
-                }
+                IoCComposer.Instance.Compose(this);
+            }
+            catch
+            {
+                // Can throw if in invalid state - i.e. creating VM on behalf of a view.
+                // .. or if we are already composing the parts and this was created as a result.
             }
         }
 
@@ -123,6 +129,89 @@ namespace JulMar.Windows.Mvvm
         {
             var mediator = Resolve<IMessageMediator>();
             return mediator != null && mediator.SendMessage(message);
+        }
+
+        /// <summary>
+        /// Helper method to run logic on Dispatcher (UI) thread. Useful for adding to 
+        /// ObservableCollection(T), etc.
+        /// </summary>
+        /// <param name="action">Method to execute</param>
+        /// <returns></returns>
+        protected void DispatcherInvoke(Action action)
+        {
+            DispatcherInvoke(DispatcherPriority.Normal, action);
+        }
+
+        /// <summary>
+        /// Helper method to run logic on Dispatcher (UI) thread. Useful for adding to 
+        /// ObservableCollection(T), etc.
+        /// </summary>
+        /// <param name="priority">Priority of method</param>
+        /// <param name="action">Method to execute</param>
+        /// <returns>Result</returns>
+        protected void DispatcherInvoke(DispatcherPriority priority, Action action)
+        {
+            // No application? Just run it.
+            if (Application.Current != null)
+                Application.Current.Dispatcher.Invoke(priority, action);
+            else 
+                action();
+        }
+
+        /// <summary>
+        /// Helper method to run logic on Dispatcher (UI) thread. Useful for adding to 
+        /// ObservableCollection(T), etc.
+        /// </summary>
+        /// <typeparam name="T">Return type</typeparam>
+        /// <param name="func">Method to execute</param>
+        /// <returns>Result</returns>
+        protected T DispatcherInvoke<T>(Func<T> func)
+        {
+            return DispatcherInvoke(DispatcherPriority.Normal, func);
+        }
+
+        /// <summary>
+        /// Helper method to run logic on Dispatcher (UI) thread. Useful for adding to 
+        /// ObservableCollection(T), etc.
+        /// </summary>
+        /// <typeparam name="T">Return type</typeparam>
+        /// <param name="priority">Priority</param>
+        /// <param name="func">Method to execute</param>
+        /// <returns>Result</returns>
+        protected T DispatcherInvoke<T>(DispatcherPriority priority, Func<T> func)
+        {
+            return Application.Current != null ? (T) Application.Current.Dispatcher.Invoke(priority, func) : func();
+        }
+
+        /// <summary>
+        /// Helper method to run logic on Dispatcher (UI) thread. Useful for adding to 
+        /// ObservableCollection(T), etc.
+        /// </summary>
+        /// <param name="action">Method to execute</param>
+        protected void DispatcherBeginInvoke(Action action)
+        {
+            DispatcherBeginInvoke(DispatcherPriority.Normal, action);
+        }
+
+        /// <summary>
+        /// Helper method to run logic on Dispatcher (UI) thread. Useful for adding to 
+        /// ObservableCollection(T), etc.
+        /// </summary>
+        /// <param name="priority">Priority</param>
+        /// <param name="action">Method to execute</param>
+        protected void DispatcherBeginInvoke(DispatcherPriority priority, Action action)
+        {
+            // If no application then just run it.
+            if (Application.Current != null)
+            {
+                if (Application.Current.Dispatcher.CheckAccess() &&
+                    priority == DispatcherPriority.Normal)
+                    action();
+                else
+                    Application.Current.Dispatcher.BeginInvoke(priority, action);
+            }
+            else
+                action();
         }
 
         #region IDisposable Members

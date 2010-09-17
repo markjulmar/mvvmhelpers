@@ -2,13 +2,14 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Media;
+using JulMar.Core.Undo;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
 using JulMar.Windows.Behaviors;
 using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel.Composition;
-using JulMar.Windows.Undo;
+using JulMar.Core.Interfaces;
 
 namespace TestMvvm.ViewModels
 {
@@ -86,7 +87,7 @@ namespace TestMvvm.ViewModels
             _title = "MVVM Test";
             _color = "White";
             Elements = new ObservableCollection<Element>();
-            _collectionObserver = new CollectionChangeUndoObserver(Elements);
+            _collectionObserver = new CollectionChangeUndoObserver(Elements, Resolve<IUndoService>());
 
             ActivatedCommand = new DelegatingCommand(() => IsActive = true);
             DeactivatedCommand = new DelegatingCommand(() => IsActive = false);

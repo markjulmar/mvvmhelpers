@@ -36,11 +36,6 @@ namespace JulMar.Windows.Markup
         public Type ViewModelType { get; set; }
 
         /// <summary>
-        /// Designer view model type (if different than runtime)
-        /// </summary>
-        public Type DesignerViewModelType { get; set; }
-
-        /// <summary>
         /// True to automatically dispose the VM when the view closes.
         /// Defaults to TRUE - set it to FALSE to turn this off.
         /// </summary>
@@ -62,17 +57,6 @@ namespace JulMar.Windows.Markup
         public ViewModelCreatorExtension(Type runtimeType) : this()
         {
             ViewModelType = runtimeType;
-        }
-
-        /// <summary>
-        /// Constructor used when specifying both a runtime ViewModel and
-        /// a Designer ViewModel.
-        /// </summary>
-        /// <param name="runtimeType">Runtime type</param>
-        /// <param name="designerType">Designer type</param>
-        public ViewModelCreatorExtension(Type runtimeType, Type designerType) : this(runtimeType)
-        {
-            DesignerViewModelType = designerType;
         }
 
         /// <summary>
@@ -112,7 +96,8 @@ namespace JulMar.Windows.Markup
             }
             catch
             {
-                // If we are in design mode, then don't allow the exception to propogate out -- it kills the design surface.
+                // If we are in design mode, then don't allow the exception to propagate out
+                // It kills the design surface.
                 if (Designer.InDesignMode == true)
                     return null;
                 
@@ -135,8 +120,7 @@ namespace JulMar.Windows.Markup
                     return vm;
             }
 
-            Type typeToCreate = ((Designer.InDesignMode) ? DesignerViewModelType : ViewModelType) ?? ViewModelType;
-            return typeToCreate != null ? Activator.CreateInstance(typeToCreate) : null;
+            return ViewModelType != null ? Activator.CreateInstance(ViewModelType) : null;
         }
 
         /// <summary>

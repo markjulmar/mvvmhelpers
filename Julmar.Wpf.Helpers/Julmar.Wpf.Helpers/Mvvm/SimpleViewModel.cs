@@ -37,5 +37,6 @@ namespace JulMar.Windows.Mvvm
                     OnPropertyChanged(propName);
             }
         }
+
     }
 }

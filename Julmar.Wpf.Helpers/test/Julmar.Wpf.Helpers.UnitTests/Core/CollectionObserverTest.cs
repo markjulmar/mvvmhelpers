@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using JulMar.Windows;
+using JulMar.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Specialized;
 
-namespace Julmar.Wpf.Helpers.UnitTests
+namespace JulMar.Wpf.Helpers.UnitTests
 {
     /// <summary>
     ///This is a test class for CollectionObserverTest and is intended
@@ -63,19 +63,10 @@ namespace Julmar.Wpf.Helpers.UnitTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void BadCollectionTest()
-        {
-            List<string> stringList = new List<string>();
-            CollectionObserver observer = new CollectionObserver(stringList);
-            
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullCollectionTest()
         {
-            CollectionObserver observer = new CollectionObserver(null);
+            var observer = new CollectionObserver(null);
         }
 
         [TestMethod()]
@@ -83,7 +74,7 @@ namespace Julmar.Wpf.Helpers.UnitTests
         {
             ObservableCollection<string> coll = new ObservableCollection<string>(new [] { "This","is","a","test"});
             ReceiverTest test = new ReceiverTest();
-            CollectionObserver observer = new CollectionObserver(coll);
+            var observer = new CollectionObserver(coll);
             observer.CollectionChanged += test.OnObserver;
 
             coll.RemoveAt(0);
@@ -101,7 +92,7 @@ namespace Julmar.Wpf.Helpers.UnitTests
         {
             ObservableCollection<string> coll = new ObservableCollection<string>(new[] { "This", "is", "a", "test" });
             ReceiverTest test = new ReceiverTest();
-            CollectionObserver observer = new CollectionObserver(coll);
+            var observer = new CollectionObserver(coll);
             observer.CollectionChanged += test.OnObserver;
 
             observer.Dispose();
@@ -115,7 +106,7 @@ namespace Julmar.Wpf.Helpers.UnitTests
             ObservableCollection<string> coll = new ObservableCollection<string>(new[] { "This", "is", "a", "test" });
             WeakReference weakReference = new WeakReference(coll);
             ReceiverTest test = new ReceiverTest();
-            CollectionObserver observer = new CollectionObserver(coll);
+            var observer = new CollectionObserver(coll);
             observer.CollectionChanged += test.OnObserver;
 
             observer.Dispose();
@@ -131,7 +122,7 @@ namespace Julmar.Wpf.Helpers.UnitTests
         public void BadEventTargetTest()
         {
             ObservableCollection<string> coll = new ObservableCollection<string>(new[] { "This", "is", "a", "test" });
-            CollectionObserver observer = new CollectionObserver(coll);
+            var observer = new CollectionObserver(coll);
             observer.CollectionChanged += (s, e) => { throw new Exception("boom!"); };
             ReceiverTest test = new ReceiverTest();
             observer.CollectionChanged += test.OnObserver;
@@ -145,7 +136,7 @@ namespace Julmar.Wpf.Helpers.UnitTests
         public void NoTargetsTest()
         {
             ObservableCollection<string> coll = new ObservableCollection<string>(new[] { "This", "is", "a", "test" });
-            CollectionObserver observer = new CollectionObserver(coll);
+            var observer = new CollectionObserver(coll);
             coll.Add("Test");
         }
     }

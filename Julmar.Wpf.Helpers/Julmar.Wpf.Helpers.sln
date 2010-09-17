@@ -24,38 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestPrograms", "TestPrograms", "{36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Core", "Julmar.Core\Julmar.Core.csproj", "{DDB17800-0841-47A1-8AF6-89DAB38DAE98}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 8
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Julmar.Wpf.Behaviors\\Julmar.Wpf.Behaviors.csproj
-		SccProjectName1 = Julmar.Wpf.Behaviors
-		SccLocalPath1 = Julmar.Wpf.Behaviors
-		SccProjectUniqueName2 = Julmar.Wpf.Helpers\\Julmar.Wpf.Helpers.csproj
-		SccProjectName2 = Julmar.Wpf.Helpers
-		SccLocalPath2 = Julmar.Wpf.Helpers
-		SccProjectUniqueName3 = test\\Julmar.Wpf.Helpers.UnitTests\\Julmar.Wpf.Helpers.UnitTests.csproj
-		SccProjectName3 = test/Julmar.Wpf.Helpers.UnitTests
-		SccLocalPath3 = test\\Julmar.Wpf.Helpers.UnitTests
-		SccProjectUniqueName4 = test\\MTObservableTest\\MTObservableTest.csproj
-		SccProjectTopLevelParentUniqueName4 = Julmar.Wpf.Helpers.sln
-		SccProjectName4 = test/MTObservableTest
-		SccLocalPath4 = test\\MTObservableTest
-		SccProjectUniqueName5 = test\\ScrollTest\\SynchronizedScrollTest.csproj
-		SccProjectTopLevelParentUniqueName5 = Julmar.Wpf.Helpers.sln
-		SccProjectName5 = test/ScrollTest
-		SccLocalPath5 = test\\ScrollTest
-		SccProjectUniqueName6 = test\\TestMvvmApp\\TestMvvmApp.csproj
-		SccProjectTopLevelParentUniqueName6 = Julmar.Wpf.Helpers.sln
-		SccProjectName6 = test/TestMvvmApp
-		SccLocalPath6 = test\\TestMvvmApp
-		SccProjectUniqueName7 = test\\UndoRedoTest\\UndoTest.csproj
-		SccProjectTopLevelParentUniqueName7 = Julmar.Wpf.Helpers.sln
-		SccProjectName7 = test/UndoRedoTest
-		SccLocalPath7 = test\\UndoRedoTest
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Julmar.Wpf.Helpers.vsmdi
 	EndGlobalSection
@@ -138,14 +109,24 @@ Global
 		{4910ABE3-CE97-427E-A2C3-A9BA8FF6760F}.Release|Mixed Platforms.Build.0 = Release|x86
 		{4910ABE3-CE97-427E-A2C3-A9BA8FF6760F}.Release|x86.ActiveCfg = Release|x86
 		{4910ABE3-CE97-427E-A2C3-A9BA8FF6760F}.Release|x86.Build.0 = Release|x86
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{1237ECD4-C23C-4300-885E-5DBC6FEDE748} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{306914A2-1DE7-45B3-8142-AB11A4AD2D9E} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{4910ABE3-CE97-427E-A2C3-A9BA8FF6760F} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
-		{1237ECD4-C23C-4300-885E-5DBC6FEDE748} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{525EF1E9-6326-4F73-9F54-C2A72C473F99} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 	EndGlobalSection
 EndGlobal

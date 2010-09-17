@@ -1,4 +1,5 @@
 ﻿using System;
+using JulMar.Core;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
 
@@ -7,7 +8,7 @@ namespace JulMar.Windows.UI
     /// <summary>
     /// This implements the INotificationVisualizer interface for WPF
     /// </summary>
-    [ExportServiceProvider(typeof(INotificationVisualizer))]
+    [ExportService(typeof(INotificationVisualizer))]
     sealed class NotificationVisualizer : INotificationVisualizer
     {
         /// <summary>

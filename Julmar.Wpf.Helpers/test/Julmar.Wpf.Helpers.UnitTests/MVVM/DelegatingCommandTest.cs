@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows.Input;
 
-namespace Julmar.Wpf.Helpers.UnitTests
+namespace JulMar.Wpf.Helpers.UnitTests
 {
     /// <summary>
     ///This is a test class for DelegatingCommandTest and is intended

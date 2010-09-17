@@ -1,10 +1,10 @@
-﻿using JulMar.Windows.Extensions;
+﻿using JulMar.Core.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System;
 
-namespace Julmar.Wpf.Helpers.UnitTests
+namespace JulMar.Wpf.Helpers.UnitTests
 {
     /// <summary>
     ///This is a test class for CollectionExtensionsTest and is intended
@@ -90,6 +90,110 @@ namespace Julmar.Wpf.Helpers.UnitTests
             int[] vals = Enumerable.Range(1, 10).ToArray();
             int index = vals.IndexOf(i => i > 20);
             Assert.AreEqual(-1, index);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CompareNull()
+        {
+            int[] coll1 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+            Assert.IsFalse(coll1.Compare(null));
+        }
+
+        [TestMethod]
+        public void CompareEqual()
+        {
+            int[] coll1 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+            int[] coll2 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+            Assert.IsTrue(coll1.Compare(coll2));
+            Assert.IsTrue(coll1.Compare(coll2, true));
+        }
+
+        [TestMethod]
+        public void CompareEqual2()
+        {
+            int[] coll1 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            int[] coll2 = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+
+            Assert.IsTrue(coll1.Compare(coll2));
+            Assert.IsFalse(coll1.Compare(coll2, true));
+        }
+
+        [TestMethod]
+        public void CompareMismatchCount()
+        {
+            int[] coll1 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            int[] coll2 = { 0, 1, 2, 3, 5, 6, 7, 8, 9 };
+
+            Assert.IsFalse(coll1.Compare(coll2));
+            Assert.IsFalse(coll1.Compare(coll2, true));
+        }
+
+        [TestMethod]
+        public void CompareUnordered()
+        {
+            int[] coll1 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            int[] coll2 = {3, 5, 7, 9, 1, 2, 4, 6, 8, 0};
+
+            Assert.IsTrue(coll1.Compare(coll2));
+            Assert.IsFalse(coll1.Compare(coll2, true));
+        }
+
+        class TestObj{}
+
+        [TestMethod]
+        public void CompareRefTypes()
+        {
+            var coll1 = new[] {new TestObj(), new TestObj(), new TestObj()};
+            var coll2 = new[] { new TestObj(), new TestObj(), new TestObj() };
+
+            Assert.IsFalse(coll1.Compare(coll2));
+            Assert.IsFalse(coll1.Compare(coll2, true));
+        }
+
+        class TestObj2 : IEquatable<TestObj2>
+        {
+            private readonly int val;
+            public TestObj2(int val)
+            {
+                this.val = val;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is TestObj2 ? Equals((TestObj2) obj) : base.Equals(obj);
+            }
+
+            public bool Equals(TestObj2 other)
+            {
+                return other != null && (ReferenceEquals(this, other) || other.val == val);
+            }
+
+            public override int GetHashCode()
+            {
+                return val;
+            }
+        }
+
+        [TestMethod]
+        public void CompareRefTypesWithEquality()
+        {
+            var coll1 = new[] { new TestObj2(1), new TestObj2(2), new TestObj2(3) };
+            var coll2 = new[] { new TestObj2(1), new TestObj2(2), new TestObj2(3) };
+
+            Assert.IsTrue(coll1.Compare(coll2));
+            Assert.IsTrue(coll1.Compare(coll2, true));
+        }
+
+        [TestMethod]
+        public void CompareSameColl()
+        {
+            var coll1 = new[] { new TestObj(), new TestObj(), new TestObj() };
+
+            Assert.IsTrue(coll1.Compare(coll1));
+            Assert.IsTrue(coll1.Compare(coll1, true));
         }
     }
 }

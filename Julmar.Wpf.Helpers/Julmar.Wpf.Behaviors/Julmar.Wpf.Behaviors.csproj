@@ -14,9 +14,8 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>julmar.mvvm.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -37,10 +36,14 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,6 +92,7 @@
     <Compile Include="Interactivity\CloseWindowBehavior.cs" />
     <Compile Include="Interactivity\CommandEventTrigger.cs" />
     <Compile Include="Interactivity\DataGridRowDragBehavior.cs" />
+    <Compile Include="Interactivity\DataGridRowIndexBehavior.cs" />
     <Compile Include="Interactivity\DeferredScrollBehavior.cs" />
     <Compile Include="Interactivity\DoubleClickTrigger.cs" />
     <Compile Include="Interactivity\DragPositionBehavior.cs" />
@@ -106,6 +110,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Julmar.Core\Julmar.Core.csproj">
+      <Project>{DDB17800-0841-47A1-8AF6-89DAB38DAE98}</Project>
+      <Name>Julmar.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Julmar.Wpf.Helpers\Julmar.Wpf.Helpers.csproj">
       <Project>{37EAC372-5684-45E2-B999-986F98EFE40D}</Project>
       <Name>Julmar.Wpf.Helpers</Name>
@@ -132,6 +140,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="julmar.mvvm.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

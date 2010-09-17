@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
+using JulMar.Core;
+using JulMar.Core.Interfaces;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
 
@@ -51,7 +53,7 @@ namespace JulMar.Windows.UI
     /// <summary>
     /// This class implements the IUIVisualizer for WPF.
     /// </summary>
-    [ExportServiceProvider(typeof(IUIVisualizer))]
+    [ExportService(typeof(IUIVisualizer))]
     sealed class UIVisualizer : IUIVisualizer
     {
         /// <summary>
@@ -65,11 +67,6 @@ namespace JulMar.Windows.UI
         private readonly Dictionary<string, Type> _registeredWindows;
 
         #pragma warning disable 649
-        /// <summary>
-        /// MEF catalog - we will automatically register each view with this.
-        /// </summary>
-        [Import] private IDynamicResolver _dynamicLoader;
-
         /// <summary>
         /// MEF registered views
         /// </summary>
@@ -238,12 +235,16 @@ namespace JulMar.Windows.UI
                 win.Owner = Application.Current.MainWindow;
 
             // Register the view with MEF to resolve any imports.
-            try
+            var dynamicLoader = ViewModel.ServiceProvider.Resolve<IDynamicResolver>();
+            if (dynamicLoader != null)
             {
-                _dynamicLoader.Compose(win);
-            }
-            catch (CompositionException)
-            {
+                try
+                {
+                    dynamicLoader.Compose(win);
+                }
+                catch (CompositionException)
+                {
+                }
             }
 
             if (dataContext != null)

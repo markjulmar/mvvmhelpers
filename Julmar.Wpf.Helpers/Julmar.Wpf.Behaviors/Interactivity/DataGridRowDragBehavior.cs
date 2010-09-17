@@ -7,6 +7,9 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using JulMar.Windows.Extensions;
+#if WPF_TOOLKIT
+using Microsoft.Windows.Controls;
+#endif
 
 // Portions of this code were adapted from a Microsoft sample showing how to 
 // do row drag operation on the DataGrid.
@@ -133,8 +136,13 @@ namespace JulMar.Windows.Interactivity
                             Type type = collection.GetType();
                             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ObservableCollection<>))
                             {
+#if !WPF_TOOLKIT
                                 dynamic dCollection = collection;
                                 dCollection.Move(oldIndex, newIndex);
+#else
+                                var methodInfo = type.GetMethod("Move");
+                                methodInfo.Invoke(collection, new object[] {oldIndex, newIndex});
+#endif
                             }
                             else
                             {

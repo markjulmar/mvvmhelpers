@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Globalization;
 
-namespace Julmar.Wpf.Helpers.UnitTests
+namespace JulMar.Wpf.Helpers.UnitTests
 {
     
     

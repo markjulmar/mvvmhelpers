@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
-using JulMar.Windows;
+using JulMar.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using JulMar.Windows.Mvvm;
 
-namespace Julmar.Wpf.Helpers.UnitTests
+namespace JulMar.Wpf.Helpers.UnitTests
 {
     /// <summary>
     ///This is a test class for PropertyObserverTest and is intended
@@ -19,7 +19,7 @@ namespace Julmar.Wpf.Helpers.UnitTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        class ObservableObject : SimpleViewModel
+        class TestObject : SimpleViewModel
         {
             private string _stest;
             public string SValue
@@ -45,15 +45,15 @@ namespace Julmar.Wpf.Helpers.UnitTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullPropertyTest()
         {
-            new PropertyObserver<ObservableObject>(null);
+            new PropertyObserver<TestObject>(null);
         }
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RegisterHandlerNullTest()
         {
-            ObservableObject obj = new ObservableObject {SValue = "Test String", IValue = 10};
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            TestObject obj = new TestObject {SValue = "Test String", IValue = 10};
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             po.RegisterHandler(null, null);
         }
 
@@ -61,8 +61,8 @@ namespace Julmar.Wpf.Helpers.UnitTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void RegisterHandlerNullTest2()
         {
-            ObservableObject obj = new ObservableObject { SValue = "Test String", IValue = 10 };
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            TestObject obj = new TestObject { SValue = "Test String", IValue = 10 };
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             po.RegisterHandler(o => o.SValue, null);
         }
 
@@ -70,16 +70,16 @@ namespace Julmar.Wpf.Helpers.UnitTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void UnregisterHandlerNullTest()
         {
-            ObservableObject obj = new ObservableObject { SValue = "Test String", IValue = 10 };
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            TestObject obj = new TestObject { SValue = "Test String", IValue = 10 };
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             po.UnregisterHandler(null);
         }
 
         [TestMethod]
         public void NoTargetsTest()
         {
-            ObservableObject obj = new ObservableObject { SValue = "Test String", IValue = 10 };
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            TestObject obj = new TestObject { SValue = "Test String", IValue = 10 };
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             obj.IValue = 5;
         }
 
@@ -89,9 +89,9 @@ namespace Julmar.Wpf.Helpers.UnitTests
             int actualInt = 0;
             string actualValue = null;
 
-            ObservableObject obj = new ObservableObject {SValue = "Test String", IValue = 10};
+            TestObject obj = new TestObject {SValue = "Test String", IValue = 10};
 
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             po.RegisterHandler(o => o.SValue, (oo) => actualValue = oo.SValue);
             po.RegisterHandler(o => o.IValue, (oo) => actualInt = oo.IValue);
 
@@ -110,10 +110,10 @@ namespace Julmar.Wpf.Helpers.UnitTests
         {
             string actualValue = null;
 
-            ObservableObject obj = new ObservableObject { SValue = "Test String", IValue = 10 };
+            TestObject obj = new TestObject { SValue = "Test String", IValue = 10 };
             WeakReference wr = new WeakReference(obj);
 
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             po.RegisterHandler(o => o.SValue, (oo) => actualValue = oo.SValue);
 
             obj.SValue = "1";
@@ -128,8 +128,8 @@ namespace Julmar.Wpf.Helpers.UnitTests
         public void RegisterAllPropsHandler()
         {
             bool calledPropChange = false;
-            ObservableObject obj = new ObservableObject { SValue = "Test String", IValue = 10 };
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            TestObject obj = new TestObject { SValue = "Test String", IValue = 10 };
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             po.RegisterHandler(o => o.SValue, (oo) => calledPropChange = true);
 
             obj.ForceAllPropertyChange();
@@ -141,10 +141,10 @@ namespace Julmar.Wpf.Helpers.UnitTests
         {
             string actualValue = null;
 
-            ObservableObject obj = new ObservableObject { SValue = "Test String", IValue = 10 };
+            TestObject obj = new TestObject { SValue = "Test String", IValue = 10 };
             WeakReference wr = new WeakReference(obj);
 
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             po.RegisterHandler(o => o.SValue, (oo) => actualValue = oo.SValue);
 
             obj.SValue = "1";
@@ -166,8 +166,8 @@ namespace Julmar.Wpf.Helpers.UnitTests
         {
             bool gotPropChange = false;
             string propName = null;
-            ObservableObject obj = new ObservableObject { SValue = "Test String", IValue = 10 };
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            TestObject obj = new TestObject { SValue = "Test String", IValue = 10 };
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             po.PropertyChanged += (s, e) => { gotPropChange = true; propName = e.PropertyName; };
 
             obj.IValue = 5;
@@ -180,8 +180,8 @@ namespace Julmar.Wpf.Helpers.UnitTests
         {
             bool gotPropChange = false;
             string propName = null;
-            ObservableObject obj = new ObservableObject { SValue = "Test String", IValue = 10 };
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            TestObject obj = new TestObject { SValue = "Test String", IValue = 10 };
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             var handler = new EventHandler<PropertyChangedEventArgs>((s, e) => { gotPropChange = true; propName = e.PropertyName; });
             po.PropertyChanged += handler;
 
@@ -198,8 +198,8 @@ namespace Julmar.Wpf.Helpers.UnitTests
         public void DisposeWithGlobalHandler()
         {
             bool gotPropChange = false;
-            ObservableObject obj = new ObservableObject { SValue = "Test String", IValue = 10 };
-            PropertyObserver<ObservableObject> po = new PropertyObserver<ObservableObject>(obj);
+            TestObject obj = new TestObject { SValue = "Test String", IValue = 10 };
+            PropertyObserver<TestObject> po = new PropertyObserver<TestObject>(obj);
             po.PropertyChanged += (s, e) => { gotPropChange = true; };
 
             po.Dispose();

@@ -68,8 +68,11 @@ Added MEF support to locate ViewModels using [ExportViewModel]
 Added MEF support to locate Views using [ExportUIVisualization]
 Cleanup of library to target both .NET 3.5 and .NET 4.0
 
-3.00 8/2010
+3.00 6/2010
 Added undo/redo framework
 Added CollectionObserver
 Updated PropertyObserver to allow global property notifications
 Added DataGridRowDragBehavior
+
+4.00 8/2010
+Split out Julmar.Core to contain non-WPF specific types.

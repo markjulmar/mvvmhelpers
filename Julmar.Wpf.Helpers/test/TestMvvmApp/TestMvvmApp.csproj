@@ -36,10 +36,14 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -135,6 +139,7 @@
     <Compile Include="PropertyWindow.xaml.cs">
       <DependentUpon>PropertyWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\InternalMessageVisualizer.cs" />
     <Compile Include="ViewModels\AppPropertyViewModel.cs" />
     <Compile Include="ViewModels\ColorDialogViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -167,6 +172,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Julmar.Core\Julmar.Core.csproj">
+      <Project>{DDB17800-0841-47A1-8AF6-89DAB38DAE98}</Project>
+      <Name>Julmar.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Julmar.Wpf.Behaviors\Julmar.Wpf.Behaviors.csproj">
       <Project>{E5662DCB-CE30-4AC2-A113-62F070D722B6}</Project>
       <Name>Julmar.Wpf.Behaviors</Name>

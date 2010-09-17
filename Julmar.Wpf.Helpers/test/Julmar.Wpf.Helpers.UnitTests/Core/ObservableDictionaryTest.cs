@@ -1,9 +1,11 @@
-﻿using JulMar.Windows;
+﻿using JulMar.Core;
+using JulMar.Core.Collections;
+using JulMar.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace Julmar.Wpf.Helpers.UnitTests
+namespace JulMar.Wpf.Helpers.UnitTests
 {
     /// <summary>
     ///This is a test class for ObservableDictionaryTest and is intended
