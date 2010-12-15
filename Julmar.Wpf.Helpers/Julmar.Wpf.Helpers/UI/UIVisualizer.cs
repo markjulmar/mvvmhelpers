@@ -240,7 +240,7 @@ namespace JulMar.Windows.UI
             {
                 try
                 {
-                    dynamicLoader.Compose(win);
+                    dynamicLoader.ComposeOnce(win);
                 }
                 catch (CompositionException)
                 {

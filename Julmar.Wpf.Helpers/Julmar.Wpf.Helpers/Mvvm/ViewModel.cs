@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Threading;
 using JulMar.Core.Interfaces;
-using System.ComponentModel.Composition;
 using JulMar.Core.Services;
 using System.Windows;
 
@@ -47,26 +46,40 @@ namespace JulMar.Windows.Mvvm
         /// Constructor - registers with the message mediator and hooks up any imports/exports
         /// with the default MEF catalog
         /// </summary>
-        public ViewModel()
+        protected ViewModel() : this(true, true)
+        {
+        }
+
+        /// <summary>
+        /// Constructor - registers with the message mediator and hooks up any imports/exports
+        /// with the default MEF catalog
+        /// </summary>
+        protected ViewModel(bool registerWithMediator, bool composeImports)
         {
             // Register with the message mediator - this will locate and bind all message
             // targets on this instance. Shouldn't really need to check for existence - it should
             // always be present, but just in case someone Unregisters it..
-            var mediator = Resolve<IMessageMediator>();
-            if (mediator != null)
+            if (registerWithMediator)
             {
-                mediator.Register(this);
+                var mediator = Resolve<IMessageMediator>();
+                if (mediator != null)
+                {
+                    mediator.Register(this);
+                }
             }
 
             // Hook up any MEF imports/exports
-            try
+            if (composeImports)
             {
-                IoCComposer.Instance.Compose(this);
-            }
-            catch
-            {
-                // Can throw if in invalid state - i.e. creating VM on behalf of a view.
-                // .. or if we are already composing the parts and this was created as a result.
+                try
+                {
+                    IoCComposer.Instance.ComposeOnce(this);
+                }
+                catch
+                {
+                    // Can throw if in invalid state - i.e. creating VM on behalf of a view.
+                    // .. or if we are already composing the parts and this was created as a result.
+                }
             }
         }
 

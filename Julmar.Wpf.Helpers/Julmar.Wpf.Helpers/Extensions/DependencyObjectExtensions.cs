@@ -106,6 +106,33 @@ namespace JulMar.Windows.Extensions
         }
 
         /// <summary>
+        /// This method locates a visual child by NAME of the given Type.
+        /// </summary>
+        /// <typeparam name="T">Type to search for</typeparam>
+        /// <param name="fe">Framework Element</param>
+        /// <param name="name">Name to look for (assigned to Name property)</param>
+        /// <returns>Visual Child or null</returns>
+        public static T FindVisualChildByName<T>(this DependencyObject fe, string name) where T : DependencyObject
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(fe); i++)
+            {
+                var child = VisualTreeHelper.GetChild(fe, i);
+                var controlName = child.GetValue(FrameworkElement.NameProperty) as string;
+
+                if (controlName == name)
+                    return child as T;
+
+                var result = FindVisualChildByName<T>(child, name);
+                if (result != null)
+                    return result;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// A simple iterator method to expose the visual tree to LINQ (parent to child)
         /// </summary>
         /// <param name="start">Starting root</param>
