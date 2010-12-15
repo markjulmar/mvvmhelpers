@@ -74,11 +74,7 @@ namespace JulMar.Core.Undo
         {
             if (CanRedo)
             {
-                for (int index = _undoStack.Count - 1; index >= 0; index--)
-                {
-                    var operation = _undoStack[index];
-                    operation.Redo();
-                }
+                _undoStack.ForEach(op => op.Redo());
             }
         }
 

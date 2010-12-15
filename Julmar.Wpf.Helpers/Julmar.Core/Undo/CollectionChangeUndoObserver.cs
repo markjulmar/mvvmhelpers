@@ -38,8 +38,12 @@ namespace JulMar.Core.Undo
             if (incc == null)
                 throw new ArgumentException("Collection must implement INotifyCollectionChanged.");
 
-            CollectionChangedEventManager.AddListener(incc, this);
+            // Save off the data.
+            _undoService = undoService;
             _collection = new WeakReference(collection);
+
+            // Add a listener to the collection.
+            CollectionChangedEventManager.AddListener(incc, this);
         }
 
         /// <summary>

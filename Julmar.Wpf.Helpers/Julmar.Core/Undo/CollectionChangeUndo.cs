@@ -117,23 +117,23 @@ namespace JulMar.Core.Undo
             switch (_changeType)
             {
                 case CollectionChangeType.Remove:
-                    _collection.Remove(_newValue);
+                    _collection.Remove(_oldValue);
                     break;
                 case CollectionChangeType.Add:
-                    if (_pos == -1 || _pos >= _collection.Count)
-                        _collection.Add(_oldValue);
+                    if (_newPos == -1 || _newPos >= _collection.Count)
+                        _collection.Add(_newValue);
                     else
-                        _collection.Insert(_pos, _oldValue);
+                        _collection.Insert(_newPos, _newValue);
                     break;
                 case CollectionChangeType.Replace:
                     _collection[_pos] = _newValue;
                     break;
                 case CollectionChangeType.Move:
                     _collection.RemoveAt(_pos);
-                    if (_pos == -1 || _pos >= _collection.Count)
+                    if (_newPos == -1 || _newPos >= _collection.Count)
                         _collection.Add(_newValue);
                     else
-                        _collection.Insert(_pos, _newValue);
+                        _collection.Insert(_newPos, _newValue);
                     break;
             }
         }

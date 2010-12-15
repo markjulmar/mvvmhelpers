@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,7 +13,7 @@ namespace JulMar.Core.Services
     /// <summary>
     /// Inversion of Control Composer - currently based on MEF (4.0).
     /// </summary>
-    public sealed class IoCComposer : IDynamicResolver
+    public sealed class IoCComposer : IDynamicResolver, IDisposable
     {
         /// <summary>
         /// Singleton of MEF composer.
@@ -48,6 +49,30 @@ namespace JulMar.Core.Services
                 CreateContainer();
             Debug.Assert(_container != null);
             _container.ComposeParts(targets);
+        }
+
+        /// <summary>
+        /// This is used to resolve a set of targets once - 
+        /// with this method, MEF will not hold a reference to
+        /// the composed tree of objects
+        /// </summary>
+        public void ComposeOnce(params object[] targets)
+        {
+            if (_container == null)
+                CreateContainer();
+            Debug.Assert(_container != null);
+
+            foreach (var obj in targets)
+            {
+                try
+                {
+                    _container.SatisfyImportsOnce(obj);
+                }
+                catch
+                {
+                    // Ignore
+                }
+            }
         }
 
         /// <summary>
@@ -90,6 +115,18 @@ namespace JulMar.Core.Services
 
             _container = new CompositionContainer(catalog, localCatalog);
             localCatalog.SourceProvider = _container;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_container != null)
+            {
+                _container.Dispose();
+                _container = null;
+            }
         }
     }
 }
