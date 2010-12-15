@@ -97,7 +97,7 @@ namespace JulMar.Windows.Interactivity
         /// <summary>
         /// Attaches to the scrollviewer.
         /// </summary>
-        private void FindAndAttachToScrollViewer()
+        private bool FindAndAttachToScrollViewer()
         {
             // Find the first scroll viewer in the visual tree.
             _scrollViewer = AssociatedObject as ScrollViewer ?? AssociatedObject.FindVisualChild<ScrollViewer>();
@@ -108,6 +108,29 @@ namespace JulMar.Windows.Interactivity
 
                 _scrollViewer.ScrollChanged += ScrollViewerScrollChanged;
                 _scrollViewer.SizeChanged += ScrollViewerSizeChanged;
+                return true;
+            }
+
+            // Possibly hasn't been instantiated yet?
+            if (AssociatedObject.Visibility == Visibility.Collapsed)
+            {
+                AssociatedObject.SizeChanged += AssociatedObjectSizeChanged;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// This is called when the associated object's size changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void AssociatedObjectSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize != Size.Empty)
+            {
+                if (FindAndAttachToScrollViewer())
+                    AssociatedObject.SizeChanged -= AssociatedObjectSizeChanged;
             }
         }
 

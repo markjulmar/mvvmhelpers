@@ -96,14 +96,21 @@
     <Compile Include="Interactivity\DeferredScrollBehavior.cs" />
     <Compile Include="Interactivity\DoubleClickTrigger.cs" />
     <Compile Include="Interactivity\DragPositionBehavior.cs" />
+    <Compile Include="Interactivity\ItemsControlDragDropBehavior.cs" />
     <Compile Include="Interactivity\NumericTextBoxBehavior.cs" />
     <Compile Include="Interactivity\ScrollbarPreviewBehavior.cs" />
     <Compile Include="Interactivity\ScrollingPreviewBehavior.cs" />
+    <Compile Include="Interactivity\SelectedItemsCollectionSynchronizer.cs" />
     <Compile Include="Interactivity\SelectTextOnFocusBehavior.cs" />
     <Compile Include="Interactivity\SynchronizedScrollingBehavior.cs" />
     <Compile Include="Interactivity\ViewModelTrigger.cs" />
     <Compile Include="Interactivity\ViewportSynchronizerBehavior.cs" />
     <Compile Include="Interactivity\WatermarkTextBehavior.cs" />
+    <Compile Include="Internal\DragAdorner.cs" />
+    <Compile Include="DragDropEventArgs.cs" />
+    <Compile Include="Internal\DragInfo.cs" />
+    <Compile Include="Internal\DragUtilities.cs" />
+    <Compile Include="Internal\InsertAdorner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
