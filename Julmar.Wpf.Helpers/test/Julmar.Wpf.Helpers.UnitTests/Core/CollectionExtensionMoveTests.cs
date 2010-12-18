@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using JulMar.Core.Collections;
@@ -99,6 +100,14 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
             var data = Enumerable.Range(0, 5).ToList();
             data.MoveRange(4, 1, 0);
             CollectionAssert.AreEquivalent(new[] { 4, 0, 1, 2, 3 }, data);
+        }
+
+        [TestMethod]
+        public void MoveTestMultiMiddle()
+        {
+            var data = new List<int>(new[] {0, 0, 0, 1, 2, 3, 0, 0, 0, 4, 5, 6});
+            data.MoveRange(3, 3, 6);
+            CollectionAssert.AreEquivalent(new[] { 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6 }, data);
         }
 
         [TestMethod]
