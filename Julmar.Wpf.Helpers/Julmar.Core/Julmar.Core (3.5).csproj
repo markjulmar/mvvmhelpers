@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Collections\CollectionChangedEventArgs.cs" />
     <Compile Include="CollectionObserver.cs" />
+    <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\ElementChangedEventArgs.cs" />
     <Compile Include="Concurrency\ObjectLockExtensions.cs" />
     <Compile Include="Concurrency\ReaderWriterLockSlimExtensions.cs" />
