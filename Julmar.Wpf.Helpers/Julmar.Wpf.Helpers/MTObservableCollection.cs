@@ -16,6 +16,11 @@ namespace JulMar.Windows
     /// access and updates.  It allows for concurrent read access and single write access
     /// through the use of a MRSW lock.
     /// </summary>
+    /// <remarks>
+    /// This collection, while safe, is generally very slow because it does all the work on the
+    /// UI thread.  You should prefer to use the better ThreadedCollection which doesn't use
+    /// INotifyCollectionChanged and then maintain two collections in synch for performance.
+    /// </remarks>
     /// <typeparam name="T">Type this collection holds</typeparam>
     public class MTObservableCollection<T> : IList<T>, INotifyCollectionChanged, INotifyPropertyChanged
     {
