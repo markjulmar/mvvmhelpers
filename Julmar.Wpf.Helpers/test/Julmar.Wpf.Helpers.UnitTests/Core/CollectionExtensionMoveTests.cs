@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JulMar.Core.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -75,7 +76,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             var data = Enumerable.Range(0, 5).ToList();
             data.MoveRange(1, 4, 0);
-            CollectionAssert.AreEquivalent(new[] { 1, 2, 3, 4, 0 }, data);
+            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 0 }, data);
         }
 
         [TestMethod]
@@ -83,7 +84,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             var data = Enumerable.Range(0, 5).ToList();
             data.MoveRange(0, 4, 1);
-            CollectionAssert.AreEquivalent(new[] { 4, 0, 1, 2, 3 }, data);
+            CollectionAssert.AreEqual(new[] { 4, 0, 1, 2, 3 }, data);
         }
 
         [TestMethod]
@@ -91,7 +92,31 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             var data = Enumerable.Range(0, 5).ToList();
             data.MoveRange(0, 1, 1);
-            CollectionAssert.AreEquivalent(new[] { 1, 0, 2, 3, 4 }, data);
+            CollectionAssert.AreEqual(new[] { 1, 0, 2, 3, 4 }, data);
+        }
+
+        [TestMethod]
+        public void MoveMultipleTestSingleForward()
+        {
+            var data = Enumerable.Range(0, 10).ToList();
+            data.MoveRange(2, 2, 3);
+            CollectionAssert.AreEqual(new[] { 0, 1, 4, 2, 3, 5, 6, 7, 8, 9 }, data);
+        }
+
+        [TestMethod]
+        public void MoveTestOverlapForward()
+        {
+            var data = Enumerable.Range(0, 10).ToList();
+            data.MoveRange(2, 4, 3);
+            CollectionAssert.AreEqual(new[] { 0, 1, 6, 2, 3, 4, 5, 7, 8, 9 }, data);
+        }
+
+        [TestMethod]
+        public void MoveTestOverlapBackward()
+        {
+            var data = Enumerable.Range(0, 10).ToList();
+            data.MoveRange(4, 4, 2);
+            CollectionAssert.AreEqual(new[] { 0, 1, 4, 5, 6, 7, 2, 3, 8, 9 }, data);
         }
 
         [TestMethod]
@@ -99,7 +124,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             var data = Enumerable.Range(0, 5).ToList();
             data.MoveRange(4, 1, 0);
-            CollectionAssert.AreEquivalent(new[] { 4, 0, 1, 2, 3 }, data);
+            CollectionAssert.AreEqual(new[] { 4, 0, 1, 2, 3 }, data);
         }
 
         [TestMethod]
@@ -107,7 +132,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             var data = new List<int>(new[] {0, 0, 0, 1, 2, 3, 0, 0, 0, 4, 5, 6});
             data.MoveRange(3, 3, 6);
-            CollectionAssert.AreEquivalent(new[] { 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6 }, data);
+            CollectionAssert.AreEqual(new[] { 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6 }, data);
         }
 
         [TestMethod]
@@ -115,7 +140,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             int[] data = { 1, 2, 3, 4, 5 };
             data.MoveRange(2, 2, 2);
-            CollectionAssert.AreEquivalent(new[] { 1, 2, 3, 4, 5 }, data);
+            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 5 }, data);
         }
 
         [TestMethod]
@@ -123,7 +148,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             int[] data = { 1, 2, 3, 4, 5 };
             data.MoveRange(0, 0, 1);
-            CollectionAssert.AreEquivalent(new[] { 1, 2, 3, 4, 5 }, data);
+            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 5 }, data);
         }
     }
 }

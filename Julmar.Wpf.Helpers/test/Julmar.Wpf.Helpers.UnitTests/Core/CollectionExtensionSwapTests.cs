@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using JulMar.Core.Extensions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using JulMar.Core.Collections;
@@ -59,7 +60,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             int[] data = {1, 2, 3};
             data.Swap(2, 0);
-            CollectionAssert.AreEquivalent(new[] {3, 2, 1}, data);
+            CollectionAssert.AreEqual(new[] { 3, 2, 1 }, data);
         }
 
         [TestMethod]
@@ -67,7 +68,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             int[] data = { 1, 2, 3, 4, 5 };
             data.Swap(2, 4);
-            CollectionAssert.AreEquivalent(new[] { 1, 2, 5, 4, 3 }, data);
+            CollectionAssert.AreEqual(new[] { 1, 2, 5, 4, 3 }, data);
         }
 
         [TestMethod]
@@ -75,7 +76,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             int[] data = { 1, 2, 3, 4, 5 };
             data.Swap(2, 2);
-            CollectionAssert.AreEquivalent(new[] { 1, 2, 3, 4, 5 }, data);
+            CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 5 }, data);
         }
     }
 }

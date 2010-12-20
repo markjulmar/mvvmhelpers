@@ -34,18 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Julmar.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3ea22013129d8c94, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\Julmar.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Julmar.Wpf.Behaviors, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3ea22013129d8c94, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\Julmar.Wpf.Behaviors.dll</HintPath>
-    </Reference>
-    <Reference Include="JulMar.Wpf.Helpers, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3ea22013129d8c94, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\JulMar.Wpf.Helpers.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\Microsoft.Expression.Interactions.dll</HintPath>
@@ -119,6 +107,20 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Julmar.Core\Julmar.Core.csproj">
+      <Project>{DDB17800-0841-47A1-8AF6-89DAB38DAE98}</Project>
+      <Name>Julmar.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Julmar.Wpf.Behaviors\Julmar.Wpf.Behaviors.csproj">
+      <Project>{E5662DCB-CE30-4AC2-A113-62F070D722B6}</Project>
+      <Name>Julmar.Wpf.Behaviors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Julmar.Wpf.Helpers\Julmar.Wpf.Helpers.csproj">
+      <Project>{37EAC372-5684-45E2-B999-986F98EFE40D}</Project>
+      <Name>Julmar.Wpf.Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
