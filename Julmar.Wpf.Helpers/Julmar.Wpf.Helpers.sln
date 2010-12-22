@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Core", "Julmar.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMFolderExplorer", "test\MVVMFolderExplorer\MVVMFolderExplorer.csproj", "{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragDropTest", "test\DragDropTest\DragDropTest.csproj", "{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -135,6 +137,16 @@ Global
 		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}.Release|x86.ActiveCfg = Release|Any CPU
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,5 +157,6 @@ Global
 		{4910ABE3-CE97-427E-A2C3-A9BA8FF6760F} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{525EF1E9-6326-4F73-9F54-C2A72C473F99} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
+		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 	EndGlobalSection
 EndGlobal

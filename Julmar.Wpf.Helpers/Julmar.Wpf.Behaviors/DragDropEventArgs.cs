@@ -25,6 +25,11 @@ namespace JulMar.Windows
         public object Item { get; private set; }
 
         /// <summary>
+        /// Position we are dropping item onto
+        /// </summary>
+        public int DropIndex { get; private set; }
+
+        /// <summary>
         /// Set to true to disallow drag/drop operation
         /// </summary>
         public bool Cancel { get; set; }
@@ -41,11 +46,13 @@ namespace JulMar.Windows
         /// <param name="source"></param>
         /// <param name="destination"></param>
         /// <param name="item"></param>
-        internal DragDropEventArgs(ItemsControl source, ItemsControl destination, object item)
+        /// <param name="dropIndex"></param>
+        internal DragDropEventArgs(ItemsControl source, ItemsControl destination, object item, int dropIndex = -1)
         {
             Source = source;
             Destination = destination;
             Item = item;
+            DropIndex = dropIndex;
         }
     }
 }

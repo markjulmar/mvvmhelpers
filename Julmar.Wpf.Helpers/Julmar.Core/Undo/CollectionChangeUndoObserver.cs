@@ -13,14 +13,18 @@ namespace JulMar.Core.Undo
     /// </summary>
     public class CollectionChangeUndoObserver : IDisposable, IWeakEventListener
     {
-        /// <summary>
-        /// The undo service
-        /// </summary>
         private IUndoService _undoService;
-        /// <summary>
-        /// The collection we are managing
-        /// </summary>
         private readonly WeakReference _collection;
+
+        /// <summary>
+        /// Set this to ignore changes temporarily while you perform
+        /// some action to the tracked collection.
+        /// </summary>
+        public bool IgnoreChanges
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Constructor
@@ -69,6 +73,8 @@ namespace JulMar.Core.Undo
         /// <param name="e">Change event</param>
         void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (IgnoreChanges)
+                return;
             var undoService = _undoService;
             if (undoService == null)
                 return;

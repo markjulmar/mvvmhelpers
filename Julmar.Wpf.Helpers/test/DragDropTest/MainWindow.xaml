@@ -28,53 +28,44 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            Drag and Drop normally to move contents. Hold the CTRL key to copy contents. Press ESC key during Drag and Drop to cancel.
-        </TextBlock>
+        <ListBox Margin="10" ItemTemplate="{StaticResource listBoxDataTemplate}" ItemsSource="{Binding Products}" SelectionMode="Multiple" >
+            <Interaction:Interaction.Behaviors>
+                <DragDrop:ItemsControlDragDropBehavior DragInitiated="OnDragInitiated" AllowOnlySelf="false" DropInitiated="OnMultiSelectDropInitiated"
+                                                        DragTemplate="{StaticResource listBoxDataTemplate}" />
+            </Interaction:Interaction.Behaviors>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
 
-        <DockPanel Grid.Column="0" Grid.Row="1" >
-            <TextBlock Text="List Box" Margin="10,0,0,0" DockPanel.Dock="Top" />
-            <ListBox Margin="10" ItemTemplate="{StaticResource listBoxDataTemplate}" ItemsSource="{Binding Products}">
-                <Interaction:Interaction.Behaviors>
-                    <DragDrop:ItemsControlDragDropBehavior DragInitiated="OnDragInitiated" AllowOnlySelf="false"
-                                                           DragTemplate="{StaticResource listBoxDataTemplate}" />
-                </Interaction:Interaction.Behaviors>
-            </ListBox>
-        </DockPanel>
+        <ListBox Margin="10" Grid.Column="1" ItemTemplate="{StaticResource listViewItemTemplate}">
+            <Interaction:Interaction.Behaviors>
+                <DragDrop:ItemsControlDragDropBehavior AllowOnlySelf="true"
+                                                       DragTemplate="{StaticResource listBoxDataTemplate}" />
+            </Interaction:Interaction.Behaviors>
+        </ListBox>
 
-        <DockPanel Grid.Column="1" Grid.Row="1" >
-            <TextBlock Text="Self List Box" Margin="10,0,0,0" DockPanel.Dock="Top" />
-            <ListBox Margin="10" ItemTemplate="{StaticResource listViewItemTemplate}">
-                <Interaction:Interaction.Behaviors>
-                    <DragDrop:ItemsControlDragDropBehavior AllowOnlySelf="true"
-                                                           DragTemplate="{StaticResource listBoxDataTemplate}" />
-                </Interaction:Interaction.Behaviors>
-            </ListBox>
-        </DockPanel>
-
-        <DockPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
-            <TextBlock Text="List View" Margin="10,0,0,0" DockPanel.Dock="Top" />
-            <ListView Margin="10">
-                <Interaction:Interaction.Behaviors>
-                    <DragDrop:ItemsControlDragDropBehavior DragTemplate="{StaticResource listViewItemTemplate}"
-                                                           DropEnter="OnDropEnter" DropInitiated="OnDropInitiated" />
-                </Interaction:Interaction.Behaviors>
-                <ListView.View>
-                    <GridView>
-                        <GridView.Columns>
-                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200" />
-                            <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}" Width="100" />
-                            <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price, StringFormat=C}" Width="100" />
-                        </GridView.Columns>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </DockPanel>
+        <ListView Margin="10" Grid.Row="1" Grid.ColumnSpan="2">
+            <Interaction:Interaction.Behaviors>
+                <DragDrop:ItemsControlDragDropBehavior DragTemplate="{StaticResource listViewItemTemplate}"
+                                                        DropEnter="OnDropEnter" DropInitiated="OnDropInitiated" />
+            </Interaction:Interaction.Behaviors>
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200" />
+                        <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}" Width="100" />
+                        <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price, StringFormat=C}" Width="100" />
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </Grid>
 </Window>

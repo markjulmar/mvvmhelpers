@@ -37,5 +37,11 @@ namespace JulMar.Core.Interfaces
         /// <param name="noInsertIfExecutingOperation">Do not insert record if currently running undo/redo</param>
         /// <returns>True if record inserted, false if not</returns>
         bool Add(ISupportUndo undoOp, bool noInsertIfExecutingOperation = true);
+
+        /// <summary>
+        /// Clears all the undo/redo events.  This should be used if some
+        /// action makes the operations invalid (clearing a collection where you are tracking changes to indexes inside it for example)
+        /// </summary>
+        void Clear();
     }
 }

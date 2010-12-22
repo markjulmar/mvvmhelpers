@@ -197,5 +197,19 @@ namespace JulMar.Core.Undo
 
             return true;
         }
+
+        /// <summary>
+        /// Clears all the undo/redo events.  This should be used if some
+        /// action makes the operations invalid (clearing a collection for example)
+        /// </summary>
+        public void Clear()
+        {
+            lock (_lock)
+            {
+                _undoOperations.Clear();
+                _redoOperations.Clear();
+                _isUndoingOperation = false;
+            }
+        }
     }
 }

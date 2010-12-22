@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using JulMar.Windows;
+using System.Windows.Input;
 
 namespace ItemsControlDragDropBehavior.TestApp
 {
@@ -17,11 +20,11 @@ namespace ItemsControlDragDropBehavior.TestApp
 
         private void OnDragInitiated(object sender, DragDropEventArgs e)
         {
-            Product p = e.Item as Product;
-            Debug.Assert(p != null);
-            
-            if (p.Quantity > 100)
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+            {
                 e.Cancel = true;
+                return;
+            }
 
             e.AllowedEffects = DragDropEffects.Move;
         }
@@ -34,6 +37,20 @@ namespace ItemsControlDragDropBehavior.TestApp
         private void OnDropInitiated(object sender, DragDropEventArgs e)
         {
             Debug.WriteLine("DropInitiated: {0}", e.Item);
+        }
+
+        private void OnMultiSelectDropInitiated(object sender, DragDropEventArgs e)
+        {
+            // Dropping on self?
+            if (e.Source == e.Destination)
+            {
+                ListBox lb = (ListBox)e.Source;
+                if (lb.SelectedItems.Count > 1)
+                {
+                    e.Cancel = true;
+                    ((MainViewModel) DataContext).RepositionItems(lb.SelectedItems.Cast<Product>().ToList(), e.DropIndex);
+                }
+            }
         }
     }
 }

@@ -249,13 +249,15 @@ namespace JulMar.Windows.Interactivity
             e.Handled = true;
             if (e.Data.GetDataPresent(ItemTypeKey))
             {
+                int index = FindInsertionIndex(itemsControl, e);
+
                 DragInfo data = e.Data.GetData(ItemTypeKey) as DragInfo;
                 if (data != null && (!data.AllowOnlySelf || itemsControl == data.Source))
                 {
                     var allowedEffects = e.AllowedEffects;
                     if (DropInitiated != null)
                     {
-                        DragDropEventArgs de = new DragDropEventArgs(data.Source, itemsControl, data.Data) { AllowedEffects = allowedEffects };
+                        DragDropEventArgs de = new DragDropEventArgs(data.Source, itemsControl, data.Data, index) { AllowedEffects = allowedEffects };
                         DropInitiated(this, de);
                         allowedEffects = de.AllowedEffects;
                         if (de.Cancel)
@@ -273,9 +275,10 @@ namespace JulMar.Windows.Interactivity
                              || (e.Effects & DragDropEffects.Move) > 0 && (e.KeyStates & DragDropKeyStates.ControlKey) > 0))
                     {
                         DragUtilities.RemoveItem(itemsControl, itemToAdd);
+                        // Recalc our position based on the removal
+                        index = FindInsertionIndex(itemsControl, e);
                     }
 
-                    int index = FindInsertionIndex(itemsControl, e);
                     DragUtilities.AddItem(itemsControl, itemToAdd, index);
                     DragUtilities.SelectItem(itemsControl, index);
                 }
