@@ -73,6 +73,21 @@ Added undo/redo framework
 Added CollectionObserver
 Updated PropertyObserver to allow global property notifications
 Added DataGridRowDragBehavior
+Added ItemsControl drag/drop behavior
+
+3.5 7/2010
+Split out Julmar.Core to contain non-WPF specific types.
+Moved internal ThreadedCollection into Core
+Added ReaderWriterLockSlim extensions and ObjectLock extensions
+Added DataGridRowIndexBehavior
 
 4.00 8/2010
-Split out Julmar.Core to contain non-WPF specific types.
+Added ObjectCloner
+Added SelectedItemsCollectionSynchronizer
+
+4.01 12/2010
+Official build from rcat.codeplex.com changes
+Added attached event support to EventCommander
+Corrected issue with MessageMediator identifying interface targets from an implementation message
+Added new constructor to ViewModel to avoid MEF registration for 3.5 memory leak issue (MEF)
+Added Swap and Move extensions to IList collections
