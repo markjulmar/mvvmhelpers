@@ -3,7 +3,7 @@ using JulMar.Core;
 using JulMar.Core.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace JulMar.Wpf.Helpers.UnitTests
+namespace JulMar.Wpf.Helpers.UnitTests.Core
 {
     /// <summary>
     ///This is a test class for MessageMediatorTest and is intended
@@ -26,6 +26,18 @@ namespace JulMar.Wpf.Helpers.UnitTests
             public DataEvent(string s) { SData = s; }
         }
 
+        public class DataEventUpper : IDataEvent
+        {
+            public string SData { get; set; }
+            public DataEventUpper(string s) { SData = s.ToUpper(); }
+        }
+
+        public class DataEventLower : IDataEvent
+        {
+            public string SData { get; set; }
+            public DataEventLower(string s) { SData = s.ToLower(); }
+        }
+
         public interface ITest
         {
             void Message(IDataEvent data);
@@ -43,6 +55,14 @@ namespace JulMar.Wpf.Helpers.UnitTests
 
             [MessageMediatorTarget]
             public void Message(DataEvent data) { Count += 4; }
+        }
+
+        public class TestImplJustInterfaces : ITest
+        {
+            public int Count { get; set; }
+
+            [MessageMediatorTarget]
+            public void Message(IDataEvent data) { Count += 1; }
         }
 
         class TestCounter
@@ -321,9 +341,27 @@ namespace JulMar.Wpf.Helpers.UnitTests
 
             bool hadTarget = target.SendMessage(new DataEvent("Test"));
             Assert.AreEqual(true, hadTarget, "Mediator did not find target");
-            // Should only invoke direct method
-            Assert.AreEqual(4, tc.Count);
+            // Should invoke two methods - interface AND direct
+            Assert.AreEqual(5, tc.Count);
         }
        
+        [TestMethod]
+        public void TestJustInterfaces()
+        {
+            var target = new MessageMediator();
+            var tc = new TestImplJustInterfaces();
+
+            target.Register(tc);
+
+            bool hadTarget = target.SendMessage(new DataEvent("Test"));
+            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
+
+            hadTarget = target.SendMessage(new DataEventUpper("Test"));
+            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
+
+            hadTarget = target.SendMessage(new DataEventLower("Test"));
+            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
+        }
+
     }
 }

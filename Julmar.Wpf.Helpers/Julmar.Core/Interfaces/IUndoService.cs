@@ -9,6 +9,11 @@ namespace JulMar.Core.Interfaces
     public interface IUndoService
     {
         /// <summary>
+        /// Maximum number of supported operations.
+        /// </summary>
+        int MaxSupportedOperations { get; set; }
+
+        /// <summary>
         /// Returns true if we have at least one UNDO operation we can perform
         /// </summary>
         bool CanUndo { get; }

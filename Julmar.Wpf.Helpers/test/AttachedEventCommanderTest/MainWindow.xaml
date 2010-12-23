@@ -1,0 +1,21 @@
+﻿<Window x:Class="WpfApplication1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:Behaviors="clr-namespace:JulMar.Windows.Behaviors;assembly=JulMar.Wpf.Helpers" 
+        Title="Attached Property MainWindow" Height="350" Width="525" FontSize="24pt">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="164*" />
+            <RowDefinition Height="147*" />
+        </Grid.RowDefinitions>
+        
+        <ListBox ItemsSource="{Binding Data}" Grid.Row="1" Margin="2" FontSize="9pt" />
+        
+        <Button VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" TextBoxBase.TextChanged="OnTextChanged">
+            <Behaviors:EventCommander.Mappings>
+                <Behaviors:CommandEvent Command="{Binding ShowText}" Event="TextBoxBase.TextChanged" />
+            </Behaviors:EventCommander.Mappings>
+            <TextBox Margin="20" Text="Hi there" />
+        </Button>
+    </Grid>
+</Window>

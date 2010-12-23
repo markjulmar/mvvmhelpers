@@ -10,7 +10,7 @@ namespace JulMar.Core.Undo
     [ExportService(typeof(IUndoService))]
     public class UndoManager : IUndoService
     {
-        private const int DefaultMaxCount = 20;
+        private const int DefaultMaxCount = 100;
 
         #region Private Data
         private readonly object _lock = new object();
@@ -44,11 +44,17 @@ namespace JulMar.Core.Undo
             get { return _maxSupportedOperations; }
             set
             {
-                _maxSupportedOperations = value;
-                lock (_lock)
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException("MaxSupportedOperation", "MaxSupportedOperations must be greater than zero.");
+
+                if (_maxSupportedOperations != value)
                 {
-                    while (_undoOperations.Count > _maxSupportedOperations)
-                        _undoOperations.RemoveLast();
+                    _maxSupportedOperations = value;
+                    lock (_lock)
+                    {
+                        while (_undoOperations.Count > _maxSupportedOperations)
+                            _undoOperations.RemoveLast();
+                    }
                 }
             }
         }

@@ -345,7 +345,7 @@ namespace JulMar.Core.Services
             List<object> keyList;
             lock (_registeredHandlers)
             {
-                keyList = _registeredHandlers.Keys.Where(key => key is Type && ((Type) key).IsAssignableFrom(actionType)).ToList();
+                keyList = _registeredHandlers.Keys.Where(key => key is Type && ( ((Type)key).IsAssignableFrom(actionType) || actionType.IsAssignableFrom(((Type)key))) ).ToList();
             }
 
             return keyList.Aggregate(false, (current, key) => current | SendMessage(key, message));

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows;
@@ -109,18 +109,50 @@ namespace JulMar.Windows.Behaviors
         /// <param name="target"></param>
         internal void Subscribe(object target)
         {
+            string eventName = Event;
+
             if (target != null)
             {
                 BindingOperations.SetBinding(this, FrameworkElement.DataContextProperty,
                                              new Binding("DataContext") {Source = target});
 
-                EventInfo ei = target.GetType().GetEvent(Event, BindingFlags.Public | BindingFlags.Instance);
+                EventInfo ei = target.GetType().GetEvent(eventName, BindingFlags.Public | BindingFlags.Instance);
                 if (ei != null)
                 {
                     ei.RemoveEventHandler(target, GetEventMethod(ei));
                     ei.AddEventHandler(target, GetEventMethod(ei));
+                    return;
+                }
+
+                // If the name has a colon namespace declaration, then drop that off.
+                int dotPos = eventName.IndexOf(':');
+                if (dotPos > 0)
+                    eventName = eventName.Substring(dotPos + 1);
+
+                // Look for an attached event on a Dependency Property
+                dotPos = eventName.IndexOf('.');
+                if (dotPos > 0 && eventName.Length > dotPos)
+                {
+                    // Scan the event manager for the specified event.
+                    var attachedEvent = EventManager.GetRoutedEvents().Where(evt => evt.ToString() == eventName).SingleOrDefault();
+                    if (attachedEvent != null)
+                    {
+                        FrameworkElement fe = target as FrameworkElement;
+                        if (fe == null)
+                        {
+                            Debug.WriteLine("Failed to cast Target {0} to FrameworkElement to subscribe to attached event {1}", target, eventName);
+                        }
+                        else
+                        {
+                            fe.RemoveHandler(attachedEvent, GetRoutedEventMethod());
+                            fe.AddHandler(attachedEvent, GetRoutedEventMethod());
+                        }
+                    }
+                    return;
                 }
             }
+
+            Debug.WriteLine(string.Format("Unable to locate event {0} on {1}", eventName, target));
         }
 
         /// <summary>
@@ -134,6 +166,29 @@ namespace JulMar.Windows.Behaviors
                 EventInfo ei = target.GetType().GetEvent(Event, BindingFlags.Public | BindingFlags.Instance);
                 if (ei != null)
                     ei.RemoveEventHandler(target, GetEventMethod(ei));
+                else
+                {
+                    string eventName = Event;
+
+                    // If the name has a colon namespace declaration, then drop that off.
+                    int dotPos = eventName.IndexOf(':');
+                    if (dotPos > 0)
+                        eventName = eventName.Substring(dotPos + 1);
+
+                    // Look for an attached event on a Dependency Property
+                    dotPos = eventName.IndexOf('.');
+                    if (dotPos > 0 && eventName.Length > dotPos)
+                    {
+                        // Scan the event manager for the specified event.
+                        var attachedEvent = EventManager.GetRoutedEvents().Where(evt => evt.Name == eventName).SingleOrDefault();
+                        if (attachedEvent != null)
+                        {
+                            FrameworkElement fe = target as FrameworkElement;
+                            if (fe != null)
+                                fe.RemoveHandler(attachedEvent, GetRoutedEventMethod());
+                        }
+                    }
+                }
             }
         }
 
@@ -144,12 +199,12 @@ namespace JulMar.Windows.Behaviors
                 throw new ArgumentNullException("ei");
             if (ei.EventHandlerType == null)
                 throw new ArgumentException("EventHandlerType is null");
-            if (_method == null)
-                _method = Delegate.CreateDelegate(ei.EventHandlerType, this,
-                                                  GetType().GetMethod("OnEventRaised",
-                                                                      BindingFlags.NonPublic | BindingFlags.Instance));
+            return _method ?? (_method = Delegate.CreateDelegate(ei.EventHandlerType, this, GetType().GetMethod("OnEventRaised", BindingFlags.NonPublic | BindingFlags.Instance)));
+        }
 
-            return _method;
+        private Delegate GetRoutedEventMethod()
+        {
+            return _method ?? (_method = Delegate.CreateDelegate(typeof(RoutedEventHandler), this, GetType().GetMethod("OnEventRaised", BindingFlags.NonPublic | BindingFlags.Instance)));
         }
 
         /// <summary>
@@ -165,12 +220,10 @@ namespace JulMar.Windows.Behaviors
                 if (Command.CanExecute(ep))
                     Command.Execute(ep);
             }
-#if DEBUG
             else
             {
                 Debug.WriteLine(string.Format("Missing Command on event handler, {0}: Sender={1}, EventArgs={2}", Event, sender, e));
             }
-#endif
         }
 
         /// <summary>
