@@ -140,7 +140,7 @@ namespace JulMar.Windows.Behaviors
                         FrameworkElement fe = target as FrameworkElement;
                         if (fe == null)
                         {
-                            Debug.WriteLine("Failed to cast Target {0} to FrameworkElement to subscribe to attached event {1}", target, eventName);
+                            Debug.WriteLine(string.Format("Failed to cast Target {0} to FrameworkElement to subscribe to attached event {1}", target, eventName));
                         }
                         else
                         {
