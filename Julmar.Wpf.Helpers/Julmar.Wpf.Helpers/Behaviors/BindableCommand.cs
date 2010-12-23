@@ -7,6 +7,7 @@ namespace JulMar.Windows.Behaviors
     /// <summary>
     /// This class can be used to create a bound ICommand in resources
     /// which may then be assigned to the Command property of Key/Mouse gestures.
+    /// Note that this is not necessary for .NET 4.0
     /// </summary>
     public class BindableCommand : Freezable, ICommand
     {
@@ -54,7 +55,7 @@ namespace JulMar.Windows.Behaviors
         /// <returns></returns>
         public bool CanExecute(object parameter)
         {
-            return Command.CanExecute(CommandParameter);
+            return Command.CanExecute(parameter ?? CommandParameter);
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace JulMar.Windows.Behaviors
         /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
-            Command.Execute(CommandParameter);
+            Command.Execute(parameter ?? CommandParameter);
         }
 
         /// <summary>
