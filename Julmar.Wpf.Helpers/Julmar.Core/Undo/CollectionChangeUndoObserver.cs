@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using JulMar.Core.Interfaces;
 
@@ -15,6 +17,7 @@ namespace JulMar.Core.Undo
     {
         private IUndoService _undoService;
         private readonly WeakReference _collection;
+        private UndoOperationSet _trackedUndoSet;
 
         /// <summary>
         /// Set this to ignore changes temporarily while you perform
@@ -51,6 +54,24 @@ namespace JulMar.Core.Undo
         }
 
         /// <summary>
+        /// This starts collecting the undo operations in a deferred list so they can be applied as a group.
+        /// </summary>
+        /// <param name="undoSet">Undo set to use</param>
+        public void BeginDeferredTracking(UndoOperationSet undoSet)
+        {
+            _trackedUndoSet = undoSet;
+        }
+
+        /// <summary>
+        /// This ends the undo tracking - the user is responsible for adding the operations
+        /// to the undo manager if they are to be tracked.
+        /// </summary>
+        public void EndDeferredTracking()
+        {
+            _trackedUndoSet = null;
+        }
+
+        /// <summary>
         /// Returns the IList object held by this observer.
         /// </summary>
         /// <returns></returns>
@@ -75,42 +96,37 @@ namespace JulMar.Core.Undo
         {
             if (IgnoreChanges)
                 return;
-            var undoService = _undoService;
-            if (undoService == null)
-                return;
 
+            var undoList = new List<CollectionChangeUndo>();
             IList collection = (IList) sender;
 
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    for (int i = 0; i < e.NewItems.Count; i++)
-                    {
-                        var item = e.NewItems[i];
-                            undoService.Add(
-                                new CollectionChangeUndo(collection, CollectionChangeType.Add, 
-                                    -1, e.NewStartingIndex + i, null, item));
-                    }
+                    undoList.AddRange(e.NewItems.Cast<object>().Select((item, i) => new CollectionChangeUndo(collection, CollectionChangeType.Add, -1, e.NewStartingIndex + i, null, item)));
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    for (int i = 0; i < e.OldItems.Count; i++)
-                    {
-                        var item = e.OldItems[i];
-                            undoService.Add(
-                                new CollectionChangeUndo(collection, CollectionChangeType.Remove, 
-                                    e.OldStartingIndex + i, -1, item, null));
-                    }
+                    undoList.AddRange(e.OldItems.Cast<object>().Select((item, i) => new CollectionChangeUndo(collection, CollectionChangeType.Remove, e.OldStartingIndex + i, -1, item, null)));
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                        undoService.Add(
-                            new CollectionChangeUndo(collection, CollectionChangeType.Replace, 
-                                e.OldStartingIndex, e.NewStartingIndex, e.OldItems[0], e.NewItems[0]));
+                    undoList.Add(new CollectionChangeUndo(collection, CollectionChangeType.Replace, e.OldStartingIndex, e.NewStartingIndex, e.OldItems[0], e.NewItems[0]));
                     break;
                 case NotifyCollectionChangedAction.Move:
-                        undoService.Add(
-                            new CollectionChangeUndo(collection, CollectionChangeType.Move,
-                                e.OldStartingIndex, e.NewStartingIndex, e.NewItems[0], e.NewItems[0]));
+                    undoList.Add(new CollectionChangeUndo(collection, CollectionChangeType.Move, e.OldStartingIndex, e.NewStartingIndex, e.NewItems[0], e.NewItems[0]));
                     break;
+            }
+
+            // If tracking undos, then add them to our list.
+            if (_trackedUndoSet != null)
+            {
+                _trackedUndoSet.AddRange(undoList);
+            }
+            // Or add them directly to the undo manager
+            else
+            {
+                var undoService = _undoService;
+                if (undoService != null)
+                    undoList.ForEach(ccu => undoService.Add(ccu));
             }
         }
 
