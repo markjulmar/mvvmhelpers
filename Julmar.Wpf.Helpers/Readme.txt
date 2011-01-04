@@ -91,3 +91,6 @@ Added attached event support to EventCommander
 Corrected issue with MessageMediator identifying interface targets from an implementation message
 Added new constructor to ViewModel to avoid MEF registration for 3.5 memory leak issue (MEF)
 Added Swap and Move extensions to IList collections
+
+4.02 1/2011
+Added option to defer collection change UNDO records into a group for global undo.  BeginDefer/EndDefer on CollectionUndoObserver.
