@@ -174,9 +174,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Julmar.Core\Julmar.Core.csproj">
+    <ProjectReference Include="..\Julmar.Core\Julmar.Core %283.5%29.csproj">
       <Project>{DDB17800-0841-47A1-8AF6-89DAB38DAE98}</Project>
-      <Name>Julmar.Core</Name>
+      <Name>Julmar.Core %283.5%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

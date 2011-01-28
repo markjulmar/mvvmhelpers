@@ -119,7 +119,7 @@ namespace JulMar.Core.Undo
             // If tracking undos, then add them to our list.
             if (_trackedUndoSet != null)
             {
-                _trackedUndoSet.AddRange(undoList);
+                _trackedUndoSet.AddRange(undoList.Cast<ISupportUndo>());
             }
             // Or add them directly to the undo manager
             else

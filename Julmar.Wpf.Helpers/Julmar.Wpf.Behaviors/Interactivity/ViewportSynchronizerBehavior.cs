@@ -106,6 +106,10 @@ namespace JulMar.Windows.Interactivity
                 this.ViewportHeight = _scrollViewer.ViewportHeight;
                 this.ViewportWidth = _scrollViewer.ViewportWidth;
 
+                // Position the scrollbar based on the current values.
+                _scrollViewer.ScrollToVerticalOffset(VerticalOffset);
+                _scrollViewer.ScrollToHorizontalOffset(HorizontalOffset);
+
                 _scrollViewer.ScrollChanged += ScrollViewerScrollChanged;
                 _scrollViewer.SizeChanged += ScrollViewerSizeChanged;
                 return true;
