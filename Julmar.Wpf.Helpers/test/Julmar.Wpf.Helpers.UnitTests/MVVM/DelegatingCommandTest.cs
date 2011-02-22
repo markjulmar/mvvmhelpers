@@ -1,4 +1,6 @@
-﻿using JulMar.Windows.Mvvm;
+﻿using System;
+using System.Threading;
+using JulMar.Windows.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows.Input;
 
@@ -69,5 +71,113 @@ namespace JulMar.Wpf.Helpers.UnitTests
         {
             calledAction = (int) parameter;
         }
+
+        class CommandListener
+        {
+            private Action work;
+            public CommandListener(Action work)
+            {
+                this.work = work;
+            }
+
+            public void OnCanExecuteChanged(object sender, EventArgs e)
+            {
+                work();
+            }
+        }
+
+        class MyTest
+        {
+            public int ExecuteCalls = 0;
+
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void DoWork(object parameter)
+            {
+                ExecuteCalls++;
+            }
+        }
+
+        [TestMethod]
+        public void TestNoCommandManager()
+        {
+            int CanExecuteCalls = 0;
+            CommandListener listener = new CommandListener(() => CanExecuteCalls++);
+            MyTest test = new MyTest();
+            DelegatingCommand command = new DelegatingCommand(test.DoWork, test.CanExecute, false);
+            command.CanExecuteChanged += listener.OnCanExecuteChanged;
+
+            CommandManager.InvalidateRequerySuggested();
+            DispatcherUtil.DoEvents();
+            command.Execute(null);
+            Assert.AreEqual(1, test.ExecuteCalls);
+            Assert.AreEqual(0, CanExecuteCalls);
+
+            command.RaiseCanExecuteChanged();
+            Assert.AreEqual(1, CanExecuteCalls);
+        }
+
+        [TestMethod]
+        public void TestCommandManager()
+        {
+            int CanExecuteCalls = 0;
+            CommandListener listener = new CommandListener(() => CanExecuteCalls++);
+            MyTest test = new MyTest();
+            DelegatingCommand command = new DelegatingCommand(test.DoWork, test.CanExecute, true);
+            command.CanExecuteChanged += listener.OnCanExecuteChanged;
+
+            command.Execute(null);
+            DispatcherUtil.DoEvents();
+            Assert.AreEqual(1, test.ExecuteCalls);
+            Assert.AreEqual(0, CanExecuteCalls);
+
+            CommandManager.InvalidateRequerySuggested();
+            DispatcherUtil.DoEvents();
+            Assert.AreEqual(1, test.ExecuteCalls);
+            Assert.AreEqual(1, CanExecuteCalls);
+        }
+
+        [TestMethod]
+        public void TestSwapToCommandManager()
+        {
+            int CanExecuteCalls = 0;
+            CommandListener listener = new CommandListener(() => Interlocked.Increment(ref CanExecuteCalls));
+            MyTest test = new MyTest();
+            DelegatingCommand command = new DelegatingCommand(test.DoWork, test.CanExecute, false);
+
+            command.CanExecuteChanged += listener.OnCanExecuteChanged;
+            Assert.AreEqual(0, CanExecuteCalls);
+
+            command.RaiseCanExecuteChanged();
+            Assert.AreEqual(1, CanExecuteCalls);
+
+            CommandManager.InvalidateRequerySuggested();
+            DispatcherUtil.DoEvents();
+            Assert.AreEqual(1, CanExecuteCalls);
+
+            command.RaiseCanExecuteChanged();
+            Assert.AreEqual(2, CanExecuteCalls);
+
+            CommandManager.InvalidateRequerySuggested();
+            DispatcherUtil.DoEvents();
+            Assert.AreEqual(2, CanExecuteCalls);
+
+            command.AutoCanExecuteRequery = true;
+            CommandManager.InvalidateRequerySuggested();
+            DispatcherUtil.DoEvents();
+            Assert.AreEqual(3, CanExecuteCalls);
+
+            command.RaiseCanExecuteChanged();
+            Assert.AreEqual(4, CanExecuteCalls);
+
+            command.AutoCanExecuteRequery = false;
+            CommandManager.InvalidateRequerySuggested();
+            DispatcherUtil.DoEvents();
+            Assert.AreEqual(4, CanExecuteCalls);
+        }
+
     }
 }

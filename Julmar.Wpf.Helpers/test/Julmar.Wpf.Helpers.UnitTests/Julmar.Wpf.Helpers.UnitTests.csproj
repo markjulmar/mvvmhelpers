@@ -102,6 +102,7 @@
     <Compile Include="Core\CollectionExtensionMoveTests.cs" />
     <Compile Include="Core\CollectionExtensionSwapTests.cs" />
     <Compile Include="Converters\ArrayToStringConverterTest.cs" />
+    <Compile Include="DispatcherUtil.cs" />
     <Compile Include="Extensions\CollectionExtensionsTest.cs" />
     <Compile Include="Core\CollectionObserverTest.cs" />
     <Compile Include="MVVM\DelegatingCommandTest.cs" />

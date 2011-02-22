@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -19,6 +22,32 @@ namespace JulMar.Windows.Mvvm
         protected void OnPropertyChanged()
         {
             PropertyChanged(this, new PropertyChangedEventArgs(string.Empty));
+        }
+
+        /// <summary>
+        /// This raises the INotifyPropertyChanged.PropertyChanged event to indicate
+        /// a specific property has changed value. This version provides a compile-time safe
+        /// way to indicate the property through the use of an expression tree / lambda.
+        /// </summary>
+        /// <example>
+        /// <![CDATA[
+        ///    public string Name
+        ///    {
+        ///       get { return _name; }
+        ///       set
+        ///       {
+        ///           _name = value;
+        ///           OnPropertyChanged(() => Name);
+        ///       }
+        ///    }
+        /// ]]>
+        /// </example>
+        /// <typeparam name="T">Type where it is being raised</typeparam>
+        /// <param name="propExpr">Property</param>
+        protected virtual void OnPropertyChanged<T>(Expression<Func<T>> propExpr)
+        {
+            var prop = (PropertyInfo)((MemberExpression)propExpr.Body).Member;
+            PropertyChanged(this, new PropertyChangedEventArgs(prop.Name));
         }
 
         /// <summary>
