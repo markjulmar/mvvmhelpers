@@ -94,3 +94,8 @@ Added Swap and Move extensions to IList collections
 
 4.02 1/2011
 Added option to defer collection change UNDO records into a group for global undo.  BeginDefer/EndDefer on CollectionUndoObserver.
+
+4.03 2/2011
+Added flag to turn off CommandManager.RequerySuggested if VM wants to handle it directly.
+Added lambda version of OnNotifyPropertyChanged per request
+Unit tests for above.
