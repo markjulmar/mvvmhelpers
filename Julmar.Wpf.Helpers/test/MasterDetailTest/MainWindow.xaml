@@ -1,0 +1,59 @@
+﻿<Window x:Class="MasterDetailTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:julmar="http://www.julmar.com/wpfhelpers" 
+        xmlns:ViewModels="clr-namespace:MasterDetailTest.ViewModels" 
+        mc:Ignorable="d" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display"
+        Title="MainWindow" Height="400" Width="500"
+        DataContext="{julmar:ViewModelCreator ViewModelType={x:Type ViewModels:MainViewModel}}">
+
+    <Window.Resources>
+		<DataTemplate x:Key="PurchaseOrdersItemTemplate">
+			<Border Padding="4" Background="#FFC8C8C8" BorderBrush="Black" CornerRadius="3" BorderThickness="2" Margin="5">
+				<UniformGrid Columns="1">
+					<TextBlock Text="{Binding CustomerName}" FontWeight="Bold" />
+                    <TextBlock Text="{Binding OrderDate}" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding Email}"  TextTrimming="CharacterEllipsis" />
+				</UniformGrid>
+			</Border>
+		</DataTemplate>
+		<DataTemplate x:Key="OrderDetailsTemplate">
+			<StackPanel Orientation="Vertical" Margin="5">
+				<TextBlock TextWrapping="Wrap" Text="{Binding InventoryId, StringFormat='Inventory Id: {0}'}" FontWeight="Bold" Foreground="Maroon"/>
+				<TextBlock TextWrapping="Wrap" Text="{Binding Description}"/>
+			</StackPanel>
+		</DataTemplate>
+
+        <julmar:DeferredBinder x:Key="selectionDelay" Timeout="1"
+                 Source="{Binding SelectedOrder.OrderDetails, Mode=OneWay}"/>
+
+    </Window.Resources>
+    
+    <Grid d:DataContext="{Binding Source={StaticResource PODataSource}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+    	<Grid.ColumnDefinitions>
+    		<ColumnDefinition Width="*"/>
+    		<ColumnDefinition Width="*"/>
+    	</Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.ColumnSpan="2" TextWrapping="Wrap" FontSize="9pt" Foreground="White" Background="Black" Padding="5">
+            <Run>
+                This test program has a deliberate 2s delay in reading the child collection.  To allow the master list to 
+                do quicker selection, it uses the DeferredBinder to ensure the delay does not stop the UI. The deferred binder
+                should wait 1 second before actually attempting to retrieve the child collection.
+            </Run>
+        </TextBlock>
+        
+    	<ListBox Grid.Row="1" Margin="8" ItemTemplate="{DynamicResource PurchaseOrdersItemTemplate}" ItemsSource="{Binding PurchaseOrders}" 
+                 SelectedItem="{Binding SelectedOrder, Mode=OneWayToSource}" HorizontalContentAlignment="Stretch"/>
+
+        <ListBox Grid.Row="1" Grid.Column="1" Margin="8" ItemTemplate="{DynamicResource OrderDetailsTemplate}"
+                 ItemsSource="{Binding Source={StaticResource selectionDelay}, Path=Target}"/>
+        
+    </Grid>
+</Window>

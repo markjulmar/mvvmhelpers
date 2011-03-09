@@ -126,7 +126,8 @@ namespace JulMar.Windows.UI
 
             lock(_registeredWindows)
             {
-                _registeredWindows.Add(key, winType);
+                if (!_registeredWindows.ContainsKey(key))
+                    _registeredWindows.Add(key, winType);
             }
         }
 
@@ -180,7 +181,31 @@ namespace JulMar.Windows.UI
         /// <returns>True/False if UI is displayed</returns>
         public bool Show(string key, object state, bool setOwner, EventHandler<UICompletedEventArgs> completedProc)
         {
-            Window win = CreateWindow(key, state, setOwner, completedProc, false);
+            return Show(key, state, setOwner ? Application.Current.MainWindow : null, completedProc);
+        }
+
+        /// <summary>
+        /// This method displays a modal dialog associated with the given key.
+        /// </summary>
+        /// <param name="key">Key previously registered with the UI controller.</param>
+        /// <param name="state">Object state to associate with the dialog</param>
+        /// <returns>True/False if UI is displayed.</returns>
+        public bool? ShowDialog(string key, object state)
+        {
+            return ShowDialog(key, state, Application.Current.MainWindow);
+        }
+
+        /// <summary>
+        /// This method displays a modaless dialog associated with the given key.
+        /// </summary>
+        /// <param name="key">Key previously registered with the UI controller.</param>
+        /// <param name="state">Object state to associate with the dialog</param>
+        /// <param name="owner">owner for the window</param>
+        /// <param name="completedProc">Callback used when UI closes (may be null)</param>
+        /// <returns>True/False if UI is displayed</returns>
+        public bool Show(string key, object state, object owner, EventHandler<UICompletedEventArgs> completedProc)
+        {
+            Window win = CreateWindow(key, state, owner as Window, completedProc, false);
             if (win != null)
             {
                 win.Show();
@@ -194,13 +219,22 @@ namespace JulMar.Windows.UI
         /// </summary>
         /// <param name="key">Key previously registered with the UI controller.</param>
         /// <param name="state">Object state to associate with the dialog</param>
+        /// <param name="owner">Owner for the window</param>
         /// <returns>True/False if UI is displayed.</returns>
-        public bool? ShowDialog(string key, object state)
+        public bool? ShowDialog(string key, object state, object owner)
         {
-            Window win = CreateWindow(key, state, false, null, true);
+            Window wOwner = owner as Window;
+            Window win = CreateWindow(key, state, wOwner, null, true);
             if (win != null)
-                return win.ShowDialog();
-            
+            {
+                bool? result = win.ShowDialog();
+                if (wOwner != null)
+                {
+                    wOwner.Activate();
+                    wOwner.Focus();
+                }
+                return result;
+            }
             return false;
         }
 
@@ -209,11 +243,11 @@ namespace JulMar.Windows.UI
         /// </summary>
         /// <param name="key">Key</param>
         /// <param name="dataContext">DataContext (state) object</param>
-        /// <param name="setOwner">True/False to set ownership to MainWindow</param>
+        /// <param name="owner">Owner for the window</param>
         /// <param name="completedProc">Callback</param>
         /// <param name="isModal">True if this is a ShowDialog request</param>
         /// <returns>Success code</returns>
-        private Window CreateWindow(string key, object dataContext, bool setOwner, EventHandler<UICompletedEventArgs> completedProc, bool isModal)
+        private Window CreateWindow(string key, object dataContext, Window owner, EventHandler<UICompletedEventArgs> completedProc, bool isModal)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("key");
@@ -231,8 +265,7 @@ namespace JulMar.Windows.UI
 
             // Create the top level window
             var win = (Window) Activator.CreateInstance(winType);
-            if (setOwner)
-                win.Owner = Application.Current.MainWindow;
+            win.Owner = owner;
 
             // Register the view with MEF to resolve any imports.
             var dynamicLoader = ViewModel.ServiceProvider.Resolve<IDynamicResolver>();
@@ -282,11 +315,15 @@ namespace JulMar.Windows.UI
 
             if (completedProc != null)
             {
-                win.Closed +=
-                    (s, e) =>
-                    completedProc(this,
-                                  new UICompletedEventArgs { State = dataContext, Result = (isModal) ? win.DialogResult : null });
-
+                win.Closed += (s, e) =>
+                {
+                    completedProc(this, new UICompletedEventArgs { State = dataContext, Result = (isModal) ? win.DialogResult : null });
+                    if (owner != null)
+                    {
+                        owner.Activate();
+                        owner.Focus();
+                    }
+                };
             }
 
             return win;

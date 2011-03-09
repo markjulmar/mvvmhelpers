@@ -74,5 +74,24 @@ namespace JulMar.Windows.Interfaces
         /// <param name="state">Object state to associate with the dialog</param>
         /// <returns>True/False if UI is displayed.</returns>
         bool? ShowDialog(string key, object state);
+
+        /// <summary>
+        /// This method displays a modaless dialog associated with the given key.
+        /// </summary>
+        /// <param name="key">Key previously registered with the UI controller.</param>
+        /// <param name="state">Object state to associate with the dialog</param>
+        /// <param name="owner">owner for the window</param>
+        /// <param name="completedProc">Callback used when UI closes (may be null)</param>
+        /// <returns>True/False if UI is displayed</returns>
+        bool Show(string key, object state, object owner, EventHandler<UICompletedEventArgs> completedProc);
+
+        /// <summary>
+        /// This method displays a modal dialog associated with the given key.
+        /// </summary>
+        /// <param name="key">Key previously registered with the UI controller.</param>
+        /// <param name="state">Object state to associate with the dialog</param>
+        /// <param name="owner">Owner for the window</param>
+        /// <returns>True/False if UI is displayed.</returns>
+        bool? ShowDialog(string key, object state, object owner);
     }
 }

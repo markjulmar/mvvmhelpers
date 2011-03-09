@@ -99,3 +99,9 @@ Added option to defer collection change UNDO records into a group for global und
 Added flag to turn off CommandManager.RequerySuggested if VM wants to handle it directly.
 Added lambda version of OnNotifyPropertyChanged per request
 Unit tests for above.
+
+4.04 3/2011
+Changed MEF resolution code to allow custom catalogs to be used for resolving dependencies.
+Added Range class for Parallel programming
+Added ListView sorting behavior
+Added 2 overrides for IUIVisualizer.Show and ShowDialog to pass object owner for explicit window ownership management (to be used by view, not VM).

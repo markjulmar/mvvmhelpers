@@ -1,0 +1,11 @@
+﻿<Window x:Class="MultiWindowTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Top-Level Window" Height="200" Width="300">
+    <StackPanel>
+        <Button Content="Create Modal Window" Margin="5" Click="OnCreateNewModalWindow" />
+        <Button Content="Create New Modaless Window" Margin="5" Click="OnCreateNewModalessWindow" />
+        <Button Content="Create New Modal Child Window" Margin="5" Click="OnCreateNewModalChildWindow" />
+        <Button Content="Create New Modaless Child Window" Margin="5" Click="OnCreateNewModalessChildWindow" />
+    </StackPanel>
+</Window>

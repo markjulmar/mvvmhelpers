@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ItemsControlDragDropBehavior.TestApp.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Interaction="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:DragDrop="clr-namespace:JulMar.Windows.Interactivity;assembly=Julmar.Wpf.Behaviors" 
+    xmlns:Interaction="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:julmar="http://www.julmar.com/wpfhelpers" 
     Title="Drag Drop Test">
     <Window.Resources>
         <DataTemplate x:Key="listBoxDataTemplate" DataType="Product">
@@ -34,7 +34,7 @@
 
         <ListBox Margin="10" ItemTemplate="{StaticResource listBoxDataTemplate}" ItemsSource="{Binding Products}" SelectionMode="Multiple" >
             <Interaction:Interaction.Behaviors>
-                <DragDrop:ItemsControlDragDropBehavior DragInitiated="OnDragInitiated" AllowOnlySelf="false" DropInitiated="OnMultiSelectDropInitiated"
+                <julmar:ItemsControlDragDropBehavior DragInitiated="OnDragInitiated" AllowOnlySelf="false" DropInitiated="OnMultiSelectDropInitiated"
                                                         DragTemplate="{StaticResource listBoxDataTemplate}" />
             </Interaction:Interaction.Behaviors>
             <ListBox.ItemContainerStyle>
@@ -46,15 +46,16 @@
 
         <ListBox Margin="10" Grid.Column="1" ItemTemplate="{StaticResource listViewItemTemplate}">
             <Interaction:Interaction.Behaviors>
-                <DragDrop:ItemsControlDragDropBehavior AllowOnlySelf="true"
+                <julmar:ItemsControlDragDropBehavior AllowOnlySelf="true"
                                                        DragTemplate="{StaticResource listBoxDataTemplate}" />
             </Interaction:Interaction.Behaviors>
         </ListBox>
 
         <ListView Margin="10" Grid.Row="1" Grid.ColumnSpan="2">
             <Interaction:Interaction.Behaviors>
-                <DragDrop:ItemsControlDragDropBehavior DragTemplate="{StaticResource listViewItemTemplate}"
+                <julmar:ItemsControlDragDropBehavior DragTemplate="{StaticResource listViewItemTemplate}"
                                                         DropEnter="OnDropEnter" DropInitiated="OnDropInitiated" />
+                <julmar:ListViewSortBehavior InitialColumnIndex="2" SortDirection="Descending" ArrowFill="SkyBlue" />
             </Interaction:Interaction.Behaviors>
             <ListView.View>
                 <GridView>

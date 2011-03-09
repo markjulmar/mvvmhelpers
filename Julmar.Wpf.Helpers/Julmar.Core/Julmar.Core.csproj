@@ -78,6 +78,7 @@
     <Compile Include="CollectionObserver.cs" />
     <Compile Include="Collections\ElementChangedEventArgs.cs" />
     <Compile Include="Concurrency\ObjectLockExtensions.cs" />
+    <Compile Include="Concurrency\Range.cs" />
     <Compile Include="Concurrency\ReaderWriterLockSlimExtensions.cs" />
     <Compile Include="Interfaces\IThreadedNotifyCollection.cs" />
     <Compile Include="ExportServiceAttribute.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Interfaces\IUndoService.cs" />
     <Compile Include="Interfaces\IServiceProviderEx.cs" />
     <Compile Include="Interfaces\IServiceProviderMetadata.cs" />
+    <Compile Include="Composition\FilteredCatalog.cs" />
     <Compile Include="Services\MefComposer.cs" />
     <Compile Include="Services\MessageMediator.cs" />
     <Compile Include="Collections\ObservableDictionary.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Services\ServiceLocator.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Collections\ThreadedCollection.cs" />
+    <Compile Include="SystemInfo.cs" />
     <Compile Include="Undo\CollectionChangeUndo.cs" />
     <Compile Include="Undo\CollectionChangeUndoObserver.cs" />
     <Compile Include="Undo\DelegateUndo.cs" />

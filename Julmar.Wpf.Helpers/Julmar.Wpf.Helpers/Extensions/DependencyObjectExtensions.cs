@@ -133,7 +133,7 @@ namespace JulMar.Windows.Extensions
         }
 
         /// <summary>
-        /// A simple iterator method to expose the visual tree to LINQ (parent to child)
+        /// A simple iterator method to expose the visual tree to LINQ (parent to child).
         /// </summary>
         /// <param name="start">Starting root</param>
         /// <param name="predicate">Predicate called for each item to provide filter (can be null)</param>
@@ -142,11 +142,17 @@ namespace JulMar.Windows.Extensions
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(start); i++)
             {
-                var child = VisualTreeHelper.GetChild(start, i) as T;
+                var rawChild = VisualTreeHelper.GetChild(start, i);
+                var child = rawChild as T;
                 if (child != null && (predicate == null || predicate(child)))
                 {
                     yield return child;
                     foreach (var childOfChild in EnumerateVisualTree(child, predicate))
+                        yield return childOfChild;
+                }
+                else if (child == null)
+                {
+                    foreach (var childOfChild in EnumerateVisualTree(rawChild, predicate))
                         yield return childOfChild;
                 }
             }

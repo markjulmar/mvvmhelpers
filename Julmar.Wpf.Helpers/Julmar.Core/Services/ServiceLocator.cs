@@ -30,7 +30,7 @@ namespace JulMar.Core.Services
         /// <summary>
         /// The MEF loader.
         /// </summary>
-        private IDynamicResolver _mefResolver = IoCComposer.Instance;
+        private IDynamicResolver _mefResolver = MefComposer.Instance;
 
         /// <summary>
         /// Key used to bind exports together

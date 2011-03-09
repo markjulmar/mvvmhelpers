@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using JulMar.Core;
 
 namespace JulMar.Windows.Interactivity
 {
