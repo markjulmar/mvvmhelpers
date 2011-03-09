@@ -132,7 +132,6 @@
     <Compile Include="Mvvm\ViewModelLocator.cs" />
     <Compile Include="Mvvm\ViewModelTrigger.cs" />
     <Compile Include="Validations\ValidatingViewModel.cs" />
-    <Compile Include="SystemInfo.cs" />
     <Compile Include="UI\MessageVisualizer.cs" />
     <Compile Include="UI\TextPath.cs" />
     <Compile Include="Mvvm\ViewModel.cs" />
