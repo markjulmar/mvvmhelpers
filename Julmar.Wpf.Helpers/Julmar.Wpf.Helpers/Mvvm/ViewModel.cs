@@ -3,6 +3,7 @@ using System.Windows.Threading;
 using JulMar.Core.Interfaces;
 using JulMar.Core.Services;
 using System.Windows;
+using JulMar.Windows.Extensions;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -225,6 +226,15 @@ namespace JulMar.Windows.Mvvm
             }
             else
                 action();
+        }
+
+        /// <summary>
+        /// Returns true if we are currently in design mode.
+        /// Useful for design-time property return tests.
+        /// </summary>
+        protected bool InDesignMode
+        {
+            get { return Designer.InDesignMode; }
         }
 
         #region IDisposable Members

@@ -29,7 +29,7 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="textBox"></param>
         /// <returns>True/FalseB</returns>
-        public static bool GetIsEnabled(DependencyObject textBox)
+        public static bool GetIsEnabled(TextBox textBox)
         {
             return (bool)textBox.GetValue(IsEnabledProperty);
         }
@@ -39,7 +39,7 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="textBox">TextBox to apply</param>
         /// <param name="value">True/False</param>
-        public static void SetIsEnabled(DependencyObject textBox, bool value)
+        public static void SetIsEnabled(TextBox textBox, bool value)
         {
             textBox.SetValue(IsEnabledProperty, value);
         }

@@ -91,6 +91,7 @@
     <Compile Include="Interactivity\ClickTrigger.cs" />
     <Compile Include="Interactivity\CloseWindowBehavior.cs" />
     <Compile Include="Interactivity\CommandEventTrigger.cs" />
+    <Compile Include="Interactivity\MaskedTextBoxBehavior.cs" />
     <Compile Include="Interactivity\DataGridRowDragBehavior.cs" />
     <Compile Include="Interactivity\DataGridRowIndexBehavior.cs" />
     <Compile Include="Interactivity\DeferredScrollBehavior.cs" />

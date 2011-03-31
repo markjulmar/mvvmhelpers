@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.Windows;
 
 namespace JulMar.Windows.Interfaces
 {
@@ -10,19 +11,19 @@ namespace JulMar.Windows.Interfaces
         /// <summary>
         /// OK button
         /// </summary>
-        OK = 0,
+        OK,
         /// <summary>
         /// OK + Cancel buttons
         /// </summary>
-        OKCancel = 1,
+        OKCancel,
         /// <summary>
         /// Yes + No + Cancel buttons
         /// </summary>
-        YesNoCancel = 3,
+        YesNoCancel,
         /// <summary>
         /// Yes + No buttons
         /// </summary>
-        YesNo = 4,
+        YesNo,
     }
 
     /// <summary>
@@ -33,23 +34,88 @@ namespace JulMar.Windows.Interfaces
         /// <summary>
         /// No result - dialog closed without button
         /// </summary>
-        None = 0,
+        None,
         /// <summary>
         /// OK button clicked to dismiss dialog
         /// </summary>
-        OK = 1,
+        OK,
         /// <summary>
         /// Cancel button clicked to dismiss dialog
         /// </summary>
-        Cancel = 2,
+        Cancel,
         /// <summary>
         /// Yes button clicked to dismiss dialog
         /// </summary>
-        Yes = 6,
+        Yes,
         /// <summary>
         /// No button clicked to dismiss dialog
         /// </summary>
-        No = 7
+        No
+    }
+
+    /// <summary>
+    /// Icon to use
+    /// </summary>
+    public enum MessageIcon
+    {
+        /// <summary>
+        /// No icon
+        /// </summary>
+        None,
+        /// <summary>
+        /// Error icon
+        /// </summary>
+        Error,
+        /// <summary>
+        /// Question icon
+        /// </summary>
+        Question,
+        /// <summary>
+        /// Warning icon
+        /// </summary>
+        Warning,
+        /// <summary>
+        /// Information icon
+        /// </summary>
+        Information,
+    }
+
+    /// <summary>
+    /// Options passed to IMessageVisualizer.  Can create derived class to pass
+    /// custom data into private implementation.
+    /// </summary>
+    public class MessageVisualizerOptions
+    {
+        /// <summary>
+        /// Window Owner
+        /// </summary>
+        public Window Owner { get; set; }
+
+        /// <summary>
+        /// Icon to use
+        /// </summary>
+        public MessageIcon Icon { get; set; }
+
+        /// <summary>
+        /// Prompt to use
+        /// </summary>
+        public MessageButtons Prompt { get; set; }
+
+        /// <summary>
+        /// Default choice for dismissal
+        /// </summary>
+        public MessageResult DefaultPrompt { get; set; }
+
+        /// <summary>
+        /// Constructor to create simple prompt
+        /// </summary>
+        public MessageVisualizerOptions()
+        {
+            Owner = null;
+            Icon = MessageIcon.None;
+            Prompt = MessageButtons.OK;
+            DefaultPrompt = MessageResult.OK;
+        }
     }
 
     /// <summary>
@@ -65,6 +131,15 @@ namespace JulMar.Windows.Interfaces
         /// <param name="message">Message</param>
         /// <param name="buttons">Buttons to dismiss box</param>
         /// <returns>Result</returns>
-        MessageResult Show(string title, string message, MessageButtons buttons);        
+        MessageResult Show(string title, string message, MessageButtons buttons);
+
+        /// <summary>
+        /// This displays a message to the user and prompts for a selection.
+        /// </summary>
+        /// <param name="title">Title</param>
+        /// <param name="message">Message</param>
+        /// <param name="visualizerOptions">Optional parameters</param>
+        /// <returns>Result</returns>
+        MessageResult Show(string title, string message, MessageVisualizerOptions visualizerOptions);
     }
 }

@@ -47,6 +47,7 @@
         <TextBox Text="{Binding Title}" julmar:HelpProvider.Keyword="Title">
         	<Interactivity:Interaction.Behaviors>
         		<julmar:WatermarkTextBoxBehavior Text="Enter the Title Here"/>
+                <julmar:MaskedTextBoxBehavior Mask="^\D*$" />
         	</Interactivity:Interaction.Behaviors>
             <TextBox.Style>
                 <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">

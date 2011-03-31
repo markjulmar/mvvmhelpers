@@ -2,7 +2,6 @@ using System.Windows;
 using JulMar.Core;
 using JulMar.Windows.Interfaces;
 using System;
-using JulMar.Windows.Mvvm;
 
 namespace JulMar.Windows.UI
 {
@@ -21,7 +20,7 @@ namespace JulMar.Windows.UI
         {
             try
             {
-                MessageBox.Show(message, title, MessageBoxButton.OK);
+                MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 return true;
             }
             catch (InvalidOperationException)
