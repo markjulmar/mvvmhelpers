@@ -82,6 +82,7 @@
     <Compile Include="Concurrency\ObjectLockExtensions.cs" />
     <Compile Include="Concurrency\Range.cs" />
     <Compile Include="Concurrency\ReaderWriterLockSlimExtensions.cs" />
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Interfaces\IThreadedNotifyCollection.cs" />
     <Compile Include="ExportServiceAttribute.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
