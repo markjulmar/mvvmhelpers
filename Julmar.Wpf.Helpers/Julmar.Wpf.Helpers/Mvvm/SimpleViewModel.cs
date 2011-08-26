@@ -28,6 +28,8 @@ namespace JulMar.Windows.Mvvm
         /// This raises the INotifyPropertyChanged.PropertyChanged event to indicate
         /// a specific property has changed value. This version provides a compile-time safe
         /// way to indicate the property through the use of an expression tree / lambda.
+        /// Be aware that for high-volume changes this version might be much slower than
+        /// the above "magic-string" version due to the creation of an expression and runtime lookup.
         /// </summary>
         /// <example>
         /// <![CDATA[
@@ -63,7 +65,9 @@ namespace JulMar.Windows.Mvvm
             if (propertyNames != null)
             {
                 foreach (var propName in propertyNames)
+                {
                     OnPropertyChanged(propName);
+                }
             }
         }
 

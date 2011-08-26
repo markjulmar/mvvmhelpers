@@ -21,16 +21,10 @@ namespace JulMar.Windows.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool flag = false;
-            if (value is bool)
+            if (value != null && value is bool)
             {
                 flag = (bool)value;
             }
-            else if (value is bool?)
-            {
-                bool? nullable = (bool?)value;
-                flag = nullable.HasValue ? nullable.Value : false;
-            }
-
             return !flag;
         }
 

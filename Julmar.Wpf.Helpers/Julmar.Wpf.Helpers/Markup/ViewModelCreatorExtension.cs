@@ -51,7 +51,7 @@ namespace JulMar.Windows.Markup
         }
 
         /// <summary>
-        /// Parameterized constructor
+        /// Constructor that takes a specific type
         /// </summary>
         /// <param name="runtimeType">Type to create</param>
         public ViewModelCreatorExtension(Type runtimeType) : this()
@@ -98,7 +98,7 @@ namespace JulMar.Windows.Markup
             {
                 // If we are in design mode, then don't allow the exception to propagate out
                 // It kills the design surface.
-                if (Designer.InDesignMode == true)
+                if (Designer.InDesignMode)
                     return null;
                 
                 // Otherwise throw it

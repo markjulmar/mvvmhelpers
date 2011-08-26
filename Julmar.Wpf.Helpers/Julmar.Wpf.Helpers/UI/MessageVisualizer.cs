@@ -62,10 +62,7 @@ namespace JulMar.Windows.UI
                     return MessageBoxButton.YesNoCancel;
                 case MessageButtons.YesNo:
                     return MessageBoxButton.YesNo;
-                default:
-                    break;
             }
-
             return MessageBoxButton.OK;
         }
 
@@ -81,8 +78,6 @@ namespace JulMar.Windows.UI
                     return MessageBoxResult.Yes;
                 case MessageResult.No:
                     return MessageBoxResult.No;
-                default:
-                    break;
             }
             return MessageBoxResult.None;
         }
@@ -99,8 +94,6 @@ namespace JulMar.Windows.UI
                     return MessageResult.Yes;
                 case MessageBoxResult.No:
                     return MessageResult.No;
-                default:
-                    break;
             }
             return MessageResult.None;
         }

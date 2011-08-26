@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>Expando ViewModel</Title>
+      <Author>Mark Smith</Author>
+      <Description>ViewModel that uses .NET 4.0 ExpandoObject for backing storage</Description>
+      <HelpUrl>http://mvvmhelpers.codeplex.com</HelpUrl>
+      <Shortcut>expandovm</Shortcut>
+    </Header>
+    <Snippet>
+      <Imports>
+        <Import>
+          <Namespace>System.ComponentModel</Namespace>
+        </Import>
+        <Import>
+          <Namespace>System.Dynamic</Namespace>
+        </Import>
+      </Imports>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>type</ID>
+          <ToolTip>Property type</ToolTip>
+          <Default>bool</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>datastoreName</ID>
+          <ToolTip>DataStore name</ToolTip>
+          <Default>_dataStore</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>className</ID>
+          <ToolTip>Class Name</ToolTip>
+          <Default>SomeViewModel</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>propertyName</ID>
+          <ToolTip>Property name</ToolTip>
+          <Default>SomeProperty</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+  <![CDATA[/// <summary>
+/// $className$
+/// </summary>
+    public class $className$ : INotifyPropertyChanged
+    {
+        private readonly dynamic $datastoreName$;
+
+        public $className$()
+        {
+            $datastoreName$ = new ExpandoObject();
+            ((INotifyPropertyChanged) $datastoreName$).PropertyChanged += (s, e) => PropertyChanged(this, e);
+        }
+
+        /// <summary>
+        /// $propertyName$
+        /// </summary>
+        public $type$ $propertyName$
+        {
+            get { return $datastoreName$.$propertyName$; }
+            set { $datastoreName$.$propertyName$ = value; }
+        }
+
+        #region INotifyPropertyChanged implementation
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        #endregion
+    }
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

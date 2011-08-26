@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>Full Dependency Property</Title>
+      <Author>Mark Smith</Author>
+      <Description>Creates a full dependency property with coercian</Description>
+      <HelpUrl>http://mvvmhelpers.codeplex.com</HelpUrl>
+      <Shortcut>wpfdpfull</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>propertyName</ID>
+          <ToolTip>Property Name</ToolTip>
+          <Default>IsSomeProperty</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>propertyType</ID>
+          <ToolTip>Property Type</ToolTip>
+          <Default>bool</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>ownerclass</ID>
+          <ToolTip>The owning class for this property</ToolTip>
+          <Default>ownerclass</Default>
+          <Function>ClassName()</Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>defaultValue</ID>
+          <ToolTip>The default value for this property.</ToolTip>
+          <Default>true</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>options</ID>
+          <ToolTip>The options for this dependency property</ToolTip>
+          <Default>.None</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[/// <summary>
+/// $propertyName$ Dependency Property
+/// </summary>
+public static readonly DependencyProperty $propertyName$Property =
+    DependencyProperty.Register("$propertyName$", typeof($propertyType$), typeof($ownerclass$),
+        new FrameworkPropertyMetadata(($propertyType$)$defaultValue$, FrameworkPropertyMetadataOptions$options$,
+            new PropertyChangedCallback(On$propertyName$Changed), new CoerceValueCallback(Coerce$propertyName$Value)));
+
+/// <summary>
+/// Gets or sets the $propertyName$ property. 
+/// </summary>
+public $propertyType$ $propertyName$
+{
+    get { return ($propertyType$)GetValue($propertyName$Property); }
+    set { SetValue($propertyName$Property, value); }
+}
+
+/// <summary>
+/// Handles changes to the $propertyName$ property.
+/// </summary>
+private static void On$propertyName$Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+{
+    (($ownerclass$)d).On$propertyName$Changed(e);
+}
+
+/// <summary>
+/// Handler for changes to the $propertyName$ property.
+/// </summary>
+protected virtual void On$propertyName$Changed(DependencyPropertyChangedEventArgs e)
+{
+}
+
+/// <summary>
+/// Coerces the $propertyName$ value.
+/// </summary>
+private static object Coerce$propertyName$Value(DependencyObject d, object value)
+{
+    return value;
+}
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

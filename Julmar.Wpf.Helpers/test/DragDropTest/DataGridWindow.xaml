@@ -1,0 +1,28 @@
+﻿<Window x:Class="ItemsControlDragDropBehavior.TestApp.DataGridWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Custom="http://www.julmar.com/wpfhelpers" 
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" Title="DatagridWindow" Height="300" Width="300">
+
+    <Window.Resources>
+
+        <DataTemplate x:Key="DragTemplate">
+            <Border BorderBrush="Black" BorderThickness="2" Background="White" Padding="20,5">
+                <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+            </Border>
+        </DataTemplate>
+
+    </Window.Resources>
+
+    <Grid>
+        <DataGrid Margin="10" ItemsSource="{Binding Products}" AutoGenerateColumns="True" CanUserAddRows="False" 
+                  IsReadOnly="True" CanUserDeleteRows="False" CanUserResizeRows="False" CanUserSortColumns="True">
+            <i:Interaction.Behaviors>
+                <Custom:ItemsControlDragDropBehavior 
+                        DragTemplate="{StaticResource DragTemplate}"
+                        AllowOnlySelf="True"/>
+            </i:Interaction.Behaviors>
+        </DataGrid>
+
+    </Grid>
+</Window>

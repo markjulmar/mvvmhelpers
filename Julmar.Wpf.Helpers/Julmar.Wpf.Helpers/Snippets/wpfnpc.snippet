@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>INotifyPropertyChanged</Title>
+      <Author>Mark Smith</Author>
+      <Description>Adds raw INotifyPropertyChanged implementation</Description>
+      <HelpUrl>http://mvvmhelpers.codeplex.com</HelpUrl>
+      <Shortcut>wpfnpc</Shortcut>
+    </Header>
+    <Snippet>
+      <Imports>
+        <Import>
+          <Namespace>
+            System.ComponentModel
+          </Namespace>
+        </Import>
+        <Import>
+          <Namespace>
+            JulMar.Windows.Mvvm.Helpers
+          </Namespace>
+        </Import>
+      </Imports>
+      <Code Language="csharp"><![CDATA[public event PropertyChangedEventHandler PropertyChanged = delegate {};
+protected void OnPropertyChanged(string name)
+{
+    System.Diagnostics.Debug.Assert(string.IsNullOrEmpty(name) || GetType().GetProperty(name) != null);
+    PropertyChanged(this, new PropertyChangedEventArgs(name));
+}
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

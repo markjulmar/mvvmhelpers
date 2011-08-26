@@ -10,7 +10,7 @@ namespace JulMar.Windows.Behaviors
     public static class PasswordBoxHelper
     {
         // Internal property
-        static readonly DependencyProperty _UpdatingProperty = DependencyProperty.RegisterAttached("_UpdatingPwd", typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false));
+        static readonly DependencyProperty UpdatingProperty = DependencyProperty.RegisterAttached("_UpdatingPwd", typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false));
 
         #region Text Property
         /// <summary>
@@ -54,7 +54,7 @@ namespace JulMar.Windows.Behaviors
             passwordBox.PasswordChanged -= HandlePasswordChanged;
 
             // Set the value.
-            if ((bool)dpo.GetValue(_UpdatingProperty) == false)
+            if ((bool)dpo.GetValue(UpdatingProperty) == false)
                 passwordBox.Password = (e.NewValue != null) ? e.NewValue.ToString() : string.Empty;
 
             // Hook the value
@@ -75,9 +75,9 @@ namespace JulMar.Windows.Behaviors
 
             if (string.Compare(currentValue, pbValue) != 0)
             {
-                passwordBox.SetValue(_UpdatingProperty, true);
+                passwordBox.SetValue(UpdatingProperty, true);
                 SetText(passwordBox, pbValue);
-                passwordBox.SetValue(_UpdatingProperty, false);
+                passwordBox.SetValue(UpdatingProperty, false);
             }
         }
     }

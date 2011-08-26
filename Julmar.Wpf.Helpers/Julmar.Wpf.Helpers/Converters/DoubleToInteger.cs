@@ -29,9 +29,9 @@ namespace JulMar.Windows.Converters
         {
             if (value != null)
             {
-                if (value.GetType() == typeof(double))
+                if (targetType == typeof(int) && value is double)
                     return Convert.ToInt32((double) value);
-                if (value.GetType() == typeof(int))
+                if (targetType == typeof(double) && value is int)
                     return Convert.ToDouble((int)value);
             }
 

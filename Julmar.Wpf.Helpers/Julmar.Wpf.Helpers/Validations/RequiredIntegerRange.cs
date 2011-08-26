@@ -16,7 +16,7 @@ namespace JulMar.Windows.Validations
         /// </summary>
         public int Minimum
         {
-            get { return _min.Value; }
+            get { return (_min.HasValue) ? _min.Value : Int32.MinValue; }
             set { _min = value; }
         }
 
@@ -25,7 +25,7 @@ namespace JulMar.Windows.Validations
         /// </summary>
         public int Maximum
         {
-            get { return _max.Value; }
+            get { return (_max.HasValue) ? _max.Value : Int32.MaxValue; }
             set { _max = value; }
         }
 

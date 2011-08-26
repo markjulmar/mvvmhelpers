@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>Attached Read-Only Dependency Property</Title>
+      <Author>Mark Smith</Author>
+      <Description>Creates a Read-Only Attached Dependency Property</Description>
+      <HelpUrl>http://mvvmhelpers.codeplex.com</HelpUrl>
+      <Shortcut>wpfdpar</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>propertyName</ID>
+          <ToolTip>Property Name</ToolTip>
+          <Default>IsSomeAttachedProperty</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>type</ID>
+          <ToolTip>Property Type</ToolTip>
+          <Default>bool</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>ownerclass</ID>
+          <ToolTip>The owning class of this property</ToolTip>
+          <Default>ownerclass</Default>
+          <Function>ClassName()</Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>defaultValue</ID>
+          <ToolTip>The default value for this property</ToolTip>
+          <Default>false</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>options</ID>
+          <ToolTip>The options for this dependency property</ToolTip>
+          <Default>.None</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>setAccess</ID>
+          <ToolTip>Property setter access</ToolTip>
+          <Default>private</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[/// <summary>
+/// $propertyName$ Read-Only Dependency Property
+/// </summary>
+private static readonly DependencyPropertyKey $propertyName$PropertyKey =
+        DependencyProperty.RegisterAttachedReadOnly("$propertyName$", typeof($type$), typeof($ownerclass$),
+                    new FrameworkPropertyMetadata(($type$)$defaultValue$, 
+                    FrameworkPropertyMetadataOptions$options$, new PropertyChangedCallback(On$propertyName$Changed)));
+
+/// <summary>
+/// $propertyName$ Dependency Property
+/// </summary>
+public static readonly DependencyProperty $propertyName$Property = $propertyName$PropertyKey.DependencyProperty;
+
+/// <summary>
+/// Gets the $propertyName$ property.  
+/// </summary>
+public static $type$ Get$propertyName$(DependencyObject d)
+{
+    return ($type$) d.GetValue($propertyName$Property);
+}
+
+/// <summary>
+/// Provides a secure method for setting the $propertyName$ property.  
+/// </summary>
+private static void Set$propertyName$(DependencyObject d, $type$ value)
+{
+    d.SetValue($propertyName$PropertyKey, value);
+}
+
+/// <summary>
+/// Handles changes to the $propertyName$ property.
+/// </summary>
+private static void On$propertyName$Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+{
+    (($ownerclass$)d).On$propertyName$Changed(($type$) e.OldValue, ($type$) e.NewValue);
+}
+
+/// <summary>
+///Handler for changes to the $propertyName$ property.
+/// </summary>
+protected virtual void On$propertyName$Changed($type$ oldValue, $type$ newValue)
+{
+}
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

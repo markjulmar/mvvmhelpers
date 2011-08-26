@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Markup;
-using System.ComponentModel;
 using System.Windows.Input;
 using JulMar.Windows.Extensions;
 
@@ -45,7 +44,7 @@ namespace JulMar.Windows.Markup
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             // Ignore if in design mode
-            if (Designer.InDesignMode == true)
+            if (Designer.InDesignMode)
                 return null;
 
             // Get the IProvideValue interface which gives us access to the target property 

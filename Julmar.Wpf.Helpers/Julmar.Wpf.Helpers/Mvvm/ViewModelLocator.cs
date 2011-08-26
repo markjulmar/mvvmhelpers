@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using JulMar.Core;
-using JulMar.Windows.Interfaces;
 using JulMar.Windows.UI;
 
 namespace JulMar.Windows.Mvvm

@@ -20,7 +20,7 @@ namespace MultiWindowTest
         /// Get the IUIVisualizer from MEF
         /// </summary>
         [Import]
-        private IUIVisualizer _uiVisualizer;
+        private IUIVisualizer _uiVisualizer = null;
 
         public MainWindow()
         {

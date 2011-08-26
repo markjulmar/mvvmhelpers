@@ -8,21 +8,23 @@ using System.Windows.Threading;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
+using JulMar.Core.Concurrency;
 
 namespace JulMar.Windows
 {
     /// <summary>
     /// This class provides an ObservableCollection which supports background thread
     /// access and updates.  It allows for concurrent read access and single write access
-    /// through the use of a MRSW lock.
+    /// through the use of a read/writer lock.
     /// </summary>
+    /// <example>
+    /// Use this in place of a normal ObservableCollection(Of(T)) - see the MTObservableTest program"/>
+    /// </example>
     /// <remarks>
-    /// This collection, while safe, is generally very slow because it does all the work on the
-    /// UI thread.  You should prefer to use the better ThreadedCollection which doesn't use
-    /// INotifyCollectionChanged and then maintain two collections in synch for performance.
+    /// This collection, while safe, is generally somewhat slower because it does all the write work on the UI thread.
     /// </remarks>
     /// <typeparam name="T">Type this collection holds</typeparam>
-    public class MTObservableCollection<T> : IList<T>, INotifyCollectionChanged, INotifyPropertyChanged
+    public class MTObservableCollection<T> : IList<T>, IList, INotifyCollectionChanged, INotifyPropertyChanged
     {
         #region Private Data
         private const string CountString = "Count";
@@ -31,6 +33,7 @@ namespace JulMar.Windows
         private readonly List<T> _masterList;
         private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         private Dispatcher _dispatcher;
+        private bool _enableNotifications = true;
         #endregion
 
         /// <summary>
@@ -84,9 +87,7 @@ namespace JulMar.Windows
         {
             var change = PropertyChanged;
             if (change != null)
-            {
                 change(this, new PropertyChangedEventArgs(propName));
-            }
         }
 
         #endregion
@@ -99,49 +100,15 @@ namespace JulMar.Windows
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         /// <summary>
-        /// This acquires the writer lock.  It does this by first getting an upgradeable
-        /// read lock and then getting the write lock. Later, the caller will downgrade to
-        /// a read lock to notify the UI about the change.
-        /// </summary>
-        private void AcquireWriteLock()
-        {
-            // Background thread?  Just wait for the lock.
-            if (Dispatcher == null || !Dispatcher.CheckAccess())
-            {
-                _lock.EnterUpgradeableReadLock();
-                _lock.EnterWriteLock();
-            }
-            // UI thread? Spin waiting so background writers can send the notifications
-            // properly.  Wait first for the upgradeable lock - this will block future
-            // writers.  Then get the exclusive writer lock.
-            else
-            {
-                while (!_lock.TryEnterUpgradeableReadLock(1))
-                    Dispatcher.Invoke(DispatcherPriority.DataBind, ((Action)delegate { }));
-                while (!_lock.TryEnterWriteLock(1))
-                    Dispatcher.Invoke(DispatcherPriority.DataBind, ((Action)delegate { }));
-            }
-        }
-
-        /// <summary>
         /// This method notifies the UI about changes to this collection.  It uses
         /// the first located dispatcher to do the notification.
         /// </summary>
         /// <param name="e"></param>
         private void OnNotifyCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (Dispatcher == null || Dispatcher.CheckAccess())
-            {
-                var changed = CollectionChanged;
-                if (changed != null)
-                {
-                    changed(this, e);
-                }
-            }
-            else if (CollectionChanged != null)
-            {
-                Dispatcher.Invoke(DispatcherPriority.DataBind, (Action<NotifyCollectionChangedEventArgs>) OnNotifyCollectionChanged, e);
-            }
+            var changed = CollectionChanged;
+            if (changed != null && EnableNotifications)
+                changed(this, e);
         }
 
         /// <summary>
@@ -166,9 +133,142 @@ namespace JulMar.Windows
         private void OnCollectionReset()
         {
             OnNotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        } 
+        }
 
         #endregion
+
+        #region Internal Thread Management Methods
+        /// <summary>
+        /// This method performs the given action on the dispatcher thread.
+        /// </summary>
+        /// <param name="work"></param>
+        private void DispatcherInvoke(Action work)
+        {
+            if (Dispatcher == null || Dispatcher.CheckAccess())
+                work();
+            else
+                Dispatcher.Invoke(DispatcherPriority.DataBind, work);
+        }
+
+        /// <summary>
+        /// This method performs the given action on the dispatcher thread.
+        /// </summary>
+        /// <param name="work"></param>
+        private TRv DispatcherInvoke<TRv>(Func<TRv> work)
+        {
+            if (Dispatcher == null || Dispatcher.CheckAccess())
+                return work();
+
+            return (TRv) Dispatcher.Invoke(DispatcherPriority.DataBind, work);
+        }
+
+        /// <summary>
+        /// This method performs a write action with notification.
+        /// </summary>
+        /// <param name="work">Work to perform</param>
+        /// <param name="notify">Notification to perform</param>
+        private void PerformWriteAction(Action work, Action notify)
+        {
+            // Obtain an upgradable read lock
+            _lock.EnterUpgradeableReadLock();
+
+            // Followed by a write lock
+            _lock.EnterWriteLock();
+
+            // We have both upgradable read and write lock here.
+            bool needsDowngrade = true;
+            try
+            {
+                // Perform the write action
+                try
+                {
+                    work();
+                }
+                // Release the write lock. We now have an upgradable read lock.
+                finally
+                {
+                    _lock.ExitWriteLock();
+                }
+
+                // We hold a read lock while doing the notification. 
+                // This ensures other threads cannot modify the collection before or during the 
+                // notification.  Big warning here though - if the UI thread attempts to *modify*
+                // the collection as a result of the update then this will deadlock.
+                _lock.UsingReadLock(() =>
+                {
+                    // Release the upgradable read lock; now we hold a ReadLock only.
+                    _lock.ExitUpgradeableReadLock();
+                    needsDowngrade = false;
+
+                    notify();
+                });
+            }
+            // Release the upgradable read lock.
+            finally
+            {
+                if (needsDowngrade)
+                    _lock.ExitUpgradeableReadLock();
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Turns the NotifyCollectionChanged on and off.
+        /// </summary>
+        bool EnableNotifications
+        {
+            get { return _enableNotifications; }
+            set
+            {
+                if (value != _enableNotifications)
+                {
+                    _enableNotifications = value;
+                    if (_enableNotifications)
+                    {
+                        OnNotifyCollectionChanged(
+                            new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                        OnPropertyChanged(CountString);
+                        OnPropertyChanged(IndexerName);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Method to add a series of items into the observable collection as a set.
+        /// Use this if you have a bunch of items to add at once - it will turn off
+        /// notifications while adding and then turn them back on when completed.
+        /// </summary>
+        /// <param name="items"></param>
+        public void AddRange(IEnumerable<T> items)
+        {
+            DispatcherInvoke(() =>
+                PerformWriteAction(
+                    () =>
+                        {
+                            EnableNotifications = false;
+                            foreach (T item in items)
+                                _masterList.Add(item);
+                        },
+                    () => EnableNotifications = true
+                ));
+        }
+
+        /// <summary>
+        /// Iterates through a copied collection of the items and performs an action on them.
+        /// The iteration is performed on a copy of the actual list (it is possible for the 
+        /// real list to be changed during iteration).
+        /// </summary>
+        /// <param name="action">Action to perform</param>
+        public void ForEach(Action<T> action)
+        {
+            T[] items = null;
+            _lock.UsingReadLock(() => items = _masterList.ToArray());
+            foreach (T item in items)
+            {
+                action(item);
+            }
+        }
 
         #region IList<T> Members
 
@@ -181,15 +281,7 @@ namespace JulMar.Windows
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
         public int IndexOf(T item)
         {
-            _lock.EnterReadLock();
-            try 
-            {
-                return _masterList.IndexOf(item);
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            return _lock.UsingReadLock(() => _masterList.IndexOf(item));
         }
 
         /// <summary>
@@ -199,38 +291,24 @@ namespace JulMar.Windows
         /// <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
         public void Insert(int index, T item)
         {
-            bool mustDowngrade = true;
-            AcquireWriteLock();
-            try
-            {
-                try
-                {
-                    _masterList.Insert(index, item);
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
+            DispatcherInvoke(() =>
+                PerformWriteAction(
+                    () => _masterList.Insert(index, item),
+                    () => 
+                    {
+                        OnCollectionChanged(NotifyCollectionChangedAction.Add, item, index);
+                        OnPropertyChanged(CountString);
+                        OnPropertyChanged(IndexerName);
+                    }));
+        }
 
-                _lock.EnterReadLock();
-                _lock.ExitUpgradeableReadLock();
-                mustDowngrade = false;
-                try
-                {
-                    OnCollectionChanged(NotifyCollectionChangedAction.Add, item, index);
-                    OnPropertyChanged(CountString);
-                    OnPropertyChanged(IndexerName);
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-            }
-            finally
-            {
-                if (mustDowngrade)
-                    _lock.ExitUpgradeableReadLock();
-            }
+        /// <summary>
+        /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.IList"/>.
+        /// </summary>
+        /// <param name="value">The object to remove from the <see cref="T:System.Collections.IList"/>. </param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"/> is read-only.-or- The <see cref="T:System.Collections.IList"/> has a fixed size. </exception><filterpriority>2</filterpriority>
+        void IList.Remove(object value)
+        {
+            Remove((T) value);
         }
 
         /// <summary>
@@ -239,39 +317,36 @@ namespace JulMar.Windows
         /// <param name="index">The zero-based index of the item to remove.</param>
         public void RemoveAt(int index)
         {
-            bool mustDowngrade = true;
-            AcquireWriteLock();
-            try
+            DispatcherInvoke(() =>
             {
-                var item = _masterList[index];
-                try
-                {
-                    _masterList.RemoveAt(index);
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
+                T item = default(T);
+                PerformWriteAction(
+                    () =>
+                        {
+                            item = _masterList[index];
+                            _masterList.RemoveAt(index);
+                        },
+                    () =>
+                        {
+                            OnCollectionChanged(NotifyCollectionChangedAction.Remove, item, index);
+                            OnPropertyChanged(CountString);
+                            OnPropertyChanged(IndexerName);
+                        }
+                );
+            });
+        }
 
-                _lock.EnterReadLock();
-                _lock.ExitUpgradeableReadLock();
-                mustDowngrade = false;
-                try
-                {
-                    OnCollectionChanged(NotifyCollectionChangedAction.Remove, item, index);
-                    OnPropertyChanged(CountString);
-                    OnPropertyChanged(IndexerName);
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-            }
-            finally
-            {
-                if (mustDowngrade)
-                    _lock.ExitUpgradeableReadLock();
-            }
+        /// <summary>
+        /// Gets or sets the element at the specified index.
+        /// </summary>
+        /// <returns>
+        /// The element at the specified index.
+        /// </returns>
+        /// <param name="index">The zero-based index of the element to get or set. </param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.IList"/>. </exception><exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:System.Collections.IList"/> is read-only. </exception><filterpriority>2</filterpriority>
+        object IList.this[int index]
+        {
+            get { return this[index]; }
+            set { this[index] = (T) value; }
         }
 
         /// <summary>
@@ -285,50 +360,26 @@ namespace JulMar.Windows
         {
             get
             {
-                _lock.EnterReadLock();
-                try
-                {
-                    return _masterList[index];
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
+                return _lock.UsingReadLock(() => _masterList[index]);
             }
             set
             {
-                bool mustDowngrade = true;
-                AcquireWriteLock();
-                try
+                DispatcherInvoke(() =>
                 {
-                    var oldValue = _masterList[index];
-                    try
-                    {
-                        _masterList[index] = value;
-                    }
-                    finally
-                    {
-                        _lock.ExitWriteLock();
-                    }
+                    T oldValue = default(T);
+                    PerformWriteAction(
+                        () =>
+                        {
+                            oldValue = _masterList[index];
+                            _masterList[index] = value;
+                        },
 
-                    _lock.EnterReadLock();
-                    _lock.ExitUpgradeableReadLock();
-                    mustDowngrade = false;
-                    try
-                    {
-                        OnCollectionChanged(NotifyCollectionChangedAction.Replace, oldValue, value, index);
-                        OnPropertyChanged(IndexerName);
-                    }
-                    finally
-                    {
-                        _lock.ExitReadLock();
-                    }
-                }
-                finally
-                {
-                    if (mustDowngrade)
-                        _lock.ExitUpgradeableReadLock();
-                }
+                        () =>
+                        {
+                            OnCollectionChanged(NotifyCollectionChangedAction.Replace, oldValue, value, index);
+                            OnPropertyChanged(IndexerName);
+                        });
+                });
             }
         }
 
@@ -337,44 +388,64 @@ namespace JulMar.Windows
         #region ICollection<T> Members
 
         /// <summary>
+        /// Internal (shared) method for Add logic
+        /// </summary>
+        /// <param name="item">Item to add</param>
+        /// <returns>Position (not valid after return)</returns>
+        private int InternalAdd(T item)
+        {
+            return DispatcherInvoke(() =>
+            {
+                int pos = -1;
+
+                PerformWriteAction(
+                    () =>
+                        {
+                            pos = _masterList.Count;
+                            _masterList.Add(item);
+                        },
+                    () =>
+                        {
+                            OnCollectionChanged(NotifyCollectionChangedAction.Add, item, pos);
+                            OnPropertyChanged(CountString);
+                            OnPropertyChanged(IndexerName);
+                        });
+
+                return pos;
+            });
+        }
+
+        /// <summary>
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
         public void Add(T item)
         {
-            bool mustDowngrade = true;
-            AcquireWriteLock();
-            try
-            {
-                int count = _masterList.Count;
-                try
-                {
-                    _masterList.Add(item);
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
+            InternalAdd(item);
+        }
 
-                _lock.EnterReadLock();
-                _lock.ExitUpgradeableReadLock();
-                mustDowngrade = false;
-                try
-                {
-                    OnCollectionChanged(NotifyCollectionChangedAction.Add, item, count);
-                    OnPropertyChanged(CountString);
-                    OnPropertyChanged(IndexerName);
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-            }
-            finally
-            {
-                if (mustDowngrade)
-                    _lock.ExitUpgradeableReadLock();
-            }
+        /// <summary>
+        /// Adds an item to the <see cref="T:System.Collections.IList"/>.
+        /// </summary>
+        /// <returns>
+        /// The position into which the new element was inserted, or -1 to indicate that the item was not inserted into the collection,
+        /// </returns>
+        /// <param name="value">The object to add to the <see cref="T:System.Collections.IList"/>. </param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"/> is read-only.-or- The <see cref="T:System.Collections.IList"/> has a fixed size. </exception><filterpriority>2</filterpriority>
+        int IList.Add(object value)
+        {
+            return InternalAdd((T) value);
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="T:System.Collections.IList"/> contains a specific value.
+        /// </summary>
+        /// <returns>
+        /// true if the <see cref="T:System.Object"/> is found in the <see cref="T:System.Collections.IList"/>; otherwise, false.
+        /// </returns>
+        /// <param name="value">The object to locate in the <see cref="T:System.Collections.IList"/>. </param><filterpriority>2</filterpriority>
+        bool IList.Contains(object value)
+        {
+            return Contains((T) value);
         }
 
         /// <summary>
@@ -382,38 +453,36 @@ namespace JulMar.Windows
         /// </summary>
         public void Clear()
         {
-            bool mustDowngrade = true;
-            AcquireWriteLock();
-            try
-            {
-                try
-                {
-                    _masterList.Clear();
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
+            DispatcherInvoke(() =>
+                PerformWriteAction(
+                    () => _masterList.Clear(),
+                    () =>
+                        {
+                            OnCollectionReset();
+                            OnPropertyChanged(CountString);
+                            OnPropertyChanged(IndexerName);
+                        }));
+        }
 
-                _lock.EnterReadLock();
-                _lock.ExitUpgradeableReadLock();
-                mustDowngrade = false;
-                try
-                {
-                    OnCollectionReset();
-                    OnPropertyChanged(CountString);
-                    OnPropertyChanged(IndexerName);
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-            }
-            finally
-            {
-                if (mustDowngrade)
-                    _lock.ExitUpgradeableReadLock();
-            }
+        /// <summary>
+        /// Determines the index of a specific item in the <see cref="T:System.Collections.IList"/>.
+        /// </summary>
+        /// <returns>
+        /// The index of <paramref name="value"/> if found in the list; otherwise, -1.
+        /// </returns>
+        /// <param name="value">The object to locate in the <see cref="T:System.Collections.IList"/>. </param><filterpriority>2</filterpriority>
+        int IList.IndexOf(object value)
+        {
+            return IndexOf((T) value);
+        }
+
+        /// <summary>
+        /// Inserts an item to the <see cref="T:System.Collections.IList"/> at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index at which <paramref name="value"/> should be inserted. </param><param name="value">The object to insert into the <see cref="T:System.Collections.IList"/>. </param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.IList"/>. </exception><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"/> is read-only.-or- The <see cref="T:System.Collections.IList"/> has a fixed size. </exception><exception cref="T:System.NullReferenceException"><paramref name="value"/> is null reference in the <see cref="T:System.Collections.IList"/>.</exception><filterpriority>2</filterpriority>
+        void IList.Insert(int index, object value)
+        {
+            Insert(index, (T) value);
         }
 
         /// <summary>
@@ -425,15 +494,7 @@ namespace JulMar.Windows
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
         public bool Contains(T item)
         {
-            _lock.EnterReadLock();
-            try
-            {
-                return _masterList.Contains(item);
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            return _lock.UsingReadLock(() => _masterList.Contains(item));
         }
 
         /// <summary>
@@ -443,15 +504,16 @@ namespace JulMar.Windows
         /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            _lock.EnterReadLock();
-            try
-            {
-                _masterList.CopyTo(array, arrayIndex);
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            _lock.UsingReadLock(() => _masterList.CopyTo(array, arrayIndex));
+        }
+
+        /// <summary>
+        /// Copies the elements of the <see cref="T:System.Collections.ICollection"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
+        /// </summary>
+        /// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.ICollection"/>. The <see cref="T:System.Array"/> must have zero-based indexing. </param><param name="index">The zero-based index in <paramref name="array"/> at which copying begins. </param><exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null. </exception><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is less than zero. </exception><exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or- The number of elements in the source <see cref="T:System.Collections.ICollection"/> is greater than the available space from <paramref name="index"/> to the end of the destination <paramref name="array"/>. </exception><exception cref="T:System.ArgumentException">The type of the source <see cref="T:System.Collections.ICollection"/> cannot be cast automatically to the type of the destination <paramref name="array"/>. </exception><filterpriority>2</filterpriority>
+        public void CopyTo(Array array, int index)
+        {
+            _lock.UsingReadLock(() => Array.Copy(_masterList.ToArray(), index, array, 0, Math.Min(_masterList.Count-index, array.Length)));
         }
 
         /// <summary>
@@ -462,18 +524,31 @@ namespace JulMar.Windows
         /// </returns>
         public int Count
         {
-            get 
-            {
-                _lock.EnterReadLock();
-                try
-                {
-                    return _masterList.Count;
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-            }
+            get { return _lock.UsingReadLock(() => _masterList.Count); }
+        }
+
+        /// <summary>
+        /// Gets an object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.
+        /// </summary>
+        /// <returns>
+        /// An object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        object ICollection.SyncRoot
+        {
+            get { return _masterList; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe).
+        /// </summary>
+        /// <returns>
+        /// true if access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe); otherwise, false.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        bool ICollection.IsSynchronized
+        {
+            get { return false; }
         }
 
         /// <summary>
@@ -488,6 +563,18 @@ namespace JulMar.Windows
         }
 
         /// <summary>
+        /// Gets a value indicating whether the <see cref="T:System.Collections.IList"/> has a fixed size.
+        /// </summary>
+        /// <returns>
+        /// true if the <see cref="T:System.Collections.IList"/> has a fixed size; otherwise, false.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        bool IList.IsFixedSize
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <returns>
@@ -496,50 +583,33 @@ namespace JulMar.Windows
         /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
         public bool Remove(T item)
         {
-            bool mustDowngrade = true;
-            AcquireWriteLock();
-            try
+            return DispatcherInvoke(() =>
             {
-                int index = _masterList.IndexOf(item);
+                int index = -1;
 
-                try
-                {
-                    if (index >= 0)
-                    {
-                        bool rc = _masterList.Remove(item);
-                        Debug.Assert(rc);
-                    }
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
+                PerformWriteAction(
+                    () =>
+                        {
+                            index = _masterList.IndexOf(item);
+                            if (index >= 0)
+                            {
+                                bool rc = _masterList.Remove(item);
+                                Debug.Assert(rc);
+                            }
+                        },
+                    () =>
+                        {
+                            if (index >= 0)
+                            {
+                                OnCollectionChanged(NotifyCollectionChangedAction.Remove,
+                                                    item, index);
+                                OnPropertyChanged(CountString);
+                                OnPropertyChanged(IndexerName);
+                            }
+                        });
 
-                _lock.EnterReadLock();
-                _lock.ExitUpgradeableReadLock();
-                mustDowngrade = false;
-                try
-                {
-                    if (index >= 0)
-                    {
-                        OnCollectionChanged(NotifyCollectionChangedAction.Remove, item, index);
-                        OnPropertyChanged(CountString);
-                        OnPropertyChanged(IndexerName);
-                        return true;
-                    }
-                }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-            }
-            finally
-            {
-                if (mustDowngrade)
-                    _lock.ExitUpgradeableReadLock();
-            }
-
-            return false;
+                return index >= 0;
+            });
         }
 
         #endregion
@@ -552,15 +622,7 @@ namespace JulMar.Windows
         /// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection. </returns>
         public IEnumerator<T> GetEnumerator()
         {
-            _lock.EnterReadLock();
-            try
-            {
-                return _masterList.ToList().GetEnumerator();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            return _lock.UsingReadLock(() => _masterList.ToList().GetEnumerator());
         }
 
         #endregion
@@ -573,15 +635,7 @@ namespace JulMar.Windows
         /// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            _lock.EnterReadLock();
-            try
-            {
-                return _masterList.ToList().GetEnumerator();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            return _lock.UsingReadLock(() => _masterList.ToList().GetEnumerator());
         }
 
         #endregion

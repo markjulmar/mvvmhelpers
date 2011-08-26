@@ -22,7 +22,7 @@ namespace JulMar.Windows.Mvvm
     /// state is accomplished through an implementation class provided as a generic template parameter.  This can
     /// be used as a basis to creating different supporting types for editable objects.
     /// </summary>
-    /// <typeparam name="T">Editable persistance implementation</typeparam>
+    /// <typeparam name="T">Editable persistence implementation</typeparam>
     public class EditingViewModelBase<T> : ValidatingViewModel, IEditableObject where T : IEditableObjectImpl, new()
     {
         private readonly IEditableObjectImpl _editImpl = new T();

@@ -170,7 +170,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
         public bool CanExecute(object parameter)
         {
-            return (_canExecute == null) ? true : _canExecute(parameter);
+            return (_canExecute == null) || _canExecute(parameter);
         }
 
         /// <summary>
@@ -318,7 +318,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
         public bool CanExecute(object parameter)
         {
-            return (_canExecute == null) ? true : _canExecute((T)parameter);
+            return (_canExecute == null) || _canExecute((T)parameter);
         }
 
         /// <summary>

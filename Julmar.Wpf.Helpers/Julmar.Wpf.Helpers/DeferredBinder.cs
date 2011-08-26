@@ -33,7 +33,7 @@ namespace JulMar.Windows
         /// </summary>
         public static readonly DependencyProperty TimeoutProperty =
             DependencyProperty.Register("Timeout", typeof(double), typeof(DeferredBinder),
-                new FrameworkPropertyMetadata((double)0.5, FrameworkPropertyMetadataOptions.None, OnTimeoutChanged));
+                new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.None, OnTimeoutChanged));
 
         /// <summary>
         /// Gets or sets the Timeout property.

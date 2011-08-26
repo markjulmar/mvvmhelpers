@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>Attached Dependency Property</Title>
+      <Author>Mark Smith</Author>
+      <Description>Creates an Attached Dependency Property</Description>
+      <HelpUrl>http://mvvmhelpers.codeplex.com</HelpUrl>
+      <Shortcut>wpfdpa</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>propertyName</ID>
+          <ToolTip>Property Name</ToolTip>
+          <Default>IsSomeAttachedProperty</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>type</ID>
+          <ToolTip>Property Type</ToolTip>
+          <Default>bool</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>ownerClass</ID>
+          <ToolTip>The owning class of this property</ToolTip>
+          <Default>ownerclass</Default>
+          <Function>ClassName()</Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>defaultValue</ID>
+          <ToolTip>The default value for this property</ToolTip>
+          <Default>true</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>options</ID>
+          <ToolTip>The options for this dependency property</ToolTip>
+          <Default>.None</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[/// <summary>
+/// $propertyName$ Attached Dependency Property
+/// </summary>
+public static readonly DependencyProperty $propertyName$Property =
+    DependencyProperty.RegisterAttached("$propertyName$", typeof($type$), typeof($ownerClass$),
+        new FrameworkPropertyMetadata(($type$)$defaultValue$,
+            FrameworkPropertyMetadataOptions$options$, new PropertyChangedCallback(On$propertyName$Changed)));
+
+/// <summary>
+/// Gets the $propertyName$ property.  
+/// </summary>
+public static $type$ Get$propertyName$(DependencyObject d)
+{
+    return ($type$)d.GetValue($propertyName$Property);
+}
+
+/// <summary>
+/// Sets the $propertyName$ property.  
+/// </summary>
+public static void Set$propertyName$(DependencyObject d, $type$ value)
+{
+    d.SetValue($propertyName$Property, value);
+}
+
+/// <summary>
+/// Handles changes to the $propertyName$ property.
+/// </summary>
+private static void On$propertyName$Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+{
+}
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

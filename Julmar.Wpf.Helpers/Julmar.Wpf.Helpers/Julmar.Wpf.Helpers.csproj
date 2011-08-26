@@ -104,7 +104,6 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Interfaces\IMessageVisualizer.cs" />
     <Compile Include="Interfaces\IUIVisualizer.cs" />
-    <Compile Include="Interfaces\IViewModelTrigger.cs" />
     <Compile Include="Markup\LinearGradientBrushExtension.cs" />
     <Compile Include="Markup\ViewModelCreatorExtension.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
@@ -125,9 +124,9 @@
     <Compile Include="Mvvm\AsyncDelegateCommand.cs" />
     <Compile Include="Mvvm\CloseRequestEventArgs.cs" />
     <Compile Include="Mvvm\EditingViewModel.cs" />
+    <Compile Include="Mvvm\Helpers\NotifyPropertyHelpers.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
-    <Compile Include="Mvvm\ViewModelTrigger.cs" />
     <Compile Include="Validations\ValidatingViewModel.cs" />
     <Compile Include="UI\MessageVisualizer.cs" />
     <Compile Include="UI\TextPath.cs" />
@@ -177,6 +176,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="julmar.mvvm.snk" />
+    <None Include="Snippets\expandovm.snippet">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Mvvm\mvvmprop.snippet">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Snippets\wpfdp.snippet" />
+    <None Include="Snippets\wpfdpa.snippet" />
+    <None Include="Snippets\wpfdpar.snippet" />
+    <None Include="Snippets\wpfdpfull.snippet" />
+    <None Include="Snippets\wpfdpo.snippet" />
+    <None Include="Snippets\wpfdpr.snippet" />
+    <None Include="Snippets\wpfnpc.snippet">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,7 +1,6 @@
 ﻿using System;
 using JulMar.Core;
 using JulMar.Windows.Interfaces;
-using JulMar.Windows.Mvvm;
 
 namespace JulMar.Windows.UI
 {

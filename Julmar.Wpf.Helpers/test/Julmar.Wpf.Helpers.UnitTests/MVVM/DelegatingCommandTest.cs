@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Threading;
 using JulMar.Windows.Mvvm;
+using JulMar.Wpf.Helpers.UnitTests.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows.Input;
 
-namespace JulMar.Wpf.Helpers.UnitTests
+namespace JulMar.Wpf.Helpers.UnitTests.MVVM
 {
     /// <summary>
     ///This is a test class for DelegatingCommandTest and is intended
@@ -111,7 +113,7 @@ namespace JulMar.Wpf.Helpers.UnitTests
             command.CanExecuteChanged += listener.OnCanExecuteChanged;
 
             CommandManager.InvalidateRequerySuggested();
-            DispatcherUtil.DoEvents();
+            Dispatcher.CurrentDispatcher.DoEvents();
             command.Execute(null);
             Assert.AreEqual(1, test.ExecuteCalls);
             Assert.AreEqual(0, CanExecuteCalls);
@@ -130,12 +132,12 @@ namespace JulMar.Wpf.Helpers.UnitTests
             command.CanExecuteChanged += listener.OnCanExecuteChanged;
 
             command.Execute(null);
-            DispatcherUtil.DoEvents();
+            Dispatcher.CurrentDispatcher.DoEvents();
             Assert.AreEqual(1, test.ExecuteCalls);
             Assert.AreEqual(0, CanExecuteCalls);
 
             CommandManager.InvalidateRequerySuggested();
-            DispatcherUtil.DoEvents();
+            Dispatcher.CurrentDispatcher.DoEvents();
             Assert.AreEqual(1, test.ExecuteCalls);
             Assert.AreEqual(1, CanExecuteCalls);
         }
@@ -155,19 +157,19 @@ namespace JulMar.Wpf.Helpers.UnitTests
             Assert.AreEqual(1, CanExecuteCalls);
 
             CommandManager.InvalidateRequerySuggested();
-            DispatcherUtil.DoEvents();
+            Dispatcher.CurrentDispatcher.DoEvents();
             Assert.AreEqual(1, CanExecuteCalls);
 
             command.RaiseCanExecuteChanged();
             Assert.AreEqual(2, CanExecuteCalls);
 
             CommandManager.InvalidateRequerySuggested();
-            DispatcherUtil.DoEvents();
+            Dispatcher.CurrentDispatcher.DoEvents();
             Assert.AreEqual(2, CanExecuteCalls);
 
             command.AutoCanExecuteRequery = true;
             CommandManager.InvalidateRequerySuggested();
-            DispatcherUtil.DoEvents();
+            Dispatcher.CurrentDispatcher.DoEvents();
             Assert.AreEqual(3, CanExecuteCalls);
 
             command.RaiseCanExecuteChanged();
@@ -175,7 +177,7 @@ namespace JulMar.Wpf.Helpers.UnitTests
 
             command.AutoCanExecuteRequery = false;
             CommandManager.InvalidateRequerySuggested();
-            DispatcherUtil.DoEvents();
+            Dispatcher.CurrentDispatcher.DoEvents();
             Assert.AreEqual(4, CanExecuteCalls);
         }
 

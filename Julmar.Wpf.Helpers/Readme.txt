@@ -105,3 +105,13 @@ Changed MEF resolution code to allow custom catalogs to be used for resolving de
 Added Range class for Parallel programming
 Added ListView sorting behavior
 Added 2 overrides for IUIVisualizer.Show and ShowDialog to pass object owner for explicit window ownership management (to be used by view, not VM).
+
+4.05 4/2011
+Added ExceptionExtensions
+Added InDesigner property to ViewModel (just a copy of Designer.InDesignerMode)
+Added MaskedTextBoxBehavior
+Added new overrides for IMessageVisualizer to support icons, window owner, etc.
+
+4.06 8/2011
+Allow ExportUIVisualizer to be applied more than once.
+Remove IViewModelTrigger and rewrote ViewModelTrigger behavior to target event by name.

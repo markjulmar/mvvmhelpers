@@ -33,15 +33,9 @@ namespace JulMar.Windows.Converters
                 throw new ArgumentException("BoolToBrushConverter used inappropriately.");
 
             bool flag = false;
-
-            if (value is bool)
+            if (value != null && value is bool)
             {
                 flag = (bool)value;
-            }
-            else if (value is bool?)
-            {
-                bool? nullable = (bool?)value;
-                flag = nullable.HasValue ? nullable.Value : false;
             }
 
             return flag ? TrueBrush : FalseBrush;
@@ -66,7 +60,7 @@ namespace JulMar.Windows.Converters
         /// <returns></returns>
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return new BooleanToBrushConverter() {TrueBrush = this.TrueBrush, FalseBrush = this.FalseBrush};
+            return new BooleanToBrushConverter {TrueBrush = TrueBrush, FalseBrush = FalseBrush};
         }
     }
 }

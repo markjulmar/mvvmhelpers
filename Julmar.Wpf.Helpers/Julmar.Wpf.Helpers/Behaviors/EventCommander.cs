@@ -212,7 +212,9 @@ namespace JulMar.Windows.Behaviors
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        // ReSharper disable UnusedMember.Local
         private void OnEventRaised(object sender, EventArgs e)
+        // ReSharper restore UnusedMember.Local
         {
             if (Command != null)
             {
