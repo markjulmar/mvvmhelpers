@@ -29,9 +29,9 @@ namespace JulMar.Core.Extensions
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="collection">Collection Source</param>
         /// <param name="other">Collection to compare to</param>
-        /// <param name="exactMatch">Require same-order elements (exact match)</param>
+        /// <param name="sameOrderRequired">Require same-order elements (exact match)</param>
         /// <returns></returns>
-        public static bool Compare<T>(this ICollection<T> collection, ICollection<T> other, bool exactMatch=false)
+        public static bool Compare<T>(this ICollection<T> collection, ICollection<T> other, bool sameOrderRequired=false)
         {
             if (!ReferenceEquals(collection, other))
             {
@@ -43,7 +43,7 @@ namespace JulMar.Core.Extensions
                     return false;
 
                 // Require same-order; just defer to existing LINQ match
-                if (exactMatch)
+                if (sameOrderRequired)
                     return collection.SequenceEqual(other);
 
                 // Otherwise allow it to be any order, but require same count of each item type.

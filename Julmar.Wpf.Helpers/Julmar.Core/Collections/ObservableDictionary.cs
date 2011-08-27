@@ -32,8 +32,19 @@ namespace JulMar.Core.Collections
         /// Constructor
         /// </summary>
         public ObservableDictionary()
+            : this(new Dictionary<TKey, TValue>())
         {
-            _dictionary = new Dictionary<TKey, TValue>();
+        }
+
+        /// <summary>
+        /// Constructor that allows different storage initialization
+        /// </summary>
+        public ObservableDictionary(IDictionary<TKey,TValue> store)
+        {
+            if (store == null)
+                throw new ArgumentNullException("store");
+
+            _dictionary = store;
         }
 
         /// <summary>
@@ -41,8 +52,8 @@ namespace JulMar.Core.Collections
         /// </summary>
         /// <param name="comparer">Comparison class</param>
         public ObservableDictionary(IEqualityComparer<TKey> comparer)
+            : this(new Dictionary<TKey, TValue>(comparer))
         {
-            _dictionary = new Dictionary<TKey, TValue>(comparer);
         }
 
         /// <summary>

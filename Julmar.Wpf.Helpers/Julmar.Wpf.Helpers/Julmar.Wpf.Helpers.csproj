@@ -178,7 +178,7 @@
     <None Include="Snippets\expandovm.snippet">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Mvvm\mvvmprop.snippet">
+    <None Include="Snippets\mvvmprop.snippet">
       <SubType>Designer</SubType>
     </None>
     <None Include="Snippets\wpfdp.snippet" />

@@ -1,6 +1,5 @@
-﻿using JulMar.Core;
+﻿using System.Collections.Concurrent;
 using JulMar.Core.Collections;
-using JulMar.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -152,5 +151,26 @@ namespace JulMar.Wpf.Helpers.UnitTests
             Assert.IsTrue(hitChange);
         }
 
+        [TestMethod]
+        public void AlternateDictionary()
+        {
+            var target = new ObservableDictionary<int, string>(new ConcurrentDictionary<int, string>());
+            bool hitChange = false;
+            const int key = 10;
+            const string value = "Hello";
+
+            target.CollectionChanged += (s, e) =>
+            {
+                hitChange = true;
+                Assert.AreSame(target, s);
+                Assert.AreEqual(NotifyCollectionChangedAction.Add, e.Action);
+                var item = (KeyValuePair<int, string>)e.NewItems[0];
+                Assert.AreEqual(key, item.Key);
+                Assert.AreEqual(value, item.Value);
+            };
+
+            target[key] = value;
+            Assert.IsTrue(hitChange);
+        }
     }
 }
