@@ -124,7 +124,6 @@
     <Compile Include="Mvvm\AsyncDelegateCommand.cs" />
     <Compile Include="Mvvm\CloseRequestEventArgs.cs" />
     <Compile Include="Mvvm\EditingViewModel.cs" />
-    <Compile Include="Mvvm\Helpers\NotifyPropertyHelpers.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
     <Compile Include="Validations\ValidatingViewModel.cs" />

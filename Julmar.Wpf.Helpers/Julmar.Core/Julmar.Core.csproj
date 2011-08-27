@@ -81,6 +81,7 @@
     <Compile Include="Concurrency\Range.cs" />
     <Compile Include="Concurrency\ReaderWriterLockSlimExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="PropertyChangedEventArgsEx.cs" />
     <Compile Include="Interfaces\IThreadedNotifyCollection.cs" />
     <Compile Include="ExportServiceAttribute.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="PropertyObserver.cs" />
     <Compile Include="MessageMediatorTargetAttribute.cs" />
     <Compile Include="Services\ServiceLocator.cs" />
-    <Compile Include="ObservableObject.cs" />
+    <Compile Include="Extensions\ObservableObjectExtensions.cs" />
     <Compile Include="Collections\ThreadedCollection.cs" />
     <Compile Include="SystemInfo.cs" />
     <Compile Include="Undo\CollectionChangeUndo.cs" />

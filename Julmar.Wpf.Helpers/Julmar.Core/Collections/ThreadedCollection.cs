@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.ComponentModel;
 using System.Collections.Generic;
+using JulMar.Core.Extensions;
 using JulMar.Core.Interfaces;
 
 namespace JulMar.Core.Collections
