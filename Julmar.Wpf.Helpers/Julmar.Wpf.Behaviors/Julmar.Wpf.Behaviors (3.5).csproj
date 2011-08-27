@@ -104,6 +104,7 @@
     <Compile Include="Interactivity\DoubleClickTrigger.cs" />
     <Compile Include="Interactivity\DragPositionBehavior.cs" />
     <Compile Include="Interactivity\ItemsControlDragDropBehavior.cs" />
+    <Compile Include="Interactivity\ListViewSortBehavior.cs" />
     <Compile Include="Interactivity\MaskedTextBoxBehavior.cs" />
     <Compile Include="Interactivity\NumericTextBoxBehavior.cs" />
     <Compile Include="Interactivity\ScrollbarPreviewBehavior.cs" />

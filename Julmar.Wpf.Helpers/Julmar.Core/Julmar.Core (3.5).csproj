@@ -79,10 +79,12 @@
     <Compile Include="Collections\CollectionChangedEventArgs.cs" />
     <Compile Include="CollectionObserver.cs" />
     <Compile Include="Collections\ElementChangedEventArgs.cs" />
+    <Compile Include="Collections\ConditionalWeakTable.cs" />
     <Compile Include="Concurrency\ObjectLockExtensions.cs" />
     <Compile Include="Concurrency\Range.cs" />
     <Compile Include="Concurrency\ReaderWriterLockSlimExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Extensions\ObservableObjectExtensions.cs" />
     <Compile Include="Interfaces\IThreadedNotifyCollection.cs" />
     <Compile Include="ExportServiceAttribute.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
@@ -94,13 +96,13 @@
     <Compile Include="Interfaces\IUndoService.cs" />
     <Compile Include="Interfaces\IServiceProviderEx.cs" />
     <Compile Include="Interfaces\IServiceProviderMetadata.cs" />
+    <Compile Include="PropertyChangedEventArgsEx.cs" />
     <Compile Include="Services\MefComposer.cs" />
     <Compile Include="Services\MessageMediator.cs" />
     <Compile Include="Collections\ObservableDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyObserver.cs" />
     <Compile Include="MessageMediatorTargetAttribute.cs" />
-    <Compile Include="ObservableObject.cs" />
     <Compile Include="Collections\ThreadedCollection.cs" />
     <Compile Include="Services\ServiceLocator.cs" />
     <Compile Include="SystemInfo.cs" />

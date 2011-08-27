@@ -107,7 +107,6 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Interfaces\IMessageVisualizer.cs" />
     <Compile Include="Interfaces\IUIVisualizer.cs" />
-    <Compile Include="Interfaces\IViewModelTrigger.cs" />
     <Compile Include="Markup\LinearGradientBrushExtension.cs" />
     <Compile Include="Markup\ViewModelCreatorExtension.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
@@ -130,7 +129,6 @@
     <Compile Include="Mvvm\EditingViewModel.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
-    <Compile Include="Mvvm\ViewModelTrigger.cs" />
     <Compile Include="Validations\ValidatingViewModel.cs" />
     <Compile Include="UI\MessageVisualizer.cs" />
     <Compile Include="UI\TextPath.cs" />
