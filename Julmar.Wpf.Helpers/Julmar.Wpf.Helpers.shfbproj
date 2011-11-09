@@ -48,7 +48,8 @@
 <NamespaceSummaryItem name="JulMar.Core.Extensions" isDocumented="True">Core extension methods</NamespaceSummaryItem>
 <NamespaceSummaryItem name="JulMar.Core.Interfaces" isDocumented="True">Core service interfaces</NamespaceSummaryItem>
 <NamespaceSummaryItem name="JulMar.Core.Services" isDocumented="True">Internal service definitions</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Core.Undo" isDocumented="True">Undo/Redo framework for applications.</NamespaceSummaryItem></NamespaceSummaries>
+<NamespaceSummaryItem name="JulMar.Core.Undo" isDocumented="True">Undo/Redo framework for applications.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="JulMar.Windows.Collections" isDocumented="True">Collection extensions and adapters for MVVM work.</NamespaceSummaryItem></NamespaceSummaries>
     <ProjectSummary>Model-View-ViewModel and converter helpers for WPF based projects.</ProjectSummary>
     <FrameworkVersion>4.0.30319</FrameworkVersion>
   </PropertyGroup>

@@ -115,3 +115,8 @@ Added new overrides for IMessageVisualizer to support icons, window owner, etc.
 4.06 8/2011
 Allow ExportUIVisualizer to be applied more than once.
 Remove IViewModelTrigger and rewrote ViewModelTrigger behavior to target event by name.
+Added MultiTreeSelect behavior
+Modified MTObservableCollection to support suspension of events
+Added ChangeCursorAction to behaviors
+
+

@@ -93,6 +93,8 @@
     <Compile Include="Behaviors\PasswordBoxHelper.cs" />
     <Compile Include="Behaviors\RenderBehavior.cs" />
     <Compile Include="Behaviors\SynchronizeScrollingBehavior.cs" />
+    <Compile Include="Collections\MTObservableCollection.cs" />
+    <Compile Include="Collections\ViewModelBindingListAdapterCollection.cs" />
     <Compile Include="Converters\DoubleToInteger.cs" />
     <Compile Include="Converters\IntegerToBooleanConverter.cs" />
     <Compile Include="Converters\KeyToResourceConverter.cs" />
@@ -123,7 +125,6 @@
     <Compile Include="Converters\NullVisibilityConverter.cs" />
     <Compile Include="Converters\NumericToDoubleConverter.cs" />
     <Compile Include="Interfaces\INotificationVisualizer.cs" />
-    <Compile Include="MTObservableCollection.cs" />
     <Compile Include="Mvvm\AsyncDelegateCommand.cs" />
     <Compile Include="Mvvm\CloseRequestEventArgs.cs" />
     <Compile Include="Mvvm\EditingViewModel.cs" />

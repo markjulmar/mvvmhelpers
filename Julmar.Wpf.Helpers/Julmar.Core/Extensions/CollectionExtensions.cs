@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -21,6 +22,75 @@ namespace JulMar.Core.Extensions
                 throw new ArgumentNullException("action", "Missing Action<T> to execute.");
             if (collection != null)
                 foreach (var o in collection) action(o);
+        }
+
+        /// <summary>
+        /// Perform a sort of the items in a collection. This is useful
+        /// if the underlying collection does not support sorting. 
+        /// </summary>
+        /// <param name="collection">Underlying collection to sort</param>
+        /// <param name="comparer">Comparer delegate</param>
+        /// <param name="reverse">True to reverse the collection</param>
+        public static void BubbleSort<T>(this IList<T> collection, Func<T,T,int> comparer,  bool reverse = false)
+        {
+            for (int index = collection.Count - 1; index >= 0; index--)
+            {
+                for (int child = 1; child <= index; child++)
+                {
+                    T d1 = collection[child - 1];
+                    T d2 = collection[child];
+
+                    int result = (!reverse) ? comparer(d1, d2) : comparer(d2, d1);
+                    if (result > 0)
+                    {
+                        collection.Remove(d1);
+                        collection.Insert(child, d1);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Perform a sort of the items in a collection. This is useful
+        /// if the underlying collection does not support sorting. Note that
+        /// the object type must be comparable.
+        /// </summary>
+        /// <param name="collection">Underlying collection to sort</param>
+        /// <param name="reverse">True to reverse the collection</param>
+        /// <param name="comparer">Comparer interface (defaults to default comparer for types)</param>
+        public static void BubbleSort(this IList collection, bool reverse=false, IComparer comparer = null)
+        {
+            for (int index = collection.Count - 1; index >= 0; index--)
+            {
+                for (int child = 1; child <= index; child++)
+                {
+                    object d1 = collection[child - 1];
+                    object d2 = collection[child];
+
+                    if (comparer == null)
+                    {
+                        if (d1.GetType() == d2.GetType())
+                        {
+                            Type comparerType = typeof(Comparer<>).MakeGenericType(d1.GetType());
+                            comparer = (IComparer)comparerType.GetProperty("Default").GetValue(null, null);
+                        }
+                        else
+                        {
+                            comparer = Comparer.Default;
+                        }
+                    }
+
+                    int result = (!reverse) 
+                        ? comparer.Compare(d1, d2)
+                        : comparer.Compare(d2, d1);
+
+                    if (result > 0)
+                    {
+                        collection.Remove(d1);
+                        collection.Insert(child, d1);
+                    }
+                }
+            }
         }
 
         /// <summary>

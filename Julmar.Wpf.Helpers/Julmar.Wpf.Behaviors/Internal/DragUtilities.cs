@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Controls;
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Media;
+using System.ComponentModel;
 
 namespace JulMar.Windows.Internal
 {
@@ -13,11 +16,37 @@ namespace JulMar.Windows.Internal
     /// </summary>
     static class DragUtilities
     {
+        /// <summary>
+        /// Returns if the specified object is in the ItemsControl.
+        /// This checks the Items collection.
+        /// </summary>
+        /// <param name="itemsControl"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public static bool DoesItemExists(ItemsControl itemsControl, object item)
         {
             return itemsControl.Items.Count > 0 && itemsControl.Items.Contains(item);
         }
 
+        /// <summary>
+        /// True if we can modify the collection view. We do not allow you to
+        /// touch it if it's grouped or sorted.
+        /// </summary>
+        /// <param name="itemsControl"></param>
+        /// <returns></returns>
+        public static bool CanReorderCollectionView(ItemsControl itemsControl)
+        {
+            ICollectionView cv = CollectionViewSource.GetDefaultView(itemsControl.ItemsSource ?? itemsControl.Items);
+            return cv == null || (cv.SortDescriptions.Count == 0 &&
+                                  cv.GroupDescriptions.Count == 0);
+        }
+
+        /// <summary>
+        /// Add an item to the items control.
+        /// </summary>
+        /// <param name="itemsControl"></param>
+        /// <param name="item"></param>
+        /// <param name="insertIndex"></param>
         public static void AddItem(ItemsControl itemsControl, object item, int insertIndex)
         {
             if (itemsControl.ItemsSource != null)
@@ -36,10 +65,17 @@ namespace JulMar.Windows.Internal
                         type.GetMethod("Insert").Invoke(itemsControl.ItemsSource, new object[] { insertIndex, item });
                     }
                 }
+                // Force the collection view to refresh
+                ICollectionView cv = CollectionViewSource.GetDefaultView(itemsControl.ItemsSource);
+                if (cv != null)
+                    cv.Refresh();
             }
             else
             {
                 itemsControl.Items.Insert(insertIndex, item);
+                ICollectionView cv = CollectionViewSource.GetDefaultView(itemsControl.Items);
+                if (cv != null)
+                    cv.Refresh();
             }
         }
 
@@ -47,11 +83,39 @@ namespace JulMar.Windows.Internal
         {
             if (itemToRemove != null)
             {
-                int index = itemsControl.Items.IndexOf(itemToRemove);
-                if (index != -1)
+                int index = -1;
+                if (itemsControl.ItemsSource != null)
                 {
-                    RemoveItem(itemsControl, index);
+                    Type type = itemsControl.ItemsSource.GetType();
+                    Type genericList = type.GetInterface("IList`1");
+                    if (genericList != null)
+                    {
+                        index = (int)type.GetMethod("IndexOf").Invoke(itemsControl.ItemsSource, new object[] { itemToRemove });
+                    }
+                    else
+                    {
+                        IList iList = itemsControl.ItemsSource as IList;
+                        if (iList != null)
+                        {
+                            index = iList.IndexOf(itemToRemove);
+                        }
+                    }
+
+                    if (index == -1)
+                    {
+                        ICollectionView cv = CollectionViewSource.GetDefaultView(itemsControl.ItemsSource);
+                        if (cv != null)
+                        {
+                            index = cv.Cast<object>().TakeWhile(child => itemToRemove != child).Count();
+                        }
+                    }
                 }
+
+                if (index == -1)
+                    index = itemsControl.Items.IndexOf(itemToRemove);
+    
+                if (index != -1)
+                    RemoveItem(itemsControl, index);
             }
         }
 
@@ -174,7 +238,6 @@ namespace JulMar.Windows.Internal
             }
             return null;
         }
-
 
         public static double ScrollOffsetUp(double verticaloffset, double offset)
         {

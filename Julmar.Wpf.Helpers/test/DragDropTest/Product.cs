@@ -16,5 +16,10 @@ namespace ItemsControlDragDropBehavior.TestApp
                 OnPropertyChanged("IsSelected");
             }
         }
+
+        public override string ToString()
+        {
+            return string.Format("Product {0} {1:C} {2}", Name, Price, Quantity);
+        }
     }
 }

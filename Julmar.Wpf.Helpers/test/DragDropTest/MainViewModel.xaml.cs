@@ -18,11 +18,11 @@ namespace ItemsControlDragDropBehavior.TestApp
             for (int i = 0; i < count; i++)
             {
                 Products.Add(new Product
-                                 {
-                                     Name = "Product #" + (i + 1), 
-                                     Quantity = rnd.Next(100), 
-                                     Price = rnd.NextDouble() * 1000
-                                 });
+                {
+                    Name = "Product #" + (i + 1), 
+                    Quantity = rnd.Next(100), 
+                    Price = rnd.NextDouble() * 1000
+                });
             }
         }
 

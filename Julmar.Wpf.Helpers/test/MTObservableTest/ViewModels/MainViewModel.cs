@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using JulMar.Windows;
+using JulMar.Windows.Collections;
 using JulMar.Windows.Mvvm;
 using System.Threading;
 

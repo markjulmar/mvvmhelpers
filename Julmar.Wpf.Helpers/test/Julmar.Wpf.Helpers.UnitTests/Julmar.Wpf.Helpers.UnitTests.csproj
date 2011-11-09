@@ -99,6 +99,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CollectionExtensionsTest.cs" />
     <Compile Include="Core\CollectionExtensionMoveTests.cs" />
     <Compile Include="Core\CollectionExtensionSwapTests.cs" />
     <Compile Include="Converters\ArrayToStringConverterTest.cs" />

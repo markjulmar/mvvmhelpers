@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Threading;
 using JulMar.Core.Concurrency;
 
-namespace JulMar.Windows
+namespace JulMar.Windows.Collections
 {
     /// <summary>
     /// This class provides an ObservableCollection which supports background thread
@@ -159,7 +159,7 @@ namespace JulMar.Windows
             if (Dispatcher == null || Dispatcher.CheckAccess())
                 return work();
 
-            return (TRv) Dispatcher.Invoke(DispatcherPriority.DataBind, work);
+            return (TRv)Dispatcher.Invoke(DispatcherPriority.DataBind, work);
         }
 
         /// <summary>
@@ -245,11 +245,11 @@ namespace JulMar.Windows
             DispatcherInvoke(() =>
                 PerformWriteAction(
                     () =>
-                        {
-                            EnableNotifications = false;
-                            foreach (T item in items)
-                                _masterList.Add(item);
-                        },
+                    {
+                        EnableNotifications = false;
+                        foreach (T item in items)
+                            _masterList.Add(item);
+                    },
                     () => EnableNotifications = true
                 ));
         }
@@ -294,7 +294,7 @@ namespace JulMar.Windows
             DispatcherInvoke(() =>
                 PerformWriteAction(
                     () => _masterList.Insert(index, item),
-                    () => 
+                    () =>
                     {
                         OnCollectionChanged(NotifyCollectionChangedAction.Add, item, index);
                         OnPropertyChanged(CountString);
@@ -308,7 +308,7 @@ namespace JulMar.Windows
         /// <param name="value">The object to remove from the <see cref="T:System.Collections.IList"/>. </param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"/> is read-only.-or- The <see cref="T:System.Collections.IList"/> has a fixed size. </exception><filterpriority>2</filterpriority>
         void IList.Remove(object value)
         {
-            Remove((T) value);
+            Remove((T)value);
         }
 
         /// <summary>
@@ -322,16 +322,16 @@ namespace JulMar.Windows
                 T item = default(T);
                 PerformWriteAction(
                     () =>
-                        {
-                            item = _masterList[index];
-                            _masterList.RemoveAt(index);
-                        },
+                    {
+                        item = _masterList[index];
+                        _masterList.RemoveAt(index);
+                    },
                     () =>
-                        {
-                            OnCollectionChanged(NotifyCollectionChangedAction.Remove, item, index);
-                            OnPropertyChanged(CountString);
-                            OnPropertyChanged(IndexerName);
-                        }
+                    {
+                        OnCollectionChanged(NotifyCollectionChangedAction.Remove, item, index);
+                        OnPropertyChanged(CountString);
+                        OnPropertyChanged(IndexerName);
+                    }
                 );
             });
         }
@@ -346,7 +346,7 @@ namespace JulMar.Windows
         object IList.this[int index]
         {
             get { return this[index]; }
-            set { this[index] = (T) value; }
+            set { this[index] = (T)value; }
         }
 
         /// <summary>
@@ -400,16 +400,16 @@ namespace JulMar.Windows
 
                 PerformWriteAction(
                     () =>
-                        {
-                            pos = _masterList.Count;
-                            _masterList.Add(item);
-                        },
+                    {
+                        pos = _masterList.Count;
+                        _masterList.Add(item);
+                    },
                     () =>
-                        {
-                            OnCollectionChanged(NotifyCollectionChangedAction.Add, item, pos);
-                            OnPropertyChanged(CountString);
-                            OnPropertyChanged(IndexerName);
-                        });
+                    {
+                        OnCollectionChanged(NotifyCollectionChangedAction.Add, item, pos);
+                        OnPropertyChanged(CountString);
+                        OnPropertyChanged(IndexerName);
+                    });
 
                 return pos;
             });
@@ -433,7 +433,7 @@ namespace JulMar.Windows
         /// <param name="value">The object to add to the <see cref="T:System.Collections.IList"/>. </param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"/> is read-only.-or- The <see cref="T:System.Collections.IList"/> has a fixed size. </exception><filterpriority>2</filterpriority>
         int IList.Add(object value)
         {
-            return InternalAdd((T) value);
+            return InternalAdd((T)value);
         }
 
         /// <summary>
@@ -445,7 +445,7 @@ namespace JulMar.Windows
         /// <param name="value">The object to locate in the <see cref="T:System.Collections.IList"/>. </param><filterpriority>2</filterpriority>
         bool IList.Contains(object value)
         {
-            return Contains((T) value);
+            return Contains((T)value);
         }
 
         /// <summary>
@@ -457,11 +457,11 @@ namespace JulMar.Windows
                 PerformWriteAction(
                     () => _masterList.Clear(),
                     () =>
-                        {
-                            OnCollectionReset();
-                            OnPropertyChanged(CountString);
-                            OnPropertyChanged(IndexerName);
-                        }));
+                    {
+                        OnCollectionReset();
+                        OnPropertyChanged(CountString);
+                        OnPropertyChanged(IndexerName);
+                    }));
         }
 
         /// <summary>
@@ -473,7 +473,7 @@ namespace JulMar.Windows
         /// <param name="value">The object to locate in the <see cref="T:System.Collections.IList"/>. </param><filterpriority>2</filterpriority>
         int IList.IndexOf(object value)
         {
-            return IndexOf((T) value);
+            return IndexOf((T)value);
         }
 
         /// <summary>
@@ -482,7 +482,7 @@ namespace JulMar.Windows
         /// <param name="index">The zero-based index at which <paramref name="value"/> should be inserted. </param><param name="value">The object to insert into the <see cref="T:System.Collections.IList"/>. </param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.IList"/>. </exception><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"/> is read-only.-or- The <see cref="T:System.Collections.IList"/> has a fixed size. </exception><exception cref="T:System.NullReferenceException"><paramref name="value"/> is null reference in the <see cref="T:System.Collections.IList"/>.</exception><filterpriority>2</filterpriority>
         void IList.Insert(int index, object value)
         {
-            Insert(index, (T) value);
+            Insert(index, (T)value);
         }
 
         /// <summary>
@@ -513,7 +513,7 @@ namespace JulMar.Windows
         /// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.ICollection"/>. The <see cref="T:System.Array"/> must have zero-based indexing. </param><param name="index">The zero-based index in <paramref name="array"/> at which copying begins. </param><exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null. </exception><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is less than zero. </exception><exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or- The number of elements in the source <see cref="T:System.Collections.ICollection"/> is greater than the available space from <paramref name="index"/> to the end of the destination <paramref name="array"/>. </exception><exception cref="T:System.ArgumentException">The type of the source <see cref="T:System.Collections.ICollection"/> cannot be cast automatically to the type of the destination <paramref name="array"/>. </exception><filterpriority>2</filterpriority>
         public void CopyTo(Array array, int index)
         {
-            _lock.UsingReadLock(() => Array.Copy(_masterList.ToArray(), index, array, 0, Math.Min(_masterList.Count-index, array.Length)));
+            _lock.UsingReadLock(() => Array.Copy(_masterList.ToArray(), index, array, 0, Math.Min(_masterList.Count - index, array.Length)));
         }
 
         /// <summary>
@@ -589,24 +589,24 @@ namespace JulMar.Windows
 
                 PerformWriteAction(
                     () =>
+                    {
+                        index = _masterList.IndexOf(item);
+                        if (index >= 0)
                         {
-                            index = _masterList.IndexOf(item);
-                            if (index >= 0)
-                            {
-                                bool rc = _masterList.Remove(item);
-                                Debug.Assert(rc);
-                            }
-                        },
+                            bool rc = _masterList.Remove(item);
+                            Debug.Assert(rc);
+                        }
+                    },
                     () =>
+                    {
+                        if (index >= 0)
                         {
-                            if (index >= 0)
-                            {
-                                OnCollectionChanged(NotifyCollectionChangedAction.Remove,
-                                                    item, index);
-                                OnPropertyChanged(CountString);
-                                OnPropertyChanged(IndexerName);
-                            }
-                        });
+                            OnCollectionChanged(NotifyCollectionChangedAction.Remove,
+                                                item, index);
+                            OnPropertyChanged(CountString);
+                            OnPropertyChanged(IndexerName);
+                        }
+                    });
 
                 return index >= 0;
             });

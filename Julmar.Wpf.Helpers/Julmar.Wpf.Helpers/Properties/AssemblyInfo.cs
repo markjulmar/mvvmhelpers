@@ -7,5 +7,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProductAttribute("JulMar.Wpf.Helpers")]
 [assembly: AssemblyCopyrightAttribute("(C) 2008-2011 JulMar Entertainment Technology, Inc.")]
 [assembly: AssemblyVersionAttribute("4.0.0.*")]
-[assembly: AssemblyFileVersionAttribute("4.0.0.5")]
+[assembly: AssemblyFileVersionAttribute("4.0.0.6")]
 [assembly: ComVisibleAttribute(false)]

@@ -120,6 +120,12 @@ namespace JulMar.Windows.Interactivity
                 if ((_isDragging == false) && (Math.Abs(currentPosition.X - _dragStartPosition.X) > SystemParameters.MinimumHorizontalDragDistance) ||
                     (Math.Abs(currentPosition.Y - _dragStartPosition.Y) > SystemParameters.MinimumVerticalDragDistance))
                 {
+                    // Do not allow if sorted and we only allow this element as
+                    // the drop target.
+                    if (!DragUtilities.CanReorderCollectionView(itemsControl)
+                        && AllowOnlySelf)
+                        return;
+
                     DragStarted(itemsControl);
                 }
             }
@@ -146,6 +152,11 @@ namespace JulMar.Windows.Interactivity
             e.Effects = DragDropEffects.None;
 
             var itemsControl = (ItemsControl)sender;
+            
+            // Do not allow if sorted.
+            if (!DragUtilities.CanReorderCollectionView(itemsControl))
+                return;
+
             if (e.Data.GetDataPresent(ItemTypeKey))
             {
                 DragInfo data = e.Data.GetData(ItemTypeKey) as DragInfo;
@@ -183,6 +194,11 @@ namespace JulMar.Windows.Interactivity
             e.Effects = DragDropEffects.None;
 
             var itemsControl = (ItemsControl)sender;
+            
+            // Do not allow if sorted.
+            if (!DragUtilities.CanReorderCollectionView(itemsControl))
+                return;
+
             if (e.Data.GetDataPresent(ItemTypeKey))
             {
                 DragInfo data = e.Data.GetData(ItemTypeKey) as DragInfo;

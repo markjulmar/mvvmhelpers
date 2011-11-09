@@ -94,25 +94,21 @@
     <Compile Include="Actions\SetFocusAction.cs" />
     <Compile Include="DragDropEventArgs.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="Interactivity\BindingTrigger.cs" />
-    <Compile Include="Interactivity\ClickTrigger.cs" />
     <Compile Include="Interactivity\CloseWindowBehavior.cs" />
-    <Compile Include="Interactivity\CommandEventTrigger.cs" />
     <Compile Include="Interactivity\DataGridRowDragBehavior.cs" />
     <Compile Include="Interactivity\DataGridRowIndexBehavior.cs" />
     <Compile Include="Interactivity\DeferredScrollBehavior.cs" />
-    <Compile Include="Interactivity\DoubleClickTrigger.cs" />
     <Compile Include="Interactivity\DragPositionBehavior.cs" />
     <Compile Include="Interactivity\ItemsControlDragDropBehavior.cs" />
     <Compile Include="Interactivity\ListViewSortBehavior.cs" />
     <Compile Include="Interactivity\MaskedTextBoxBehavior.cs" />
+    <Compile Include="Interactivity\MultiSelectTreeViewBehavior.cs" />
     <Compile Include="Interactivity\NumericTextBoxBehavior.cs" />
     <Compile Include="Interactivity\ScrollbarPreviewBehavior.cs" />
     <Compile Include="Interactivity\ScrollingPreviewBehavior.cs" />
-    <Compile Include="Interactivity\SelectedItemsCollectionSynchronizer.cs" />
+    <Compile Include="Interactivity\SelectedItemsCollectionSynchronizerBehavior.cs" />
     <Compile Include="Interactivity\SelectTextOnFocusBehavior.cs" />
     <Compile Include="Interactivity\SynchronizedScrollingBehavior.cs" />
-    <Compile Include="Interactivity\ViewModelTrigger.cs" />
     <Compile Include="Interactivity\ViewportSynchronizerBehavior.cs" />
     <Compile Include="Interactivity\WatermarkTextBehavior.cs" />
     <Compile Include="Internal\DragAdorner.cs" />
@@ -123,6 +119,11 @@
       <SubType>Code</SubType>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <Compile Include="Triggers\BindingTrigger.cs" />
+    <Compile Include="Triggers\ClickTrigger.cs" />
+    <Compile Include="Triggers\CommandEventTrigger.cs" />
+    <Compile Include="Triggers\DoubleClickTrigger.cs" />
+    <Compile Include="Triggers\ViewModelTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Julmar.Core\Julmar.Core.csproj">

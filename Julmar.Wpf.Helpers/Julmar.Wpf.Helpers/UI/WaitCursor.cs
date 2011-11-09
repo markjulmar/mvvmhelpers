@@ -17,7 +17,7 @@ namespace JulMar.Windows.UI
     /// 
     /// ]]>
     /// </example>
-    public class WaitCursor : IDisposable
+    public sealed class WaitCursor : IDisposable
     {
         private readonly Cursor _oldCursor;
 
