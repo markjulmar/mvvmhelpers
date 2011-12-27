@@ -1,12 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Diagnostics;
 using JulMar.Windows.Extensions;
 
 namespace JulMar.Windows.Interactivity
@@ -25,7 +26,8 @@ namespace JulMar.Windows.Interactivity
         /// Attached property to allow this to be associated with an image in a Style setter.
         /// </summary>
         public static readonly DependencyProperty IsActiveProperty =
-            DependencyProperty.RegisterAttached("IsActive", typeof(bool), typeof(AutoDisabledImageBehavior), new PropertyMetadata(default(bool), OnIsActiveChanged));
+            DependencyProperty.RegisterAttached("IsActive", typeof(bool), typeof(AutoDisabledImageBehavior),
+                new PropertyMetadata(default(bool), OnIsActiveChanged));
 
         /// <summary>
         /// Attached property getter
@@ -73,16 +75,44 @@ namespace JulMar.Windows.Interactivity
             base.OnAttached();
 
             _originalSource = AssociatedObject.Source;
-            AssociatedObject.SourceUpdated += OnSourceChanged;
 
-            if (!AssociatedObject.IsLoaded)
+            var dp = DependencyPropertyDescriptor.FromProperty(Image.SourceProperty, typeof(Image));
+            if (dp != null)
+                dp.AddValueChanged(AssociatedObject, OnSourceChanged);
+
+            AssociatedObject.Loaded += OnImageLoaded;
+            AssociatedObject.Unloaded += OnImageUnloaded;
+
+            if (AssociatedObject.IsLoaded)
             {
-                AssociatedObject.Loaded += OnAttachEvents;
+                OnImageLoaded(null, null);
             }
-            else
+        }
+
+
+        /// <summary>
+        /// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
+        /// </summary>
+        /// <remarks>
+        /// Override this to unhook functionality from the AssociatedObject.
+        /// </remarks>
+        protected override void OnDetaching()
+        {
+            if (_owningControl != null)
             {
-                OnAttachEvents(null, null);
+                OnImageUnloaded(null, null);
             }
+
+            var dp = DependencyPropertyDescriptor.FromProperty(Image.SourceProperty, typeof(Image));
+            if (dp != null)
+                dp.RemoveValueChanged(AssociatedObject, OnSourceChanged);
+
+            AssociatedObject.Loaded -= OnImageLoaded;
+            AssociatedObject.Unloaded -= OnImageUnloaded;
+
+            _originalSource = null;
+
+            base.OnDetaching();
         }
 
         /// <summary>
@@ -90,13 +120,14 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnSourceChanged(object sender, DataTransferEventArgs e)
+        private void OnSourceChanged(object sender, EventArgs e)
         {
             // If we are not the ones changing the source then cache off the new source.
             if (!_changingSource)
             {
                 _originalSource = AssociatedObject.Source;
-                UpdateImageSource(_isEnabled);
+                if (AssociatedObject.IsLoaded && _owningControl != null)
+                    UpdateImageSource(_isEnabled);
             }
         }
 
@@ -106,16 +137,34 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnAttachEvents(object sender, RoutedEventArgs e)
+        private void OnImageLoaded(object sender, RoutedEventArgs e)
         {
+            Debug.Assert(_owningControl == null);
+
             if (OwnerType != null)
                 _owningControl = (FrameworkElement) AssociatedObject.FindVisualParent(OwnerType);
+            else
+                _owningControl = AssociatedObject.FindVisualParent<ButtonBase>() 
+                                    ?? (FrameworkElement) AssociatedObject.FindVisualParent<MenuItem>();
 
-            _owningControl = AssociatedObject.FindVisualParent<ButtonBase>() ?? (FrameworkElement) AssociatedObject.FindVisualParent<MenuItem>();
             if (_owningControl != null)
             {
-                _owningControl.IsEnabledChanged += OnOwnerEnabledStateChanged;
                 UpdateImageSource(_owningControl.IsEnabled);
+                _owningControl.IsEnabledChanged += OnOwnerEnabledStateChanged;
+            }
+        }
+
+        /// <summary>
+        /// This detaches the event handlers and unhooks our parent control
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnImageUnloaded(object sender, RoutedEventArgs e)
+        {
+            if (_owningControl != null)
+            {
+                _owningControl.IsEnabledChanged -= OnOwnerEnabledStateChanged;
+                _owningControl = null;
             }
         }
 
@@ -142,7 +191,11 @@ namespace JulMar.Windows.Interactivity
             {
                 if (_isEnabled)
                 {
+#if WPF_TOOLKIT
                     AssociatedObject.Source = _originalSource;
+#else
+                    AssociatedObject.SetCurrentValue(Image.SourceProperty, _originalSource);
+#endif
                     AssociatedObject.OpacityMask = null;
                 }
                 else
@@ -162,7 +215,12 @@ namespace JulMar.Windows.Interactivity
                         }
                     }
 
-                    AssociatedObject.Source = new FormatConvertedBitmap(bs, PixelFormats.Gray32Float, null, 0);
+                    var grayImage = new FormatConvertedBitmap(bs, PixelFormats.Gray32Float, null, 0);
+#if WPF_TOOLKIT
+                    AssociatedObject.Source = grayImage;
+#else
+                    AssociatedObject.SetCurrentValue(Image.SourceProperty, grayImage);
+#endif
                     AssociatedObject.OpacityMask = new ImageBrush(bs);
 
                 }
@@ -171,21 +229,6 @@ namespace JulMar.Windows.Interactivity
             {
                 _changingSource = false;
             }
-        }
-
-        /// <summary>
-        /// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
-        /// </summary>
-        /// <remarks>
-        /// Override this to unhook functionality from the AssociatedObject.
-        /// </remarks>
-        protected override void OnDetaching()
-        {
-            if (_owningControl != null)
-                _owningControl.IsEnabledChanged -= OnOwnerEnabledStateChanged;
-
-            AssociatedObject.SourceUpdated -= OnSourceChanged;
-            base.OnDetaching();
         }
 
         /// <summary>

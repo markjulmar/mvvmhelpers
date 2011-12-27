@@ -89,11 +89,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\ApplyEffect.cs" />
+    <Compile Include="Actions\ChangeCursorAction.cs" />
     <Compile Include="Actions\ChangeThemeAction.cs" />
     <Compile Include="Actions\InvokeCommand.cs" />
+    <Compile Include="Actions\MessageBoxAction.cs" />
+    <Compile Include="Actions\SelectAllTextAction.cs" />
     <Compile Include="Actions\SetFocusAction.cs" />
     <Compile Include="DragDropEventArgs.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Interactivity\AutoDisabledImageBehavior.cs" />
     <Compile Include="Interactivity\CloseWindowBehavior.cs" />
     <Compile Include="Interactivity\DataGridRowDragBehavior.cs" />
     <Compile Include="Interactivity\DataGridRowIndexBehavior.cs" />
@@ -119,6 +123,7 @@
       <SubType>Code</SubType>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <Compile Include="StyleInteraction.cs" />
     <Compile Include="Triggers\BindingTrigger.cs" />
     <Compile Include="Triggers\ClickTrigger.cs" />
     <Compile Include="Triggers\CommandEventTrigger.cs" />
