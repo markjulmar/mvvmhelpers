@@ -31,7 +31,7 @@ namespace JulMar.Windows.UI
     /// MEF is used to locate and bind each service with this attribute decoration.
     /// </summary>
     [MetadataAttribute]
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class ExportUIVisualizerAttribute : ExportAttribute
     {
         /// <summary>

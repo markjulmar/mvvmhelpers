@@ -20,7 +20,7 @@ namespace JulMar.Windows.Interfaces
 
     /// <summary>
     /// This interface defines a UI controller which can be used to display dialogs
-    /// in either modal or modaless form from a ViewModel.
+    /// in either modal or modeless form from a ViewModel.
     /// </summary>
     [InheritedExport]
     public interface IUIVisualizer
@@ -40,7 +40,7 @@ namespace JulMar.Windows.Interfaces
         bool Unregister(string key);
 
         /// <summary>
-        /// This method displays a modaless dialog associated with the given key.  The associated
+        /// This method displays a modeless dialog associated with the given key.  The associated
         /// VM is not connected but must be supplied through some other means.
         /// </summary>
         /// <param name="key">Key previously registered with the UI controller.</param>
@@ -58,7 +58,7 @@ namespace JulMar.Windows.Interfaces
         bool? ShowDialog(string key);
 
         /// <summary>
-        /// This method displays a modaless dialog associated with the given key.
+        /// This method displays a modeless dialog associated with the given key.
         /// </summary>
         /// <param name="key">Key previously registered with the UI controller.</param>
         /// <param name="state">Object state to associate with the dialog</param>
@@ -76,7 +76,7 @@ namespace JulMar.Windows.Interfaces
         bool? ShowDialog(string key, object state);
 
         /// <summary>
-        /// This method displays a modaless dialog associated with the given key.
+        /// This method displays a modeless dialog associated with the given key.
         /// </summary>
         /// <param name="key">Key previously registered with the UI controller.</param>
         /// <param name="state">Object state to associate with the dialog</param>

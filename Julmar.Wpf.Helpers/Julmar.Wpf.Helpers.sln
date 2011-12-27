@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiSelectTreeView", "test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiSelectCollectionTest", "test\MultiSelectCollectionTest\MultiSelectCollectionTest.csproj", "{535B7C19-3869-41E8-8E6D-004F9A2C702E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StyleBehaviorTest", "test\StyleBehaviorTest\StyleBehaviorTest.csproj", "{BE712575-BEA6-4901-A341-484EF8AEA744}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -231,6 +233,16 @@ Global
 		{535B7C19-3869-41E8-8E6D-004F9A2C702E}.Release|Mixed Platforms.Build.0 = Release|x86
 		{535B7C19-3869-41E8-8E6D-004F9A2C702E}.Release|x86.ActiveCfg = Release|x86
 		{535B7C19-3869-41E8-8E6D-004F9A2C702E}.Release|x86.Build.0 = Release|x86
+		{BE712575-BEA6-4901-A341-484EF8AEA744}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BE712575-BEA6-4901-A341-484EF8AEA744}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{BE712575-BEA6-4901-A341-484EF8AEA744}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{BE712575-BEA6-4901-A341-484EF8AEA744}.Debug|x86.ActiveCfg = Debug|x86
+		{BE712575-BEA6-4901-A341-484EF8AEA744}.Debug|x86.Build.0 = Debug|x86
+		{BE712575-BEA6-4901-A341-484EF8AEA744}.Release|Any CPU.ActiveCfg = Release|x86
+		{BE712575-BEA6-4901-A341-484EF8AEA744}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{BE712575-BEA6-4901-A341-484EF8AEA744}.Release|Mixed Platforms.Build.0 = Release|x86
+		{BE712575-BEA6-4901-A341-484EF8AEA744}.Release|x86.ActiveCfg = Release|x86
+		{BE712575-BEA6-4901-A341-484EF8AEA744}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -249,5 +261,6 @@ Global
 		{EF6A995B-021D-4B3F-886D-F81D0015F9BE} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{356C2F2B-E2D7-4511-9A75-7115F1862BFB} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{535B7C19-3869-41E8-8E6D-004F9A2C702E} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
+		{BE712575-BEA6-4901-A341-484EF8AEA744} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 	EndGlobalSection
 EndGlobal

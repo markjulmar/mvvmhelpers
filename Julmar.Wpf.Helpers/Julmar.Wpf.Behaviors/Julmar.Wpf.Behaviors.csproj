@@ -85,8 +85,12 @@
     <Compile Include="Actions\ApplyEffect.cs" />
     <Compile Include="Actions\ChangeThemeAction.cs" />
     <Compile Include="Actions\InvokeCommand.cs" />
+    <Compile Include="Actions\SelectAllTextAction.cs" />
     <Compile Include="Actions\SetFocusAction.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Interactivity\AutoDisabledImageBehavior.cs" />
+    <Compile Include="Actions\MessageBoxAction.cs" />
+    <Compile Include="StyleInteraction.cs" />
     <Compile Include="Triggers\BindingTrigger.cs" />
     <Compile Include="Actions\ChangeCursorAction.cs" />
     <Compile Include="Triggers\ClickTrigger.cs" />

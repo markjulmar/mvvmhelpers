@@ -9,7 +9,7 @@ namespace JulMar.Windows.Interactivity
     /// <summary>
     /// This behavior allows the designer to close a dialog using a true/false DialogResult through a button.
     /// This is already supported if the IsCancel property is true, but the IsDefault does not auto-dismiss the dialog
-    /// without some code behind.  This aleviates that requirement for the very simple dialogs that are completely VM driven.
+    /// without some code behind.  This alleviates that requirement for the very simple dialogs that are completely VM driven.
     /// </summary>
     public class CloseDialogBehavior : Behavior<ButtonBase>
     {

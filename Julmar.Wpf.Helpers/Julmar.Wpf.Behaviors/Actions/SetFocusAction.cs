@@ -15,7 +15,7 @@ namespace JulMar.Windows.Actions
         public static readonly DependencyProperty TargetProperty = DependencyProperty.Register("Target", typeof(FrameworkElement), typeof(SetFocusAction), new FrameworkPropertyMetadata(null));
 
         /// <summary>
-        /// This property allows you to set the focus target independant of where this
+        /// This property allows you to set the focus target independent of where this
         /// action is applied - so you can apply the trigger/action to the Window and then
         /// push focus to a child element as an example.
         /// </summary>
