@@ -119,4 +119,9 @@ Added MultiTreeSelect behavior
 Modified MTObservableCollection to support suspension of events
 Added ChangeCursorAction to behaviors
 
+4.07 12/2011
+Fixed ExportUIVisualizer (removed AllowMultiple as it broke certain resolutions with MEF).
+Added StyleInteraction and test project into behaviors project
+Added SelectTextAction, MessageBoxAction and AutoDisabledImageBehavior
+Fixed a couple of spelling errors in comments.
 
