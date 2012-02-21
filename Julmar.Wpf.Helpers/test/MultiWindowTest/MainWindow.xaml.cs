@@ -37,7 +37,7 @@ namespace MultiWindowTest
             this.Title = string.Format("Window #: {0} - Owner: {1}", Application.Current.Windows.Count, ownerText);
             ViewModel.ServiceProvider.Resolve<IMessageMediator>().Register(this);
 
-            MefComposer.Instance.Compose(this);
+            DynamicComposer.Instance.Compose(this);
             _uiVisualizer.Register("MainWindow", typeof(MainWindow));
         }
 

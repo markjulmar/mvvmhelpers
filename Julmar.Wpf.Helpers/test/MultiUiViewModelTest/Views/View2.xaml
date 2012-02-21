@@ -1,0 +1,9 @@
+﻿<Window x:Class="MultiUiViewModelTest.Views.View2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="View 2" Height="300" Width="300">
+    <Grid>
+        <Rectangle Fill="Blue" Margin="10" />
+        <TextBlock FontSize="24pt" Foreground="White" Text="{Binding Text}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"  />
+    </Grid>
+</Window>

@@ -353,15 +353,27 @@ namespace JulMar.Windows.Interactivity
         /// <param name="sortDirection"></param>
         private void ChangeAdorner(GridViewColumnHeader sortingColumn, ListSortDirection sortDirection)
         {
+            // Remove existing arrow
             if (_adorner != null)
-                AdornerLayer.GetAdornerLayer(_sortingColumn).Remove(_adorner);
+            {
+                var oldLayer = AdornerLayer.GetAdornerLayer(_sortingColumn);
+                if (oldLayer != null)
+                {
+                    oldLayer.Remove(_adorner);
+                }
+            }
 
+            // Set our new settings
             _sortingColumn = sortingColumn;
             SortDirection = sortDirection;
+            _adorner = new SortAdorner(_sortingColumn) { Fill = ArrowFill ?? _sortingColumn.Foreground, Direction = SortDirection };
 
             // Determine the direction and add the arrow.
-            _adorner = new SortAdorner(_sortingColumn) { Fill = ArrowFill ?? _sortingColumn.Foreground, Direction = SortDirection };
-            AdornerLayer.GetAdornerLayer(_sortingColumn).Add(_adorner);
+            var newLayer = AdornerLayer.GetAdornerLayer(_sortingColumn);
+            if (newLayer != null)
+            {
+                newLayer.Add(_adorner);
+            }
         }
 
         /// <summary>
@@ -405,10 +417,23 @@ namespace JulMar.Windows.Interactivity
 
             if (_sortingColumn != null)
             {
-                if (_adorner != null)
+                if (e.Action != NotifyCollectionChangedAction.Reset)
                 {
-                    AdornerLayer.GetAdornerLayer(_sortingColumn).Remove(_adorner);
-                    _adorner = null;
+                    if (_adorner != null)
+                    {
+                        var layer = AdornerLayer.GetAdornerLayer(_sortingColumn);
+                        if (layer != null)
+                            layer.Remove(_adorner);
+                        
+                        _adorner = null;
+                    }
+                }
+                // Already sorted -- reset
+                else 
+                {
+                    // Reverse the sort direction - SortByColumn will invert this again.
+                    SortDirection = (SortDirection == ListSortDirection.Ascending) ? ListSortDirection.Descending : ListSortDirection.Ascending;
+                    SortByColumn(_sortingColumn);
                 }
             }
         }

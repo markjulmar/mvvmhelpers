@@ -78,17 +78,17 @@ namespace JulMar.Wpf.Helpers.UnitTests
         [TestMethod]
         public void TestMefLoader()
         {
-            IServiceProviderEx sp = MefComposer.Instance.GetExportedValue<IServiceProviderEx>();
+            IServiceProviderEx sp = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
             Assert.IsNotNull(sp);
 
-            IServiceProvider sp2 = MefComposer.Instance.GetExportedValue<IServiceProvider>();
+            IServiceProvider sp2 = DynamicComposer.Instance.GetExportedValue<IServiceProvider>();
             Assert.AreSame(sp,sp2);
         }
 
         [TestMethod]
         public void TestMyServiceExport()
         {
-            IServiceProviderEx sp = MefComposer.Instance.GetExportedValue<IServiceProviderEx>();
+            IServiceProviderEx sp = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
             Assert.IsNotNull(sp);
 
             var msc = sp.Resolve<MyServiceClass>();
@@ -105,7 +105,7 @@ namespace JulMar.Wpf.Helpers.UnitTests
         [TestMethod]
         public void TestMyServiceExportInterface()
         {
-            IServiceProviderEx sp = MefComposer.Instance.GetExportedValue<IServiceProviderEx>();
+            IServiceProviderEx sp = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
             Assert.IsNotNull(sp);
 
             var msc = sp.Resolve<IMyServiceClass2>();
@@ -125,7 +125,7 @@ namespace JulMar.Wpf.Helpers.UnitTests
         [TestMethod]
         public void TestMyServiceExportInterfaceInherited()
         {
-            IServiceProviderEx sp = MefComposer.Instance.GetExportedValue<IServiceProviderEx>();
+            IServiceProviderEx sp = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
             Assert.IsNotNull(sp);
 
             var msc = sp.Resolve<IMyServiceClassBase>();
@@ -137,7 +137,7 @@ namespace JulMar.Wpf.Helpers.UnitTests
         [TestMethod]
         public void ImportTestClass()
         {
-            MefComposer.Instance.Compose(this);
+            DynamicComposer.Instance.Compose(this);
             Assert.IsNotNull(TestImport);
         }
     }

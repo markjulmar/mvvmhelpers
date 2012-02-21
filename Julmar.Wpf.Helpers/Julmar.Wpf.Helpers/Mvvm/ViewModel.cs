@@ -22,7 +22,7 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         static ViewModel()
         {
-            ServiceProvider = MefComposer.Instance.GetExportedValue<IServiceProviderEx>();
+            ServiceProvider = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
             if (ServiceProvider == null)
                 throw new InvalidOperationException("Unable to locate Service Locator Service (IServiceProviderEx");
         }
@@ -74,7 +74,7 @@ namespace JulMar.Windows.Mvvm
             {
                 try
                 {
-                    MefComposer.Instance.ComposeOnce(this);
+                    DynamicComposer.Instance.ComposeOnce(this);
                 }
                 catch
                 {

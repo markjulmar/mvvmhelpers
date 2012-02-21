@@ -5,7 +5,7 @@
         xmlns:Actions="clr-namespace:JulMar.Windows.Actions;assembly=Julmar.Wpf.Behaviors"
         xmlns:julmar="clr-namespace:JulMar.Windows;assembly=Julmar.Wpf.Behaviors"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" Title="MainWindow" Height="350" Width="525">
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" Title="StyleTriggerCollection test" Height="350" Width="525">
     <Grid>
         <ListBox>
             <ListBox.ItemContainerStyle>

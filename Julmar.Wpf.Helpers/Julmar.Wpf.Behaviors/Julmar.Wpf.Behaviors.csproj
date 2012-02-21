@@ -90,6 +90,8 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Interactivity\AutoDisabledImageBehavior.cs" />
     <Compile Include="Actions\MessageBoxAction.cs" />
+    <Compile Include="Interactivity\ListViewColumnAutoSizeBehavior.cs" />
+    <Compile Include="Interactivity\MouseGestureScrollViewerBehavior.cs" />
     <Compile Include="StyleInteraction.cs" />
     <Compile Include="Triggers\BindingTrigger.cs" />
     <Compile Include="Actions\ChangeCursorAction.cs" />

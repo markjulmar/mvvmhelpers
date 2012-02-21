@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel.Composition;
 using JulMar.Core.Interfaces;
+using TestMvvm.Services;
 
 namespace TestMvvm.ViewModels
 {
@@ -128,8 +129,19 @@ namespace TestMvvm.ViewModels
 
         private bool OnCheckClose()
         {
-            return (Resolve<IMessageVisualizer>().Show("Question", "Do you want to close this window?",
-                                                       MessageButtons.YesNo) == MessageResult.Yes);
+            bool canClose = true;
+
+            IMessageVisualizer messageVisualizer = Resolve<IMessageVisualizer>();
+            if (messageVisualizer == null
+                || messageVisualizer.GetType() != typeof(InternalMessageVisualizer))
+            {
+                Resolve<IErrorVisualizer>().Show("Error!", "Message Visualizer was not registered properly!");
+            }
+            else
+                canClose = messageVisualizer.Show("Question", "Do you want to close this window?",
+                           MessageButtons.YesNo) == MessageResult.Yes;
+
+            return canClose;
         }
 
         private void OnMouseEnterLeave(EventParameters ep)

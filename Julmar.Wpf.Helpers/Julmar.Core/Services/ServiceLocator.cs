@@ -28,11 +28,6 @@ namespace JulMar.Core.Services
     sealed class ServiceLocator : IServiceProviderEx, IDisposable
     {
         /// <summary>
-        /// The MEF loader.
-        /// </summary>
-        private IDynamicResolver _mefResolver = MefComposer.Instance;
-
-        /// <summary>
         /// Key used to bind exports together
         /// </summary>
         internal const string MefLocatorKey = "JulMar.Mvvm.ServiceProviderExport";
@@ -57,7 +52,8 @@ namespace JulMar.Core.Services
         /// </summary>
         public ServiceLocator()
         {
-            _mefResolver.Compose(this);
+            // Locate any services through MEF attributes.
+            DynamicComposer.Instance.Compose(this);
         }
 
         /// <summary>
@@ -172,7 +168,6 @@ namespace JulMar.Core.Services
             if (_serviceContainer == null)
             {
                 _serviceContainer = new ServiceContainer();
-                _serviceContainer.AddService(typeof(IDynamicResolver), _mefResolver);
             }
         }
 
@@ -225,12 +220,10 @@ namespace JulMar.Core.Services
         /// <returns>Lazy object or null</returns>
         private Lazy<object,IServiceProviderMetadata> CheckLocatedServices(Type type)
         {
-            // No located services (MEF not initialized).
-            if (_locatedServices == null)
-                return null;
-
             // Get a list of all services matching the type and return the first match
-            return _locatedServices.Where(svc => svc.Metadata.ServiceType == type).FirstOrDefault();
+            return _locatedServices == null 
+                ? null 
+                : _locatedServices.FirstOrDefault(svc => svc.Metadata.ServiceType == type);
         }
 
         /// <summary>
@@ -264,7 +257,6 @@ namespace JulMar.Core.Services
                 if (id != null)
                     id.Dispose();
                 _serviceContainer = null;
-                _mefResolver = null;
             }
         }
     }

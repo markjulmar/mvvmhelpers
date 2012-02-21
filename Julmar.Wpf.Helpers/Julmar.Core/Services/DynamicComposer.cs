@@ -5,7 +5,6 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using JulMar.Core.Interfaces;
 using System.Diagnostics;
 using System.ComponentModel.Composition.Primitives;
 
@@ -14,9 +13,9 @@ namespace JulMar.Core.Services
     /// <summary>
     /// Inversion of Control Composer - currently based on MEF (4.0).
     /// </summary>
-    public sealed class MefComposer : IDynamicResolver, IDisposable
+    public sealed class DynamicComposer : IDisposable
     {
-        private static readonly Lazy<MefComposer> _singleton = new Lazy<MefComposer>(() => new MefComposer());
+        private static readonly Lazy<DynamicComposer> _singleton = new Lazy<DynamicComposer>(() => new DynamicComposer());
         private Lazy<CompositionContainer> _container;
 #if NET35
         private bool _isCreated = false;
@@ -26,7 +25,7 @@ namespace JulMar.Core.Services
         /// <summary>
         /// IoC instance
         /// </summary>
-        public static MefComposer Instance
+        public static DynamicComposer Instance
         {
             get { return _singleton.Value;  }
         }
@@ -34,7 +33,7 @@ namespace JulMar.Core.Services
         /// <summary>
         /// Internal constructor - stop this class from being created directly.
         /// </summary>
-        private MefComposer()
+        private DynamicComposer()
         {
             _container = new Lazy<CompositionContainer>(CreateContainer);
         }
@@ -108,6 +107,16 @@ namespace JulMar.Core.Services
         public T GetExportedValue<T>()
         {
             return Container.GetExportedValueOrDefault<T>();
+        }
+
+        /// <summary>
+        /// Retrieves the specified exported object by passed in Type object.
+        /// </summary>
+        /// <param name="type">Type to locate</param>
+        /// <returns>Created object, or NULL if it doesn't exist</returns>
+        public object GetExportedVaue(Type type)
+        {
+            return Container.GetExports(type, null, null).FirstOrDefault();
         }
 
         /// <summary>

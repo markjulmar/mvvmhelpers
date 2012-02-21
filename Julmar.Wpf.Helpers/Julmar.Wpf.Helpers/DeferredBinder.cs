@@ -25,6 +25,11 @@ namespace JulMar.Windows
         /// Timer used to track value changes
         /// </summary>
         private DispatcherTimer _timer;
+ 
+        /// <summary>
+        /// True if we are updating the source/target internally
+        /// </summary>
+        private bool _isUpdatingTarget, _isUpdatingSource;
 
         #region Timeout
 
@@ -33,7 +38,8 @@ namespace JulMar.Windows
         /// </summary>
         public static readonly DependencyProperty TimeoutProperty =
             DependencyProperty.Register("Timeout", typeof(double), typeof(DeferredBinder),
-                new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.None, OnTimeoutChanged));
+                                        new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.None,
+                                                                      OnTimeoutChanged));
 
         /// <summary>
         /// Gets or sets the Timeout property.
@@ -49,7 +55,7 @@ namespace JulMar.Windows
         /// </summary>
         private static void OnTimeoutChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((DeferredBinder)d).ResetTimer();
+            ((DeferredBinder)d).ResetTimer(false);
         }
 
         #endregion
@@ -61,7 +67,7 @@ namespace JulMar.Windows
         /// </summary>
         public static readonly DependencyProperty SourceProperty =
             DependencyProperty.Register("Source", typeof(object), typeof(DeferredBinder),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.None, OnSourceChanged));
+                                        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSourceChanged));
 
         /// <summary>
         /// Gets or sets the Source property.  
@@ -73,11 +79,11 @@ namespace JulMar.Windows
         }
 
         /// <summary>
-        /// Handles changes to the Target property.
+        /// Handles changes to the Source property.
         /// </summary>
         private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((DeferredBinder)d).ResetTimer();
+            ((DeferredBinder)d).OnSourceChanged();
         }
 
         #endregion
@@ -89,7 +95,7 @@ namespace JulMar.Windows
         /// </summary>
         public static readonly DependencyProperty TargetProperty =
             DependencyProperty.Register("Target", typeof(object), typeof(DeferredBinder),
-               new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.None));
+                                        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnTargetChanged));
 
         /// <summary>
         /// Gets or sets the Target property.  This dependency property 
@@ -101,21 +107,76 @@ namespace JulMar.Windows
             set { SetValue(TargetProperty, value); }
         }
 
+        /// <summary>
+        /// Called when the target changes.
+        /// </summary>
+        private static void OnTargetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DeferredBinder)d).OnTargetChanged(e.OldValue, e.NewValue);
+        }
+
         #endregion
+
+        /// <summary>
+        /// Backing storage for TwoWayBinding property
+        /// </summary>
+        public static readonly DependencyProperty TwoWayBindingProperty =
+            DependencyProperty.Register("TwoWayBinding", typeof(bool), typeof(DeferredBinder), new PropertyMetadata(true));
+
+        /// <summary>
+        /// True for 2-way binding (source -> target, target -> source)
+        /// </summary>
+        public bool TwoWayBinding
+        {
+            get { return (bool)GetValue(TwoWayBindingProperty); }
+            set { SetValue(TwoWayBindingProperty, value); }
+        }
+
+        /// <summary>
+        /// Source has changed value - reset the timer to transfer
+        /// from source -> target.
+        /// </summary>
+        private void OnSourceChanged()
+        {
+            if (!_isUpdatingSource)
+            {
+                ResetTimer(true);
+            }
+        }
 
         /// <summary>
         /// This resets the timer.
         /// </summary>
-        private void ResetTimer()
+        private void ResetTimer(bool createTimer)
         {
             if (_timer != null)
             {
-                _timer.IsEnabled = false;
+                _timer.Stop();
                 _timer.Interval = TimeSpan.FromSeconds(Timeout);
-                _timer.IsEnabled = true;
+                _timer.Start();
             }
-            else
-                _timer = new DispatcherTimer(TimeSpan.FromSeconds(Timeout), DispatcherPriority.Normal, OnTimeout, this.Dispatcher) { IsEnabled = true };
+            else if (createTimer)
+                _timer = new DispatcherTimer(TimeSpan.FromSeconds(Timeout), DispatcherPriority.Normal, OnTimeout,
+                                             this.Dispatcher) { IsEnabled = true };
+        }
+
+        /// <summary>
+        /// Target changed value - update the source if necessary.
+        /// </summary>
+        private void OnTargetChanged(object oldValue, object newValue)
+        {
+            if (TwoWayBinding && !_isUpdatingTarget)
+            {
+                _isUpdatingSource = true;
+                try
+                {
+                    Source = newValue;
+                }
+                finally
+                {
+                    _isUpdatingSource = false;
+                }
+            }
         }
 
         /// <summary>
@@ -125,9 +186,17 @@ namespace JulMar.Windows
         /// <param name="e">Event arguments</param>
         private void OnTimeout(object sender, EventArgs e)
         {
-            this.Target = this.Source;
-            _timer.IsEnabled = false;
-            _timer = null;
+            _isUpdatingTarget = true;
+            try
+            {
+                this.Target = this.Source;
+                _timer.IsEnabled = false;
+                _timer = null;
+            }
+            finally
+            {
+                _isUpdatingTarget = false;
+            }
         }
 
         /// <summary>

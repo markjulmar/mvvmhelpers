@@ -87,14 +87,13 @@
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\ObjectCloner.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="Interfaces\IDynamicResolver.cs" />
     <Compile Include="Interfaces\IMessageMediator.cs" />
     <Compile Include="Interfaces\ISupportUndo.cs" />
     <Compile Include="Interfaces\IUndoService.cs" />
     <Compile Include="Interfaces\IServiceProviderEx.cs" />
     <Compile Include="Interfaces\IServiceProviderMetadata.cs" />
     <Compile Include="Composition\FilteredCatalog.cs" />
-    <Compile Include="Services\MefComposer.cs" />
+    <Compile Include="Services\DynamicComposer.cs" />
     <Compile Include="Services\MessageMediator.cs" />
     <Compile Include="Collections\ObservableDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

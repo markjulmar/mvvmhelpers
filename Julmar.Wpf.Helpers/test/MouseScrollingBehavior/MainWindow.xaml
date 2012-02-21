@@ -1,0 +1,23 @@
+﻿<Window x:Class="MouseScrollingBehavior.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:Interactivity="clr-namespace:JulMar.Windows.Interactivity;assembly=Julmar.Wpf.Behaviors"
+        Title="MainWindow" Height="350" Width="525">
+    
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+            <i:Interaction.Behaviors>
+                <Interactivity:MouseGestureScrollViewerBehavior 
+                    EnableInertia="{Binding ElementName=inertiaScroll,Path=IsChecked}"
+                    EnablePageSwipe="{Binding ElementName=pageScroll, Path=IsChecked}" />
+            </i:Interaction.Behaviors>
+            <Image Source="Koala.jpg" Stretch="UniformToFill" Width="1600" Height="1400" />
+        </ScrollViewer>
+        <CheckBox VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="White"
+                  Margin="10,10,0,0" Content="Page Scroll" x:Name="pageScroll" />
+        <CheckBox VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="White"
+                  Margin="10,40,0,0" Content="Enable Inertia" x:Name="inertiaScroll" />
+    </Grid>
+    
+</Window>

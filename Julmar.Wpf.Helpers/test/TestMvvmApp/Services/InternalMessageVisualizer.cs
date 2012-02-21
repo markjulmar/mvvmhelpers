@@ -3,6 +3,9 @@ using JulMar.Windows.Interfaces;
 
 namespace TestMvvm.Services
 {
+    /// <summary>
+    /// Replaced MessageVisulizer which dismisses dialog.
+    /// </summary>
     [ExportService(typeof(IMessageVisualizer))]
     class InternalMessageVisualizer : IMessageVisualizer
     {
@@ -27,7 +30,7 @@ namespace TestMvvm.Services
         /// <returns>Result</returns>
         public MessageResult Show(string title, string message, MessageVisualizerOptions visualizerOptions)
         {
-            return Show(title, message, visualizerOptions.Prompt);
+            return MessageResult.Yes;
         }
     }
 }

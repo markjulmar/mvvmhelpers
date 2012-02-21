@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using JulMar.Core;
-using JulMar.Core.Interfaces;
+using JulMar.Core.Services;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
 
@@ -16,9 +16,9 @@ namespace JulMar.Windows.UI
     public interface IUIVisualizerMetadata
     {
         /// <summary>
-        /// Key used to export the UI - registered with the UIVisualizer.
+        /// Keys used to export the UI - registered with the UIVisualizer.
         /// </summary>
-        string Key { get; }
+        string[] Key { get; }
 
         /// <summary>
         /// The type being exported
@@ -31,7 +31,7 @@ namespace JulMar.Windows.UI
     /// MEF is used to locate and bind each service with this attribute decoration.
     /// </summary>
     [MetadataAttribute]
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public class ExportUIVisualizerAttribute : ExportAttribute
     {
         /// <summary>
@@ -268,16 +268,12 @@ namespace JulMar.Windows.UI
             win.Owner = owner;
 
             // Register the view with MEF to resolve any imports.
-            var dynamicLoader = ViewModel.ServiceProvider.Resolve<IDynamicResolver>();
-            if (dynamicLoader != null)
+            try
             {
-                try
-                {
-                    dynamicLoader.ComposeOnce(win);
-                }
-                catch (CompositionException)
-                {
-                }
+                DynamicComposer.Instance.ComposeOnce(win);
+            }
+            catch (CompositionException)
+            {
             }
 
             if (dataContext != null)
@@ -341,7 +337,11 @@ namespace JulMar.Windows.UI
                 {
                     Type type = FindType(item.Metadata.ExportTypeIdentity);
                     if (type != null)
-                        Register(item.Metadata.Key, type);
+                    {
+                        // Go through any registered keys
+                        foreach (string key in item.Metadata.Key)
+                            Register(key, type);
+                    }
                 }
 
                 // Clear the collection so we don't process twice.

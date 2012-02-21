@@ -1,0 +1,18 @@
+﻿<Window x:Class="MultiUiViewModelTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:julmar="http://www.julmar.com/wpfhelpers"
+        DataContext="{julmar:ViewModelCreator Key=MainViewModel}"
+        Title="Multi-UIVisualizer attribute test" Height="350" Width="525">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Margin="5" Content="VM Value" />
+            <TextBox Width="200" VerticalAlignment="Center" Text="{Binding Text}" />
+        </StackPanel>
+        <Button Content="Dialog #1" Margin="5" Command="{Binding ShowDialog}" CommandParameter="Dialog1" />
+        <Button Content="Dialog #2" Margin="5" Command="{Binding ShowDialog}" CommandParameter="Dialog2" />
+        <Button Content="Dialog #3" Margin="5" Command="{Binding ShowDialog}" CommandParameter="Dialog3" />
+        <Button Content="Dialog #4" Margin="5" Command="{Binding ShowDialog}" CommandParameter="Dialog4" />
+        <Button Content="Second MainViewModel Dialog" Margin="5" Command="{Binding DuplicateMainWindow}" />
+    </StackPanel>
+</Window>

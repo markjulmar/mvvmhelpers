@@ -30,12 +30,24 @@ namespace JulMar.Windows.Validations
             else
             {
                 foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                {
+                    // Ignore our properties.
+                    if (pi == null || pi.DeclaringType == typeof(ValidatingViewModel))
+                        continue;
+
                     ValidateProperty(pi.Name, instance, errorList);
+                }
             }
 
             return string.Join(Environment.NewLine, errorList.ToArray());
         }
 
+        /// <summary>
+        /// Method used to validate a single property on the ViewModel.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="instance"></param>
+        /// <param name="errorList"></param>
         static void ValidateProperty(string name, object instance, ICollection<string> errorList)
         {
             Type type = instance.GetType();
