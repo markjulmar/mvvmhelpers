@@ -1,0 +1,20 @@
+﻿<Window x:Class="ServiceReplacement.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:julmar="http://www.julmar.com/wpfhelpers" 
+        xmlns:ViewModels="clr-namespace:ServiceReplacement.ViewModels" 
+        DataContext="{julmar:ViewModelCreator ViewModelType={x:Type ViewModels:MainViewModel}}"
+        Title="MainWindow" Height="350" Width="525" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <Button Content="Do Some Long-Running Work" Command="{Binding CalculatePi}"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10,5" />
+        
+        <TextBlock Text="{Binding PiText}" Foreground="Blue" FontSize="16pt" Grid.Row="1"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Grid>
+</Window>

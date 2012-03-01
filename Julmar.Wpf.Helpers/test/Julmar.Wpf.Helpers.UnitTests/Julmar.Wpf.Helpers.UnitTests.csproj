@@ -119,6 +119,7 @@
     <Compile Include="Core\PropertyObserverTest.cs" />
     <Compile Include="Core\ServiceProviderTest.cs" />
     <Compile Include="Core\ReaderWriterLockSlimExtensionsTest.cs" />
+    <Compile Include="MVVM\ShallowCopyEditableObjectTest.cs" />
     <Compile Include="Undo\UndoManagerTest.cs" />
     <Compile Include="Undo\UndoOperationSetTest.cs" />
     <Compile Include="WeakEventHandlerTest.cs" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="julmar.mvvm.snk" />
+    <Shadow Include="Test References\JulMar.Wpf.Helpers.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -34,7 +34,7 @@
 
         <ListBox Margin="10" ItemTemplate="{StaticResource listBoxDataTemplate}" ItemsSource="{Binding Products}" SelectionMode="Multiple" >
             <Interaction:Interaction.Behaviors>
-                <julmar:ItemsControlDragDropBehavior DragInitiated="OnDragInitiated" AllowOnlySelf="false" DropInitiated="OnMultiSelectDropInitiated"
+                <julmar:ItemsControlDragDropBehavior DragInitiated="OnDragInitiated" AllowSelf="False" DropInitiated="OnMultiSelectDropInitiated" DropEnter="OnDropEnter"
                                                         DragTemplate="{StaticResource listBoxDataTemplate}" />
             </Interaction:Interaction.Behaviors>
             <ListBox.ItemContainerStyle>
@@ -46,7 +46,7 @@
 
         <ListBox Margin="10" Grid.Column="1" ItemTemplate="{StaticResource listViewItemTemplate}">
             <Interaction:Interaction.Behaviors>
-                <julmar:ItemsControlDragDropBehavior AllowOnlySelf="true"
+                <julmar:ItemsControlDragDropBehavior AllowOnlySelf="true" ShowInsertAdorner="False"
                                                        DragTemplate="{StaticResource listBoxDataTemplate}" />
             </Interaction:Interaction.Behaviors>
         </ListBox>

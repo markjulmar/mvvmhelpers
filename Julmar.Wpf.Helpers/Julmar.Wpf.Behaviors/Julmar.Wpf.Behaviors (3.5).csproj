@@ -104,8 +104,10 @@
     <Compile Include="Interactivity\DeferredScrollBehavior.cs" />
     <Compile Include="Interactivity\DragPositionBehavior.cs" />
     <Compile Include="Interactivity\ItemsControlDragDropBehavior.cs" />
+    <Compile Include="Interactivity\ListViewColumnAutoSizeBehavior.cs" />
     <Compile Include="Interactivity\ListViewSortBehavior.cs" />
     <Compile Include="Interactivity\MaskedTextBoxBehavior.cs" />
+    <Compile Include="Interactivity\MouseGestureScrollViewerBehavior.cs" />
     <Compile Include="Interactivity\MultiSelectTreeViewBehavior.cs" />
     <Compile Include="Interactivity\NumericTextBoxBehavior.cs" />
     <Compile Include="Interactivity\ScrollbarPreviewBehavior.cs" />

@@ -125,3 +125,20 @@ Added StyleInteraction and test project into behaviors project
 Added SelectTextAction, MessageBoxAction and AutoDisabledImageBehavior
 Fixed a couple of spelling errors in comments.
 
+4.08 2/2012
+Enabled DeferredBinder to support 2-way bindings
+Added test project for DeferredBinder
+Added back in support for multiple ExportUIVisualizer and ExportViewModel attributes
+Added test project for multiple export attributes
+Removed IDynamicResolver interface, renamed MefComposer to DynamicComposer.  You should just use DynamicComposer.Instance as the library is too dependent on MEF to really change the composition model.
+Added ListViewColumnAutoSizeBehavior to provide Grid-like column sizing (Auto,*,##)
+Added test project for ListViewColumnAutoSizeBehavior
+Modified ListViewSortBehavior to correct crash when adorner layer is not present.
+Fixed bug in ValidationManager when traversing properties and potentially getting into infinite loop
+Added MouseGestureScrollViewerBehavior to support iPad-like gestures with mouse on ScrollViewer elements (with inertia)
+
+4.09 3/2012
+Added check in SynchronizedScrollingBehavior to disable scrolling if scrollbar is disabled.
+Added ability to turn off drag adorner for ItemsControlDragDropBehavior
+Added ServiceReplacement test project + unit tests from blog
+Fixes for EditingViewModel, also extended with more interception hooks.

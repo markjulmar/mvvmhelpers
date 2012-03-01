@@ -84,6 +84,36 @@ namespace JulMar.Windows.Interactivity
         #endregion
 
         /// <summary>
+        /// Backing storage for minimum
+        /// </summary>
+        public static readonly DependencyProperty MinimumProperty =
+            DependencyProperty.Register("Minimum", typeof (long), typeof (NumericTextBoxBehavior), new PropertyMetadata(Int64.MinValue));
+
+        /// <summary>
+        /// Minimum value
+        /// </summary>
+        public long Minimum
+        {
+            get { return (long)GetValue(MinimumProperty); }
+            set { SetValue(MinimumProperty, value); }
+        }
+
+        /// <summary>
+        /// Backing storage for maximum
+        /// </summary>
+        public static readonly DependencyProperty MaximumProperty =
+            DependencyProperty.Register("Maximum", typeof(long), typeof(NumericTextBoxBehavior), new PropertyMetadata(Int64.MaxValue));
+
+        /// <summary>
+        /// Maximum value
+        /// </summary>
+        public long Maximum
+        {
+            get { return (long)GetValue(MaximumProperty); }
+            set { SetValue(MaximumProperty, value); }
+        }  
+
+        /// <summary>
         /// Minimum amount of distance mouse must be "dragged" before we begin changing
         /// the numeric value.
         /// </summary>
@@ -95,6 +125,7 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         private class CursorAdorner : Adorner, IDisposable
         {
+            private readonly NumericTextBoxBehavior _behaviorOwner;
             Point _lastPos;
             bool _isCaptured;
             bool _changedValue;
@@ -103,9 +134,11 @@ namespace JulMar.Windows.Interactivity
             /// Constructor
             /// </summary>
             /// <param name="textBox"></param>
-            public CursorAdorner(TextBox textBox)
+            /// <param name="behaviorOwner"></param>
+            public CursorAdorner(TextBox textBox, NumericTextBoxBehavior behaviorOwner)
                 : base(textBox)
             {
+                _behaviorOwner = behaviorOwner;
                 AdornerLayer layer = AdornerLayer.GetAdornerLayer(textBox);
                 Debug.Assert(layer != null);
                 layer.Add(this);
@@ -258,13 +291,18 @@ namespace JulMar.Windows.Interactivity
             /// </summary>
             /// <param name="textBox"></param>
             /// <param name="val"></param>
-            private static void AdjustValue(TextBox textBox, int val)
+            private void AdjustValue(TextBox textBox, int val)
             {
                 string text = textBox.Text;
                 long currValue;
                 if (long.TryParse(text, out currValue))
                 {
                     currValue += val;
+                    if (currValue < _behaviorOwner.Minimum)
+                        currValue = _behaviorOwner.Minimum;
+                    else if (currValue > _behaviorOwner.Maximum)
+                        currValue = _behaviorOwner.Maximum;
+
                     textBox.Text = currValue.ToString();
                 }
             }
@@ -278,6 +316,7 @@ namespace JulMar.Windows.Interactivity
         protected override void OnAttached()
         {
             AssociatedObject.PreviewKeyDown += OnKeyDown;
+            AssociatedObject.PreviewLostKeyboardFocus += PreviewLostFocus;
             DataObject.AddPastingHandler(AssociatedObject, OnClipboardPaste);
 
             // Add "Blend" drag support if requested.
@@ -302,11 +341,31 @@ namespace JulMar.Windows.Interactivity
         }
 
         /// <summary>
+        /// Called when we are about to lose keyboard focus - we reformat the number here.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void PreviewLostFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            string text = AssociatedObject.Text;
+            long currValue;
+            if (long.TryParse(text, out currValue))
+            {
+                if (currValue < Minimum)
+                    currValue = Minimum;
+                else if (currValue > Maximum)
+                    currValue = Maximum;
+
+                AssociatedObject.Text = currValue.ToString();
+            }
+        }
+
+        /// <summary>
         /// This adds the adorner.
         /// </summary>
         private void AddAdorner(TextBox tb)
         {
-            _adorner = new CursorAdorner(tb);
+            _adorner = new CursorAdorner(tb, this);
             Debug.Assert(tb.IsLoaded == true);
 
         }

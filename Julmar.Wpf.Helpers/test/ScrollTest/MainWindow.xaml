@@ -4,37 +4,52 @@
         xmlns:diag="clr-namespace:System.Diagnostics;assembly=System"
         xmlns:int="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:julmar="http://www.julmar.com/wpfhelpers"
-        Title="Synchronized Scroll Behavior Test" Height="350" Width="525">
+        Title="Synchronized Scroll Behavior Test" Height="350" Width="750" FontSize="16pt">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        
         <Grid.Resources>
             <ObjectDataProvider x:Key="processList" ObjectType="{x:Type diag:Process}" MethodName="GetProcesses" />
             
             <DataTemplate x:Key="ScrollingTemplate">
-                <Label Content="{Binding Value}" FontWeight="Bold" FontSize="16pt" />
+                <Label Content="{Binding Value}" FontWeight="Bold" FontSize="22pt" />
             </DataTemplate>
-           
         </Grid.Resources>
-        
-        <ListBox x:Name="lb1" ItemsSource="{Binding Source={StaticResource processList}}" 
-                 DisplayMemberPath="ProcessName">
-            <int:Interaction.Behaviors>
-                <julmar:ScrollingPreviewBehavior 
-                    VerticalScrollingPreviewTemplate="{StaticResource ScrollingTemplate}"/>
-            </int:Interaction.Behaviors>            
-        </ListBox>
+
+        <ScrollViewer x:Name="lb1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden"  Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Source={StaticResource processList}}">
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Name:" />
+                            <TextBox Text="{Binding ProcessName, Mode=OneWay}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
         <ListBox ItemsSource="{Binding Source={StaticResource processList}}" 
-                 DisplayMemberPath="Id" Grid.Column="1">
+                 DisplayMemberPath="Id" Grid.Column="1" Grid.Row="1">
             <int:Interaction.Behaviors>
                 <julmar:ScrollingPreviewBehavior 
                     VerticalScrollingPreviewTemplate="{StaticResource ScrollingTemplate}"/>
                 <julmar:SynchronizedScrollingBehavior Target="{Binding ElementName=lb1}" />
             </int:Interaction.Behaviors>
         </ListBox>
-
+        
     </Grid>
 </Window>

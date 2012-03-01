@@ -20,18 +20,23 @@ namespace ItemsControlDragDropBehavior.TestApp
 
         private void OnDragInitiated(object sender, DragDropEventArgs e)
         {
-            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
-            {
-                e.Cancel = true;
-                return;
-            }
+            //if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+            //{
+            //    e.Cancel = true;
+            //    return;
+            //}
 
-            e.AllowedEffects = DragDropEffects.Move;
+            //e.AllowedEffects = DragDropEffects.Move;
         }
 
         private void OnDropEnter(object sender, DragDropEventArgs e)
         {
-            Debug.WriteLine("DropEnter: {0}", e.Item);
+            //if (e.Source == e.Destination)
+            //    e.AllowedEffects = DragDropEffects.None;
+            //else
+            //{
+            //    e.AllowedEffects = DragDropEffects.Move;
+            //}
         }
 
         private void OnDropInitiated(object sender, DragDropEventArgs e)

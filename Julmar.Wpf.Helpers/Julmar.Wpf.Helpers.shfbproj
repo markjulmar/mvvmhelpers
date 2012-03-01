@@ -18,7 +18,7 @@
     <HtmlHelpName>JulMar.Wpf.Helpers</HtmlHelpName>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <CopyrightHref>http://www.julmar.com</CopyrightHref>
-    <CopyrightText>%28C%29 2008-2011 JulMar Technology, Inc.</CopyrightText>
+    <CopyrightText>%28C%29 2008-2012 JulMar Technology, Inc.</CopyrightText>
     <FeedbackEMailAddress>support%40julmar.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>Support</FeedbackEMailLinkText>
     <HelpTitle>WPF Helper Library</HelpTitle>
@@ -31,25 +31,26 @@
     <HeaderText>MVVM Library for WPF</HeaderText>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="JulMar.Windows" isDocumented="True">Primary namespace with global helper classes and collections.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.Behaviors" isDocumented="True">Attached behavior and event management classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.Converters" isDocumented="True">IValueConverter classes for WPF UI.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.Extensions" isDocumented="True">Markup extensions for XAML.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.Interfaces" isDocumented="True">Interfaces for visual services.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.Markup" isDocumented="True">XAML Markup helper classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.Mvvm" isDocumented="True">Model-View-ViewModel implementation classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.UI" isDocumented="True">WPF user interface services and implementations of UI helpers.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.Validations" isDocumented="True">Validation support for WPF bindings.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.Actions" isDocumented="True">Expression Blend and Designer Actions</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.Interactivity" isDocumented="True">Expression Blend and designer behaviors</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Core" isDocumented="True">Core types and service definitions.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Core.Collections" isDocumented="True">Collection classes and extension methods.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Core.Composition" isDocumented="True">Managed Extensibility Framework composition filters.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Core.Concurrency" isDocumented="True">Threading and Concurrency data structures and helpers.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Core.Extensions" isDocumented="True">Core extension methods</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Core.Interfaces" isDocumented="True">Core service interfaces</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Core.Services" isDocumented="True">Internal service definitions</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Core.Undo" isDocumented="True">Undo/Redo framework for applications.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="JulMar.Windows.Collections" isDocumented="True">Collection extensions and adapters for MVVM work.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="JulMar.Windows.Behaviors" isDocumented="True">Attached behavior and event management classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Windows.Converters" isDocumented="True">IValueConverter classes for WPF UI.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Windows.Extensions" isDocumented="True">Markup extensions for XAML.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Windows.Interfaces" isDocumented="True">Interfaces for visual services.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Windows.Markup" isDocumented="True">XAML Markup helper classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Windows.Mvvm" isDocumented="True">Model-View-ViewModel implementation classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Windows.UI" isDocumented="True">WPF user interface services and implementations of UI helpers.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Windows.Validations" isDocumented="True">Validation support for WPF bindings.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Windows.Actions" isDocumented="True">Expression Blend and Designer Actions</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Windows.Interactivity" isDocumented="True">Expression Blend and designer behaviors</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Core" isDocumented="True">Core types and service definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Core.Collections" isDocumented="True">Collection classes and extension methods.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Core.Composition" isDocumented="True">Managed Extensibility Framework composition filters.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Core.Concurrency" isDocumented="True">Threading and Concurrency data structures and helpers.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Core.Extensions" isDocumented="True">Core extension methods</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Core.Interfaces" isDocumented="True">Core service interfaces</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Core.Services" isDocumented="True">Internal service definitions</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Core.Undo" isDocumented="True">Undo/Redo framework for applications.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="JulMar.Windows.Collections" isDocumented="True">Collection extensions and adapters for MVVM work.</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <ProjectSummary>Model-View-ViewModel and converter helpers for WPF based projects.</ProjectSummary>
     <FrameworkVersion>4.0.30319</FrameworkVersion>
   </PropertyGroup>

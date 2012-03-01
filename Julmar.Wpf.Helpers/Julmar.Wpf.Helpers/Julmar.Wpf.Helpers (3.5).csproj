@@ -60,7 +60,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETV4</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETV35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\JulMar.Wpf.Helpers.xml</DocumentationFile>

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Julmar.Core")]
-[assembly: AssemblyDescription("Core types and services")]
+[assembly: AssemblyTitle("ServiceReplacementTests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Julmar Technology, Inc.")]
-[assembly: AssemblyProduct("Julmar.Core")]
-[assembly: AssemblyCopyright("Copyright © JulMar Entertainment Technology, Inc. 2010-2011")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("ServiceReplacementTests")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("16389ecf-8bb1-4d8d-b23d-cc0e10a24694")]
+[assembly: Guid("e9f601ed-d889-48ea-9739-10688c08e0b3")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -31,6 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("4.0.0.*")]
-[assembly: AssemblyFileVersion("4.0.0.9")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

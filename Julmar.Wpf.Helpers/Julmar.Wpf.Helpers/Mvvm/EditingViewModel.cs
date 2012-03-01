@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -11,10 +12,26 @@ namespace JulMar.Windows.Mvvm
     /// This provides a ViewModel that implements IEditableObject through cloning - a copy of the existing object 
     /// is created during the edits and thrown away when the editing is completed.  If the edit operation fails 
     /// and is canceled, then the copy replaces the existing version.
+    /// 
+    /// Note that this will perform a SHALLOW copy of the fields.  Collections/Arrays/KVPs will not be properly
+    /// handled by this implementation - you should provide your own implementation if you use these fields in your
+    /// view models and expect them to be properly saved.
     /// </summary>
     public class EditingViewModel : EditingViewModelBase<ShallowCopyEditableObject>
     {
-        /* No overrides */
+        /// <summary>
+        /// Optional test as fields are persisted to determine if the field's state should
+        /// be saved during an editing operation.  This is not terribly useful for auto-property
+        /// backed fields.
+        /// </summary>
+        public Predicate<FieldInfo> FieldPredicate { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public EditingViewModel() : base(new ShallowCopyEditableObject())
+        {
+        }
     }
 
     /// <summary>
@@ -23,16 +40,30 @@ namespace JulMar.Windows.Mvvm
     /// be used as a basis to creating different supporting types for editable objects.
     /// </summary>
     /// <typeparam name="T">Editable persistence implementation</typeparam>
-    public class EditingViewModelBase<T> : ValidatingViewModel, IEditableObject where T : IEditableObjectImpl, new()
+    public class EditingViewModelBase<T> : ValidatingViewModel, IEditableObject where T : IEditStateBag
     {
-        private readonly IEditableObjectImpl _editImpl = new T();
+        /// <summary>
+        /// The editing state
+        /// </summary>
+        protected IEditStateBag EditState { get; private set; }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        protected EditingViewModelBase(IEditStateBag editingStateBag)
+        {
+            if (editingStateBag == null)
+                throw new ArgumentNullException("editingStateBag", "Must supply state object");
+            
+            EditState = editingStateBag;
+        }
 
         /// <summary>
         /// Returns true if this object is currently being edited
         /// </summary>
         public bool IsEditing
         {
-            get { return _editImpl.IsEditing;  }
+            get { return EditState.IsEditing; }
         }
 
         /// <summary>
@@ -48,7 +79,7 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         public void CancelEdit()
         {
-            OnEndEdit(false);
+            OnEditComplete(false);
         }
 
         /// <summary>
@@ -56,7 +87,8 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         public void EndEdit()
         {
-            OnEndEdit(true);
+            bool success = OnEditEnding();
+            OnEditComplete(success);
         }
 
         /// <summary>
@@ -64,43 +96,55 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         protected virtual void OnBeginEdit()
         {
-            _editImpl.OnBeginEdit();
+            EditState.OnBeginEdit(this);
         }
 
         /// <summary>
         /// This is called in response to either CancelEdit or EndEdit and provides an interception point.
         /// </summary>
-        /// <param name="succeeded">True if edit was succesful.</param>
-        protected virtual void OnEndEdit(bool succeeded)
+        /// <returns>True to commit, False to rollback</returns>
+        protected virtual bool OnEditEnding()
         {
-            _editImpl.OnEndEdit(succeeded);
+            return true;
+        }
+
+        /// <summary>
+        /// Called once changes are committed.
+        /// </summary>
+        /// <param name="succeeded"></param>
+        protected virtual void OnEditComplete(bool succeeded)
+        {
+            EditState.OnEndEdit(this, succeeded);
         }
     }
 
     /// <summary>
     /// This is the implementation class used for providing editable object support
     /// </summary>
-    public interface IEditableObjectImpl
+    public interface IEditStateBag
     {
         /// <summary>
         /// True/False if this object is being edited currently
         /// </summary>
         bool IsEditing { get; }
+        
         /// <summary>
         /// Called to begin an edit operation
         /// </summary>
-        void OnBeginEdit();
+        void OnBeginEdit(ValidatingViewModel vm);
+
         /// <summary>
         /// Called to end an edit operation
         /// </summary>
+        /// <param name="vm"></param>
         /// <param name="success">True for persist, False to cancel edits</param>
-        void OnEndEdit(bool success);
+        void OnEndEdit(ValidatingViewModel vm, bool success);
     }
 
     /// <summary>
     /// This implementation provides editable support by saving the state in a dictionary.
     /// </summary>
-    public class ShallowCopyEditableObject : IEditableObjectImpl
+    public class ShallowCopyEditableObject : IEditStateBag
     {
         /// <summary>
         /// This stores the current "copy" of the object.
@@ -110,19 +154,20 @@ namespace JulMar.Windows.Mvvm
         /// <summary>
         /// Called to begin an edit operation
         /// </summary>
-        public void OnBeginEdit()
+        public void OnBeginEdit(ValidatingViewModel vm)
         {
-            _savedState = GetFieldValues();
+            _savedState = GetFieldValues(vm);
         }
 
         /// <summary>
         /// Called to end an edit operation
         /// </summary>
+        /// <param name="vm"></param>
         /// <param name="success">True for persist, False to cancel edits</param>
-        public void OnEndEdit(bool success)
+        public void OnEndEdit(ValidatingViewModel vm, bool success)
         {
             if (!success)
-                RestoreFieldValues(_savedState);
+                RestoreFieldValues(vm, _savedState);
             _savedState = null;
         }
 
@@ -135,27 +180,44 @@ namespace JulMar.Windows.Mvvm
         }
 
         /// <summary>
+        /// Returns the fields to capture
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        private IEnumerable<FieldInfo> GetFieldsToSerialize(ValidatingViewModel target)
+        {
+            EditingViewModel evm = target as EditingViewModel;
+            Predicate<FieldInfo> testField = (evm != null && evm.FieldPredicate != null) ? evm.FieldPredicate : f => true;
+
+            return target.GetType()
+                .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .Where(f => f.GetType() != typeof(ShallowCopyEditableObject) && testField(f));
+        }
+
+        /// <summary>
         /// This is used to clone the object.  Override the method to provide a more efficient clone.  The
         /// default implementation simply reflects across the object copying every field.
         /// </summary>
         /// <returns>Clone of current object</returns>
-        private Dictionary<string, object> GetFieldValues()
+        private Dictionary<string, object> GetFieldValues(ValidatingViewModel target)
         {
-            return GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Select(
-                fi => new { Key = fi.Name, Value = fi.GetValue(this) }).ToDictionary(k => k.Key, k => k.Value);
+            return GetFieldsToSerialize(target)
+                .Select(fi => new { Key = fi.Name, Value = fi.GetValue(target) })
+                .ToDictionary(k => k.Key, k => k.Value);
         }
 
         /// <summary>
         /// This restores the state of the current object from the passed clone object.
         /// </summary>
+        /// <param name="target"></param>
         /// <param name="fieldValues">Object to restore state from</param>
-        private void RestoreFieldValues(Dictionary<string, object> fieldValues)
+        private void RestoreFieldValues(ValidatingViewModel target, Dictionary<string, object> fieldValues)
         {
-            foreach (FieldInfo fi in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            foreach (FieldInfo fi in GetFieldsToSerialize(target))
             {
                 object value;
                 if (fieldValues.TryGetValue(fi.Name, out value))
-                    fi.SetValue(this, value);
+                    fi.SetValue(target, value);
                 else
                     Debug.WriteLine("Failed to restore field " + fi.Name + " from cloned values, field not found in Dictionary.");
             }

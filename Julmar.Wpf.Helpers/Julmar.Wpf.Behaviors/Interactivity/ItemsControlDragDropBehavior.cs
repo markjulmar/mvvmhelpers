@@ -47,13 +47,25 @@ namespace JulMar.Windows.Interactivity
         public bool AllowOnlySelf { get; set; }
 
         /// <summary>
+        /// False to not allow drops on source.
+        /// </summary>
+        public bool AllowSelf { get; set; }
+
+        /// <summary>
+        /// True to show the insertion marker
+        /// </summary>
+        public bool ShowInsertAdorner { get; set; }
+
+        /// <summary>
         /// This event is raised when a drag/drop operation starts
         /// </summary>
         public event EventHandler<DragDropEventArgs> DragInitiated;
+
         /// <summary>
         /// This event is raised when a target is identified
         /// </summary>
         public event EventHandler<DragDropEventArgs> DropEnter;
+        
         /// <summary>
         /// This event is raised when a drop is initiated
         /// </summary>
@@ -67,7 +79,9 @@ namespace JulMar.Windows.Interactivity
             _isMouseDown = false;
             _isDragging = false;
             _dragScrollWaitCounter = DragWaitCounterThreshold;
-            ItemTypeKey = GetType().ToString(); 
+            ItemTypeKey = GetType().ToString();
+            AllowSelf = true;
+            ShowInsertAdorner = true;
         }
 
         /// <summary>
@@ -165,7 +179,10 @@ namespace JulMar.Windows.Interactivity
                     if (!data.AllowOnlySelf || itemsControl == data.Source)
                     {
                         var allowedEffects = e.AllowedEffects;
-                        if (DropEnter != null)
+
+                        if (itemsControl == data.Source && !AllowSelf)
+                            allowedEffects = DragDropEffects.None;
+                        else if (DropEnter != null)
                         {
                             DragDropEventArgs de = new DragDropEventArgs(data.Source, itemsControl, data.Data) {AllowedEffects = allowedEffects};
                             DropEnter(this, de);
@@ -175,8 +192,10 @@ namespace JulMar.Windows.Interactivity
                         }
 
                         InitializeDragAdorner(itemsControl, data.Data, e.GetPosition(itemsControl));
-                        InitializeInsertAdorner(itemsControl, e);
                         e.Effects = GetDropEffectType(allowedEffects, e.KeyStates);
+
+                        if (e.Effects != DragDropEffects.None)
+                            InitializeInsertAdorner(itemsControl, e);
                     }
                 }
             }
@@ -207,7 +226,10 @@ namespace JulMar.Windows.Interactivity
                     if (!data.AllowOnlySelf || itemsControl == data.Source)
                     {
                         var allowedEffects = e.AllowedEffects;
-                        if (DropEnter != null)
+                        
+                        if (itemsControl == data.Source && !AllowSelf)
+                            allowedEffects = DragDropEffects.None;
+                        else if (DropEnter != null)
                         {
                             DragDropEventArgs de = new DragDropEventArgs(data.Source, itemsControl, data.Data) { AllowedEffects = allowedEffects };
                             DropEnter(this, de);
@@ -354,6 +376,10 @@ namespace JulMar.Windows.Interactivity
         /// <returns></returns>
         static DragDropEffects GetDropEffectType(DragDropEffects allowedEffects, DragDropKeyStates keyStates)
         {
+            // None?
+            if (allowedEffects == DragDropEffects.None)
+                return allowedEffects;
+
             return (allowedEffects & (DragDropEffects.Move | DragDropEffects.Copy)) ==
                    (DragDropEffects.Move | DragDropEffects.Copy)
                        ? (((keyStates & DragDropKeyStates.ControlKey) != 0)
@@ -447,7 +473,7 @@ namespace JulMar.Windows.Interactivity
         private void UpdateDragAdorner(Point currentPosition)
         {
             if (_dragAdorner != null)
-                _dragAdorner.SetPosition(currentPosition.X + SystemParameters.CursorWidth, currentPosition.Y);
+                _dragAdorner.SetPosition(currentPosition.X, currentPosition.Y);
         }
 
         /// <summary>
@@ -457,7 +483,7 @@ namespace JulMar.Windows.Interactivity
         /// <param name="e"></param>
         private void InitializeInsertAdorner(ItemsControl itemsControl, DragEventArgs e)
         {
-            if (_insertAdorner == null)
+            if (_insertAdorner == null && ShowInsertAdorner)
             {
                 UIElement itemContainer = DragUtilities.GetItemContainerFromPoint(itemsControl, e.GetPosition(itemsControl));
                 if (itemContainer != null)

@@ -98,6 +98,7 @@
     <Compile Include="Converters\MultiConverter.cs" />
     <Compile Include="Converters\NullOrEmptyBooleanConverter.cs" />
     <Compile Include="Converters\NullOrEmptyVisibilityConverter.cs" />
+    <Compile Include="Converters\ToStringConverter.cs" />
     <Compile Include="Converters\ValidationErrorConverter.cs" />
     <Compile Include="DeferredBinder.cs" />
     <Compile Include="Extensions\Designer.cs" />

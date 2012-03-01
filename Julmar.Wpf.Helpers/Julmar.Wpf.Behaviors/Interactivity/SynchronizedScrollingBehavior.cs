@@ -112,7 +112,7 @@ namespace JulMar.Windows.Interactivity
         {
             if (Target != null)
             {
-                var sv = Target.FindVisualChild<ScrollViewer>();
+                ScrollViewer sv = Target as ScrollViewer ?? Target.FindVisualChild<ScrollViewer>();
                 if (sv != null)
                     AdjustScrollPosition(sv, e, -1*HorizontalAdjustment, -1*VerticalAdjustment);
             }
@@ -125,7 +125,7 @@ namespace JulMar.Windows.Interactivity
         /// <param name="e"></param>
         private void OnTargetScroll(object sender, ScrollChangedEventArgs e)
         {
-            var sv = AssociatedObject.FindVisualChild<ScrollViewer>();
+            ScrollViewer sv = AssociatedObject as ScrollViewer ?? AssociatedObject.FindVisualChild<ScrollViewer>();
             if (sv != null)
                 AdjustScrollPosition(sv, e, HorizontalAdjustment, VerticalAdjustment);
         }
@@ -139,7 +139,7 @@ namespace JulMar.Windows.Interactivity
         /// <param name="vadjust">Vertical adjustment</param>
         private static void AdjustScrollPosition(ScrollViewer sv, ScrollChangedEventArgs e, double hadjust, double vadjust)
         {
-            if (e.HorizontalChange != 0 || e.ExtentWidthChange != 0)
+            if (sv.HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled && (e.HorizontalChange != 0 || e.ExtentWidthChange != 0))
             {
                 if (e.HorizontalOffset == 0)
                     sv.ScrollToLeftEnd();
@@ -150,7 +150,8 @@ namespace JulMar.Windows.Interactivity
                 else
                     sv.ScrollToHorizontalOffset((sv.ExtentWidth * (e.HorizontalOffset / e.ExtentWidth)) + hadjust);
             }
-            if (e.VerticalChange != 0 || e.ExtentHeightChange != 0)
+            
+            if (sv.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled && (e.VerticalChange != 0 || e.ExtentHeightChange != 0))
             {
                 if (e.VerticalOffset == 0)
                     sv.ScrollToTop();
