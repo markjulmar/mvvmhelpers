@@ -59,11 +59,7 @@ public $type$ $propertyName$
 
     set
     {
-        if ($fieldName$ != value)
-        {
-           $fieldName$ = value;
-           OnPropertyChanged(() => this.$propertyName$);
-        }
+        SetPropertyValue(ref $fieldName$, value, () => this.$propertyName$);
     }
 }
 ]]></Code>

@@ -20,12 +20,17 @@
         </Import>
         <Import>
           <Namespace>
+            System.Runtime.CompilerServices
+          </Namespace>
+        </Import>
+        <Import>
+          <Namespace>
             JulMar.Windows.Mvvm.Helpers
           </Namespace>
         </Import>
       </Imports>
       <Code Language="csharp"><![CDATA[public event PropertyChangedEventHandler PropertyChanged = delegate {};
-protected void OnPropertyChanged(string name)
+protected void OnPropertyChanged([CallerMemberName] string name = "")
 {
     System.Diagnostics.Debug.Assert(string.IsNullOrEmpty(name) || GetType().GetProperty(name) != null);
     PropertyChanged(this, new PropertyChangedEventArgs(name));
