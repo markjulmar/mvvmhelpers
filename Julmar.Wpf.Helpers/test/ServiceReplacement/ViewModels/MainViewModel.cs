@@ -27,7 +27,7 @@ namespace ServiceReplacement.ViewModels
         private void OnCalculatePi()
         {
             IMessageVisualizer messageVisualizer = Resolve<IMessageVisualizer>();
-            int result = (int) messageVisualizer.Show("Calculating Pi",
+            int? result = (int?) messageVisualizer.Show("Calculating Pi",
                                                 "This operation takes a long time. Are you sure you want to proceed?",
                                                 new MessageVisualizerOptions(UICommand.YesNo));
             if (result == 0)

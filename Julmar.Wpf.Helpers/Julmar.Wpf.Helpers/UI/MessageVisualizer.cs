@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Linq;
 using System.Windows;
 using JulMar.Core;
 using JulMar.Windows.Interfaces;
@@ -38,7 +36,7 @@ namespace JulMar.Windows.UI
         {
             if (visualizerOptions == null)
             {
-                visualizerOptions = new MessageVisualizerOptions(_defaultCommand);
+                visualizerOptions = new MessageVisualizerOptions(_defaultCommand) { DefaultCommandIndex = 0 };
             }
 
             Window popup = new Window
@@ -72,8 +70,9 @@ namespace JulMar.Windows.UI
 
             object finalTagId = null;
             WrapPanel buttonPanel = new WrapPanel() {Margin = new Thickness(10), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
-            foreach (var oneCommand in commands)
+            for (int index = 0; index < commands.Count; index++)
             {
+                var oneCommand = commands[index];
                 IUICommand command = oneCommand;
                 Button commandButton = new Button
                 {
@@ -81,15 +80,17 @@ namespace JulMar.Windows.UI
                     Tag = command.Id,
                     MinWidth = 75,
                     Margin = new Thickness(5),
-                    Padding = new Thickness(10,5,10,5),
+                    Padding = new Thickness(10, 5, 10, 5),
+                    IsDefault = index == visualizerOptions.DefaultCommandIndex,
+                    IsCancel = index == visualizerOptions.CancelCommandIndex,
                 };
                 commandButton.Click += (s, e) =>
-                    {
-                        if (command.Invoked != null)
-                            command.Invoked();
-                        finalTagId = ((Button) s).Tag;
-                        popup.DialogResult = true;
-                    };
+                {
+                    if (command.Invoked != null)
+                        command.Invoked();
+                    finalTagId = ((Button) s).Tag;
+                    popup.DialogResult = !((Button)s).IsCancel;
+                };
                 buttonPanel.Children.Add(commandButton);
             }
 
