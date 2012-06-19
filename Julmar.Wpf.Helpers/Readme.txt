@@ -142,3 +142,7 @@ Added check in SynchronizedScrollingBehavior to disable scrolling if scrollbar i
 Added ability to turn off drag adorner for ItemsControlDragDropBehavior
 Added ServiceReplacement test project + unit tests from blog
 Fixes for EditingViewModel, also extended with more interception hooks.
+
+4.10 6/15/2012
+Refactored some of the services to be more inline with the internal metro/Win8 version.
+Merged .NET 3.5/4.0 set together
