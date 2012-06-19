@@ -31,7 +31,7 @@ namespace WpfApplication1
             {
                 Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "Name", _name, value));
                 _name = value;
-                OnPropertyChanged("Name");
+                RaisePropertyChanged("Name");
             }
         }
 
@@ -42,7 +42,7 @@ namespace WpfApplication1
             {
                 Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "Age", _age, value));
                 _age = value;
-                OnPropertyChanged("Age");
+                RaisePropertyChanged("Age");
             }
         }
     }

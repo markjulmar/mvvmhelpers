@@ -18,7 +18,7 @@ namespace MultiSelectTreeView.ViewModels
         public bool IsExpanded
         {
             get { return _isExpanded; }
-            set { _isExpanded = value; OnPropertyChanged(() => IsExpanded); }
+            set { _isExpanded = value; RaisePropertyChanged(() => IsExpanded); }
         }
 
         public FolderViewModel(string name)

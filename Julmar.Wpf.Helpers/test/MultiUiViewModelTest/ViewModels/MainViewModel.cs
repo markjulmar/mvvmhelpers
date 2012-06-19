@@ -18,7 +18,7 @@ namespace MultiUiViewModelTest.ViewModels
         public string Text
         {
             get { return _text; }
-            set { _text = value; OnPropertyChanged(() => Text); }
+            set { _text = value; RaisePropertyChanged(() => Text); }
         }
 
         public ICommand ShowDialog { get; private set; }
@@ -27,8 +27,8 @@ namespace MultiUiViewModelTest.ViewModels
         public MainViewModel()
         {
             Text = "Some Text Here..";
-            ShowDialog = new DelegatingCommand<string>(OnShowDialog);
-            DuplicateMainWindow = new DelegatingCommand(OnDuplicateMainWindow);
+            ShowDialog = new DelegateCommand<string>(OnShowDialog);
+            DuplicateMainWindow = new DelegateCommand(OnDuplicateMainWindow);
         }
 
         void OnShowDialog(string dialogKey)

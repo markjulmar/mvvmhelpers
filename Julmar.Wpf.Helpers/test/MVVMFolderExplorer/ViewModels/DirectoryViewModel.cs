@@ -67,7 +67,9 @@ namespace MVVMFolderExplorer.ViewModels
                             _data.GetFiles()
                                 .Where(f => (f.Attributes & (FileAttributes.Hidden | FileAttributes.System)) == 0)
                                 .ForEach(f => _files.Add(new FileViewModel(f)));
-                            OnPropertyChanged("TotalFiles", "TotalFileSize");
+                            
+                            RaisePropertyChanged(() => TotalFiles);
+                            RaisePropertyChanged(() => TotalFileSize);
                         }
                         SendMessage(SelectedDirectoryChangedMessage, this);
                     }
@@ -77,7 +79,7 @@ namespace MVVMFolderExplorer.ViewModels
                         _files.Add(FileViewModel.MarkerFile);
                     }
 
-                    OnPropertyChanged("IsSelected");
+                    RaisePropertyChanged(() => IsSelected);
                 }
             }
         }
@@ -112,7 +114,7 @@ namespace MVVMFolderExplorer.ViewModels
                     }
                 }
 
-                OnPropertyChanged("IsExpanded");
+                RaisePropertyChanged(() => IsExpanded);
             }
         }
 

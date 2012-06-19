@@ -4,6 +4,7 @@ using JulMar.Windows.Mvvm;
 using JulMar.Windows.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
+using JulMar.Windows.UI;
 
 namespace ServiceReplacement.ViewModels
 {
@@ -15,21 +16,21 @@ namespace ServiceReplacement.ViewModels
         public string PiText
         {
             get { return _piText; }
-            set { _piText = value; OnPropertyChanged(() => PiText); }
+            set { _piText = value; RaisePropertyChanged(() => PiText); }
         }
 
         public MainViewModel()
         {
-            CalculatePi = new DelegatingCommand(OnCalculatePi);
+            CalculatePi = new DelegateCommand(OnCalculatePi);
         }
 
         private void OnCalculatePi()
         {
             IMessageVisualizer messageVisualizer = Resolve<IMessageVisualizer>();
-            var result = messageVisualizer.Show("Calculating Pi",
+            int result = (int) messageVisualizer.Show("Calculating Pi",
                                                 "This operation takes a long time. Are you sure you want to proceed?",
-                                                MessageButtons.YesNo);
-            if (result == MessageResult.Yes)
+                                                new MessageVisualizerOptions(UICommand.YesNo));
+            if (result == 0)
             {
                 IDisposable waitNotify = Resolve<INotificationVisualizer>().BeginWait("Working", "Calculating Pi.. Please Wait");
 

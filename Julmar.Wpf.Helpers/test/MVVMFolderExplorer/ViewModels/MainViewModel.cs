@@ -27,7 +27,7 @@ namespace MVVMFolderExplorer.ViewModels
         public DirectoryViewModel SelectedDirectory
         {
             get { return _selectedDirectory; }
-            set { _selectedDirectory = value; OnPropertyChanged("SelectedDirectory"); }
+            set { SetPropertyValue(ref _selectedDirectory, value, () => SelectedDirectory); }
         }
 
         /// <summary>
@@ -46,8 +46,8 @@ namespace MVVMFolderExplorer.ViewModels
         public MainViewModel()
         {
             // Create our commands
-            DisplayAboutCommand = new DelegatingCommand(OnShowAbout);
-            CloseAppCommand = new DelegatingCommand(OnCloseApp);
+            DisplayAboutCommand = new DelegateCommand(OnShowAbout);
+            CloseAppCommand = new DelegateCommand(OnCloseApp);
 
             // Fill in the root directory from C:
             RootDirectory = new[] { new DirectoryViewModel(new DirectoryInfo(@"C:\")) { IsSelected = true } };
@@ -68,7 +68,7 @@ namespace MVVMFolderExplorer.ViewModels
         private void OnShowAbout()
         {
             // Display a popup with our version using the message visualizer.
-            Resolve<IMessageVisualizer>().Show("About File Explorer Sample", "File Explorer Sample 1.0", MessageButtons.OK);
+            Resolve<IMessageVisualizer>().Show("About File Explorer Sample", "File Explorer Sample 1.0");
         }
 
         /// <summary>

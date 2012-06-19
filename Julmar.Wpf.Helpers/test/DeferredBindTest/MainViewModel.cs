@@ -18,14 +18,14 @@ namespace DeferredBindTest
         public string Text
         {
             get { return _text; }
-            set { _text = value; OnPropertyChanged(() => Text); }
+            set { _text = value; RaisePropertyChanged(() => Text); }
         }
 
         private double _value;
         public double Value
         {
             get { return _value; }
-            set { _value = value; OnPropertyChanged(() => Value); }
+            set { _value = value; RaisePropertyChanged(() => Value); }
         }
 
         public string Countdown
@@ -36,7 +36,7 @@ namespace DeferredBindTest
         public MainViewModel()
         {
             _stopwatch = Stopwatch.StartNew();
-            _timer = new Timer(o => OnPropertyChanged(() => Countdown), null, 0, 1000);
+            _timer = new Timer(o => RaisePropertyChanged(() => Countdown), null, 0, 1000);
         }
     }
 }

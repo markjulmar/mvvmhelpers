@@ -20,7 +20,7 @@ namespace MasterDetailTest.ViewModels
             set
             {
                 _selectedOrder = value; 
-                OnPropertyChanged(() => SelectedOrder);
+                RaisePropertyChanged(() => SelectedOrder);
             }
         }
 

@@ -1,13 +1,14 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Input;
+using JulMar.Windows.Interfaces;
 
 namespace JulMar.Windows.Mvvm
 {
     /// <summary>
     /// A simple command to delegate forwarding class
     /// </summary>
-    public class DelegatingCommand : ICommand
+    public class DelegateCommand : IDelegateCommand
     {
         private readonly Action<object> _command;
         private readonly Func<object, bool> _canExecute;
@@ -18,7 +19,7 @@ namespace JulMar.Windows.Mvvm
         /// Constructor
         /// </summary>
         /// <param name="command">Function mapped to ICommand.Execute</param>
-        public DelegatingCommand(Action<object> command) : this(command, null, false)
+        public DelegateCommand(Action<object> command) : this(command, null, false)
         {
         }
 
@@ -26,16 +27,7 @@ namespace JulMar.Windows.Mvvm
         /// Constructor
         /// </summary>
         /// <param name="command">Function mapped to ICommand.Execute</param>
-        public DelegatingCommand(Action command) : this(command, null, false)
-        {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="command">Function mapped to ICommand.Execute</param>
-        /// <param name="test">Function mapped to ICommand.CanExecute</param>
-        public DelegatingCommand(Action command, Func<bool> test) : this(command, test, true)
+        public DelegateCommand(Action command) : this(command, null, false)
         {
         }
 
@@ -44,7 +36,16 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         /// <param name="command">Function mapped to ICommand.Execute</param>
         /// <param name="test">Function mapped to ICommand.CanExecute</param>
-        public DelegatingCommand(Action<object> command, Func<object, bool> test)
+        public DelegateCommand(Action command, Func<bool> test) : this(command, test, true)
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="command">Function mapped to ICommand.Execute</param>
+        /// <param name="test">Function mapped to ICommand.CanExecute</param>
+        public DelegateCommand(Action<object> command, Func<object, bool> test)
             : this(command, test, true)
         {
         }
@@ -55,7 +56,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="command">Function mapped to ICommand.Execute</param>
         /// <param name="test">Function mapped to ICommand.CanExecute</param>
         /// <param name="autoCanExecuteRequery">True to use WPF CommandManager for CanExecute re-query operations</param>
-        public DelegatingCommand(Action command, Func<bool> test, bool autoCanExecuteRequery)
+        public DelegateCommand(Action command, Func<bool> test, bool autoCanExecuteRequery)
         {
             Debug.Assert(command != null);
             _command = delegate { command(); };
@@ -72,7 +73,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="command">Function mapped to ICommand.Execute</param>
         /// <param name="test">Function mapped to ICommand.CanExecute</param>
         /// <param name="autoCanExecuteRequery">True to use WPF command manager for CanExecute handler</param>
-        public DelegatingCommand(Action<object> command, Func<object,bool> test, bool autoCanExecuteRequery)
+        public DelegateCommand(Action<object> command, Func<object,bool> test, bool autoCanExecuteRequery)
         {
             Debug.Assert(command != null);
             _command = command;
@@ -188,7 +189,7 @@ namespace JulMar.Windows.Mvvm
     /// passed to a given type.
     /// </summary>
     /// <typeparam name="T">Parameter type</typeparam>
-    public class DelegatingCommand<T> : ICommand
+    public class DelegateCommand<T> : IDelegateCommand
     {
         private readonly Action<T> _command;
         private readonly Func<T, bool> _canExecute;
@@ -199,7 +200,7 @@ namespace JulMar.Windows.Mvvm
         /// Constructor
         /// </summary>
         /// <param name="command">Function mapped to ICommand.Execute</param>
-        public DelegatingCommand(Action<T> command) 
+        public DelegateCommand(Action<T> command) 
             : this(command, null, false)
         {
         }
@@ -209,7 +210,7 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         /// <param name="command">Function mapped to ICommand.Execute</param>
         /// <param name="test">Function mapped to ICommand.CanExecute</param>
-        public DelegatingCommand(Action<T> command, Func<T, bool> test)
+        public DelegateCommand(Action<T> command, Func<T, bool> test)
             : this(command, test, true)
         {
         }
@@ -220,7 +221,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="command">Function mapped to ICommand.Execute</param>
         /// <param name="test">Function mapped to ICommand.CanExecute</param>
         /// <param name="autoCanExecuteRequery">True to use WPF command manager for CanExecute handler</param>
-        public DelegatingCommand(Action<T> command, Func<T, bool> test, bool autoCanExecuteRequery)
+        public DelegateCommand(Action<T> command, Func<T, bool> test, bool autoCanExecuteRequery)
         {
             Debug.Assert(command != null);
             _command = command;

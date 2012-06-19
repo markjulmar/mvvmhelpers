@@ -18,7 +18,7 @@ namespace TestMvvm.ViewModels
                 if (!string.IsNullOrEmpty(_color) && _color != value)
                     Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "Color", _color, value));
                 _color = value;
-                OnPropertyChanged("Color");
+                RaisePropertyChanged("Color");
             }
         }
 
@@ -34,7 +34,7 @@ namespace TestMvvm.ViewModels
                 if (_x != null && _x.Value != value)
                     Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "X", _x.Value, value));
                 _x = value;
-                OnPropertyChanged("X");
+                RaisePropertyChanged("X");
             }
         }
 
@@ -50,7 +50,7 @@ namespace TestMvvm.ViewModels
                 if (_y != null && _y.Value != value)
                     Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "Y", _y.Value, value));
                 _y = value;
-                OnPropertyChanged("Y");
+                RaisePropertyChanged("Y");
             }
         }
 
@@ -66,7 +66,7 @@ namespace TestMvvm.ViewModels
                 if (_width != null && _width.Value != value)
                     Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "Width", _width.Value, value));
                 _width = value;
-                OnPropertyChanged("Width");
+                RaisePropertyChanged("Width");
             }
         }
 
@@ -82,7 +82,7 @@ namespace TestMvvm.ViewModels
                 if (_height != null && _height.Value != value)
                     Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "Height", _height.Value, value));
                 _height = value;
-                OnPropertyChanged("Height");
+                RaisePropertyChanged("Height");
             }
         }
     }

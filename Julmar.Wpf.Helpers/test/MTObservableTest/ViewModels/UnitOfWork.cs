@@ -16,7 +16,7 @@ namespace MTObservableTest.ViewModels
         public int PercentComplete
         {
             get { return _percent; }
-            set { _percent = value; OnPropertyChanged(() => PercentComplete); }
+            set { _percent = value; RaisePropertyChanged(() => PercentComplete); }
         }
 
         public string Color { get; private set; }

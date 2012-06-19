@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -19,7 +20,7 @@ namespace JulMar.Windows.Mvvm
         /// <summary>
         /// This can be used to indicate that all property values have changed.
         /// </summary>
-        protected void OnPropertyChanged()
+        protected void RaiseAllPropertiesChanged()
         {
             PropertyChanged(this, new PropertyChangedEventArgs(string.Empty));
         }
@@ -39,14 +40,14 @@ namespace JulMar.Windows.Mvvm
         ///       set
         ///       {
         ///           _name = value;
-        ///           OnPropertyChanged(() => Name);
+        ///           RaisePropertyChanged(() => Name);
         ///       }
         ///    }
         /// ]]>
         /// </example>
         /// <typeparam name="T">Type where it is being raised</typeparam>
         /// <param name="propExpr">Property</param>
-        protected virtual void OnPropertyChanged<T>(Expression<Func<T>> propExpr)
+        protected void RaisePropertyChanged<T>(Expression<Func<T>> propExpr)
         {
             var prop = (PropertyInfo)((MemberExpression)propExpr.Body).Member;
             PropertyChanged(this, new PropertyChangedEventArgs(prop.Name));
@@ -56,20 +57,45 @@ namespace JulMar.Windows.Mvvm
         /// This raises the INotifyPropertyChanged.PropertyChanged event to indicate
         /// a specific property has changed value.
         /// </summary>
-        /// <param name="name">Primary property</param>
-        /// <param name="propertyNames">Additional properties</param>
-        protected virtual void OnPropertyChanged(string name, params string[] propertyNames)
+        /// <param name="propertyName">Primary property</param>
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName= "")
         {
-            Debug.Assert(string.IsNullOrEmpty(name) || GetType().GetProperty(name) != null);
-            PropertyChanged(this, new PropertyChangedEventArgs(name));
-            if (propertyNames != null)
-            {
-                foreach (var propName in propertyNames)
-                {
-                    OnPropertyChanged(propName);
-                }
-            }
+            Debug.Assert(!string.IsNullOrEmpty(propertyName) && GetType().GetProperty(propertyName) != null);
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// This is used to set a specific value for a property.
+        /// </summary>
+        /// <typeparam name="T">Type to set</typeparam>
+        /// <param name="storageField">Storage field</param>
+        /// <param name="newValue">New value</param>
+        /// <param name="propExpr">Property expression</param>
+        protected bool SetPropertyValue<T>(ref T storageField, T newValue, Expression<Func<T>> propExpr)
+        {
+            if (Object.Equals(storageField, newValue))
+                return false;
+            storageField = newValue;
+            var prop = (PropertyInfo)((MemberExpression)propExpr.Body).Member;
+            PropertyChanged(this, new PropertyChangedEventArgs(prop.Name));
+            return true;
+        }
+
+        /// <summary>
+        /// This is used to set a specific value for a property.
+        /// </summary>
+        /// <typeparam name="T">Type to set</typeparam>
+        /// <param name="storageField">Storage field</param>
+        /// <param name="newValue">New value</param>
+        /// <param name="propertyName">Property Name</param>
+        protected bool SetPropertyValue<T>(ref T storageField, T newValue, [CallerMemberName] string propertyName = "")
+        {
+            Debug.Assert(!string.IsNullOrEmpty(propertyName) && GetType().GetProperty(propertyName) != null);
+            if (Object.Equals(storageField, newValue))
+                return false;
+            storageField = newValue;
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            return true;
+        }
     }
 }

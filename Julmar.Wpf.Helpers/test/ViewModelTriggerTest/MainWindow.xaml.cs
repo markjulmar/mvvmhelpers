@@ -46,7 +46,7 @@ namespace ViewModelTriggerTest
         public TestViewModel()
         {
             _color = Brushes.Red;
-            RunAction = new DelegatingCommand(DoRunAction);
+            RunAction = new DelegateCommand(DoRunAction);
         }
 
         private void DoRunAction()

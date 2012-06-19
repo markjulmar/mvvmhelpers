@@ -1,13 +1,14 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
+using JulMar.Windows.Interfaces;
 
 namespace JulMar.Windows.Mvvm
 {
     /// <summary>
-    /// An asynchronous version of the DelegatingCommand
+    /// An asynchronous version of the DelegateCommand
     /// </summary>
-    public class AsyncDelegatingCommand : ICommand 
+    public class AsyncDelegateCommand : IDelegateCommand 
     {
         readonly BackgroundWorker _worker = new BackgroundWorker();
         readonly Func<object, bool> _canExecute;
@@ -18,7 +19,7 @@ namespace JulMar.Windows.Mvvm
         /// Constructor
         /// </summary>
         /// <param name="action">The action to be executed</param>
-        public AsyncDelegatingCommand(Action action) : this(action, null, null, null, false)
+        public AsyncDelegateCommand(Action action) : this(action, null, null, null, false)
         {
         }
 
@@ -27,7 +28,7 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         /// <param name="action">The action to be executed</param>
         /// <param name="canExecute">Will be used to determine if the action can be executed</param>
-        public AsyncDelegatingCommand(Action action, Func<bool> canExecute) : this(action, canExecute, null, null, true)
+        public AsyncDelegateCommand(Action action, Func<bool> canExecute) : this(action, canExecute, null, null, true)
         {
         }
 
@@ -37,7 +38,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="action">The action to be executed</param>
         /// <param name="canExecute">Will be used to determine if the action can be executed</param>
         /// <param name="completedCallback">Will be invoked when the action is completed</param>
-        public AsyncDelegatingCommand(Action action, Func<bool> canExecute, Action<object> completedCallback) : this(action, canExecute, completedCallback, null, true)
+        public AsyncDelegateCommand(Action action, Func<bool> canExecute, Action<object> completedCallback) : this(action, canExecute, completedCallback, null, true)
         {
         }
 
@@ -48,7 +49,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="canExecute">Will be used to determine if the action can be executed</param>
         /// <param name="completedCallback">Will be invoked when the action is completed</param>
         /// <param name="errorCallback">Will be invoked if the action throws an error</param>
-        public AsyncDelegatingCommand(Action action, Func<bool> canExecute, Action<object> completedCallback, Action<Exception> errorCallback) 
+        public AsyncDelegateCommand(Action action, Func<bool> canExecute, Action<object> completedCallback, Action<Exception> errorCallback) 
             : this(action, canExecute, completedCallback, errorCallback, true)
         {
         }
@@ -61,7 +62,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="completedCallback">Will be invoked when the action is completed</param>
         /// <param name="errorCallback">Will be invoked if the action throws an error</param>
         /// <param name="autoCanExecuteRequery">True to use WPF CommandManager for CanExecute re-query operations</param>
-        public AsyncDelegatingCommand(Action action, Func<bool> canExecute, Action<object> completedCallback, Action<Exception> errorCallback, bool autoCanExecuteRequery)
+        public AsyncDelegateCommand(Action action, Func<bool> canExecute, Action<object> completedCallback, Action<Exception> errorCallback, bool autoCanExecuteRequery)
         {
             _worker.DoWork += (s, e) =>
             {
@@ -95,7 +96,7 @@ namespace JulMar.Windows.Mvvm
         /// Constructor
         /// </summary>
         /// <param name="action">The action to be executed</param>
-        public AsyncDelegatingCommand(Action<object> action)
+        public AsyncDelegateCommand(Action<object> action)
             : this(action, null, null, null, false)
         {
         }
@@ -105,7 +106,7 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         /// <param name="action">The action to be executed</param>
         /// <param name="canExecute">Will be used to determine if the action can be executed</param>
-        public AsyncDelegatingCommand(Action<object> action, Func<object,bool> canExecute)
+        public AsyncDelegateCommand(Action<object> action, Func<object,bool> canExecute)
             : this(action, canExecute, null, null, true)
         {
         }
@@ -116,7 +117,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="action">The action to be executed</param>
         /// <param name="canExecute">Will be used to determine if the action can be executed</param>
         /// <param name="completedCallback">Will be invoked when the action is completed</param>
-        public AsyncDelegatingCommand(Action<object> action, Func<object, bool> canExecute, Action<object> completedCallback)
+        public AsyncDelegateCommand(Action<object> action, Func<object, bool> canExecute, Action<object> completedCallback)
             : this(action, canExecute, completedCallback, null, true)
         {
         }
@@ -128,7 +129,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="canExecute">Will be used to determine if the action can be executed</param>
         /// <param name="completed">Will be invoked when the action is completed</param>
         /// <param name="error">Will be invoked if the action throws an error</param>
-        public AsyncDelegatingCommand(Action<object> action, Func<object, bool> canExecute, Action<object> completed, Action<Exception> error) 
+        public AsyncDelegateCommand(Action<object> action, Func<object, bool> canExecute, Action<object> completed, Action<Exception> error) 
             : this(action, canExecute, completed, error, true)
         {
         }
@@ -141,7 +142,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="completed">Will be invoked when the action is completed</param>
         /// <param name="error">Will be invoked if the action throws an error</param>
         /// <param name="autoCanExecuteRequery">True to use WPF CommandManager for CanExecute re-query operations</param>
-        public AsyncDelegatingCommand(Action<object> action, Func<object, bool> canExecute, Action<object> completed, Action<Exception> error, bool autoCanExecuteRequery)
+        public AsyncDelegateCommand(Action<object> action, Func<object, bool> canExecute, Action<object> completed, Action<Exception> error, bool autoCanExecuteRequery)
         {
             _worker.DoWork += (s, e) =>
             {
@@ -273,9 +274,9 @@ namespace JulMar.Windows.Mvvm
     }
 
     /// <summary>
-    /// An asynchronous version of the DelegatingCommand
+    /// An asynchronous version of the DelegateCommand
     /// </summary>
-    public class AsyncDelegatingCommand<T> : ICommand
+    public class AsyncDelegateCommand<T> : IDelegateCommand
     {
         readonly BackgroundWorker _worker = new BackgroundWorker();
         readonly Func<T, bool> _canExecute;
@@ -286,7 +287,7 @@ namespace JulMar.Windows.Mvvm
         /// Constructor
         /// </summary>
         /// <param name="action">The action to be executed</param>
-        public AsyncDelegatingCommand(Action<T> action)
+        public AsyncDelegateCommand(Action<T> action)
             : this(action, null, null, null, false)
         {
         }
@@ -296,7 +297,7 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         /// <param name="action">The action to be executed</param>
         /// <param name="canExecute">Will be used to determine if the action can be executed</param>
-        public AsyncDelegatingCommand(Action<T> action, Func<T,bool> canExecute)
+        public AsyncDelegateCommand(Action<T> action, Func<T,bool> canExecute)
             : this(action, canExecute, null, null, true)
         {
         }
@@ -307,7 +308,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="action">The action to be executed</param>
         /// <param name="canExecute">Will be used to determine if the action can be executed</param>
         /// <param name="completedCallback">Will be invoked when the action is completed</param>
-        public AsyncDelegatingCommand(Action<T> action, Func<T,bool> canExecute, Action<object> completedCallback)
+        public AsyncDelegateCommand(Action<T> action, Func<T,bool> canExecute, Action<object> completedCallback)
             : this(action, canExecute, completedCallback, null, true)
         {
         }
@@ -319,7 +320,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="canExecute">Will be used to determine if the action can be executed</param>
         /// <param name="completedCallback">Will be invoked when the action is completed</param>
         /// <param name="errorCallback">Will be invoked if the action throws an error</param>
-        public AsyncDelegatingCommand(Action<T> action, Func<T,bool> canExecute, Action<object> completedCallback, Action<Exception> errorCallback)
+        public AsyncDelegateCommand(Action<T> action, Func<T,bool> canExecute, Action<object> completedCallback, Action<Exception> errorCallback)
             : this(action, canExecute, completedCallback, errorCallback, true)
         {
         }
@@ -332,7 +333,7 @@ namespace JulMar.Windows.Mvvm
         /// <param name="completedCallback">Will be invoked when the action is completed</param>
         /// <param name="errorCallback">Will be invoked if the action throws an error</param>
         /// <param name="autoCanExecuteRequery">True to use WPF CommandManager for CanExecute re-query operations</param>
-        public AsyncDelegatingCommand(Action<T> action, Func<T,bool> canExecute, Action<object> completedCallback, Action<Exception> errorCallback, bool autoCanExecuteRequery)
+        public AsyncDelegateCommand(Action<T> action, Func<T,bool> canExecute, Action<object> completedCallback, Action<Exception> errorCallback, bool autoCanExecuteRequery)
         {
             _worker.DoWork += (s, e) =>
             {

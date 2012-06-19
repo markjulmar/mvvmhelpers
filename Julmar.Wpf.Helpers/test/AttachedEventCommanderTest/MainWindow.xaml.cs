@@ -32,7 +32,7 @@ namespace WpfApplication1
         public MainViewModel()
         {
             Data = new ObservableCollection<string>();
-            ShowText = new DelegatingCommand(() => Data.Add("MainViewModel.ShowText"));
+            ShowText = new DelegateCommand(() => Data.Add("MainViewModel.ShowText"));
         }
 
         

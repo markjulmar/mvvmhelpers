@@ -19,7 +19,7 @@ namespace MTObservableTest.ViewModels
         public bool IsRunning
         {
             get { return _isRunning; }
-            private set { _isRunning = value; OnPropertyChanged(() => IsRunning); }
+            private set { _isRunning = value; RaisePropertyChanged(() => IsRunning); }
         }
 
         public ICommand StartStop { get; private set; }
@@ -31,10 +31,10 @@ namespace MTObservableTest.ViewModels
         {
             TaskList = new MTObservableCollection<UnitOfWork>();
             Activity = new MTObservableCollection<ActivityLog>();
-            StartStop = new DelegatingCommand(OnStartStopWork);
-            AddOne = new DelegatingCommand(AddTask);
-            AddTwenty = new DelegatingCommand(AddRange);
-            Clear = new DelegatingCommand(() => Activity.Clear());
+            StartStop = new DelegateCommand(OnStartStopWork);
+            AddOne = new DelegateCommand(AddTask);
+            AddTwenty = new DelegateCommand(AddRange);
+            Clear = new DelegateCommand(() => Activity.Clear());
             IsRunning = false;
         }
 

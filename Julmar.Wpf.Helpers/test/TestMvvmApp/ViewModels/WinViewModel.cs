@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel.Composition;
 using JulMar.Core.Interfaces;
+using JulMar.Windows.UI;
 using TestMvvm.Services;
 
 namespace TestMvvm.ViewModels
@@ -31,7 +32,7 @@ namespace TestMvvm.ViewModels
         public bool IsActive
         {
             get { return _isActive; }
-            set { _isActive = value; OnPropertyChanged("IsActive");}
+            set { _isActive = value; RaisePropertyChanged("IsActive");}
         }
 
         public string Title
@@ -40,7 +41,7 @@ namespace TestMvvm.ViewModels
             set
             {
                 _title = value; 
-                OnPropertyChanged("Title");
+                RaisePropertyChanged("Title");
             }
         }
 
@@ -51,7 +52,7 @@ namespace TestMvvm.ViewModels
             {
                 Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "BackgroundColor", _color, value));
                 _color = value; 
-                OnPropertyChanged("BackgroundColor");
+                RaisePropertyChanged("BackgroundColor");
             }
         }
 
@@ -62,7 +63,7 @@ namespace TestMvvm.ViewModels
             {
                 Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "ShowText", _showText, value));
                 _showText = value; 
-                OnPropertyChanged("ShowText");
+                RaisePropertyChanged("ShowText");
             }
         }
 
@@ -90,15 +91,15 @@ namespace TestMvvm.ViewModels
             Elements = new ObservableCollection<Element>();
             _collectionObserver = new CollectionChangeUndoObserver(Elements, Resolve<IUndoService>());
 
-            ActivatedCommand = new DelegatingCommand(() => IsActive = true);
-            DeactivatedCommand = new DelegatingCommand(() => IsActive = false);
-            LoadedCommand = new DelegatingCommand(OnLoaded);
-            CloseCommand = new DelegatingCommand(OnClosed, OnCheckClose);
-            ExitCommand = new DelegatingCommand(RaiseCloseRequest);
-            ShowColorDialogCommand = new DelegatingCommand<Element>(ShowColorDialog);
-            ShowPropertiesCommand = new DelegatingCommand(ShowPropertyDialog);
-            MouseEnterLeaveCommand = new DelegatingCommand<EventParameters>(OnMouseEnterLeave);
-            ChangeBackground = new DelegatingCommand<string>(OnChangeBackground);
+            ActivatedCommand = new DelegateCommand(() => IsActive = true);
+            DeactivatedCommand = new DelegateCommand(() => IsActive = false);
+            LoadedCommand = new DelegateCommand(OnLoaded);
+            CloseCommand = new DelegateCommand(OnClosed, OnCheckClose);
+            ExitCommand = new DelegateCommand(RaiseCloseRequest);
+            ShowColorDialogCommand = new DelegateCommand<Element>(ShowColorDialog);
+            ShowPropertiesCommand = new DelegateCommand(ShowPropertyDialog);
+            MouseEnterLeaveCommand = new DelegateCommand<EventParameters>(OnMouseEnterLeave);
+            ChangeBackground = new DelegateCommand<string>(OnChangeBackground);
         }
 
         private void OnLoaded()
@@ -138,8 +139,8 @@ namespace TestMvvm.ViewModels
                 Resolve<IErrorVisualizer>().Show("Error!", "Message Visualizer was not registered properly!");
             }
             else
-                canClose = messageVisualizer.Show("Question", "Do you want to close this window?",
-                           MessageButtons.YesNo) == MessageResult.Yes;
+                canClose = ((int)messageVisualizer.Show("Question", "Do you want to close this window?",
+                                                  new MessageVisualizerOptions(UICommand.YesNo))) == 0;
 
             return canClose;
         }

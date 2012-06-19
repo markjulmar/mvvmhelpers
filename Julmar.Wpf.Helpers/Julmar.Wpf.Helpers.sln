@@ -58,7 +58,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceReplacement", "test\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceReplacementTests", "test\ServiceReplacementTests\ServiceReplacementTests.csproj", "{5BDC17CB-CDBA-4253-A5D9-2246DBA4BD60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeferredScrollingTest", "test\DeferredScrollingTest\DeferredScrollingTest.csproj", "{B4A4E314-641C-4095-93B1-ACE8C1B5461B}"
+EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Julmar.Wpf.Helpers.vsmdi
 	EndGlobalSection
@@ -311,6 +317,16 @@ Global
 		{5BDC17CB-CDBA-4253-A5D9-2246DBA4BD60}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5BDC17CB-CDBA-4253-A5D9-2246DBA4BD60}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5BDC17CB-CDBA-4253-A5D9-2246DBA4BD60}.Release|x86.ActiveCfg = Release|Any CPU
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Debug|x86.ActiveCfg = Debug|x86
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Debug|x86.Build.0 = Debug|x86
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Release|Any CPU.ActiveCfg = Release|x86
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Release|Mixed Platforms.Build.0 = Release|x86
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Release|x86.ActiveCfg = Release|x86
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -336,9 +352,6 @@ Global
 		{3BD3559C-EEBB-4C19-A058-FB79A0FA2B73} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{2C23803C-3F66-45C0-A2B0-B18DBA964CB9} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{5BDC17CB-CDBA-4253-A5D9-2246DBA4BD60} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
+		{B4A4E314-641C-4095-93B1-ACE8C1B5461B} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 	EndGlobalSection
 EndGlobal

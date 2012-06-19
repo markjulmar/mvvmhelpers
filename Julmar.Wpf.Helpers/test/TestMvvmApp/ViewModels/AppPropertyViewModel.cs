@@ -13,13 +13,13 @@ namespace TestMvvm.ViewModels
         public string Title
         {
             get { return _title; }
-            set { _title = value; OnPropertyChanged("Title"); }
+            set { _title = value; RaisePropertyChanged("Title"); }
         }
 
         public int ShapeCount
         {
             get { return _count; }
-            set { _count = value; OnPropertyChanged("ShapeCount"); }
+            set { _count = value; RaisePropertyChanged("ShapeCount"); }
         }
     }
 }

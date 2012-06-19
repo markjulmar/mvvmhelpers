@@ -12,9 +12,7 @@ namespace ItemsControlDragDropBehavior.TestApp
         public bool IsSelected
         {
             get { return _isSelected; }
-            set { _isSelected = value;
-                OnPropertyChanged("IsSelected");
-            }
+            set { SetPropertyValue(ref _isSelected, value, () => IsSelected); }
         }
 
         public override string ToString()

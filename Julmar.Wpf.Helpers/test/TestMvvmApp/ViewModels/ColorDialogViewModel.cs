@@ -15,7 +15,7 @@ namespace TestMvvm.ViewModels
             private set 
             { 
                 _colorList = value;
-                OnPropertyChanged("Colors"); 
+                RaisePropertyChanged("Colors"); 
             }
         }
 
@@ -24,19 +24,19 @@ namespace TestMvvm.ViewModels
         public string SelectedColor
         {
             get { return _element.Color; }
-            set { _element.Color = value; OnPropertyChanged("SelectedColor");}
+            set { _element.Color = value; RaisePropertyChanged("SelectedColor");}
         }
 
         public double Width
         {
             get { return _element.Width; }   
-            set { _element.Width = value; OnPropertyChanged("Width");}
+            set { _element.Width = value; RaisePropertyChanged("Width");}
         }
 
         public double Height
         {
             get { return _element.Height; }
-            set { _element.Height = value; OnPropertyChanged("Height"); }
+            set { _element.Height = value; RaisePropertyChanged("Height"); }
         }
 
         public ColorDialogViewModel(Element element)

@@ -49,13 +49,12 @@ namespace ServiceReplacementTests
 
         public class MockMessageVisualizer : IMessageVisualizer
         {
-            public MessageResult Response { get; set; }
-            public MessageResult Show(string title, string message, MessageButtons buttons)
+            public object Response { get; set; }
+            public void Show(string title, string message)
             {
-                return Response;
             }
 
-            public MessageResult Show(string title, string message, MessageVisualizerOptions visualizerOptions)
+            public object Show(string title, string message, MessageVisualizerOptions visualizerOptions)
             {
                 return Response;
             }
@@ -133,7 +132,7 @@ namespace ServiceReplacementTests
             MainViewModel_Accessor target = new MainViewModel_Accessor();
 
             MockNotificationVisualizer notifyVisualizer = new MockNotificationVisualizer();
-            MockMessageVisualizer messageVisualizer = new MockMessageVisualizer { Response = MessageResult.Yes };
+            MockMessageVisualizer messageVisualizer = new MockMessageVisualizer { Response = 0 };
             
             ViewModel.ServiceProvider.Add(typeof(INotificationVisualizer), notifyVisualizer);
             ViewModel.ServiceProvider.Add(typeof(IMessageVisualizer), messageVisualizer);
@@ -164,7 +163,7 @@ namespace ServiceReplacementTests
             MainViewModel_Accessor target = new MainViewModel_Accessor();
 
             MockNotificationVisualizer notifyVisualizer = new MockNotificationVisualizer();
-            MockMessageVisualizer messageVisualizer = new MockMessageVisualizer { Response = MessageResult.No };
+            MockMessageVisualizer messageVisualizer = new MockMessageVisualizer { Response = 1 };
 
             ViewModel.ServiceProvider.Add(typeof(INotificationVisualizer), notifyVisualizer);
             ViewModel.ServiceProvider.Add(typeof(IMessageVisualizer), messageVisualizer);

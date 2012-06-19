@@ -14,7 +14,7 @@ namespace MTObservableTest.ViewModels
             {
                 _addElapsed = value;
                 Elapsed = value;
-                OnPropertyChanged(() => AddElapsed);
+                RaisePropertyChanged(() => AddElapsed);
             }
         }
 
@@ -25,7 +25,7 @@ namespace MTObservableTest.ViewModels
             set
             {
                 _removeElapsed = value; 
-                OnPropertyChanged(() => RemoveElapsed);
+                RaisePropertyChanged(() => RemoveElapsed);
                 if (Elapsed < value)
                     Elapsed = value;
             }
@@ -35,14 +35,14 @@ namespace MTObservableTest.ViewModels
         public TimeSpan Elapsed
         {
             get { return _elapsed; }
-            set { _elapsed = value; OnPropertyChanged(() => Elapsed); }
+            set { _elapsed = value; RaisePropertyChanged(() => Elapsed); }
         }
 
         private bool _success;
         public bool Success
         {
             get { return _success; }
-            set { _success = value; OnPropertyChanged(() => Success); }
+            set { _success = value; RaisePropertyChanged(() => Success); }
         }
     }
 }

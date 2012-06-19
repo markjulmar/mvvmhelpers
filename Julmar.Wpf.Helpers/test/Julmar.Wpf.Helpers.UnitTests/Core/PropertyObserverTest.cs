@@ -25,19 +25,19 @@ namespace JulMar.Wpf.Helpers.UnitTests
             public string SValue
             {
                 get { return _stest; }
-                set { _stest = value; OnPropertyChanged("SValue"); }
+                set { _stest = value; RaisePropertyChanged("SValue"); }
             }
 
             private int _value;
             public int IValue
             {
                 get { return _value; }
-                set { _value = value; OnPropertyChanged("IValue"); }
+                set { _value = value; RaisePropertyChanged("IValue"); }
             }
 
             internal void ForceAllPropertyChange()
             {
-                OnPropertyChanged();
+                RaiseAllPropertiesChanged();
             }
         }
 

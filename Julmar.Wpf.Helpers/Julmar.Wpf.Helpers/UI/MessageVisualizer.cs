@@ -1,6 +1,10 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows;
 using JulMar.Core;
 using JulMar.Windows.Interfaces;
+using System.Windows.Controls;
 
 namespace JulMar.Windows.UI
 {
@@ -10,16 +14,17 @@ namespace JulMar.Windows.UI
     [ExportService(typeof(IMessageVisualizer))]
     sealed class MessageVisualizer : IMessageVisualizer
     {
+        private readonly IUICommand[] _defaultCommand = UICommand.Generate("OK").ToArray();
+
         /// <summary>
         /// This displays a message to the user and prompts for a selection.
         /// </summary>
         /// <param name="title">Title</param>
         /// <param name="message">Message</param>
-        /// <param name="buttons">Buttons to dismiss box</param>
         /// <returns>Result</returns>
-        public MessageResult Show(string title, string message, MessageButtons buttons)
+        public void Show(string title, string message)
         {
-            return Convert(MessageBox.Show(message, title, Convert(buttons)));
+            Show(title, message, null);
         }
 
         /// <summary>
@@ -29,73 +34,71 @@ namespace JulMar.Windows.UI
         /// <param name="message">Message</param>
         /// <param name="visualizerOptions">Options for the message</param>
         /// <returns>Result</returns>
-        public MessageResult Show(string title, string message, MessageVisualizerOptions visualizerOptions)
+        public object Show(string title, string message, MessageVisualizerOptions visualizerOptions)
         {
-            return (visualizerOptions.Owner == null)
-                ? Convert(MessageBox.Show(message, title, Convert(visualizerOptions.Prompt), Convert(visualizerOptions.Icon), Convert(visualizerOptions.DefaultPrompt)))
-                : Convert(MessageBox.Show(visualizerOptions.Owner, message, title, Convert(visualizerOptions.Prompt), Convert(visualizerOptions.Icon), Convert(visualizerOptions.DefaultPrompt)));
-        }
-
-        private static MessageBoxImage Convert(MessageIcon icon)
-        {
-            switch (icon)
+            if (visualizerOptions == null)
             {
-                case MessageIcon.Information:
-                    return MessageBoxImage.Information;
-                case MessageIcon.Question:
-                    return MessageBoxImage.Question;
-                case MessageIcon.Warning:
-                    return MessageBoxImage.Warning;
-                case MessageIcon.Error:
-                    return MessageBoxImage.Error;
+                visualizerOptions = new MessageVisualizerOptions(_defaultCommand);
             }
-            return MessageBoxImage.None;
-        }
 
-        private static MessageBoxButton Convert(MessageButtons button)
-        {
-            switch (button)
-            {
-                case MessageButtons.OKCancel:
-                    return MessageBoxButton.OKCancel;
-                case MessageButtons.YesNoCancel:
-                    return MessageBoxButton.YesNoCancel;
-                case MessageButtons.YesNo:
-                    return MessageBoxButton.YesNo;
-            }
-            return MessageBoxButton.OK;
-        }
+            Window popup = new Window
+                {
+                    Owner = visualizerOptions.Owner,
+                    WindowStartupLocation = (visualizerOptions.Owner == null) 
+                                ? WindowStartupLocation.CenterScreen : WindowStartupLocation.CenterOwner,
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                    Background = SystemColors.ControlLightBrush,
+                    Foreground = SystemColors.ControlTextBrush,
+                    Title = title,
+                    MinWidth = 200, MinHeight = 100,
+                };
 
-        private static MessageBoxResult Convert(MessageResult result)
-        {
-            switch (result)
-            {
-                case MessageResult.OK:
-                    return MessageBoxResult.OK;
-                case MessageResult.Cancel:
-                    return MessageBoxResult.Cancel;
-                case MessageResult.Yes:
-                    return MessageBoxResult.Yes;
-                case MessageResult.No:
-                    return MessageBoxResult.No;
-            }
-            return MessageBoxResult.None;
-        }
+            StackPanel rootPanel = new StackPanel();
+            TextBlock messageText = new TextBlock
+                {
+                    Text = message, 
+                    Margin = new Thickness(20),
+                    TextWrapping = TextWrapping.Wrap,
+                    MaxWidth = SystemParameters.PrimaryScreenWidth / 2,
+                    MaxHeight = SystemParameters.FullPrimaryScreenWidth / 2,
+                    HorizontalAlignment = HorizontalAlignment.Center, 
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+            rootPanel.Children.Add(messageText);
 
-        private static MessageResult Convert(MessageBoxResult result)
-        {
-            switch (result)
+            var commands = visualizerOptions.Commands;
+            if (commands.Count == 0)
+                commands = _defaultCommand;
+
+            object finalTagId = null;
+            WrapPanel buttonPanel = new WrapPanel() {Margin = new Thickness(10), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
+            foreach (var oneCommand in commands)
             {
-                case MessageBoxResult.OK:
-                    return MessageResult.OK;
-                case MessageBoxResult.Cancel:
-                    return MessageResult.Cancel;
-                case MessageBoxResult.Yes:
-                    return MessageResult.Yes;
-                case MessageBoxResult.No:
-                    return MessageResult.No;
+                IUICommand command = oneCommand;
+                Button commandButton = new Button
+                {
+                    Content = command.Label,
+                    Tag = command.Id,
+                    MinWidth = 75,
+                    Margin = new Thickness(5),
+                    Padding = new Thickness(10,5,10,5),
+                };
+                commandButton.Click += (s, e) =>
+                    {
+                        if (command.Invoked != null)
+                            command.Invoked();
+                        finalTagId = ((Button) s).Tag;
+                        popup.DialogResult = true;
+                    };
+                buttonPanel.Children.Add(commandButton);
             }
-            return MessageResult.None;
+
+            rootPanel.Children.Add(buttonPanel);
+
+            popup.Content = rootPanel;
+            popup.ShowDialog();
+
+            return finalTagId;
         }
     }
 }

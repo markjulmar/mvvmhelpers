@@ -23,7 +23,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.MVVM
         [TestMethod]
         public void ActionWithNoParamTest()
         {
-            ICommand command = new DelegatingCommand(OnAction);
+            ICommand command = new DelegateCommand(OnAction);
 
             Assert.AreEqual(true, command.CanExecute(null), "CanExecute did not return true");
             command.Execute(null);
@@ -36,7 +36,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.MVVM
         [TestMethod]
         public void ActionWithParamTest()
         {
-            ICommand command = new DelegatingCommand(OnAction2);
+            ICommand command = new DelegateCommand(OnAction2);
 
             Assert.AreEqual(true, command.CanExecute(5), "CanExecute did not return true");
             command.Execute(5);
@@ -49,7 +49,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.MVVM
         [TestMethod]
         public void CanExecuteTest()
         {
-            ICommand command = new DelegatingCommand(OnAction, () => false);
+            ICommand command = new DelegateCommand(OnAction, () => false);
             Assert.AreEqual(false, command.CanExecute(null), "CanExecute did not return false");
         }
 
@@ -59,7 +59,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.MVVM
         [TestMethod]
         public void CanExecuteTestWithParam()
         {
-            ICommand command = new DelegatingCommand(OnAction2, (o) => !((bool)o));
+            ICommand command = new DelegateCommand(OnAction2, (o) => !((bool)o));
             Assert.AreEqual(false, command.CanExecute(true), "CanExecute did not return false");
         }
 
@@ -109,7 +109,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.MVVM
             int CanExecuteCalls = 0;
             CommandListener listener = new CommandListener(() => CanExecuteCalls++);
             MyTest test = new MyTest();
-            DelegatingCommand command = new DelegatingCommand(test.DoWork, test.CanExecute, false);
+            DelegateCommand command = new DelegateCommand(test.DoWork, test.CanExecute, false);
             command.CanExecuteChanged += listener.OnCanExecuteChanged;
 
             CommandManager.InvalidateRequerySuggested();
@@ -128,7 +128,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.MVVM
             int CanExecuteCalls = 0;
             CommandListener listener = new CommandListener(() => CanExecuteCalls++);
             MyTest test = new MyTest();
-            DelegatingCommand command = new DelegatingCommand(test.DoWork, test.CanExecute, true);
+            DelegateCommand command = new DelegateCommand(test.DoWork, test.CanExecute, true);
             command.CanExecuteChanged += listener.OnCanExecuteChanged;
 
             command.Execute(null);
@@ -148,7 +148,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.MVVM
             int CanExecuteCalls = 0;
             CommandListener listener = new CommandListener(() => Interlocked.Increment(ref CanExecuteCalls));
             MyTest test = new MyTest();
-            DelegatingCommand command = new DelegatingCommand(test.DoWork, test.CanExecute, false);
+            DelegateCommand command = new DelegateCommand(test.DoWork, test.CanExecute, false);
 
             command.CanExecuteChanged += listener.OnCanExecuteChanged;
             Assert.AreEqual(0, CanExecuteCalls);
