@@ -59,7 +59,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETV4</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\JulMar.Wpf.Helpers.xml</DocumentationFile>
@@ -103,6 +103,7 @@
     <Compile Include="DeferredBinder.cs" />
     <Compile Include="Extensions\CompilerServices.cs" />
     <Compile Include="Extensions\Designer.cs" />
+    <Compile Include="Extensions\NotifyPropertyHelpers.cs" />
     <Compile Include="FrameworkElementAdorner.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Interfaces\IDelegateCommand.cs" />

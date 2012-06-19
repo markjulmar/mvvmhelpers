@@ -96,7 +96,7 @@ namespace JulMar.Windows.Mvvm
                         {
                             // If it's not a shared object and we've already created it
                             // then go ahead and create another one.
-#if NETV35
+#if NET35
                             if (pca.CreationPolicy == CreationPolicy.NonShared)
 #else
                             if (pca.CreationPolicy == CreationPolicy.NonShared
