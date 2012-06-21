@@ -27,10 +27,10 @@ namespace ServiceReplacement.ViewModels
         private void OnCalculatePi()
         {
             IMessageVisualizer messageVisualizer = Resolve<IMessageVisualizer>();
-            int? result = (int?) messageVisualizer.Show("Calculating Pi",
+            var result = messageVisualizer.Show("Calculating Pi",
                                                 "This operation takes a long time. Are you sure you want to proceed?",
                                                 new MessageVisualizerOptions(UICommand.YesNo));
-            if (result == 0)
+            if (result == UICommand.Yes)
             {
                 IDisposable waitNotify = Resolve<INotificationVisualizer>().BeginWait("Working", "Calculating Pi.. Please Wait");
 

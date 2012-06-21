@@ -21,7 +21,7 @@ namespace JulMar.Windows.Interfaces
         /// <param name="title">Title</param>
         /// <param name="message">Message</param>
         /// <param name="visualizerOptions">Optional parameters</param>
-        /// <returns>Result</returns>
-        object Show(string title, string message, MessageVisualizerOptions visualizerOptions);
+        /// <returns>Command which dismissed dialog</returns>
+        IUICommand Show(string title, string message, MessageVisualizerOptions visualizerOptions);
     }
 }

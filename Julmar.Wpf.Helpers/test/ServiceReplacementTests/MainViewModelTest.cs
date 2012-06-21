@@ -5,6 +5,7 @@ using System;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
 using System.Threading;
+using JulMar.Windows.UI;
 
 namespace ServiceReplacementTests
 {
@@ -49,12 +50,13 @@ namespace ServiceReplacementTests
 
         public class MockMessageVisualizer : IMessageVisualizer
         {
-            public object Response { get; set; }
+            public IUICommand Response { get; set; }
             public void Show(string title, string message)
             {
+                throw new NotSupportedException();
             }
 
-            public object Show(string title, string message, MessageVisualizerOptions visualizerOptions)
+            public IUICommand Show(string title, string message, MessageVisualizerOptions visualizerOptions)
             {
                 return Response;
             }
@@ -129,10 +131,10 @@ namespace ServiceReplacementTests
         [TestMethod()]
         public void CalculatePiTest()
         {
-            MainViewModel_Accessor target = new MainViewModel_Accessor();
+            MainViewModel target = new MainViewModel();
 
             MockNotificationVisualizer notifyVisualizer = new MockNotificationVisualizer();
-            MockMessageVisualizer messageVisualizer = new MockMessageVisualizer { Response = 0 };
+            MockMessageVisualizer messageVisualizer = new MockMessageVisualizer { Response = UICommand.Yes };
             
             ViewModel.ServiceProvider.Add(typeof(INotificationVisualizer), notifyVisualizer);
             ViewModel.ServiceProvider.Add(typeof(IMessageVisualizer), messageVisualizer);
@@ -160,10 +162,10 @@ namespace ServiceReplacementTests
         [TestMethod()]
         public void DoNot_CalculatePiTest()
         {
-            MainViewModel_Accessor target = new MainViewModel_Accessor();
+            MainViewModel target = new MainViewModel();
 
             MockNotificationVisualizer notifyVisualizer = new MockNotificationVisualizer();
-            MockMessageVisualizer messageVisualizer = new MockMessageVisualizer { Response = 1 };
+            MockMessageVisualizer messageVisualizer = new MockMessageVisualizer { Response = UICommand.No };
 
             ViewModel.ServiceProvider.Add(typeof(INotificationVisualizer), notifyVisualizer);
             ViewModel.ServiceProvider.Add(typeof(IMessageVisualizer), messageVisualizer);

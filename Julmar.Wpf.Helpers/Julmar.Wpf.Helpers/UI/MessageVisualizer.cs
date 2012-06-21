@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using JulMar.Core;
 using JulMar.Windows.Interfaces;
 using System.Windows.Controls;
@@ -12,8 +11,6 @@ namespace JulMar.Windows.UI
     [ExportService(typeof(IMessageVisualizer))]
     sealed class MessageVisualizer : IMessageVisualizer
     {
-        private readonly IUICommand[] _defaultCommand = UICommand.Generate("OK").ToArray();
-
         /// <summary>
         /// This displays a message to the user and prompts for a selection.
         /// </summary>
@@ -32,11 +29,11 @@ namespace JulMar.Windows.UI
         /// <param name="message">Message</param>
         /// <param name="visualizerOptions">Options for the message</param>
         /// <returns>Result</returns>
-        public object Show(string title, string message, MessageVisualizerOptions visualizerOptions)
+        public IUICommand Show(string title, string message, MessageVisualizerOptions visualizerOptions)
         {
             if (visualizerOptions == null)
             {
-                visualizerOptions = new MessageVisualizerOptions(_defaultCommand) { DefaultCommandIndex = 0 };
+                visualizerOptions = new MessageVisualizerOptions(UICommand.Ok);
             }
 
             Window popup = new Window
@@ -66,9 +63,9 @@ namespace JulMar.Windows.UI
 
             var commands = visualizerOptions.Commands;
             if (commands.Count == 0)
-                commands = _defaultCommand;
+                commands = new[] { UICommand.Ok };
 
-            object finalTagId = null;
+            IUICommand finalCommand = null;
             WrapPanel buttonPanel = new WrapPanel() {Margin = new Thickness(10), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
             for (int index = 0; index < commands.Count; index++)
             {
@@ -77,7 +74,7 @@ namespace JulMar.Windows.UI
                 Button commandButton = new Button
                 {
                     Content = command.Label,
-                    Tag = command.Id,
+                    Tag = command,
                     MinWidth = 75,
                     Margin = new Thickness(5),
                     Padding = new Thickness(10, 5, 10, 5),
@@ -88,7 +85,7 @@ namespace JulMar.Windows.UI
                 {
                     if (command.Invoked != null)
                         command.Invoked();
-                    finalTagId = ((Button) s).Tag;
+                    finalCommand = ((Button) s).Tag as IUICommand;
                     popup.DialogResult = !((Button)s).IsCancel;
                 };
                 buttonPanel.Children.Add(commandButton);
@@ -99,7 +96,7 @@ namespace JulMar.Windows.UI
             popup.Content = rootPanel;
             popup.ShowDialog();
 
-            return finalTagId;
+            return finalCommand;
         }
     }
 }

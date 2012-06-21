@@ -139,8 +139,8 @@ namespace TestMvvm.ViewModels
                 Resolve<IErrorVisualizer>().Show("Error!", "Message Visualizer was not registered properly!");
             }
             else
-                canClose = ((int)messageVisualizer.Show("Question", "Do you want to close this window?",
-                                                  new MessageVisualizerOptions(UICommand.YesNo))) == 0;
+                canClose = messageVisualizer.Show("Question", "Do you want to close this window?",
+                                                  new MessageVisualizerOptions(UICommand.YesNo)) == UICommand.Yes;
 
             return canClose;
         }

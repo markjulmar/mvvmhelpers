@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using JulMar.Windows.Interfaces;
 
 namespace JulMar.Windows.UI
@@ -10,6 +9,13 @@ namespace JulMar.Windows.UI
     /// </summary>
     public sealed class UICommand : IUICommand
     {
+        static readonly IUICommand OkCommand = new UICommand(0, "OK");
+        static readonly IUICommand CancelCommand = new UICommand(1, "Cancel");
+        static readonly IUICommand YesCommand = new UICommand(2, "Yes");
+        static readonly IUICommand NoCommand = new UICommand(3, "No");
+        static readonly IUICommand AllowCommand = new UICommand(4, "Allow");
+        static readonly IUICommand BlockCommand = new UICommand(5, "Block");
+
         /// <summary>
         /// Id representing this command
         /// </summary>
@@ -46,11 +52,43 @@ namespace JulMar.Windows.UI
         }
 
         /// <summary>
+        /// OK command
+        /// </summary>
+        public static IUICommand Ok
+        {
+            get { return OkCommand; }
+        }
+
+        /// <summary>
+        /// Cancel command
+        /// </summary>
+        public static IUICommand Cancel
+        {
+            get { return CancelCommand; }
+        }
+
+        /// <summary>
         /// Method to generate OK/Cancel buttons
         /// </summary>
         public static IEnumerable<IUICommand> OkCancel
         {
-            get { return Generate("OK", "Cancel"); }
+            get { return new[] { Ok, Cancel }; }
+        }
+
+        /// <summary>
+        /// Yes command
+        /// </summary>
+        public static IUICommand Yes
+        {
+            get { return YesCommand; }
+        }
+
+        /// <summary>
+        /// No command
+        /// </summary>
+        public static IUICommand No
+        {
+            get { return NoCommand; }
         }
 
         /// <summary>
@@ -58,7 +96,7 @@ namespace JulMar.Windows.UI
         /// </summary>
         public static IEnumerable<IUICommand> YesNo
         {
-            get { return Generate("Yes", "No"); }
+            get { return new[] { Yes, No }; }
         }
 
         /// <summary>
@@ -66,20 +104,31 @@ namespace JulMar.Windows.UI
         /// </summary>
         public static IEnumerable<IUICommand> YesNoCancel
         {
-            get { return Generate("Yes", "No", "Cancel"); }
+            get { return new[] { Yes, No, Cancel }; }
         }
 
         /// <summary>
-        /// Generates a set of UICommands from a set of textual labels
+        /// Allow command
         /// </summary>
-        /// <param name="firstLabel">First text label</param>
-        /// <param name="labels">Rest of the labels</param>
-        /// <returns></returns>
-        public static IEnumerable<IUICommand> Generate(string firstLabel, params string[] labels)
+        public static IUICommand Allow
         {
-            yield return new UICommand(0, firstLabel);
-            foreach (UICommand command in labels.Select((label, index) => new UICommand(index+1, label)))
-                yield return command;
+            get { return AllowCommand; }
+        }
+
+        /// <summary>
+        /// Block command
+        /// </summary>
+        public static IUICommand Block
+        {
+            get { return BlockCommand; }
+        }
+
+        /// <summary>
+        /// Method to generate Allow/Block buttons
+        /// </summary>
+        public static IEnumerable<IUICommand> AllowBlock
+        {
+            get { return new[] { Allow, Block }; }
         }
     }
 }

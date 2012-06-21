@@ -30,6 +30,16 @@ namespace JulMar.Windows.Interfaces
         public int CancelCommandIndex { get; set; }
 
         /// <summary>
+        /// Constructor for single-button messages
+        /// </summary>
+        public MessageVisualizerOptions(IUICommand command)
+        {
+            DefaultCommandIndex = 0;
+            CancelCommandIndex = 1;
+            Commands = new List<IUICommand> { command };
+        }
+
+        /// <summary>
         /// Constructor to create simple prompt
         /// </summary>
         public MessageVisualizerOptions(IEnumerable<IUICommand> commands = null)

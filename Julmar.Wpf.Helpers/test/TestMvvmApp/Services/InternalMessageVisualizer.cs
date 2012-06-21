@@ -1,4 +1,6 @@
-﻿using JulMar.Core;
+﻿using System;
+using System.Linq;
+using JulMar.Core;
 using JulMar.Windows.Interfaces;
 
 namespace TestMvvm.Services
@@ -11,11 +13,12 @@ namespace TestMvvm.Services
     {
         public void Show(string title, string message)
         {
+            throw new NotSupportedException();
         }
 
-        public object Show(string title, string message, MessageVisualizerOptions visualizerOptions)
+        public IUICommand Show(string title, string message, MessageVisualizerOptions visualizerOptions)
         {
-            return visualizerOptions.Commands[0].Id;
+            return visualizerOptions.Commands.FirstOrDefault();
         }
     }
 }
