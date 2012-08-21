@@ -109,7 +109,15 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Interactivity\AttachedObject.cs" />
+    <Compile Include="Interactivity\Behavior.cs" />
+    <Compile Include="Interactivity\BehaviorCollection.cs" />
+    <Compile Include="Interactivity\EventTrigger.cs" />
+    <Compile Include="Interactivity\TargetedTriggerAction.cs" />
+    <Compile Include="Interactivity\TriggerCollection.cs" />
+    <Compile Include="Interactivity\Interaction.cs" />
     <Compile Include="Behaviors\EventCommander.cs" />
+    <Compile Include="Behaviors\StyleSetter.cs" />
     <Compile Include="Converters\ArrayToStringConverter.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
@@ -128,6 +136,10 @@
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\NotifyPropertyHelpers.cs" />
+    <Compile Include="Interactivity\PreviewInvokeEventArgs.cs" />
+    <Compile Include="Interactivity\TriggerAction.cs" />
+    <Compile Include="Interactivity\TriggerActionCollection.cs" />
+    <Compile Include="Interactivity\TriggerBase.cs" />
     <Compile Include="Interfaces\IDelegateCommand.cs" />
     <Compile Include="Interfaces\IMessageMediator.cs" />
     <Compile Include="Interfaces\IMessageVisualizer.cs" />

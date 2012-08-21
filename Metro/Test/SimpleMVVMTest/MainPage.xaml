@@ -6,7 +6,8 @@
     xmlns:local="using:SimpleMVVMTest"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Converters="using:JulMar.Windows.Converters" xmlns:Behaviors="using:JulMar.Windows.Behaviors"
+    xmlns:Converters="using:JulMar.Windows.Converters" xmlns:Interactivity="using:JulMar.Windows.Interactivity"
+    xmlns:Behaviors="using:JulMar.Windows.Behaviors" xmlns:Interactivity1="using:Julmar.Windows.Interactivity"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -14,15 +15,26 @@
     </Page.Resources>
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.Resources>
+            <SolidColorBrush Color="Yellow" x:Key="rcBrush" />
+            <Converters:DebugConverter x:Key="theDebugConverter" Header="PropertyChangedTrigger" />
+        </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        
-        <Button Content="Show Text" HorizontalAlignment="Center" VerticalAlignment="Top" 
-                Grid.Row="1" Margin="20" Padding="10,5"
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Orientation="Horizontal">
+            <Button Content="Show Text" 
+                Margin="20" Padding="10,5"
                 Command="{Binding ShowText}" />
+
+            <Button Content="Adjust Rectangle" Margin="20" Padding="10,5" Click="OnAdjustRect" />
+        </StackPanel>
+        
+
         
         <CheckBox Content="Show Advanced Message" HorizontalAlignment="Right" VerticalAlignment="Center"
                   Grid.Row="1"
@@ -33,6 +45,36 @@
                 <Behaviors:CommandEvent Command="{Binding MouseEnter}" Event="PointerEntered" />
                 <Behaviors:CommandEvent Command="{Binding MouseLeave}" Event="PointerExited" />
             </Behaviors:EventCommander.Mappings>
+        </Rectangle>
+
+        <Rectangle Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{StaticResource rcBrush}">
+            <Interactivity:Interaction.Triggers>
+                <Interactivity:EventTrigger EventName="PointerPressed">
+                    <Interactivity1:ChangePropertyAction TargetObject="{StaticResource rcBrush}" PropertyName="Color" Duration="0:0:3">
+                        <Interactivity1:ChangePropertyAction.Value>
+                            <Color>Blue</Color>
+                        </Interactivity1:ChangePropertyAction.Value>
+                    </Interactivity1:ChangePropertyAction>
+                </Interactivity:EventTrigger>
+            </Interactivity:Interaction.Triggers>
+        </Rectangle>
+
+        <Rectangle Fill="Red" Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <Interactivity:Interaction.Behaviors>
+                <Interactivity:DragPositionBehavior />
+            </Interactivity:Interaction.Behaviors>
+        </Rectangle>
+
+        <Rectangle x:Name="GreenRect" Fill="Green" Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Interactivity:Interaction.Triggers>
+                <Interactivity:DataTrigger Binding="{Binding ShowAdvanced}" Comparison="Equal" Value="True">
+                    <Interactivity1:ChangePropertyAction PropertyName="Fill">
+                        <Interactivity1:ChangePropertyAction.Value>
+                            <SolidColorBrush Color="Orange" />
+                        </Interactivity1:ChangePropertyAction.Value>
+                    </Interactivity1:ChangePropertyAction>
+                </Interactivity:DataTrigger>
+            </Interactivity:Interaction.Triggers>
         </Rectangle>
 
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="48"

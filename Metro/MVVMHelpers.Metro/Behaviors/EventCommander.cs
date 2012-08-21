@@ -6,13 +6,84 @@ using System.Linq;
 using System.Windows.Input;
 using System.Reflection;
 using System.Diagnostics;
-using JulMar.Windows.Converters;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace JulMar.Windows.Behaviors
 {
+    /// <summary>
+    /// This class manages a collection of command to event mappings.  It is used to wire up View events to a
+    /// ViewModel ICommand implementation. 
+    /// </summary>
+    /// <example>
+    /// <![CDATA[
+    /// 
+    /// <Behaviors:EventCommander.Mappings>
+    ///    <Behaviors:CommandEvent Command="{Binding PointerEnterCommand}" Event="PointerEnter" />
+    ///    <Behaviors:CommandEvent Command="{Binding PointerLeaveCommand}" Event="PointerLeave" />
+    /// </Behaviors:EventCommander.Mappings>
+    /// 
+    /// ]]>
+    /// </example>
+    public static class EventCommander
+    {
+        public static readonly DependencyProperty MappingsProperty = DependencyProperty.RegisterAttached("Mappings",
+                            typeof(CommandEventCollection), typeof(EventCommander), 
+                            new PropertyMetadata(null, OnMappingsChanged));
+
+        /// <summary>
+        /// Retrieves the mapping collection
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static CommandEventCollection GetMappings(DependencyObject obj)
+        {
+            var map = obj.GetValue(MappingsProperty) as CommandEventCollection;
+            if (map == null)
+            {
+                map = new CommandEventCollection();
+                SetMappings(obj, map);
+            }
+            return map;
+        }
+
+        /// <summary>
+        /// This sets the mapping collection.
+        /// </summary>
+        /// <param name="obj">Dependency Object</param>
+        /// <param name="value">Mapping collection</param>
+        public static void SetMappings(DependencyObject obj, CommandEventCollection value)
+        {
+            obj.SetValue(MappingsProperty, value);
+        }
+
+        /// <summary>
+        /// This changes the event mapping
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="e"></param>
+        private static void OnMappingsChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
+        {
+            var sender = target as FrameworkElement;
+            if (sender != null)
+            {
+                if (e.OldValue != null)
+                {
+                    CommandEventCollection cec = e.OldValue as CommandEventCollection;
+                    if (cec != null)
+                        cec.Unsubscribe(target);
+                }
+                if (e.NewValue != null)
+                {
+                    CommandEventCollection cec = e.NewValue as CommandEventCollection;
+                    if (cec != null)
+                        cec.Subscribe(target);
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// This is passed to the ICommand handler for the event
     /// </summary>
@@ -22,7 +93,7 @@ namespace JulMar.Windows.Behaviors
         /// The sender of the handled event
         /// </summary>
         public object Sender { get; set; }
-        
+
         /// <summary>
         /// The passed EventArgs for the event.
         /// </summary>
@@ -62,19 +133,19 @@ namespace JulMar.Windows.Behaviors
         /// <summary>
         /// Command Property Dependency Property
         /// </summary>
-        public static readonly DependencyProperty CommandProperty = 
+        public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register("Command", typeof(ICommand), typeof(CommandEvent), new PropertyMetadata(null));
 
         /// <summary>
         /// Parameter for the ICommand
         /// </summary>
-        public static readonly DependencyProperty CommandParameterProperty = 
+        public static readonly DependencyProperty CommandParameterProperty =
             DependencyProperty.Register("CommandParameter", typeof(object), typeof(CommandEvent), new PropertyMetadata(null));
 
         /// <summary>
         /// Event Dependency Property
         /// </summary>
-        public static readonly DependencyProperty EventProperty = 
+        public static readonly DependencyProperty EventProperty =
             DependencyProperty.Register("Event", typeof(string), typeof(CommandEvent), new PropertyMetadata(string.Empty));
 
         /// <summary>
@@ -114,8 +185,8 @@ namespace JulMar.Windows.Behaviors
 
             if (target != null)
             {
-                SetBinding(DataContextProperty, new Binding { Source = target, Path = new PropertyPath("DataContext"), Mode = BindingMode.OneWay, Converter = new DebugConverter() });
-                
+                SetBinding(DataContextProperty, new Binding { Source = target, Path = new PropertyPath("DataContext"), Mode = BindingMode.OneWay });
+
                 EventInfo ei = LookForEventDeclaration(target, eventName);
                 if (ei != null)
                 {
@@ -124,8 +195,8 @@ namespace JulMar.Windows.Behaviors
                     // WinRT events cannot be subscribed to through normal events because it uses
                     // event tokens to map events to handlers. The compiler emits calls through WRM to do the work.
                     WindowsRuntimeMarshal.AddEventHandler(
-                        d => (EventRegistrationToken) ei.AddMethod.Invoke(target, new object[] { d }),
-                        et => ei.RemoveMethod.Invoke(target, new object[] { et }), handler);          
+                        d => (EventRegistrationToken)ei.AddMethod.Invoke(target, new object[] { d }),
+                        et => ei.RemoveMethod.Invoke(target, new object[] { et }), handler);
                     //ei.AddEventHandler(target, handler);
                     return;
                 }
@@ -333,80 +404,6 @@ namespace JulMar.Windows.Behaviors
             {
                 _currentList.Remove(item);
                 item.Unsubscribe(_target);
-            }
-        }
-    }
-
-    /// <summary>
-    /// This class manages a collection of command to event mappings.  It is used to wire up View events to a
-    /// ViewModel ICommand implementation.  Note that if it is lifetime events (Loaded, Activated, Closing, Closed, etc.)
-    /// then you should use the LifetimeEvents behavior instead.  This is for other input events to be tied to the 
-    /// ViewModel without codebehind.
-    /// </summary>
-    /// <example>
-    /// <![CDATA[
-    /// 
-    /// <Behaviors:EventCommander.Mappings>
-    ///    <Behaviors:CommandEvent Command="{Binding MouseEnterCommand}" Event="MouseEnter" />
-    ///    <Behaviors:CommandEvent Command="{Binding MouseLeaveCommand}" Event="MouseLeave" />
-    /// </Behaviors:EventCommander.Mappings>
-    /// 
-    /// ]]>
-    /// </example>
-    public static class EventCommander
-    {
-        public static readonly DependencyProperty MappingsProperty = DependencyProperty.RegisterAttached("Mappings",
-                            typeof(CommandEventCollection), typeof(EventCommander), 
-                            new PropertyMetadata(null, OnMappingsChanged));
-
-        /// <summary>
-        /// Retrieves the mapping collection
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static CommandEventCollection GetMappings(DependencyObject obj)
-        {
-            var map = obj.GetValue(MappingsProperty) as CommandEventCollection;
-            if (map == null)
-            {
-                map = new CommandEventCollection();
-                SetMappings(obj, map);
-            }
-            return map;
-        }
-
-        /// <summary>
-        /// This sets the mapping collection.
-        /// </summary>
-        /// <param name="obj">Dependency Object</param>
-        /// <param name="value">Mapping collection</param>
-        public static void SetMappings(DependencyObject obj, CommandEventCollection value)
-        {
-            obj.SetValue(MappingsProperty, value);
-        }
-
-        /// <summary>
-        /// This changes the event mapping
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="e"></param>
-        private static void OnMappingsChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
-        {
-            var sender = target as FrameworkElement;
-            if (sender != null)
-            {
-                if (e.OldValue != null)
-                {
-                    CommandEventCollection cec = e.OldValue as CommandEventCollection;
-                    if (cec != null)
-                        cec.Unsubscribe(target);
-                }
-                if (e.NewValue != null)
-                {
-                    CommandEventCollection cec = e.NewValue as CommandEventCollection;
-                    if (cec != null)
-                        cec.Subscribe(target);
-                }
             }
         }
     }

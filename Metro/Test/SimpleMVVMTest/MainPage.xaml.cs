@@ -36,5 +36,10 @@ namespace SimpleMVVMTest
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
         }
+
+        private void OnAdjustRect(object sender, RoutedEventArgs e)
+        {
+            GreenRect.VerticalAlignment = VerticalAlignment.Top;
+        }
     }
 }

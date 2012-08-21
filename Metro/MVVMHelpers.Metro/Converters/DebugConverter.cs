@@ -10,6 +10,11 @@ namespace JulMar.Windows.Converters
     public sealed class DebugConverter : IValueConverter
     {
         /// <summary>
+        /// Header to add to string
+        /// </summary>
+        public string Header { get; set; }
+
+        /// <summary>
         /// Outputs all parameters to the debug console.
         /// </summary>
         /// <returns>
@@ -17,8 +22,8 @@ namespace JulMar.Windows.Converters
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            Debug.WriteLine(string.Format("Convert: Value={0}, TargetType={1}, Parameter={2}, Language={3}", 
-                                          value, targetType, parameter, language));
+            Debug.WriteLine(string.Format("{0}{1}Convert: Value={2}, TargetType={3}, Parameter={4}, Language={5}", 
+                    Header, string.IsNullOrEmpty(Header) ? "" : " ", value, targetType, parameter, language));
             return value;
         }
 
@@ -30,8 +35,8 @@ namespace JulMar.Windows.Converters
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            Debug.WriteLine(string.Format("ConvertBack: Value={0}, TargetType={1}, Parameter={2}, Language={3}",
-                                          value, targetType, parameter, language));
+            Debug.WriteLine(string.Format("{0}{1}ConvertBack: Value={2}, TargetType={3}, Parameter={4}, Language={5}",
+                    Header, string.IsNullOrEmpty(Header) ? "" : " ", value, targetType, parameter, language));
             return value;
         }
     }
