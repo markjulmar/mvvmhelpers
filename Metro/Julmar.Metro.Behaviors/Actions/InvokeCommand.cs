@@ -1,8 +1,8 @@
 ﻿using System.Windows.Input;
-using JulMar.Windows.Interactivity;
+using System.Windows.Interactivity;
 using Windows.UI.Xaml;
 
-namespace JulMar.Windows.Actions
+namespace JulMar.Windows.Interactivity
 {
     /// <summary>
     /// This trigger action binds a command/command parameter for MVVM usage with 

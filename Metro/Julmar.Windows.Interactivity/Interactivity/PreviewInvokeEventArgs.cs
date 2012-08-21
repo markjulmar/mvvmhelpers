@@ -1,6 +1,4 @@
-using System;
-
-namespace JulMar.Windows.Interactivity
+namespace System.Windows.Interactivity
 {
     public class PreviewInvokeEventArgs : EventArgs
     {

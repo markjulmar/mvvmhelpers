@@ -13,9 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacDoe", "Test\TicTacToe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Metro.Behaviors", "Julmar.Metro.Behaviors\Julmar.Metro.Behaviors.csproj", "{A11FD7E6-5B51-488A-957D-756F3ADFC93F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Windows.Interactivity", "Julmar.Windows.Interactivity\Julmar.Windows.Interactivity.csproj", "{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
+		SccNumberOfProjects = 7
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
 		SccLocalPath0 = .
@@ -37,6 +39,9 @@ Global
 		SccProjectUniqueName5 = Julmar.Metro.Behaviors\\Julmar.Metro.Behaviors.csproj
 		SccProjectName5 = Julmar.Metro.Behaviors
 		SccLocalPath5 = Julmar.Metro.Behaviors
+		SccProjectUniqueName6 = Julmar.Windows.Interactivity\\Julmar.Windows.Interactivity.csproj
+		SccProjectName6 = Julmar.Windows.Interactivity
+		SccLocalPath6 = Julmar.Windows.Interactivity
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +158,22 @@ Global
 		{A11FD7E6-5B51-488A-957D-756F3ADFC93F}.Release|x64.Build.0 = Release|x64
 		{A11FD7E6-5B51-488A-957D-756F3ADFC93F}.Release|x86.ActiveCfg = Release|x86
 		{A11FD7E6-5B51-488A-957D-756F3ADFC93F}.Release|x86.Build.0 = Release|x86
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Debug|ARM.ActiveCfg = Debug|ARM
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Debug|ARM.Build.0 = Debug|ARM
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Debug|x64.ActiveCfg = Debug|x64
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Debug|x64.Build.0 = Debug|x64
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Debug|x86.ActiveCfg = Debug|x86
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Debug|x86.Build.0 = Debug|x86
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Release|ARM.ActiveCfg = Release|ARM
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Release|ARM.Build.0 = Release|ARM
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Release|x64.ActiveCfg = Release|x64
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Release|x64.Build.0 = Release|x64
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Release|x86.ActiveCfg = Release|x86
+		{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

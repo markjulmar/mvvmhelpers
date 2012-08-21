@@ -1,21 +1,104 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
-using JulMar.Windows.Interactivity;
+using System.Windows.Interactivity;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
 
-namespace Julmar.Windows.Interactivity
+namespace JulMar.Windows.Interactivity
 {
+    /// <summary>
+    /// Method used to change a property value when a trigger is fired.
+    /// </summary>
     public class ChangePropertyAction : TargetedTriggerAction<object>
     {
+        /// <summary>
+        /// Backing storage for Duration property
+        /// </summary>
         public static readonly DependencyProperty DurationProperty = DependencyProperty.Register("Duration", typeof(Duration), typeof(ChangePropertyAction), null);
+
+        /// <summary>
+        /// Duration of the animation used
+        /// </summary>
+        public Duration Duration
+        {
+            get
+            {
+                return (Duration)base.GetValue(DurationProperty);
+            }
+            set
+            {
+                base.SetValue(DurationProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Backing storage for the PropertyName
+        /// </summary>
         public static readonly DependencyProperty PropertyNameProperty = DependencyProperty.Register("PropertyName", typeof(string), typeof(ChangePropertyAction), null);
+
+        /// <summary>
+        /// Property to change
+        /// </summary>
+        public string PropertyName
+        {
+            get
+            {
+                return (string)base.GetValue(PropertyNameProperty);
+            }
+            set
+            {
+                base.SetValue(PropertyNameProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Backing storage for the new value
+        /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(object), typeof(ChangePropertyAction), null);
+
+        /// <summary>
+        /// New value to set on property
+        /// </summary>
+        public object Value
+        {
+            get
+            {
+                return base.GetValue(ValueProperty);
+            }
+            set
+            {
+                base.SetValue(ValueProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Backing storage for the easing animation function
+        /// </summary>
         public static readonly DependencyProperty EaseProperty = DependencyProperty.Register("Ease", typeof(EasingFunctionBase), typeof(ChangePropertyAction), null);
 
+        /// <summary>
+        /// Optional easing function for the animation (used if duration is set)
+        /// </summary>
+        public EasingFunctionBase Ease
+        {
+            get
+            {
+                return (EasingFunctionBase)base.GetValue(EaseProperty);
+            }
+            set
+            {
+                base.SetValue(EaseProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// This method is used to change the property value using an animation.
+        /// </summary>
+        /// <param name="propertyInfo"></param>
+        /// <param name="fromValue"></param>
+        /// <param name="newValue"></param>
         private void AnimatePropertyChange(PropertyInfo propertyInfo, object fromValue, object newValue)
         {
             Timeline timeline;
@@ -46,6 +129,12 @@ namespace Julmar.Windows.Interactivity
             storyboard.Begin();
         }
 
+        /// <summary>
+        /// Creates a color animation
+        /// </summary>
+        /// <param name="fromValue"></param>
+        /// <param name="newValue"></param>
+        /// <returns></returns>
         private Timeline CreateColorAnimation(Color fromValue, Color newValue)
         {
             return new ColorAnimation
@@ -56,6 +145,12 @@ namespace Julmar.Windows.Interactivity
                 };
         }
 
+        /// <summary>
+        /// Creates a double animation
+        /// </summary>
+        /// <param name="fromValue"></param>
+        /// <param name="newValue"></param>
+        /// <returns></returns>
         private Timeline CreateDoubleAnimation(double fromValue, double newValue)
         {
             return new DoubleAnimation
@@ -66,6 +161,12 @@ namespace Julmar.Windows.Interactivity
                 };
         }
 
+        /// <summary>
+        /// Creates a generic keyframe animation
+        /// </summary>
+        /// <param name="newValue"></param>
+        /// <param name="fromValue"></param>
+        /// <returns></returns>
         private Timeline CreateKeyFrameAnimation(object newValue, object fromValue)
         {
             var frames = new ObjectAnimationUsingKeyFrames();
@@ -84,6 +185,12 @@ namespace Julmar.Windows.Interactivity
             return frames;
         }
 
+        /// <summary>
+        /// Creates a Point animation
+        /// </summary>
+        /// <param name="fromValue"></param>
+        /// <param name="newValue"></param>
+        /// <returns></returns>
         private Timeline CreatePointAnimation(Point fromValue, Point newValue)
         {
             return new PointAnimation
@@ -94,6 +201,12 @@ namespace Julmar.Windows.Interactivity
                        };
         }
 
+        /// <summary>
+        /// Returns the current property value for a given object/Property.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="propertyInfo"></param>
+        /// <returns></returns>
         private static object GetCurrentPropertyValue(object target, PropertyInfo propertyInfo)
         {
             FrameworkElement element = target as FrameworkElement;
@@ -107,6 +220,10 @@ namespace Julmar.Windows.Interactivity
                        : (propertyInfo.Name == "Width" ? element.ActualWidth : element.ActualHeight);
         }
 
+        /// <summary>
+        /// Invoke method - must be overridden
+        /// </summary>
+        /// <param name="parameter"></param>
         protected override void Invoke(object parameter)
         {
             if (Target != null && !string.IsNullOrEmpty(this.PropertyName))
@@ -163,61 +280,16 @@ namespace Julmar.Windows.Interactivity
             return null;
         }
 
-
+        /// <summary>
+        /// Validates the selected property
+        /// </summary>
+        /// <param name="propertyInfo"></param>
         private void ValidateProperty(PropertyInfo propertyInfo)
         {
             if (propertyInfo == null)
                 throw new ArgumentException("Cannot locate property name.");
             if (!propertyInfo.CanWrite)
                 throw new ArgumentException("Cannot change read-only property.");
-        }
-
-        public Duration Duration
-        {
-            get
-            {
-                return (Duration)base.GetValue(DurationProperty);
-            }
-            set
-            {
-                base.SetValue(DurationProperty, value);
-            }
-        }
-
-        public string PropertyName
-        {
-            get
-            {
-                return (string)base.GetValue(PropertyNameProperty);
-            }
-            set
-            {
-                base.SetValue(PropertyNameProperty, value);
-            }
-        }
-
-        public object Value
-        {
-            get
-            {
-                return base.GetValue(ValueProperty);
-            }
-            set
-            {
-                base.SetValue(ValueProperty, value);
-            }
-        }
-
-        public EasingFunctionBase Ease
-        {
-            get
-            {
-                return (EasingFunctionBase)base.GetValue(EaseProperty);
-            }
-            set
-            {
-                base.SetValue(EaseProperty, value);
-            }
         }
     }
 

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace JulMar.Windows.Interactivity
+namespace System.Windows.Interactivity
 {
     /// <summary>
     /// This class represents an object that may be attached to a FrameworkElement

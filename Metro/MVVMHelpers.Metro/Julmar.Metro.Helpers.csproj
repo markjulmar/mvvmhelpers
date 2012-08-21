@@ -9,7 +9,7 @@
     <ProjectGuid>{B640DE74-ACEB-4A7D-9FC5-14F58E63921F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>JulMar.Windows</RootNamespace>
+    <RootNamespace>System.Windows</RootNamespace>
     <AssemblyName>JulMar.Metro.Helpers</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
@@ -109,13 +109,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Interactivity\AttachedObject.cs" />
-    <Compile Include="Interactivity\Behavior.cs" />
-    <Compile Include="Interactivity\BehaviorCollection.cs" />
-    <Compile Include="Interactivity\EventTrigger.cs" />
-    <Compile Include="Interactivity\TargetedTriggerAction.cs" />
-    <Compile Include="Interactivity\TriggerCollection.cs" />
-    <Compile Include="Interactivity\Interaction.cs" />
     <Compile Include="Behaviors\EventCommander.cs" />
     <Compile Include="Behaviors\StyleSetter.cs" />
     <Compile Include="Converters\ArrayToStringConverter.cs" />
@@ -136,10 +129,6 @@
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\NotifyPropertyHelpers.cs" />
-    <Compile Include="Interactivity\PreviewInvokeEventArgs.cs" />
-    <Compile Include="Interactivity\TriggerAction.cs" />
-    <Compile Include="Interactivity\TriggerActionCollection.cs" />
-    <Compile Include="Interactivity\TriggerBase.cs" />
     <Compile Include="Interfaces\IDelegateCommand.cs" />
     <Compile Include="Interfaces\IMessageMediator.cs" />
     <Compile Include="Interfaces\IMessageVisualizer.cs" />

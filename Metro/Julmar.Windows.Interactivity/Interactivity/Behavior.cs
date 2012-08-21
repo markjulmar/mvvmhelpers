@@ -1,7 +1,6 @@
-﻿using System;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 
-namespace JulMar.Windows.Interactivity
+namespace System.Windows.Interactivity
 {
     /// <summary>
     /// An attachable behavior

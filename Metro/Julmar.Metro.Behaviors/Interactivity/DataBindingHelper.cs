@@ -6,6 +6,9 @@ using Windows.UI.Xaml.Data;
 
 namespace JulMar.Windows.Interactivity
 {
+    /// <summary>
+    /// Binding helper
+    /// </summary>
     internal static class DataBindingHelper
     {
         private static readonly Dictionary<Type, IList<DependencyProperty>> DependenciesPropertyCache = new Dictionary<Type, IList<DependencyProperty>>();
@@ -20,9 +23,9 @@ namespace JulMar.Windows.Interactivity
             }
         }
 
-        public static void EnsureDataBindingOnActionsUpToDate(TriggerBase trigger)
+        public static void EnsureDataBindingOnActionsUpToDate(System.Windows.Interactivity.TriggerBase trigger)
         {
-            foreach (TriggerAction action in trigger.Actions)
+            foreach (var action in trigger.Actions)
             {
                 EnsureDataBindingUpToDateOnMembers(action);
             }

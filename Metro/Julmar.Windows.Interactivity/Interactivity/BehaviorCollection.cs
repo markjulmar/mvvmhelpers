@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using Windows.UI.Xaml;
 
-namespace JulMar.Windows.Interactivity
+namespace System.Windows.Interactivity
 {
     /// <summary>
     /// Collection of behaviors to apply to an object
@@ -27,9 +27,9 @@ namespace JulMar.Windows.Interactivity
                     {
                         if (e.NewItems != null)
                         {
-                            foreach (var i in e.NewItems.Cast<Behavior>())
+                            foreach (var item in e.NewItems.Cast<Behavior>())
                             {
-                                i.AssociatedObjectInternal = _owner;
+                                item.AssociatedObjectInternal = _owner;
                             }
                         }
                         break;
@@ -39,9 +39,9 @@ namespace JulMar.Windows.Interactivity
                     {
                         if (e.OldItems != null)
                         {
-                            foreach (var i in e.OldItems.Cast<Behavior>())
+                            foreach (var item in e.OldItems.Cast<Behavior>())
                             {
-                                i.AssociatedObjectInternal = null;
+                                item.AssociatedObjectInternal = null;
                             }
                         }
                         break;
@@ -58,9 +58,9 @@ namespace JulMar.Windows.Interactivity
         public void Attach(FrameworkElement owner)
         {
             _owner = owner;
-            foreach (var i in this)
+            foreach (var item in this)
             {
-                i.AssociatedObjectInternal = _owner;
+                item.AssociatedObjectInternal = _owner;
             }
         }
 
@@ -70,9 +70,9 @@ namespace JulMar.Windows.Interactivity
         public void Detach()
         {
             _owner = null;
-            foreach (var i in this)
+            foreach (var item in this)
             {
-                i.AssociatedObjectInternal = null;
+                item.AssociatedObjectInternal = null;
             }
         }
 

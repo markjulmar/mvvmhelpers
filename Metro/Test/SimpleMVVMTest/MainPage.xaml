@@ -3,11 +3,10 @@
     IsTabStop="false"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SimpleMVVMTest"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Converters="using:JulMar.Windows.Converters" xmlns:Interactivity="using:JulMar.Windows.Interactivity"
-    xmlns:Behaviors="using:JulMar.Windows.Behaviors" xmlns:Interactivity1="using:Julmar.Windows.Interactivity"
+    xmlns:Converters="using:JulMar.Windows.Converters" xmlns:Interactivity="using:System.Windows.Interactivity"
+    xmlns:Interactivity1="using:JulMar.Windows.Interactivity"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -17,7 +16,6 @@
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.Resources>
             <SolidColorBrush Color="Yellow" x:Key="rcBrush" />
-            <Converters:DebugConverter x:Key="theDebugConverter" Header="PropertyChangedTrigger" />
         </Grid.Resources>
         
         <Grid.RowDefinitions>
@@ -34,46 +32,48 @@
             <Button Content="Adjust Rectangle" Margin="20" Padding="10,5" Click="OnAdjustRect" />
         </StackPanel>
         
-
-        
         <CheckBox Content="Show Advanced Message" HorizontalAlignment="Right" VerticalAlignment="Center"
                   Grid.Row="1"
                   Margin="20" IsChecked="{Binding ShowAdvanced, Mode=TwoWay}" />
 
         <Rectangle Fill="{Binding Color}" Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200">
-            <Behaviors:EventCommander.Mappings>
-                <Behaviors:CommandEvent Command="{Binding MouseEnter}" Event="PointerEntered" />
-                <Behaviors:CommandEvent Command="{Binding MouseLeave}" Event="PointerExited" />
-            </Behaviors:EventCommander.Mappings>
+            <Interactivity:Interaction.Triggers>
+                <Interactivity:EventTrigger EventName="PointerEntered">
+                    <Interactivity1:InvokeCommand Command="{Binding MouseEnter}" />
+                </Interactivity:EventTrigger>
+                <Interactivity:EventTrigger EventName="PointerExited">
+                    <Interactivity1:InvokeCommand Command="{Binding MouseLeave}" />
+                </Interactivity:EventTrigger>
+            </Interactivity:Interaction.Triggers>
         </Rectangle>
 
         <Rectangle Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{StaticResource rcBrush}">
             <Interactivity:Interaction.Triggers>
-                <Interactivity:EventTrigger EventName="PointerPressed">
+                <Interactivity1:DoubleClickTrigger>
                     <Interactivity1:ChangePropertyAction TargetObject="{StaticResource rcBrush}" PropertyName="Color" Duration="0:0:3">
                         <Interactivity1:ChangePropertyAction.Value>
                             <Color>Blue</Color>
                         </Interactivity1:ChangePropertyAction.Value>
                     </Interactivity1:ChangePropertyAction>
-                </Interactivity:EventTrigger>
+                </Interactivity1:DoubleClickTrigger>
             </Interactivity:Interaction.Triggers>
         </Rectangle>
 
         <Rectangle Fill="Red" Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200" HorizontalAlignment="Left" VerticalAlignment="Bottom">
             <Interactivity:Interaction.Behaviors>
-                <Interactivity:DragPositionBehavior />
+                <Interactivity1:DragPositionBehavior />
             </Interactivity:Interaction.Behaviors>
         </Rectangle>
 
         <Rectangle x:Name="GreenRect" Fill="Green" Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Interactivity:Interaction.Triggers>
-                <Interactivity:DataTrigger Binding="{Binding ShowAdvanced}" Comparison="Equal" Value="True">
+                <Interactivity1:DataTrigger Binding="{Binding ShowAdvanced}" Comparison="Equal" Value="True">
                     <Interactivity1:ChangePropertyAction PropertyName="Fill">
                         <Interactivity1:ChangePropertyAction.Value>
                             <SolidColorBrush Color="Orange" />
                         </Interactivity1:ChangePropertyAction.Value>
                     </Interactivity1:ChangePropertyAction>
-                </Interactivity:DataTrigger>
+                </Interactivity1:DataTrigger>
             </Interactivity:Interaction.Triggers>
         </Rectangle>
 

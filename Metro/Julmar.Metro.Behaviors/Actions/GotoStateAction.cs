@@ -1,13 +1,22 @@
-﻿using JulMar.Windows.Interactivity;
+﻿using System.Windows.Interactivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Julmar.Metro.Behaviors.Interactivity
+namespace JulMar.Windows.Interactivity
 {
+    /// <summary>
+    /// This method provides a VSM change based on a trigger action
+    /// </summary>
     public class GoToStateAction : TargetedTriggerAction<Control>
     {
+        /// <summary>
+        /// Backing storage for the state name to transition to
+        /// </summary>
         public static readonly DependencyProperty StateNameProperty = DependencyProperty.Register("StateName", typeof(string), typeof(GoToStateAction), new PropertyMetadata(string.Empty));
 
+        /// <summary>
+        /// New state name to transition to
+        /// </summary>
         public string StateName
         {
             get
@@ -20,8 +29,14 @@ namespace Julmar.Metro.Behaviors.Interactivity
             }
         }
 
+        /// <summary>
+        /// Backing storage for the UseTransition property
+        /// </summary>
         public static readonly DependencyProperty UseTransitionsProperty = DependencyProperty.Register("UseTransitions", typeof(bool), typeof(GoToStateAction), new PropertyMetadata(true));
 
+        /// <summary>
+        /// True to use transitions when changing states
+        /// </summary>
         public bool UseTransitions
         {
             get
@@ -34,6 +49,10 @@ namespace Julmar.Metro.Behaviors.Interactivity
             }
         }
 
+        /// <summary>
+        /// This method invokes our VSM state
+        /// </summary>
+        /// <param name="parameter"></param>
         protected override void Invoke(object parameter)
         {
             if (base.Target != null)

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Interactivity;
+using Windows.Devices.Input;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -181,11 +183,18 @@ namespace JulMar.Windows.Interactivity
         /// Handles the MouseDown event
         /// </summary>
         /// <param name="sender">UIElement</param>
-        /// <param name="e">Mouse eventargs</param>
+        /// <param name="e">Event arguments</param>
         private static void OnPointerPressed(object sender, PointerRoutedEventArgs e)
         {
             // Begin the drag operation
-            FrameworkElement uie = (FrameworkElement)sender;
+            FrameworkElement uie = (FrameworkElement) sender;
+            if (e.Pointer.PointerDeviceType == PointerDeviceType.Mouse)
+            {
+                // If it's not the left button, then exit.
+                if (!e.GetCurrentPoint(uie).Properties.IsLeftButtonPressed)
+                    return;
+            }
+
             var currentDragInfo = new ElementMouseDrag();
             currentDragInfo.OnPointerDown(uie, e);
         }

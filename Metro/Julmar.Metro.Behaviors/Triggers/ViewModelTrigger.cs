@@ -2,68 +2,100 @@
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Interactivity;
 using Windows.UI.Xaml;
-using Windows.ApplicationModel;
 
 namespace JulMar.Windows.Interactivity
 {
-    public class EventTrigger : TriggerBase<FrameworkElement>
+    /// <summary>
+    /// This is a Blend trigger that binds to a IViewModelTrigger and invokes actions when it 
+    /// is raised by the ViewModel.  This allows the VM to trigger behaviors in the View easily.
+    /// </summary>
+    public class ViewModelTrigger : TriggerBase<FrameworkElement>
     {
-        public static readonly DependencyProperty EventNameProperty = DependencyProperty.Register("EventName", 
-            typeof(string), typeof(EventTrigger), new PropertyMetadata("Loaded", OnEventNameChanged));
+        /// <summary>
+        /// The DependencyProperty used to hold the target object (VM).
+        /// </summary>
+        public static readonly DependencyProperty TargetProperty = DependencyProperty.Register("Target", 
+            typeof(object), typeof(ViewModelTrigger), new PropertyMetadata(null, OnTargetChanged));
 
-        private static void OnEventNameChanged(object sender, DependencyPropertyChangedEventArgs args)
+        /// <summary> 
+        /// Object holding event
+        /// </summary>
+        public object Target
         {
-            ((EventTrigger)sender).OnEventNameChanged((string)args.OldValue, (string)args.NewValue);
+            get { return GetValue(TargetProperty); }
+            set { SetValue(TargetProperty, value); }
         }
 
+        /// <summary>
+        /// The DependencyProperty used to hold the IViewModelTrigger.
+        /// </summary>
+        public static readonly DependencyProperty EventNameProperty = DependencyProperty.Register("EventName", 
+            typeof(string), typeof(ViewModelTrigger), new PropertyMetadata(null, OnEventNameChanged));
+
+        /// <summary> 
+        /// Name of the event to hook into.
+        /// </summary>
         public string EventName
         {
-            get
-            {
-                return (string)base.GetValue(EventNameProperty);
-            }
-            set
-            {
-                base.SetValue(EventNameProperty, value);
-            }
+            get { return (string)GetValue(EventNameProperty); }
+            set { SetValue(EventNameProperty, value); }
         }
 
-
+        /// <summary>
+        /// This is called when the trigger is attached
+        /// </summary>
         protected override void OnAttached()
         {
             base.OnAttached();
-            RegisterEvent(AssociatedObject, EventName);
+            RegisterEvent(Target, EventName);
         }
 
+        /// <summary>
+        /// Called when the trigger is detached
+        /// </summary>
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            UnregisterEvent(AssociatedObject, EventName);
+            UnregisterEvent(Target, EventName);
         }
 
-        protected virtual void OnEvent(EventArgs eventArgs)
+        /// <summary>
+        /// Change handler for the event name
+        /// </summary>
+        /// <param name="dpo">VMTrigger object</param>
+        /// <param name="e">EventArgs</param>
+        private static void OnEventNameChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
         {
-            base.InvokeActions(eventArgs);
+            ViewModelTrigger vmt = (ViewModelTrigger) dpo;
+
+            string oldEventName = e.OldValue as string;
+            if (!string.IsNullOrEmpty(oldEventName))
+                vmt.UnregisterEvent(vmt.Target, oldEventName);
+            vmt.RegisterEvent(vmt.Target, vmt.EventName);
         }
 
-        internal void OnEventNameChanged(string oldEventName, string newEventName)
+        /// <summary>
+        /// Change handler for the event name
+        /// </summary>
+        /// <param name="dpo">VMTrigger object</param>
+        /// <param name="e">EventArgs</param>
+        private static void OnTargetChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
         {
-            if (DesignMode.DesignModeEnabled)
-                return;
+            ViewModelTrigger vmt = (ViewModelTrigger)dpo;
 
-            if (base.AssociatedObject != null)
-            {
-                if (oldEventName != newEventName)
-                {
-                    if (!string.IsNullOrEmpty(oldEventName))
-                        UnregisterEvent(AssociatedObject, oldEventName);
-                    if (!string.IsNullOrEmpty(newEventName))
-                        RegisterEvent(AssociatedObjectInternal, newEventName);
-                }
-            }
+            object oldTarget = e.OldValue;
+            if (oldTarget != null)
+                vmt.UnregisterEvent(oldTarget, vmt.EventName);
+            vmt.RegisterEvent(vmt.Target, vmt.EventName);
         }
 
+        /// <summary>
+        /// Register an event handler
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="eventName"></param>
         private void RegisterEvent(object obj, string eventName)
         {
             EventInfo eventInfo = LookForEventDeclaration(obj, eventName);
@@ -78,6 +110,11 @@ namespace JulMar.Windows.Interactivity
                 et => eventInfo.RemoveMethod.Invoke(obj, new object[] { et }), handler);
         }
 
+        /// <summary>
+        /// Unregister an event handler
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="eventName"></param>
         private void UnregisterEvent(object obj, string eventName)
         {
             EventInfo eventInfo = LookForEventDeclaration(obj, eventName);
@@ -85,7 +122,7 @@ namespace JulMar.Windows.Interactivity
             {
                 var handler = GetEventMethod(eventInfo);
                 WindowsRuntimeMarshal.RemoveEventHandler(
-                    et => eventInfo.RemoveMethod.Invoke(obj, new object[] {et}), handler);
+                    et => eventInfo.RemoveMethod.Invoke(obj, new object[] { et }), handler);
             }
         }
 
@@ -111,6 +148,9 @@ namespace JulMar.Windows.Interactivity
             return null;
         }
 
+        /// <summary>
+        /// Delegate method
+        /// </summary>
         private Delegate _method;
 
         /// <summary>
@@ -152,7 +192,8 @@ namespace JulMar.Windows.Interactivity
                     DataContext = fe.DataContext;
             }
 
-            this.OnEvent(e as EventArgs);
+            // Invoke our actions
+            this.InvokeActions(e);
         }
     }
 }

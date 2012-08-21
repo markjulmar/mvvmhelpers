@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml;
 
-namespace JulMar.Windows.Interactivity
+namespace System.Windows.Interactivity
 {
     /// <summary>
     /// Manager for behaviors - attaches the collection of behaviors to an element.

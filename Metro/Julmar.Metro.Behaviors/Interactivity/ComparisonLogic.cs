@@ -1,38 +1,30 @@
 ﻿using System;
 
-namespace Julmar.Windows.Interactivity
+namespace JulMar.Windows.Interactivity
 {
-    public enum ComparisonConditionType
-    {
-        Equal,
-        NotEqual,
-        LessThan,
-        LessThanOrEqual,
-        GreaterThan,
-        GreaterThanOrEqual
-    }
-
+    /// <summary>
+    /// This performs specific comparison logic
+    /// </summary>
     internal static class ComparisonLogic
     {
         // Methods
         private static bool EvaluateComparable(IComparable leftOperand, ComparisonConditionType operatorType, IComparable rightOperand)
         {
-            object obj2 = null;
+            object value = null;
             try
             {
-                obj2 = Convert.ChangeType(rightOperand, leftOperand.GetType());
+                value = Convert.ChangeType(rightOperand, leftOperand.GetType());
             }
-            catch (FormatException)
+            catch (Exception)
             {
             }
-            catch (InvalidCastException)
-            {
-            }
-            if (obj2 == null)
+
+            if (value == null)
             {
                 return (operatorType == ComparisonConditionType.NotEqual);
             }
-            int num = leftOperand.CompareTo((IComparable)obj2);
+
+            int num = leftOperand.CompareTo(value);
             switch (operatorType)
             {
                 case ComparisonConditionType.Equal:

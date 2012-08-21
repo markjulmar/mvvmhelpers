@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using Windows.UI.Xaml;
 
-namespace JulMar.Windows.Interactivity
+namespace System.Windows.Interactivity
 {
+    /// <summary>
+    /// Collection of trigger actions
+    /// </summary>
     public class TriggerActionCollection : ObservableCollection<TriggerAction>
     {
         private FrameworkElement _owner;
