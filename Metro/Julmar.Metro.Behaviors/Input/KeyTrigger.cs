@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.System;
+﻿using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
@@ -154,11 +153,21 @@ namespace JulMar.Windows.Interactivity.Input
         /// <returns></returns>
         private bool IsModifierKeyDown()
         {
-            bool good = true;
+            if (this.Modifiers == ModifierKeys.None)
+                return true;
 
+            bool good = true;
             if ((this.Modifiers & ModifierKeys.Windows) == ModifierKeys.Windows)
             {
-                if (_targetElement.GetKeyState(VirtualKey.LeftWindows) != CoreVirtualKeyStates.Down)
+                if (_targetElement.GetKeyState(VirtualKey.LeftWindows) != CoreVirtualKeyStates.Down
+                    && _targetElement.GetKeyState(VirtualKey.RightWindows) != CoreVirtualKeyStates.Down)
+                    good = false;
+            }
+
+            if ((this.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+            {
+                if (_targetElement.GetKeyState(VirtualKey.LeftShift) != CoreVirtualKeyStates.Down
+                    && _targetElement.GetKeyState(VirtualKey.RightShift) != CoreVirtualKeyStates.Down)
                     good = false;
             }
 
@@ -168,7 +177,7 @@ namespace JulMar.Windows.Interactivity.Input
                     good = false;
             }
 
-            if ((this.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
+            if ((this.Modifiers & ModifierKeys.Menu) == ModifierKeys.Menu)
             {
                 if (_targetElement.GetKeyState(VirtualKey.Menu) != CoreVirtualKeyStates.Down)
                     good = false;

@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
+using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 namespace JulMar.Windows.Interactivity.Internal
 {
@@ -52,6 +56,10 @@ namespace JulMar.Windows.Interactivity.Internal
                         return float.Parse(value);
                     else if (type == typeof(bool))
                         return bool.Parse(value);
+                    else if (type == typeof(Color))
+                        return ParseColor(value);
+                    else if (type == typeof(Brush))
+                        return ParseBrush(value);
                 }
                 else
                 {
@@ -83,6 +91,10 @@ namespace JulMar.Windows.Interactivity.Internal
                         return System.Convert.ToSingle(source);
                     else if (type == typeof(bool))
                         return System.Convert.ToBoolean(source);
+                    else if (type == typeof(Color))
+                        return ParseColor(source.ToString());
+                    else if (type == typeof(Brush))
+                        return ParseBrush(source.ToString());
                 }
 
                 // Generic conversion, last resort.
@@ -93,6 +105,45 @@ namespace JulMar.Windows.Interactivity.Internal
             }
 
             return null;
+        }
+
+        private static Color ParseColor(string source)
+        {
+            if (string.IsNullOrEmpty(source))
+                throw new ArgumentException("Color cannot be parsed from empty string");
+            if (source.StartsWith("#"))
+            {
+                byte A = 0xff, R = 0xff, G = 0xff, B = 0xff;
+
+                if (source.Length == 7)
+                {
+                    A = 0xff;
+                    R = byte.Parse(source.Substring(1, 2));
+                    G = byte.Parse(source.Substring(3, 2));
+                    B = byte.Parse(source.Substring(5, 2));
+                }
+                else if (source.Length == 9)
+                {
+                    A = byte.Parse(source.Substring(1, 2));
+                    R = byte.Parse(source.Substring(3, 2));
+                    G = byte.Parse(source.Substring(5, 2));
+                    B = byte.Parse(source.Substring(7, 2));
+                }
+
+                return Color.FromArgb(A, R, G, B);
+            }
+            else
+            {
+                PropertyInfo theColor =
+                    typeof(Colors).GetTypeInfo().DeclaredProperties.First(pi => pi.Name == source);
+                return (Color) theColor.GetValue(null, null);
+            }
+
+        }
+
+        private static Brush ParseBrush(string source)
+        {
+            return new SolidColorBrush(ParseColor(source));
         }
     }
 }

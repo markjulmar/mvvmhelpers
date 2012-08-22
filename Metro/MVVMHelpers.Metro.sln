@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Metro.Behaviors", "J
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Windows.Interactivity", "Julmar.Windows.Interactivity\Julmar.Windows.Interactivity.csproj", "{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnumationTest", "Test\AnumationTest\AnumationTest.csproj", "{780194E0-5BA5-4936-AE10-2DBC92330C2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationTest", "Test\AnumationTest\AnimationTest.csproj", "{780194E0-5BA5-4936-AE10-2DBC92330C2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VsmTest", "Test\VsmTest\VsmTest.csproj", "{6864248C-6675-4E5A-9B6E-58A6C11F8C50}"
 EndProject
@@ -46,14 +46,14 @@ Global
 		SccProjectUniqueName6 = Julmar.Windows.Interactivity\\Julmar.Windows.Interactivity.csproj
 		SccProjectName6 = Julmar.Windows.Interactivity
 		SccLocalPath6 = Julmar.Windows.Interactivity
-		SccProjectUniqueName7 = Test\\AnumationTest\\AnumationTest.csproj
+		SccProjectUniqueName7 = Test\\VsmTest\\VsmTest.csproj
 		SccProjectTopLevelParentUniqueName7 = MVVMHelpers.Metro.sln
-		SccProjectName7 = Test/AnumationTest
-		SccLocalPath7 = Test\\AnumationTest
-		SccProjectUniqueName8 = Test\\VsmTest\\VsmTest.csproj
+		SccProjectName7 = Test/VsmTest
+		SccLocalPath7 = Test\\VsmTest
+		SccProjectUniqueName8 = Test\\AnumationTest\\AnimationTest.csproj
 		SccProjectTopLevelParentUniqueName8 = MVVMHelpers.Metro.sln
-		SccProjectName8 = Test/VsmTest
-		SccLocalPath8 = Test\\VsmTest
+		SccProjectName8 = Test/AnumationTest
+		SccLocalPath8 = Test\\AnumationTest
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

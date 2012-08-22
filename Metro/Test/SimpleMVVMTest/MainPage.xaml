@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Converters="using:JulMar.Windows.Converters" xmlns:Interactivity="using:System.Windows.Interactivity"
     xmlns:Interactivity1="using:JulMar.Windows.Interactivity"
-    xmlns:Actions="using:JulMar.Windows.Interactivity.Actions" mc:Ignorable="d">
+    xmlns:Actions="using:JulMar.Windows.Interactivity.Actions" xmlns:Input="using:JulMar.Windows.Interactivity.Input"
+    mc:Ignorable="d">
 
     <Page.Resources>
         <Converters:ToStringConverter x:Key="toString" />
@@ -68,10 +69,16 @@
             </Interactivity:Interaction.Triggers>
         </Rectangle>
 
-        <Rectangle Fill="Red" Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <Rectangle x:Name="RedRect" Fill="Red" Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200" HorizontalAlignment="Left" VerticalAlignment="Bottom">
             <Interactivity:Interaction.Behaviors>
                 <Interactivity1:DragPositionBehavior />
             </Interactivity:Interaction.Behaviors>
+            <Interactivity:Interaction.Triggers>
+                <Input:KeyTrigger Key="B" Modifiers="Control">
+                    <Interactivity1:ChangePropertyAction PropertyName="Stroke" Value="Gold" TargetName="RedRect" />
+                    <Interactivity1:ChangePropertyAction PropertyName="StrokeThickness" Value="3" TargetName="RedRect" />
+                </Input:KeyTrigger>
+            </Interactivity:Interaction.Triggers>
         </Rectangle>
 
         <Rectangle x:Name="GreenRect" Fill="Green" Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200" HorizontalAlignment="Right" VerticalAlignment="Bottom">
