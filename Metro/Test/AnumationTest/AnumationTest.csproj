@@ -4,22 +4,22 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A11FD7E6-5B51-488A-957D-756F3ADFC93F}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{780194E0-5BA5-4936-AE10-2DBC92330C2D}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>JulMar.Windows.Interactivity</RootNamespace>
-    <AssemblyName>JulMar.Metro.Behaviors</AssemblyName>
+    <RootNamespace>AnumationTest</RootNamespace>
+    <AssemblyName>AnumationTest</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>AnumationTest_TemporaryKey.pfx</PackageCertificateKeyFile>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -29,6 +29,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -104,42 +105,53 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\Julmar.Windows.Interactivity\Julmar.Windows.Interactivity.csproj">
+    <ProjectReference Include="..\..\Julmar.Metro.Behaviors\Julmar.Metro.Behaviors.csproj">
+      <Project>{a11fd7e6-5b51-488a-957d-756f3adfc93f}</Project>
+      <Name>Julmar.Metro.Behaviors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Julmar.Windows.Interactivity\Julmar.Windows.Interactivity.csproj">
       <Project>{14c9ef46-36b0-4808-b5b7-0a6b17cc0dcc}</Project>
       <Name>Julmar.Windows.Interactivity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MVVMHelpers.Metro\Julmar.Metro.Helpers.csproj">
+    <ProjectReference Include="..\..\MVVMHelpers.Metro\Julmar.Metro.Helpers.csproj">
       <Project>{b640de74-aceb-4a7d-9fc5-14f58e63921f}</Project>
       <Name>Julmar.Metro.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\CallMethodAction.cs" />
-    <Compile Include="Actions\ChangePropertyAction.cs" />
-    <Compile Include="Input\KeyTrigger.cs" />
-    <Compile Include="Input\KeyTriggerFiredOn.cs" />
-    <Compile Include="Input\ModifierKeys.cs" />
-    <Compile Include="Interactivity\ComparisonConditionType.cs" />
-    <Compile Include="Internal\ComparisonLogic.cs" />
-    <Compile Include="Internal\DataBindingHelper.cs" />
-    <Compile Include="Internal\TypeConverter.cs" />
-    <Compile Include="Internal\VisualStateUtilities.cs" />
-    <Compile Include="Media\ControlStoryboardAction.cs" />
-    <Compile Include="Media\ControlStoryboardOption.cs" />
-    <Compile Include="Media\PlaySoundAction.cs" />
-    <Compile Include="Media\StoryboardAction.cs" />
-    <Compile Include="Media\StoryboardCompletedTrigger.cs" />
-    <Compile Include="Media\StoryboardTrigger.cs" />
-    <Compile Include="Triggers\DataTrigger.cs" />
-    <Compile Include="Interactivity\DragPositionBehavior.cs" />
-    <Compile Include="Actions\GotoStateAction.cs" />
-    <Compile Include="Actions\InvokeCommand.cs" />
-    <Compile Include="Triggers\PropertyChangedTrigger.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Triggers\ClickTrigger.cs" />
-    <Compile Include="Triggers\DoubleClickTrigger.cs" />
-    <Compile Include="Triggers\TimerTrigger.cs" />
-    <Compile Include="Triggers\ViewModelTrigger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="AnumationTest_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Logo.png" />
+    <Content Include="Assets\SmallLogo.png" />
+    <Content Include="Assets\SplashScreen.png" />
+    <Content Include="Assets\StoreLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Common\StandardStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

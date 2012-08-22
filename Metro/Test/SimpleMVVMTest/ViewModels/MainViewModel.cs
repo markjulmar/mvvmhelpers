@@ -55,6 +55,17 @@ namespace SimpleMvvmTest.ViewModels
             MouseLeave = new AsyncDelegateCommand(OnGoBackward, () => !_isChanging, () => _isChanging = false);
         }
 
+        public void JustShowText()
+        {
+            Text = "Hello from JustShowText";
+        }
+
+        // CallMethodAction prefers this form
+        //public void JustShowText(object sender, object e)
+        //{
+        //    Text = sender.GetType() + " : " + e.GetType();
+        //}
+
         private async void OnClickButton()
         {
             Text = "Hello from the Button.";

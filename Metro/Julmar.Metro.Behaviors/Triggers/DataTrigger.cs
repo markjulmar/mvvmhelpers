@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using JulMar.Windows.Interactivity.Internal;
+using Windows.UI.Xaml;
 
 namespace JulMar.Windows.Interactivity
 {
@@ -56,7 +57,7 @@ namespace JulMar.Windows.Interactivity
         private bool Compare()
         {
             return ((base.AssociatedObject != null) && 
-                ComparisonLogic.EvaluateImpl(base.Binding, this.Comparison, this.Value));
+                ComparisonLogic.Evaluate(base.Binding, this.Comparison, this.Value));
         }
 
         /// <summary>

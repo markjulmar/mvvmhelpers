@@ -13,8 +13,8 @@ namespace JulMar.Windows.Extensions
     public static class DependencyObjectExtensions
     {
         /// <summary>
-        /// Searches the subtree of an element (including that element) 
-        /// for an element of a particluar type.
+        /// Searches the sub-tree of an element (including that element) 
+        /// for an element of a particular type.
         /// </summary>
         public static T FindElement<T>(this DependencyObject element) where T : FrameworkElement
         {
@@ -194,6 +194,32 @@ namespace JulMar.Windows.Extensions
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(fe); i++)
                 yield return VisualTreeHelper.GetChild(fe, i);
+        }
+
+        /// <summary>
+        /// Performs a resource lookup, walking up the parent chain.
+        /// </summary>
+        /// <param name="fe"></param>
+        /// <param name="name"></param>
+        /// <param name="value"> </param>
+        /// <returns></returns>
+        public static bool TryFindResource(this FrameworkElement fe, string name, out object value)
+        {
+            if (fe == null)
+                throw new ArgumentNullException("fe");
+
+            while (fe != null)
+            {
+                if (fe.Resources.ContainsKey(name))
+                {
+                    value = fe.Resources["name"];
+                    return true;
+                }
+                fe = VisualTreeHelper.GetParent(fe) as FrameworkElement;
+            }
+
+            value = null;
+            return false;
         }
     }
 }

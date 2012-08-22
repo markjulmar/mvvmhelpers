@@ -1,4 +1,5 @@
 ﻿using System.Windows.Interactivity;
+using JulMar.Windows.Interactivity.Internal;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -57,7 +58,10 @@ namespace JulMar.Windows.Interactivity
         {
             if (base.Target != null)
             {
-                VisualStateManager.GoToState(Target, this.StateName, UseTransitions);
+                // Locate the nearest state group
+                var stateControl = VisualStateUtilities.FindNearestStatefulControl(base.Target);
+                if (stateControl != null)
+                    VisualStateUtilities.GoToState(stateControl, this.StateName, UseTransitions);
             }
         }
     }

@@ -167,7 +167,7 @@ namespace JulMar.Windows.Interactivity
                 throw new ArgumentException("EventHandlerType is null");
             if (_method == null)
             {
-                MethodInfo methodInfo = GetType().GetTypeInfo().DeclaredMethods.FirstOrDefault(
+                MethodInfo methodInfo = typeof(ViewModelTrigger).GetTypeInfo().DeclaredMethods.FirstOrDefault(
                         mi => mi.Name == "OnEventRaised" && mi.IsPrivate && !mi.IsStatic);
 
                 _method = methodInfo.CreateDelegate(ei.EventHandlerType, this);

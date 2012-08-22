@@ -68,7 +68,7 @@ namespace System.Windows.Interactivity
         /// This invokes the actions when the event is raised.
         /// </summary>
         /// <param name="eventArgs"></param>
-        protected virtual void OnEvent(EventArgs eventArgs)
+        protected virtual void OnEvent(object eventArgs)
         {
             base.InvokeActions(eventArgs);
         }
@@ -166,7 +166,7 @@ namespace System.Windows.Interactivity
                 throw new ArgumentException("EventHandlerType is null");
             if (_method == null)
             {
-                MethodInfo methodInfo = GetType().GetTypeInfo().DeclaredMethods.FirstOrDefault(
+                MethodInfo methodInfo = typeof(EventTrigger).GetTypeInfo().DeclaredMethods.FirstOrDefault(
                         mi => mi.Name == "OnEventRaised" && mi.IsPrivate && !mi.IsStatic);
 
                 _method = methodInfo.CreateDelegate(ei.EventHandlerType, this);
@@ -191,7 +191,7 @@ namespace System.Windows.Interactivity
                     DataContext = fe.DataContext;
             }
 
-            this.OnEvent(e as EventArgs);
+            this.OnEvent(e);
         }
     }
 }

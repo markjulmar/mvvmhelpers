@@ -1,4 +1,5 @@
 ﻿using System.Windows.Interactivity;
+using JulMar.Windows.Interactivity.Internal;
 using Windows.UI.Xaml;
 
 namespace JulMar.Windows.Interactivity

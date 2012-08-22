@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Converters="using:JulMar.Windows.Converters" xmlns:Interactivity="using:System.Windows.Interactivity"
     xmlns:Interactivity1="using:JulMar.Windows.Interactivity"
-    mc:Ignorable="d">
+    xmlns:Actions="using:JulMar.Windows.Interactivity.Actions" mc:Ignorable="d">
 
     <Page.Resources>
         <Converters:ToStringConverter x:Key="toString" />
@@ -30,6 +30,15 @@
                 Command="{Binding ShowText}" />
 
             <Button Content="Adjust Rectangle" Margin="20" Padding="10,5" Click="OnAdjustRect" />
+
+            <Button Content="Call JustShowText" Margin="20" Padding="10,5">
+                <Interactivity:Interaction.Triggers>
+                    <Interactivity:EventTrigger EventName="Click">
+                        <Actions:CallMethodAction TargetObject="{Binding}"  MethodName="JustShowText" />
+                    </Interactivity:EventTrigger>
+                </Interactivity:Interaction.Triggers>
+            </Button>
+
         </StackPanel>
         
         <CheckBox Content="Show Advanced Message" HorizontalAlignment="Right" VerticalAlignment="Center"

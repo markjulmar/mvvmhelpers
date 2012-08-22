@@ -9,8 +9,8 @@
     <ProjectGuid>{14C9EF46-36B0-4808-B5B7-0A6B17CC0DCC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Julmar.Windows.Interactivity</RootNamespace>
-    <AssemblyName>Julmar.Windows.Interactivity</AssemblyName>
+    <RootNamespace>System.Windows.Interactivity</RootNamespace>
+    <AssemblyName>JulMar.Windows.Interactivity</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

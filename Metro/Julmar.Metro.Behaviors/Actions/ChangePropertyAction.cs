@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JulMar.Windows.Interactivity.Internal;
+using System;
 using System.Reflection;
 using System.Windows.Interactivity;
 using Windows.Foundation;
@@ -235,6 +236,12 @@ namespace JulMar.Windows.Interactivity
                 Exception innerException = null;
                 try
                 {
+                    // Convert the new property value to the appropriate type if we can
+                    // This is a limited set of values.
+                    var cvtValue = TypeConverter.Convert(property.PropertyType, newValue);
+                    if (cvtValue != null)
+                        newValue = cvtValue;
+
                     if (this.Duration.HasTimeSpan)
                     {
                         if (!typeof(DependencyObject).GetTypeInfo().IsAssignableFrom(Target.GetType().GetTypeInfo()))
