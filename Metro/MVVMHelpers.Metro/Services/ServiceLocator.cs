@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Composition;
 using JulMar.Core.Interfaces;
+using JulMar.Core.Internal;
 
 namespace JulMar.Core.Services
 {
@@ -21,138 +22,160 @@ namespace JulMar.Core.Services
     /// IService svc = serviceResolver<IService>.Resolve();
     /// ]]>
     /// </example>
-    [Export(typeof(IServiceProviderEx))]
-    [Export(typeof(IServiceProvider))]
-    public sealed class ServiceLocator : IServiceProviderEx
+    public sealed class ServiceLocator
     {
         /// <summary>
-        /// Lock
+        /// Lazy created instance located through MEF.
         /// </summary>
-        private readonly object _lock = new object();
+        private static readonly Lazy<IServiceLocator> _instance = 
+            new Lazy<IServiceLocator>(() => DynamicComposer.Instance.GetExportedValue<IServiceLocator>());
 
         /// <summary>
-        /// Service container
+        /// Service locator
         /// </summary>
-        private readonly Dictionary<Type,object> _serviceContainer = new Dictionary<Type, object>();
-
-        /// <summary>
-        /// Returns whether the service exists.
-        /// </summary>
-        /// <param name="type">Type</param>
-        /// <returns>True/False</returns>
-        public bool Exists(Type type)
+        public static IServiceLocator Instance
         {
-            lock (_lock)
-            {
-                // Quick check of the container.
-                if (_serviceContainer.ContainsKey(type))
-                    return true;
-
-                // Not in the container - try the dynamic elements (MEF).
-                return DynamicLoadAndAdd(type) != null;
-                
-                // Not found.
-            }
+            get { return _instance.Value; }
         }
+    }
 
+    namespace Internal
+    {
         /// <summary>
-        /// Adds a new service to the resolver list
+        /// Internal implementation of the service provider; public so MEF can create/expose it.
         /// </summary>
-        /// <param name="type">Service Type (typically an interface)</param>
-        /// <param name="value">Object that implements service</param>
-        public void Add(Type type, object value)
+        [DefaultExport(typeof(IServiceLocator)), Shared]
+        public sealed class ServiceProviderImpl : IServiceLocator
         {
-            lock (_lock)
-            {
-                if (Exists(type))
-                    Remove(type);
-                _serviceContainer.Add(type, value);
-            }
-        }
+            /// <summary>
+            /// Lock
+            /// </summary>
+            private readonly object _lock = new object();
 
-        /// <summary>
-        /// This adds a new service to the resolver list.
-        /// </summary>
-        /// <typeparam name="T">Type of the service</typeparam>
-        /// <param name="value">Value</param>
-        public void Add<T>(T value)
-        {
-            lock (_lock)
-            {
-                if (Exists(typeof(T)))
-                    Remove(typeof(T));
-                _serviceContainer.Add(typeof(T), value);
-            }
-        }
+            /// <summary>
+            /// Service container
+            /// </summary>
+            private readonly Dictionary<Type,object> _serviceContainer = new Dictionary<Type, object>();
 
-        /// <summary>
-        /// Remove a service
-        /// </summary>
-        /// <param name="type">Type to remove</param>
-        public void Remove(Type type)
-        {
-            lock (_lock)
+            /// <summary>
+            /// Returns whether the service exists.
+            /// </summary>
+            /// <param name="type">Type</param>
+            /// <returns>True/False</returns>
+            public bool Exists(Type type)
             {
-                if (_serviceContainer != null)
+                lock (_lock)
                 {
-                    if (Exists(type))
-                        _serviceContainer.Remove(type);
+                    // Quick check of the container.
+                    if (_serviceContainer.ContainsKey(type))
+                        return true;
+
+                    // Not in the container - try the dynamic elements (MEF).
+                    return DynamicLoadAndAdd(type) != null;
+                
+                    // Not found.
                 }
             }
-        }
 
-        /// <summary>
-        /// This resolves a service type and returns the implementation. Note that this
-        /// assumes the key used to register the object is of the appropriate type or
-        /// this method will throw an InvalidCastException!
-        /// </summary>
-        /// <typeparam name="T">Type to resolve</typeparam>
-        /// <returns>Implementation</returns>
-        public T Resolve<T>()
-        {
-            return (T) GetService(typeof(T));
-        }
-
-        /// <summary>
-        /// Implementation of IServiceProvider
-        /// </summary>
-        /// <param name="serviceType">Service Type</param>
-        /// <returns>Object implementing service</returns>
-        public object GetService(Type serviceType)
-        {
-            lock (_lock)
+            /// <summary>
+            /// Adds a new service to the resolver list
+            /// </summary>
+            /// <param name="type">Service Type (typically an interface)</param>
+            /// <param name="value">Object that implements service</param>
+            public void Add(Type type, object value)
             {
-                object returningObject;
-                return _serviceContainer.TryGetValue(serviceType, out returningObject) 
-                    ? returningObject 
-                    : DynamicLoadAndAdd(serviceType);
+                lock (_lock)
+                {
+                    if (Exists(type))
+                        Remove(type);
+                    _serviceContainer.Add(type, value);
+                }
             }
-        }
 
-        /// <summary>
-        /// This locates a lazy service record for a give type.
-        /// </summary>
-        /// <param name="type">Type to search for</param>
-        /// <returns>Lazy object or null</returns>
-        private object CheckLocatedServices(Type type)
-        {
-            return DynamicComposer.Instance.GetExportedValue(type);
-        }
-
-        /// <summary>
-        /// This searches the located MEF components and creates it and loads it into the service container.
-        /// </summary>
-        /// <param name="serviceType">Type we are looking for</param>
-        /// <returns>Created object</returns>
-        private object DynamicLoadAndAdd(Type serviceType)
-        {
-            var service = CheckLocatedServices(serviceType);
-            if (service != null)
+            /// <summary>
+            /// This adds a new service to the resolver list.
+            /// </summary>
+            /// <typeparam name="T">Type of the service</typeparam>
+            /// <param name="value">Value</param>
+            public void Add<T>(T value)
             {
-                _serviceContainer.Add(serviceType, service);
-                return service;
+                lock (_lock)
+                {
+                    if (Exists(typeof(T)))
+                        Remove(typeof(T));
+                    _serviceContainer.Add(typeof(T), value);
+                }
             }
-            return null;
+
+            /// <summary>
+            /// Remove a service
+            /// </summary>
+            /// <param name="type">Type to remove</param>
+            public void Remove(Type type)
+            {
+                lock (_lock)
+                {
+                    if (_serviceContainer != null)
+                    {
+                        if (Exists(type))
+                            _serviceContainer.Remove(type);
+                    }
+                }
+            }
+
+            /// <summary>
+            /// This resolves a service type and returns the implementation. Note that this
+            /// assumes the key used to register the object is of the appropriate type or
+            /// this method will throw an InvalidCastException!
+            /// </summary>
+            /// <typeparam name="T">Type to resolve</typeparam>
+            /// <returns>Implementation</returns>
+            public T Resolve<T>()
+            {
+                return (T) GetService(typeof(T));
+            }
+
+            /// <summary>
+            /// Implementation of IServiceProvider
+            /// </summary>
+            /// <param name="serviceType">Service Type</param>
+            /// <returns>Object implementing service</returns>
+            public object GetService(Type serviceType)
+            {
+                lock (_lock)
+                {
+                    object returningObject;
+                    return _serviceContainer.TryGetValue(serviceType, out returningObject) 
+                        ? returningObject 
+                        : DynamicLoadAndAdd(serviceType);
+                }
+            }
+
+            /// <summary>
+            /// This locates a lazy service record for a give type.
+            /// </summary>
+            /// <param name="type">Type to search for</param>
+            /// <returns>Lazy object or null</returns>
+            private object CheckLocatedServices(Type type)
+            {
+                return DynamicComposer.Instance.GetExportedValue(type);
+            }
+
+            /// <summary>
+            /// This searches the located MEF components and creates it and loads it into the service container.
+            /// </summary>
+            /// <param name="serviceType">Type we are looking for</param>
+            /// <returns>Created object</returns>
+            private object DynamicLoadAndAdd(Type serviceType)
+            {
+                var service = CheckLocatedServices(serviceType);
+                if (service != null)
+                {
+                    _serviceContainer.Add(serviceType, service);
+                    return service;
+                }
+                return null;
+            }
         }
     }
 }

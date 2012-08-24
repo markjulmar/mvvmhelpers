@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Composition;
 using System.Threading.Tasks;
+using JulMar.Core.Internal;
 using JulMar.Windows.Interfaces;
 using Windows.UI.Popups;
 
@@ -9,7 +9,7 @@ namespace JulMar.Windows.UI
     /// <summary>
     /// This class implements the IMessageVisualizer for Metro
     /// </summary>
-    [Export(typeof(IMessageVisualizer))]
+    [DefaultExport(typeof(IMessageVisualizer))]
     public sealed class MessageVisualizer : IMessageVisualizer
     {
         /// <summary>

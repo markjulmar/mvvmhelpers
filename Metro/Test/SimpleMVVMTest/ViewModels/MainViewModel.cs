@@ -3,9 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using JulMar.Windows.Interfaces;
-using JulMar.Windows.Mvvm;
 using Windows.UI.Popups;
 using UICommand = JulMar.Windows.UI.UICommand;
+using JulMar.Windows.Mvvm;
+using JulMar.Core.Services;
 
 namespace SimpleMvvmTest.ViewModels
 {
@@ -72,13 +73,13 @@ namespace SimpleMvvmTest.ViewModels
 
             if (ShowAdvanced)
             {
-                IUICommand result = await ServiceProvider.Resolve<IMessageVisualizer>()
+                IUICommand result = await Resolve<IMessageVisualizer>()
                     .ShowAsync("Advanced Hello Metro", "Select one of the buttons below.", new MessageVisualizerOptions(UICommand.YesNoCancel));
                 Text += " You picked: " + result.Label;
             }
             else
             {
-                await ServiceProvider.Resolve<IMessageVisualizer>()
+                await Resolve<IMessageVisualizer>()
                     .ShowAsync("Hello Metro", "A Message Prompt with OK");
             }
         }

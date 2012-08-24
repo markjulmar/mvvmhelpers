@@ -5,7 +5,7 @@ namespace JulMar.Core.Interfaces
     /// <summary>
     /// Interface that defines Add/Remove and typesafe Resolve
     /// </summary>
-    public interface IServiceProviderEx : IServiceProvider
+    public interface IServiceLocator : IServiceProvider
     {
         /// <summary>
         /// Returns whether the service exists.

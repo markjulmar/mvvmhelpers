@@ -10,21 +10,6 @@ namespace JulMar.Windows.Mvvm
     public class ViewModel : SimpleViewModel, IDisposable
     {
         /// <summary>
-        /// Service provider used by ViewModels.
-        /// </summary>
-        public static IServiceProviderEx ServiceProvider;
-
-        /// <summary>
-        /// Static constructor - executed prior to any ViewModel being used.
-        /// </summary>
-        static ViewModel()
-        {
-            ServiceProvider = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
-            if (ServiceProvider == null)
-                throw new InvalidOperationException("Unable to locate Service Locator Service (IServiceProviderEx");
-        }
-
-        /// <summary>
         /// Constructor - registers with the message mediator and hooks up any imports/exports
         /// with the default MEF catalog
         /// </summary>
@@ -72,7 +57,7 @@ namespace JulMar.Windows.Mvvm
         /// <returns>Implementation</returns>
         protected T Resolve<T>()
         {
-            return ServiceProvider.Resolve<T>();
+            return ServiceLocator.Instance.Resolve<T>();
         }
 
         /// <summary>

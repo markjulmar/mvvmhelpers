@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
 using JulMar.Core.Interfaces;
+using JulMar.Core.Internal;
 
 namespace JulMar.Core.Services
 {
@@ -13,7 +14,7 @@ namespace JulMar.Core.Services
     /// The message handlers are organized using string-based message keys and are held in a WeakReference
     /// collection.
     /// </summary>
-    [Export(typeof(IMessageMediator))]
+    [DefaultExport(typeof(IMessageMediator)), Shared]
     public sealed class MessageMediator : IMessageMediator
     {
         /// <summary>
@@ -21,7 +22,6 @@ namespace JulMar.Core.Services
         /// </summary>
         internal class WeakAction
         {
-#if FALSE
             private readonly WeakReference _target;
             private readonly Type _ownerType;
             private readonly Type _actionType;
@@ -30,7 +30,7 @@ namespace JulMar.Core.Services
             public WeakAction(Delegate work)
             {
                 object target = work.Target; 
-                MethodInfo mi = work.Method;
+                MethodInfo mi = work.GetMethodInfo();
 
                 Debug.Assert((target == null && mi.IsStatic) || (target != null && !mi.IsStatic));
 
@@ -72,29 +72,6 @@ namespace JulMar.Core.Services
 
                 return null;
             }
-#else
-            public readonly Delegate _work;
-
-            public WeakAction(Delegate work)
-            {
-                _work = work;
-            }
-
-            public Type ActionType
-            {
-                get { return _work.GetType(); }
-            }
-
-            public bool HasBeenCollected
-            {
-                get { return false; }
-            }
-
-            public Delegate GetMethod()
-            {
-                return _work;
-            }
-#endif
         }
 
         private readonly Dictionary<object, List<WeakAction>> _registeredHandlers = new Dictionary<object, List<WeakAction>>();

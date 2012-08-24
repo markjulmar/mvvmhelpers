@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using JulMar.Core.Services;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -33,7 +35,7 @@ namespace JulMar.Windows.Behaviors
     /// ]]>
     /// </example>
     [ContentProperty(Name = "Values")]
-    public class StyleSetter
+    public sealed class StyleSetter
     {
         private Collection<SetterValueBinding> _values;
 
@@ -174,13 +176,15 @@ namespace JulMar.Windows.Behaviors
                 // Start with the System.Windows assembly (home of all core controls)
                 yield return typeof(Control).GetTypeInfo().Assembly;
 
-                // JulMar assembly
-                yield return typeof (StyleSetter).GetTypeInfo().Assembly;
-
-                // Main app assembly
-                yield return Application.Current.GetType().GetTypeInfo().Assembly;
-
-                // TODO: find way to enumerate assemblies in package
+                // Return list of assemblies included in package.
+                List<Assembly> theAsms = null;
+                Task.Run(async () =>
+                                   {
+                                       var results = await DynamicComposer.GetPackageAssemblyListAsync();
+                                       theAsms = results.ToList();
+                                   }).Wait();
+                foreach (var asm in theAsms)
+                    yield return asm;
             }
         }
     }
@@ -188,7 +192,7 @@ namespace JulMar.Windows.Behaviors
     /// <summary>
     /// A binding value to apply to a Style setter
     /// </summary>
-    public class SetterValueBinding
+    public sealed class SetterValueBinding
     {
         /// <summary>
         /// Optional type parameter used to specify the type of an attached

@@ -1,0 +1,31 @@
+﻿<Page
+    x:Class="ViewModelInjection.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Mvvm="using:JulMar.Windows.Mvvm"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Mvvm:ViewModelLocator x:Key="VMLocator" />
+    </Page.Resources>
+    
+    <Grid  Background="{StaticResource ApplicationPageBackgroundThemeBrush}" DataContext="{Binding Source={StaticResource VMLocator}, Path=[theVM]}">
+
+        <StackPanel>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center"
+                Padding="20,10" Content="Show Message" Command="{Binding ShowMessage}" />
+            <CheckBox Content="Can Run Message Now" IsChecked="{Binding CanShowCommand, Mode=TwoWay}"
+                  HorizontalAlignment="Center" Margin="20"/>
+        </StackPanel>
+
+        <StackPanel Visibility="Collapsed" x:Name="MessageBox" Background="Black">
+            
+            <TextBlock x:Name="Title" Foreground="White" FontSize="40" Margin="20" TextAlignment="Center" />
+            <TextBlock x:Name="Message" Foreground="White" FontSize="30" TextWrapping="Wrap" Margin="20" />
+            
+        </StackPanel>
+        
+    </Grid>
+    
+</Page>

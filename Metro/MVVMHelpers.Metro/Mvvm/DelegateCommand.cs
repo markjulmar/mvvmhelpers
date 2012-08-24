@@ -1,5 +1,4 @@
 using System;
-using System.Windows.Input;
 using JulMar.Windows.Interfaces;
 
 namespace JulMar.Windows.Mvvm

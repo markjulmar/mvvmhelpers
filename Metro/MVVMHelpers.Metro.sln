@@ -19,9 +19,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationTest", "Test\Anuma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VsmTest", "Test\VsmTest\VsmTest.csproj", "{6864248C-6675-4E5A-9B6E-58A6C11F8C50}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Metro.Tests", "Test\Julmar.Metro.Tests\Julmar.Metro.Tests.csproj", "{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModelInjection", "Test\ViewModelInjection\ViewModelInjection.csproj", "{657006C2-C5A0-4250-8450-BC6D523DE7DA}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
+		SccNumberOfProjects = 11
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
 		SccLocalPath0 = .
@@ -54,6 +58,14 @@ Global
 		SccProjectTopLevelParentUniqueName8 = MVVMHelpers.Metro.sln
 		SccProjectName8 = Test/AnumationTest
 		SccLocalPath8 = Test\\AnumationTest
+		SccProjectUniqueName9 = Test\\Julmar.Metro.Tests\\Julmar.Metro.Tests.csproj
+		SccProjectTopLevelParentUniqueName9 = MVVMHelpers.Metro.sln
+		SccProjectName9 = Test/Julmar.Metro.Tests
+		SccLocalPath9 = Test\\Julmar.Metro.Tests
+		SccProjectUniqueName10 = Test\\ViewModelInjection\\ViewModelInjection.csproj
+		SccProjectTopLevelParentUniqueName10 = MVVMHelpers.Metro.sln
+		SccProjectName10 = Test/ViewModelInjection
+		SccLocalPath10 = Test\\ViewModelInjection
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -234,6 +246,54 @@ Global
 		{6864248C-6675-4E5A-9B6E-58A6C11F8C50}.Release|x86.ActiveCfg = Release|x86
 		{6864248C-6675-4E5A-9B6E-58A6C11F8C50}.Release|x86.Build.0 = Release|x86
 		{6864248C-6675-4E5A-9B6E-58A6C11F8C50}.Release|x86.Deploy.0 = Release|x86
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|ARM.ActiveCfg = Debug|ARM
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|ARM.Build.0 = Debug|ARM
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|ARM.Deploy.0 = Debug|ARM
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|x64.ActiveCfg = Debug|x64
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|x64.Build.0 = Debug|x64
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|x64.Deploy.0 = Debug|x64
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|x86.ActiveCfg = Debug|x86
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|x86.Build.0 = Debug|x86
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Debug|x86.Deploy.0 = Debug|x86
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|ARM.ActiveCfg = Release|ARM
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|ARM.Build.0 = Release|ARM
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|ARM.Deploy.0 = Release|ARM
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|x64.ActiveCfg = Release|x64
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|x64.Build.0 = Release|x64
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|x64.Deploy.0 = Release|x64
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|x86.ActiveCfg = Release|x86
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|x86.Build.0 = Release|x86
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F}.Release|x86.Deploy.0 = Release|x86
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|ARM.ActiveCfg = Debug|ARM
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|ARM.Build.0 = Debug|ARM
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|ARM.Deploy.0 = Debug|ARM
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|x64.ActiveCfg = Debug|x64
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|x64.Build.0 = Debug|x64
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|x64.Deploy.0 = Debug|x64
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|x86.ActiveCfg = Debug|x86
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|x86.Build.0 = Debug|x86
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Debug|x86.Deploy.0 = Debug|x86
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|ARM.ActiveCfg = Release|ARM
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|ARM.Build.0 = Release|ARM
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|ARM.Deploy.0 = Release|ARM
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|x64.ActiveCfg = Release|x64
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|x64.Build.0 = Release|x64
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|x64.Deploy.0 = Release|x64
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|x86.ActiveCfg = Release|x86
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|x86.Build.0 = Release|x86
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -244,5 +304,7 @@ Global
 		{E79F6FD6-C979-4DED-9000-465EEA7C9622} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
 		{780194E0-5BA5-4936-AE10-2DBC92330C2D} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
 		{6864248C-6675-4E5A-9B6E-58A6C11F8C50} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
+		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
+		{657006C2-C5A0-4250-8450-BC6D523DE7DA} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
 	EndGlobalSection
 EndGlobal
