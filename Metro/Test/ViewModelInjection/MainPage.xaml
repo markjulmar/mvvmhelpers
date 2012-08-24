@@ -6,11 +6,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Mvvm="using:JulMar.Windows.Mvvm"
     mc:Ignorable="d">
 
-    <Page.Resources>
-        <Mvvm:ViewModelLocator x:Key="VMLocator" />
-    </Page.Resources>
+<Page.Resources>
+    <Mvvm:ViewModelLocator x:Key="VMLocator" />
+</Page.Resources>
     
-    <Grid  Background="{StaticResource ApplicationPageBackgroundThemeBrush}" DataContext="{Binding Source={StaticResource VMLocator}, Path=[theVM]}">
+<Grid  Background="{StaticResource ApplicationPageBackgroundThemeBrush}" 
+        DataContext="{Binding ViewModels[theVM], Source={StaticResource VMLocator}}">
 
         <StackPanel>
             <Button HorizontalAlignment="Center" VerticalAlignment="Center"

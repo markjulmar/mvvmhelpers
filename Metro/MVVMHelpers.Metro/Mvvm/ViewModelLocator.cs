@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
@@ -76,12 +77,16 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         /// <param name="key">Key to search for</param>
         /// <returns>Located view model or null</returns>
-        public object this[string key]
+        public IReadOnlyDictionary<string,object> ViewModels
         {
             get
             {
-                object value;
-                return !TryLocate(key, out value) ? null : value;
+                return new DelegateDictionary<string, object>(
+                    key =>
+                        {
+                            object value;
+                            return TryLocate(key, out value) ? value : null;
+                        });
             }
         }
 
@@ -145,6 +150,47 @@ namespace JulMar.Windows.Mvvm
             }
 
             return returnValue != null;
+        }
+
+        internal class DelegateDictionary<TK,TV> : IReadOnlyDictionary<TK,TV>
+        {
+            private readonly Func<TK, TV> _getValue;
+
+            public DelegateDictionary(Func<TK,TV> getValueFunc)
+            {
+                _getValue = getValueFunc;
+            }
+
+            public IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
+            {
+                yield break;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                yield break;
+            }
+
+            public int Count { get { return 0; } }
+            
+            public bool ContainsKey(TK key)
+            {
+                return false;
+            }
+
+            public bool TryGetValue(TK key, out TV value)
+            {
+                value = default(TV);
+                return false;
+            }
+
+            public TV this[TK key]
+            {
+                get { return _getValue(key); }
+            }
+
+            public IEnumerable<TK> Keys { get { yield break; } }
+            public IEnumerable<TV> Values { get { yield break; } }
         }
     }
 }

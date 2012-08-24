@@ -18,11 +18,8 @@ namespace ViewModelInjection
     {
         public MainPage()
         {
-            //DataContext = ViewModel.ServiceProvider.Resolve<ViewModelLocator>().Locate("theVM");
-
-            MyMessageVisualizer visualizer = ServiceLocator.Instance.Resolve<IMessageVisualizer>() as MyMessageVisualizer;
-            if (visualizer != null)
-                visualizer.Page = this;
+            // Can do it in code.
+            DataContext = ServiceLocator.Instance.Resolve<ViewModelLocator>().Locate("theVM");
 
             this.InitializeComponent();
         }
@@ -34,6 +31,9 @@ namespace ViewModelInjection
         /// property is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            MyMessageVisualizer visualizer = ServiceLocator.Instance.Resolve<IMessageVisualizer>() as MyMessageVisualizer;
+            if (visualizer != null)
+                visualizer.Page = this;
         }
 
         public async void ShowMessageAsync(string message, string title)
