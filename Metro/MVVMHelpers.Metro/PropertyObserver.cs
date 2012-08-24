@@ -180,9 +180,8 @@ namespace JulMar.Core
         {
             int count = Interlocked.Decrement(ref _isSubscribed);
             Debug.Assert(count >= 0);
-
             if (count == 0)
-                source.PropertyChanged += OnReceiveEvent;
+                source.PropertyChanged -= OnReceiveEvent;
         }
 
         /// <summary>
@@ -194,7 +193,7 @@ namespace JulMar.Core
             int count = Interlocked.Increment(ref _isSubscribed);
             Debug.Assert(count >= 0);
             if (count == 1)
-                source.PropertyChanged -= OnReceiveEvent;
+                source.PropertyChanged += OnReceiveEvent;
         }
 
         /// <summary>

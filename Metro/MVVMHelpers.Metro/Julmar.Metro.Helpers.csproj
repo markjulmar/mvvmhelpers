@@ -111,6 +111,10 @@
   <ItemGroup>
     <Compile Include="Behaviors\EventCommander.cs" />
     <Compile Include="Behaviors\StyleSetter.cs" />
+    <Compile Include="Collections\ObservableDictionary.cs" />
+    <Compile Include="Collections\WeakReferenceList.cs" />
+    <Compile Include="Concurrency\ObjectLockExtensions.cs" />
+    <Compile Include="Concurrency\ReaderWriterLockSlimExtensions.cs" />
     <Compile Include="Converters\ArrayToStringConverter.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
