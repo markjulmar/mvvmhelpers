@@ -111,6 +111,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Behaviors\EventCommander.cs" />
+    <Compile Include="Behaviors\NameScopeBinding.cs" />
     <Compile Include="Behaviors\StyleSetter.cs" />
     <Compile Include="Collections\ObservableDictionary.cs" />
     <Compile Include="Collections\WeakReferenceList.cs" />

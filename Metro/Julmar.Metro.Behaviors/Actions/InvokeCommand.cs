@@ -47,8 +47,9 @@ namespace JulMar.Windows.Interactivity
         protected override void Invoke(object parameter)
         {
             ICommand command = Command;
-            if ((command != null) && command.CanExecute(CommandParameter))
-                command.Execute(CommandParameter);
+            object commandParameter = CommandParameter ?? parameter;
+            if ((command != null) && command.CanExecute(commandParameter))
+                command.Execute(commandParameter);
         }
     }
 }
