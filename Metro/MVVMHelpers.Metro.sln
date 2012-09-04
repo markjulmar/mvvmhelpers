@@ -23,9 +23,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Metro.Tests", "Test\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModelInjection", "Test\ViewModelInjection\ViewModelInjection.csproj", "{657006C2-C5A0-4250-8450-BC6D523DE7DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiPageNavigation", "Test\MultiPageNavigation\MultiPageNavigation.csproj", "{3378BB08-332B-453D-9DA6-D4C88B500BDC}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 12
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
 		SccLocalPath0 = .
@@ -66,6 +68,10 @@ Global
 		SccProjectTopLevelParentUniqueName10 = MVVMHelpers.Metro.sln
 		SccProjectName10 = Test/ViewModelInjection
 		SccLocalPath10 = Test\\ViewModelInjection
+		SccProjectUniqueName11 = Test\\MultiPageNavigation\\MultiPageNavigation.csproj
+		SccProjectTopLevelParentUniqueName11 = MVVMHelpers.Metro.sln
+		SccProjectName11 = Test/MultiPageNavigation
+		SccLocalPath11 = Test\\MultiPageNavigation
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -294,6 +300,30 @@ Global
 		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|x86.ActiveCfg = Release|x86
 		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|x86.Build.0 = Release|x86
 		{657006C2-C5A0-4250-8450-BC6D523DE7DA}.Release|x86.Deploy.0 = Release|x86
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|ARM.ActiveCfg = Debug|ARM
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|ARM.Build.0 = Debug|ARM
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|ARM.Deploy.0 = Debug|ARM
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|x64.ActiveCfg = Debug|x64
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|x64.Build.0 = Debug|x64
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|x64.Deploy.0 = Debug|x64
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|x86.ActiveCfg = Debug|x86
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|x86.Build.0 = Debug|x86
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Debug|x86.Deploy.0 = Debug|x86
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|ARM.ActiveCfg = Release|ARM
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|ARM.Build.0 = Release|ARM
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|ARM.Deploy.0 = Release|ARM
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|x64.ActiveCfg = Release|x64
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|x64.Build.0 = Release|x64
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|x64.Deploy.0 = Release|x64
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|x86.ActiveCfg = Release|x86
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|x86.Build.0 = Release|x86
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -306,5 +336,6 @@ Global
 		{6864248C-6675-4E5A-9B6E-58A6C11F8C50} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
 		{7E7037C1-7385-49C3-AE16-6DD9E9C8C79F} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
 		{657006C2-C5A0-4250-8450-BC6D523DE7DA} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
+		{3378BB08-332B-453D-9DA6-D4C88B500BDC} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
 	EndGlobalSection
 EndGlobal

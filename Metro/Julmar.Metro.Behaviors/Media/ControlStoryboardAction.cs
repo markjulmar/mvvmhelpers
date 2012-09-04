@@ -4,6 +4,9 @@ using Windows.UI.Xaml.Media.Animation;
 
 namespace JulMar.Windows.Interactivity.Media
 {
+    /// <summary>
+    /// Storyboard action control
+    /// </summary>
     public class ControlStoryboardAction : StoryboardAction
     {
         /// <summary>

@@ -6,6 +6,9 @@ using Windows.UI.Xaml;
 
 namespace JulMar.Windows.Interactivity.Actions
 {
+    /// <summary>
+    /// Call a method from a trigger
+    /// </summary>
     public class CallMethodAction : TargetedTriggerAction<object>
     {
         /// <summary>

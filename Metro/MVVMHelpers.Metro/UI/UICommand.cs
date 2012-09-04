@@ -47,6 +47,10 @@ namespace JulMar.Windows.UI
         /// OK command
         /// </summary>
         static readonly IUICommand OkCommand = new UICommand(0, "OK");
+
+        /// <summary>
+        /// OK command
+        /// </summary>
         public static IUICommand Ok
         {
             get { return OkCommand; }
@@ -56,6 +60,10 @@ namespace JulMar.Windows.UI
         /// Cancel command
         /// </summary>
         static readonly IUICommand CancelCommand = new UICommand(1, "Cancel");
+
+        /// <summary>
+        /// Cancel command
+        /// </summary>
         public static IUICommand Cancel
         {
             get { return CancelCommand; }
@@ -73,6 +81,10 @@ namespace JulMar.Windows.UI
         /// Yes command
         /// </summary>
         static readonly IUICommand YesCommand = new UICommand(2, "Yes");
+
+        /// <summary>
+        /// Yes command
+        /// </summary>
         public static IUICommand Yes
         {
             get { return YesCommand; }
@@ -82,6 +94,10 @@ namespace JulMar.Windows.UI
         /// No command
         /// </summary>
         static readonly IUICommand NoCommand = new UICommand(3, "No");
+
+        /// <summary>
+        /// No command
+        /// </summary>
         public static IUICommand No
         {
             get { return NoCommand; }
@@ -107,6 +123,10 @@ namespace JulMar.Windows.UI
         /// Allow command
         /// </summary>
         static readonly IUICommand AllowCommand = new UICommand(4, "Allow");
+
+        /// <summary>
+        /// Allow command
+        /// </summary>
         public static IUICommand Allow
         {
             get { return AllowCommand; }
@@ -116,6 +136,10 @@ namespace JulMar.Windows.UI
         /// Block command
         /// </summary>
         static readonly IUICommand BlockCommand = new UICommand(5, "Block");
+
+        /// <summary>
+        /// Block command
+        /// </summary>
         public static IUICommand Block
         {
             get { return BlockCommand; }

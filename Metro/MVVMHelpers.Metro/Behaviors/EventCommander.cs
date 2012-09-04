@@ -28,6 +28,9 @@ namespace JulMar.Windows.Behaviors
     /// </example>
     public static class EventCommander
     {
+        /// <summary>
+        /// Mappings backing store
+        /// </summary>
         public static readonly DependencyProperty MappingsProperty = DependencyProperty.RegisterAttached("Mappings",
                             typeof(CommandEventCollection), typeof(EventCommander), 
                             new PropertyMetadata(null, OnMappingsChanged));

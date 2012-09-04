@@ -1,4 +1,5 @@
-﻿using JulMar.Core.Services;
+﻿using JulMar.Core.Interfaces;
+using JulMar.Core.Services;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
 using System.Composition;
@@ -19,7 +20,7 @@ namespace ViewModelInjection
         public MainPage()
         {
             // Can do it in code.
-            DataContext = ServiceLocator.Instance.Resolve<ViewModelLocator>().Locate("theVM");
+            DataContext = ServiceLocator.Instance.Resolve<IViewModelLocator>().Locate("theVM");
 
             this.InitializeComponent();
         }

@@ -8,6 +8,9 @@ namespace System.Windows.Interactivity
     /// </summary>
     public static class Interaction
     {
+        /// <summary>
+        /// Behaviors collection backing storage
+        /// </summary>
         public static readonly DependencyProperty BehaviorsProperty = DependencyProperty.RegisterAttached("Behaviors",
                 typeof(BehaviorCollection), typeof(Interaction), new PropertyMetadata(null, OnBehaviorListChanged));
 
@@ -58,6 +61,9 @@ namespace System.Windows.Interactivity
             }
         }
 
+        /// <summary>
+        /// Triggers property backing storage
+        /// </summary>
         public static readonly DependencyProperty TriggersProperty = DependencyProperty.RegisterAttached("Triggers",
             typeof(TriggerCollection), typeof(Interaction), new PropertyMetadata(null, OnTriggerListChanged));
 

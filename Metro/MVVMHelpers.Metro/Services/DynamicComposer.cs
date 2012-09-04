@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Composition.Convention;
 using System.Composition.Hosting;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using JulMar.Windows.Mvvm;
 
 namespace JulMar.Core.Services
 {
@@ -17,7 +19,6 @@ namespace JulMar.Core.Services
         private static readonly Lazy<DynamicComposer> _singleton = new Lazy<DynamicComposer>(() => new DynamicComposer());
         private ContainerConfiguration _container = null;
         private CompositionHost _host = null;
-        private List<Assembly> _assemblies; 
 
         /// <summary>
         /// IoC instance
@@ -35,6 +36,16 @@ namespace JulMar.Core.Services
         }
 
         /// <summary>
+        /// This is called before any assemblies are added to the container.
+        /// </summary>
+        public event Func<DynamicComposer, ContainerConfiguration, List<Assembly>, bool> PreCreateContainer;
+
+        /// <summary>
+        /// This is called after all setup is performed and the container is about to be created.
+        /// </summary>
+        public event Action<DynamicComposer, ContainerConfiguration> CreatingContainer;
+
+        /// <summary>
         /// The container being used
         /// </summary>
         public CompositionHost Host
@@ -43,53 +54,41 @@ namespace JulMar.Core.Services
             {
                 if (_container == null)
                 {
-                    // Gather list of assemblies to include and put them into the 
-                    // proper order.
-                    if (_assemblies == null)
+                    // Get a list of all the package assemblies.
+                    var assemblies = Task.Run(async () =>
                     {
-                        _assemblies = new List<Assembly>();
-                    }
-
-                    // Add all package assemblies
-                    Task.Run(async () =>
-                    {
+                        var localAssemblies = new List<Assembly>();
                         var result = await GetPackageAssemblyListAsync();
                         var theAsms = result.ToList();
-                        foreach (var newAsm in theAsms.Where(asm => !_assemblies.Contains(asm) 
+                        foreach (var newAsm in theAsms.Where(asm => !localAssemblies.Contains(asm)
                             && !asm.FullName.StartsWith("System.Composition")
                             && !asm.FullName.StartsWith("JulMar")))
-                            _assemblies.Add(newAsm);
+                            localAssemblies.Add(newAsm);
+                        return localAssemblies;
+                    }).Result;
 
-                    }).Wait();
+                    _container = new ContainerConfiguration();
 
-                    // Add the primary JulMar assembly last; it's where all the services are defined
-                    _assemblies.Add(typeof(DynamicComposer).GetTypeInfo().Assembly);
+                    // Let any customization occur
+                    if (PreCreateContainer == null
+                        || !PreCreateContainer(this, _container, assemblies))
+                    {
+                        _container = _container.WithAssemblies(assemblies);
+                    }
 
-                    _container = new ContainerConfiguration()
-                        .WithAssemblies(_assemblies)
+                    // Set up the container with base services
+                    _container = _container
+                        .WithAssembly(typeof(DynamicComposer).GetTypeInfo().Assembly)
                         .WithProvider(new DefaultExportDescriptorProvider());
 
+                    if (CreatingContainer != null)
+                        CreatingContainer(this, _container);
+
                     _host = _container.CreateContainer();
-                    _assemblies = null;
                 }
 
                 return _host;
             }
-        }
-
-        /// <summary>
-        /// This is used to add assemblies to the resolution process
-        /// </summary>
-        /// <param name="assemblies"></param>
-        public void AddAssembliesToResolver(params Assembly[] assemblies)
-        {
-            if (_container != null)
-                throw new Exception("Cannot add assemblies after container has been created.");
-
-            if (_assemblies == null)
-                _assemblies = new List<Assembly>();
-            
-            _assemblies.AddRange(assemblies);
         }
 
         /// <summary>
@@ -101,13 +100,50 @@ namespace JulMar.Core.Services
         }
 
         /// <summary>
-        /// Retrieves the specified exported object by type, or NULL if it doesn't exist.
+        /// Retrieves the specified exported object by type, throws an exception if it cannot be found/created.
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
+        /// <exception cref="CompositionFailedException" />
         /// <returns>Created object</returns>
         public T GetExportedValue<T>()
         {
             return Host.GetExport<T>();
+        }
+
+        /// <summary>
+        /// Retrieves the specified exported object by type, or NULL if it doesn't exist.
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="value">Returning object, null if not found/created</param>
+        /// <returns>True/False result</returns>
+        public bool TryGetExportedValue<T>(out T value)
+        {
+            return Host.TryGetExport<T>(out value);
+        }
+
+        /// <summary>
+        /// Retrieves the specified exported object by type and contract name.  
+        /// Throws an exception if it cannot be found/created.
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="contractName">Contract name</param>
+        /// <exception cref="CompositionFailedException" />
+        /// <returns>Created object</returns>
+        public T GetExportedValue<T>(string contractName)
+        {
+            return Host.GetExport<T>(contractName);
+        }
+
+        /// <summary>
+        /// Retrieves the specified exported object by type and contract.
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="contractName">Contract name</param>
+        /// <param name="value">Returning object, null if not found/created</param>
+        /// <returns>True/False result</returns>
+        public bool TryGetExportedValue<T>(string contractName, out T value)
+        {
+            return Host.TryGetExport<T>(contractName, out value);
         }
 
         /// <summary>
@@ -121,12 +157,62 @@ namespace JulMar.Core.Services
         }
 
         /// <summary>
+        /// Retrieves the specified exported objects by type.
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="contractName">Contract name</param>
+        /// <returns>Created objects</returns>
+        public IEnumerable<T> GetExportedValues<T>(string contractName)
+        {
+            return Host.GetExports<T>(contractName);
+        }
+
+        /// <summary>
         /// Retrieves the specified export by type.
+        /// Throws an exception if it does not exist/cannot be created
         /// </summary>
         /// <param name="type">Type</param>
+        /// <exception cref="CompositionFailedException" />
+        /// <returns>Created object</returns>
         public object GetExportedValue(Type type)
         {
             return Host.GetExport(type);
+        }
+
+        /// <summary>
+        /// Retrieves the specified export by type.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <param name="value">Returning value, null if not created/found.</param>
+        /// <returns>True/False result</returns>
+        public bool TryGetExportedValue(Type type, out object value)
+        {
+            return Host.TryGetExport(type, out value);
+        }
+
+        /// <summary>
+        /// Retrieves the specified export by type/contract name.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <param name="contractName">Contract name</param>
+        /// <exception cref="CompositionFailedException" />
+        /// <returns>Created object</returns>
+        public object GetExportedValue(Type type, string contractName)
+        {
+            return Host.GetExport(type, contractName);
+        }
+
+        /// <summary>
+        /// Retrieves the specified export by type.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <param name="contractName">Contract name</param>
+        /// <param name="value">Created object or null</param>
+        /// <exception cref="CompositionFailedException" />
+        /// <returns>True/False result</returns>
+        public bool TryGetExportedValue(Type type, string contractName, out object value)
+        {
+            return Host.TryGetExport(type, contractName, out value);
         }
 
         /// <summary>
@@ -136,6 +222,16 @@ namespace JulMar.Core.Services
         public IEnumerable<object> GetExportedValues(Type type)
         {
             return Host.GetExports(type);
+        }
+
+        /// <summary>
+        /// Retrieves the specified exports by type.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <param name="contractName"> </param>
+        public IEnumerable<object> GetExportedValues(Type type, string contractName)
+        {
+            return Host.GetExports(type, contractName);
         }
 
         /// <summary>

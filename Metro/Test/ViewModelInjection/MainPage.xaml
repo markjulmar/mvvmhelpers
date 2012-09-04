@@ -7,7 +7,7 @@
     mc:Ignorable="d">
 
 <Page.Resources>
-    <Mvvm:ViewModelLocator x:Key="VMLocator" />
+    <Mvvm:ViewModelLocatorResource x:Key="VMLocator" />
 </Page.Resources>
     
 <Grid  Background="{StaticResource ApplicationPageBackgroundThemeBrush}" 

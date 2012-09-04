@@ -1,0 +1,91 @@
+﻿<Page
+    x:Name="pageRoot"
+    x:Class="App1.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:common="using:App1.Common"
+    xmlns:interactivity="using:System.Windows.Interactivity" xmlns:julmar="using:JulMar.Windows.Interactivity"
+    xmlns:Behaviors="using:System.Windows.Behaviors" 
+    mc:Ignorable="d" 
+    DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=ViewModels[Main]}">
+
+    <Page.Resources>
+        <Behaviors:NameScopeBinding x:Key="ItemListView" Element="{Binding ElementName=lstModules}" />
+    </Page.Resources>
+    
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+       </Grid.RowDefinitions>
+        <!-- Back button and page title -->
+        <Grid Grid.Row="0">
+            <TextBlock x:Name="pageTitle" Text="Main Page" Style="{StaticResource PageHeaderTextStyle}" IsHitTestVisible="false"/>
+        </Grid>
+
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1">
+            <Button Command="{Binding SelectModuleCommand}" Content="Regular Command (No Parameters)" />
+
+            <Button Content="Button w/InvokeCommand">
+                <interactivity:Interaction.Triggers>
+                    <interactivity:EventTrigger EventName="Click">
+                        <julmar:InvokeCommand Command="{Binding SelectModuleFromElementCommand}" CommandParameter="{Binding Element.SelectedItem, Source={StaticResource ItemListView}}">
+                        </julmar:InvokeCommand>
+                    </interactivity:EventTrigger>
+                </interactivity:Interaction.Triggers>
+            </Button>
+            
+            <TextBlock Text="{Binding SelectedModuleName}" FontSize="40" Foreground="White" />
+            
+        </StackPanel>
+
+        <ListView SelectionMode="Single" Grid.Row="2"
+                Padding="10,0,0,60" x:Name="lstModules"
+                SelectedItem="{Binding SelectedModule, Mode=TwoWay}"
+                ItemsSource="{Binding Modules}">
+            <interactivity:Interaction.Triggers>
+                <interactivity:EventTrigger EventName="SelectionChanged">
+                    <julmar:InvokeCommand Command="{Binding SelectModuleCommand}" />
+                </interactivity:EventTrigger>
+            </interactivity:Interaction.Triggers>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                        <TextBlock Text="{Binding Name}" Style="{StaticResource ItemTextStyle}" MaxHeight="40"/>
+                        <TextBlock Text="{Binding Description}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ListView Grid.Row="3"
+                IsItemClickEnabled="True"
+                Padding="10,0,0,60"
+                ItemsSource="{Binding Modules}">
+            <interactivity:Interaction.Triggers>
+                <interactivity:EventTrigger EventName="ItemClick">
+                    <julmar:InvokeCommand Command="{Binding SelectModuleFromItemClickCommand}" />
+                </interactivity:EventTrigger>
+            </interactivity:Interaction.Triggers>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                        <TextBlock Text="{Binding Name}" Style="{StaticResource ItemTextStyle}" MaxHeight="40"/>
+                        <TextBlock Text="{Binding Description}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Grid.Row="4" Content="Go to Details Page" Click="buttonDetails_Click"></Button>
+    </Grid>
+</Page>
+
+    

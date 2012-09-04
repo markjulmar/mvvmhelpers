@@ -9,10 +9,25 @@ namespace JulMar.Windows.Interactivity.Input
     [Flags]
     public enum ModifierKeys
     {
+        /// <summary>
+        /// No modifier
+        /// </summary>
         None = 0,
+        /// <summary>
+        /// Ctrl key
+        /// </summary>
         Control = 1,
+        /// <summary>
+        /// ALT key
+        /// </summary>
         Menu = 2,
+        /// <summary>
+        /// Shift key
+        /// </summary>
         Shift = 4,
+        /// <summary>
+        /// Windows key
+        /// </summary>
         Windows = 8,
     }
 }

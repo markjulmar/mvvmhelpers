@@ -38,7 +38,7 @@ namespace JulMar.Windows.Interactivity
         /// This handles the UIElement.LeftButtonDown event to test for a double-click event.
         /// </summary>
         /// <param name="sender">UIElement</param>
-        /// <param name="mouseEventArgs">EventArgs</param>
+        /// <param name="e">EventArgs</param>
         private void AssociatedObjectOnDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             this.InvokeActions(e);

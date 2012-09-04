@@ -14,6 +14,9 @@ namespace JulMar.Windows.Extensions
     /// </summary>
     public static class NotifyPropertyHelpers
     {
+        /// <summary>
+        /// Synchronization context used by Notify Helpers.
+        /// </summary>
         public static SynchronizationContext Context { get; set; }
 
         /// <summary>

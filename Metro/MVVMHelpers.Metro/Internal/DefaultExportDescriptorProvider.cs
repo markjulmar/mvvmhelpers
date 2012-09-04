@@ -6,20 +6,36 @@ using System.Linq;
 
 namespace JulMar.Core.Internal
 {
+    /// <summary>
+    /// This represents a default implementation of an export - it will only
+    /// be used if there is no other export of the same type / contract name.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
     public sealed class DefaultExportAttribute : ExportAttribute
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="contractType">Export type</param>
         public DefaultExportAttribute(Type contractType)
             : base(DefaultExportDescriptorProvider.DefaultContractNamePrefix, contractType)
         {
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="contractName">Contract name</param>
+        /// <param name="contractType">Export type</param>
         public DefaultExportAttribute(string contractName, Type contractType)
             : base(DefaultExportDescriptorProvider.DefaultContractNamePrefix + contractName, contractType)
         {
         }
     }
 
+    /// <summary>
+    /// Default export provider
+    /// </summary>
     internal sealed class DefaultExportDescriptorProvider : ExportDescriptorProvider
     {
         internal const string DefaultContractNamePrefix = "Default++";

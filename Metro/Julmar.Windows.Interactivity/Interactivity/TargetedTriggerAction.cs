@@ -8,7 +8,7 @@ namespace System.Windows.Interactivity
     public abstract class TargetedTriggerAction : TriggerAction
     {
         /// <summary>
-        // Target dependency property
+        /// Target dependency property
         /// </summary>
         public static readonly DependencyProperty TargetObjectProperty = DependencyProperty.Register("TargetObject", typeof(object), typeof(TargetedTriggerAction), new PropertyMetadata(null, OnTargetObjectChanged));
 
@@ -22,7 +22,7 @@ namespace System.Windows.Interactivity
         }
 
         /// <summary>
-        // TargetName dependency property
+        /// TargetName dependency property
         /// </summary>
         public static readonly DependencyProperty TargetNameProperty = DependencyProperty.Register("TargetName", typeof(string), typeof(TargetedTriggerAction), new PropertyMetadata(null, OnTargetObjectChanged));
 

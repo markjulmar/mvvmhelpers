@@ -155,10 +155,11 @@ namespace JulMar.Core.Services
             /// This locates a lazy service record for a give type.
             /// </summary>
             /// <param name="type">Type to search for</param>
+            /// <param name="value">Returning object</param>
             /// <returns>Lazy object or null</returns>
-            private object CheckLocatedServices(Type type)
+            private bool CheckLocatedServices(Type type, out object value)
             {
-                return DynamicComposer.Instance.GetExportedValue(type);
+                return DynamicComposer.Instance.TryGetExportedValue(type, out value);
             }
 
             /// <summary>
@@ -168,12 +169,13 @@ namespace JulMar.Core.Services
             /// <returns>Created object</returns>
             private object DynamicLoadAndAdd(Type serviceType)
             {
-                var service = CheckLocatedServices(serviceType);
-                if (service != null)
+                object service;
+                if (CheckLocatedServices(serviceType, out service) && service != null)
                 {
                     _serviceContainer.Add(serviceType, service);
                     return service;
                 }
+
                 return null;
             }
         }

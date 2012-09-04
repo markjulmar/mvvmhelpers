@@ -4,6 +4,9 @@ using Windows.UI.Xaml.Media.Animation;
 
 namespace JulMar.Windows.Interactivity.Media
 {
+    /// <summary>
+    /// Storyboard trigger
+    /// </summary>
     public abstract class StoryboardTrigger : TriggerBase<FrameworkElement>
     {
         /// <summary>

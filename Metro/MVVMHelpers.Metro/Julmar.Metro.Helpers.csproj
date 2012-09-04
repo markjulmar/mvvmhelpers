@@ -144,8 +144,12 @@
     <Compile Include="MessageMediatorTargetAttribute.cs" />
     <Compile Include="Mvvm\AsyncDelegateCommand.cs" />
     <Compile Include="Mvvm\DelegateCommand.cs" />
+    <Compile Include="Interfaces\IViewModelLocator.cs" />
+    <Compile Include="Mvvm\ExportViewModelAttribute.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
+    <Compile Include="Mvvm\ViewModelLocatorResource.cs" />
+    <Compile Include="Services\ServiceLocatorResource.cs" />
     <Compile Include="UI\UICommand.cs" />
     <Compile Include="Mvvm\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
