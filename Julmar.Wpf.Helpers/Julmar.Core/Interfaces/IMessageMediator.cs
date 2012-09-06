@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.Composition;
 
 namespace JulMar.Core.Interfaces
 {
@@ -7,7 +6,6 @@ namespace JulMar.Core.Interfaces
     /// The interface definition for our Message mediator.  This allows loose-event coupling between components
     /// in an application by sending messages to registered elements.
     ///</summary>
-    [InheritedExport]
     public interface IMessageMediator
     {
         /// <summary>

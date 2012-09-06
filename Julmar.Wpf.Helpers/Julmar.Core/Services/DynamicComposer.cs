@@ -104,19 +104,179 @@ namespace JulMar.Core.Services
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
         /// <returns>Created object</returns>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
         public T GetExportedValue<T>()
         {
-            return Container.GetExportedValueOrDefault<T>();
+            return Container.GetExportedValue<T>();
         }
 
         /// <summary>
-        /// Retrieves the specified exported object by passed in Type object.
+        /// Retrieves the specified exported object by type, or NULL if it doesn't exist.
         /// </summary>
-        /// <param name="type">Type to locate</param>
-        /// <returns>Created object, or NULL if it doesn't exist</returns>
-        public object GetExportedVaue(Type type)
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="value">Returning object, null if not found/created</param>
+        /// <returns>True/False result</returns>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        public bool TryGetExportedValue<T>(out T value)
         {
-            return Container.GetExports(type, null, null).FirstOrDefault();
+            value = Container.GetExportedValueOrDefault<T>();
+            return ReferenceEquals(value, null);
+        }
+
+        /// <summary>
+        /// Retrieves the specified exported object by type and contract name.  
+        /// Throws an exception if it cannot be found/created.
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="contractName">Contract name</param>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        /// <returns>Created object</returns>
+        public T GetExportedValue<T>(string contractName)
+        {
+            return Container.GetExportedValue<T>(contractName);
+        }
+
+        /// <summary>
+        /// Retrieves the specified exported object by type and contract.
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="contractName">Contract name</param>
+        /// <param name="value">Returning object, null if not found/created</param>
+        /// <returns>True/False result</returns>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        public bool TryGetExportedValue<T>(string contractName, out T value)
+        {
+            value = Container.GetExportedValueOrDefault<T>(contractName);
+            return ReferenceEquals(value, null);
+        }
+
+        /// <summary>
+        /// Retrieves the specified exported objects by type.
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <returns>Created objects</returns>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        public IEnumerable<T> GetExportedValues<T>()
+        {
+            return Container.GetExportedValues<T>();
+        }
+
+        /// <summary>
+        /// Retrieves the specified exported objects by type.
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="contractName">Contract name</param>
+        /// <returns>Created objects</returns>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        public IEnumerable<T> GetExportedValues<T>(string contractName)
+        {
+            return Container.GetExportedValues<T>(contractName);
+        }
+
+        /// <summary>
+        /// Retrieves the specified export by type.
+        /// Throws an exception if it does not exist/cannot be created
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <returns>Created object</returns>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        public object GetExportedValue(Type type)
+        {
+            var result = Container.GetExports(type, null, null).FirstOrDefault();
+            if (result == null)
+                throw new CompositionException("Failed to locate part " + type.Name);
+            return result.Value;
+        }
+
+        /// <summary>
+        /// Retrieves the specified export by type.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <param name="value">Returning value, null if not created/found.</param>
+        /// <returns>True/False result</returns>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        public bool TryGetExportedValue(Type type, out object value)
+        {
+            var result = Container.GetExports(type, null, null).FirstOrDefault();
+            value = result == null ? null : result.Value;
+            return result != null;
+        }
+
+        /// <summary>
+        /// Retrieves the specified export by type/contract name.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <param name="contractName">Contract name</param>
+        /// <returns>Created object</returns>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        public object GetExportedValue(Type type, string contractName)
+        {
+            var result = Container.GetExports(type, null, contractName).FirstOrDefault();
+            if (result == null)
+                throw new CompositionException("Failed to locate part " + type.Name);
+            return result.Value;
+        }
+
+        /// <summary>
+        /// Retrieves the specified export by type.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <param name="contractName">Contract name</param>
+        /// <param name="value">Created object or null</param>
+        /// <returns>True/False result</returns>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        public bool TryGetExportedValue(Type type, string contractName, out object value)
+        {
+            var result = Container.GetExports(type, null, contractName).FirstOrDefault();
+            value = result == null ? null : result.Value;
+            return result != null;
+        }
+
+        /// <summary>
+        /// Retrieves the specified exports by type.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        public IEnumerable<object> GetExportedValues(Type type)
+        {
+            return Container.GetExports(type, null, null)
+                .Select(li => li.Value);
+        }
+
+        /// <summary>
+        /// Retrieves the specified exports by type.
+        /// </summary>
+        /// <param name="type">Type</param>
+        /// <param name="contractName"> </param>
+        /// <exception cref="CompositionException" />
+        /// <exception cref="ImportCardinalityMismatchException" />
+        /// <exception cref="CompositionContractMismatchException" />
+        public IEnumerable<object> GetExportedValues(Type type, string contractName)
+        {
+            return Container.GetExports(type, null, contractName)
+                .Select(li => li.Value);
         }
 
         /// <summary>

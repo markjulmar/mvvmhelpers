@@ -14,6 +14,10 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,15 +87,13 @@
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="PropertyChangedEventArgsEx.cs" />
     <Compile Include="Interfaces\IThreadedNotifyCollection.cs" />
-    <Compile Include="ExportServiceAttribute.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\ObjectCloner.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Interfaces\IMessageMediator.cs" />
     <Compile Include="Interfaces\ISupportUndo.cs" />
     <Compile Include="Interfaces\IUndoService.cs" />
-    <Compile Include="Interfaces\IServiceProviderEx.cs" />
-    <Compile Include="Interfaces\IServiceProviderMetadata.cs" />
+    <Compile Include="Interfaces\IServiceLocator.cs" />
     <Compile Include="Composition\FilteredCatalog.cs" />
     <Compile Include="Services\DynamicComposer.cs" />
     <Compile Include="Services\MessageMediator.cs" />

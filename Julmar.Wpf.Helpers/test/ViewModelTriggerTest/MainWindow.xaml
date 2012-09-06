@@ -7,11 +7,30 @@
         x:Class="ViewModelTriggerTest.MainWindow"
         Title="MainWindow" Height="350" Width="525">
     <Grid x:Name="RootLayout">
-    	<i:Interaction.Triggers>
+    	
+        <i:Interaction.Triggers>
     		<julmar:ViewModelTrigger Target="{Binding}" EventName="ChangeColor">
-    			<ei:ChangePropertyAction PropertyName="Background" Value="Red"/>
+    			<ei:ChangePropertyAction PropertyName="Background" Value="Red" />
             </julmar:ViewModelTrigger>
         </i:Interaction.Triggers>
-        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20,10" Content="Go" Command="{Binding RunAction}" />
+        
+        <StackPanel>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20,10" 
+                    Margin="10"
+                Content="Execute VM Command RED" 
+                Command="{Binding RunAction}" />
+
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20,10" 
+                    Margin="20"
+                Content="Execute VM Command YLW" 
+                Command="{Binding RunAction2}">
+                <i:Interaction.Triggers>
+                    <julmar:ViewModelTrigger Target="{Binding}" EventName="ChangeColorButton">
+                        <ei:ChangePropertyAction PropertyName="Background" Value="Yellow" />
+                    </julmar:ViewModelTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </StackPanel>
+
     </Grid>
 </Window>

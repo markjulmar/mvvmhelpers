@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using JulMar.Core;
+﻿using System.ComponentModel.Composition;
+using System.Windows;
 using JulMar.Windows.Interfaces;
 using System.Windows.Controls;
 
@@ -8,7 +8,7 @@ namespace JulMar.Windows.UI
     /// <summary>
     /// This class implements the IMessageVisualizer for WPF
     /// </summary>
-    [ExportService(typeof(IMessageVisualizer))]
+    [Export(typeof(IMessageVisualizer))]
     sealed class MessageVisualizer : IMessageVisualizer
     {
         /// <summary>

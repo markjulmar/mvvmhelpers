@@ -1,20 +1,17 @@
 ﻿<Window x:Class="MVVMFolderExplorer.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:julmar="http://www.julmar.com/wpfhelpers"
-    xmlns:ViewModels="clr-namespace:MVVMFolderExplorer.ViewModels"
+    xmlns:julmar="http://www.julmar.com/wpfhelpers" 
     xmlns:Converters="clr-namespace:MVVMFolderExplorer.Converters"
-    xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:ViewModels="clr-namespace:MVVMFolderExplorer.ViewModels"
     DataContext="{julmar:ViewModelCreator Key=MainWindow}"
     Title="File Explorer" Height="400" Width="500">
     
     <Window.Resources>
-        <!-- Bindable commands sit in resources and allow keyboard input to target ViewModel commands -->
-        <julmar:BindableCommand x:Key="CloseCommand" Command="{Binding CloseAppCommand}" />
-        
         <Converters:FilenameToIconConverter x:Key="iconConverter" />
         
-        <HierarchicalDataTemplate x:Key="DirectoryTemplate" ItemsSource="{Binding Subdirectories}">
+        <HierarchicalDataTemplate x:Key="DirectoryTemplate" DataType="ViewModels:DirectoryViewModel" 
+                                  ItemsSource="{Binding Subdirectories}">
             <StackPanel Orientation="Horizontal">
                 <Image Width="16" Height="16" Source="{Binding FullName, Converter={StaticResource iconConverter}}" />
                 <TextBlock x:Name="tb" Margin="5,0" Text="{Binding Name}" />
@@ -29,25 +26,10 @@
     </Window.Resources>
     
     <Window.InputBindings>
-        <KeyBinding Key="X" Modifiers="ALT" Command="{StaticResource CloseCommand}" />
+        <KeyBinding Key="X" Modifiers="ALT" Command="{Binding CloseAppCommand}" />
     </Window.InputBindings>
     
-    <Interactivity:Interaction.Triggers>
-        <!-- CommandEventTrigger allows you to bind events -> commands. You can also associate actions -->
-        <julmar:CommandEventTrigger Event="Activated">
-            <julmar:ApplyEffect Effect="{x:Null}" />
-        </julmar:CommandEventTrigger>
-        <julmar:CommandEventTrigger Event="Deactivated">
-            <julmar:ApplyEffect>
-                <julmar:ApplyEffect.Effect>
-                    <BlurEffect />
-                </julmar:ApplyEffect.Effect>
-            </julmar:ApplyEffect>
-        </julmar:CommandEventTrigger>
-    </Interactivity:Interaction.Triggers>
-
     <DockPanel>
-
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="E_xit" Command="{Binding CloseAppCommand}" />
@@ -96,7 +78,7 @@
                         <GridView.Columns>
                             <GridViewColumn Header="File Name" Width="150">
                                 <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
+                                    <DataTemplate DataType="ViewModels:FileViewModel">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="16" Height="16" Source="{Binding FullPath, Converter={StaticResource iconConverter}}" />
                                             <TextBlock Margin="5,0" Text="{Binding Name}" />

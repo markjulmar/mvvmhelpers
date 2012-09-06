@@ -9,13 +9,6 @@ namespace JulMar.Windows.UI
     /// </summary>
     public sealed class UICommand : IUICommand
     {
-        static readonly IUICommand OkCommand = new UICommand(0, "OK");
-        static readonly IUICommand CancelCommand = new UICommand(1, "Cancel");
-        static readonly IUICommand YesCommand = new UICommand(2, "Yes");
-        static readonly IUICommand NoCommand = new UICommand(3, "No");
-        static readonly IUICommand AllowCommand = new UICommand(4, "Allow");
-        static readonly IUICommand BlockCommand = new UICommand(5, "Block");
-
         /// <summary>
         /// Id representing this command
         /// </summary>
@@ -54,10 +47,20 @@ namespace JulMar.Windows.UI
         /// <summary>
         /// OK command
         /// </summary>
+        static readonly IUICommand OkCommand = new UICommand(0, "OK");
+
+        /// <summary>
+        /// OK command
+        /// </summary>
         public static IUICommand Ok
         {
             get { return OkCommand; }
         }
+
+        /// <summary>
+        /// Cancel command
+        /// </summary>
+        static readonly IUICommand CancelCommand = new UICommand(1, "Cancel");
 
         /// <summary>
         /// Cancel command
@@ -78,10 +81,20 @@ namespace JulMar.Windows.UI
         /// <summary>
         /// Yes command
         /// </summary>
+        static readonly IUICommand YesCommand = new UICommand(2, "Yes");
+
+        /// <summary>
+        /// Yes command
+        /// </summary>
         public static IUICommand Yes
         {
             get { return YesCommand; }
         }
+
+        /// <summary>
+        /// No command
+        /// </summary>
+        static readonly IUICommand NoCommand = new UICommand(3, "No");
 
         /// <summary>
         /// No command
@@ -110,10 +123,20 @@ namespace JulMar.Windows.UI
         /// <summary>
         /// Allow command
         /// </summary>
+        static readonly IUICommand AllowCommand = new UICommand(4, "Allow");
+
+        /// <summary>
+        /// Allow command
+        /// </summary>
         public static IUICommand Allow
         {
             get { return AllowCommand; }
         }
+
+        /// <summary>
+        /// Block command
+        /// </summary>
+        static readonly IUICommand BlockCommand = new UICommand(5, "Block");
 
         /// <summary>
         /// Block command

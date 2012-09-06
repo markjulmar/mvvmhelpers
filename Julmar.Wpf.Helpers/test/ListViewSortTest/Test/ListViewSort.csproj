@@ -18,6 +18,10 @@
     <WarningLevel>4</WarningLevel>
     <ApplicationIcon>Application.ico</ApplicationIcon>
     <Utf8Output>true</Utf8Output>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

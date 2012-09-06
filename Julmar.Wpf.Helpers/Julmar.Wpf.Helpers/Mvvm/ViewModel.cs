@@ -3,7 +3,6 @@ using System.Windows.Threading;
 using JulMar.Core.Interfaces;
 using JulMar.Core.Services;
 using System.Windows;
-using JulMar.Windows.Extensions;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -12,21 +11,6 @@ namespace JulMar.Windows.Mvvm
     /// </summary>
     public class ViewModel : SimpleViewModel, IDisposable
     {
-        /// <summary>
-        /// Service provider used by ViewModels.
-        /// </summary>
-        public static IServiceProviderEx ServiceProvider;
-
-        /// <summary>
-        /// Static constructor - executed prior to any ViewModel being used.
-        /// </summary>
-        static ViewModel()
-        {
-            ServiceProvider = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
-            if (ServiceProvider == null)
-                throw new InvalidOperationException("Unable to locate Service Locator Service (IServiceProviderEx");
-        }
-
         /// <summary>
         /// This event should be raised to close the view.  Any view tied to this
         /// ViewModel should register a handler on this event and close itself when
@@ -91,7 +75,7 @@ namespace JulMar.Windows.Mvvm
         /// <returns>Implementation</returns>
         protected T Resolve<T>()
         {
-            return ServiceProvider.Resolve<T>();
+            return ServiceLocator.Instance.Resolve<T>();
         }
 
         /// <summary>
@@ -226,15 +210,6 @@ namespace JulMar.Windows.Mvvm
             }
             else
                 action();
-        }
-
-        /// <summary>
-        /// Returns true if we are currently in design mode.
-        /// Useful for design-time property return tests.
-        /// </summary>
-        protected bool InDesignMode
-        {
-            get { return Designer.InDesignMode; }
         }
 
         #region IDisposable Members

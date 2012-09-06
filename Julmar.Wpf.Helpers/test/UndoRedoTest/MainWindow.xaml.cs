@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using JulMar.Core.Interfaces;
+using JulMar.Core.Services;
 using JulMar.Core.Undo;
 using JulMar.Windows.Mvvm;
 
@@ -19,7 +20,7 @@ namespace WpfApplication1
         public MainWindow()
         {
             // Get the undo service
-            _undoService = ViewModel.ServiceProvider.Resolve<IUndoService>();
+            _undoService = ServiceLocator.Instance.Resolve<IUndoService>();
 
             // Setup Undo/Redo key bindings.  This is not done automatically since the service is in Core.
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, (s, e) => _undoService.Undo(), (s, e) => e.CanExecute = _undoService.CanUndo));

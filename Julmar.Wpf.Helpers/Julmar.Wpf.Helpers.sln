@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Wpf.Behaviors", "Julmar.Wpf.Behaviors\Julmar.Wpf.Behaviors.csproj", "{E5662DCB-CE30-4AC2-A113-62F070D722B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Wpf.Helpers", "Julmar.Wpf.Helpers\Julmar.Wpf.Helpers.csproj", "{37EAC372-5684-45E2-B999-986F98EFE40D}"
@@ -29,8 +29,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMFolderExplorer", "test\MVVMFolderExplorer\MVVMFolderExplorer.csproj", "{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragDropTest", "test\DragDropTest\DragDropTest.csproj", "{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttachedEventCommander.Test", "test\AttachedEventCommanderTest\AttachedEventCommander.Test.csproj", "{602BFDC7-1738-4ABB-92B6-ADD918B7A580}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiWindowTest", "test\MultiWindowTest\MultiWindowTest.csproj", "{4206AC26-0583-4501-812D-E5A14749E422}"
 EndProject
@@ -61,9 +59,103 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeferredScrollingTest", "test\DeferredScrollingTest\DeferredScrollingTest.csproj", "{B4A4E314-641C-4095-93B1-ACE8C1B5461B}"
 EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 25
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Julmar.Wpf.Behaviors\\Julmar.Wpf.Behaviors.csproj
+		SccProjectName1 = Julmar.Wpf.Behaviors
+		SccLocalPath1 = Julmar.Wpf.Behaviors
+		SccProjectUniqueName2 = Julmar.Wpf.Helpers\\Julmar.Wpf.Helpers.csproj
+		SccProjectName2 = Julmar.Wpf.Helpers
+		SccLocalPath2 = Julmar.Wpf.Helpers
+		SccProjectUniqueName3 = test\\TestMvvmApp\\TestMvvmApp.csproj
+		SccProjectTopLevelParentUniqueName3 = Julmar.Wpf.Helpers.sln
+		SccProjectName3 = test/TestMvvmApp
+		SccLocalPath3 = test\\TestMvvmApp
+		SccProjectUniqueName4 = test\\Julmar.Wpf.Helpers.UnitTests\\Julmar.Wpf.Helpers.UnitTests.csproj
+		SccProjectName4 = test/Julmar.Wpf.Helpers.UnitTests
+		SccLocalPath4 = test\\Julmar.Wpf.Helpers.UnitTests
+		SccProjectUniqueName5 = test\\ScrollTest\\SynchronizedScrollTest.csproj
+		SccProjectTopLevelParentUniqueName5 = Julmar.Wpf.Helpers.sln
+		SccProjectName5 = test/ScrollTest
+		SccLocalPath5 = test\\ScrollTest
+		SccProjectUniqueName6 = test\\MTObservableTest\\MTObservableTest.csproj
+		SccProjectTopLevelParentUniqueName6 = Julmar.Wpf.Helpers.sln
+		SccProjectName6 = test/MTObservableTest
+		SccLocalPath6 = test\\MTObservableTest
+		SccProjectUniqueName7 = test\\UndoRedoTest\\UndoTest.csproj
+		SccProjectTopLevelParentUniqueName7 = Julmar.Wpf.Helpers.sln
+		SccProjectName7 = test/UndoRedoTest
+		SccLocalPath7 = test\\UndoRedoTest
+		SccProjectUniqueName8 = Julmar.Core\\Julmar.Core.csproj
+		SccProjectName8 = Julmar.Core
+		SccLocalPath8 = Julmar.Core
+		SccProjectUniqueName9 = test\\MVVMFolderExplorer\\MVVMFolderExplorer.csproj
+		SccProjectTopLevelParentUniqueName9 = Julmar.Wpf.Helpers.sln
+		SccProjectName9 = test/MVVMFolderExplorer
+		SccLocalPath9 = test\\MVVMFolderExplorer
+		SccProjectUniqueName10 = test\\DragDropTest\\DragDropTest.csproj
+		SccProjectTopLevelParentUniqueName10 = Julmar.Wpf.Helpers.sln
+		SccProjectName10 = test/DragDropTest
+		SccLocalPath10 = test\\DragDropTest
+		SccProjectUniqueName11 = test\\MultiWindowTest\\MultiWindowTest.csproj
+		SccProjectTopLevelParentUniqueName11 = Julmar.Wpf.Helpers.sln
+		SccProjectName11 = test/MultiWindowTest
+		SccLocalPath11 = test\\MultiWindowTest
+		SccProjectUniqueName12 = test\\MasterDetailTest\\SlowMasterDetailTest.csproj
+		SccProjectTopLevelParentUniqueName12 = Julmar.Wpf.Helpers.sln
+		SccProjectName12 = test/MasterDetailTest
+		SccLocalPath12 = test\\MasterDetailTest
+		SccProjectUniqueName13 = test\\ViewModelTriggerTest\\ViewModelTriggerTest.csproj
+		SccProjectTopLevelParentUniqueName13 = Julmar.Wpf.Helpers.sln
+		SccProjectName13 = test/ViewModelTriggerTest
+		SccLocalPath13 = test\\ViewModelTriggerTest
+		SccProjectUniqueName14 = test\\ListViewSortTest\\Test\\ListViewSort.csproj
+		SccProjectTopLevelParentUniqueName14 = Julmar.Wpf.Helpers.sln
+		SccProjectName14 = test/ListViewSortTest/Test
+		SccLocalPath14 = test\\ListViewSortTest\\Test
+		SccProjectUniqueName15 = test\\MultiSelectTreeView\\MultiSelectTreeView.csproj
+		SccProjectTopLevelParentUniqueName15 = Julmar.Wpf.Helpers.sln
+		SccProjectName15 = test/MultiSelectTreeView
+		SccLocalPath15 = test\\MultiSelectTreeView
+		SccProjectUniqueName16 = test\\MultiSelectCollectionTest\\MultiSelectCollectionTest.csproj
+		SccProjectTopLevelParentUniqueName16 = Julmar.Wpf.Helpers.sln
+		SccProjectName16 = test/MultiSelectCollectionTest
+		SccLocalPath16 = test\\MultiSelectCollectionTest
+		SccProjectUniqueName17 = test\\StyleBehaviorTest\\StyleBehaviorTest.csproj
+		SccProjectTopLevelParentUniqueName17 = Julmar.Wpf.Helpers.sln
+		SccProjectName17 = test/StyleBehaviorTest
+		SccLocalPath17 = test\\StyleBehaviorTest
+		SccProjectUniqueName18 = test\\MouseScrollingBehavior\\MouseScrollingBehavior.csproj
+		SccProjectTopLevelParentUniqueName18 = Julmar.Wpf.Helpers.sln
+		SccProjectName18 = test/MouseScrollingBehavior
+		SccLocalPath18 = test\\MouseScrollingBehavior
+		SccProjectUniqueName19 = test\\ListViewColumnSizer\\ListViewColumnSizer.csproj
+		SccProjectTopLevelParentUniqueName19 = Julmar.Wpf.Helpers.sln
+		SccProjectName19 = test/ListViewColumnSizer
+		SccLocalPath19 = test\\ListViewColumnSizer
+		SccProjectUniqueName20 = test\\MultiUiViewModelTest\\MultiUiViewModelTest.csproj
+		SccProjectTopLevelParentUniqueName20 = Julmar.Wpf.Helpers.sln
+		SccProjectName20 = test/MultiUiViewModelTest
+		SccLocalPath20 = test\\MultiUiViewModelTest
+		SccProjectUniqueName21 = test\\DeferredBindTest\\DeferredBindTest.csproj
+		SccProjectTopLevelParentUniqueName21 = Julmar.Wpf.Helpers.sln
+		SccProjectName21 = test/DeferredBindTest
+		SccLocalPath21 = test\\DeferredBindTest
+		SccProjectUniqueName22 = test\\ServiceReplacement\\ServiceReplacement.csproj
+		SccProjectTopLevelParentUniqueName22 = Julmar.Wpf.Helpers.sln
+		SccProjectName22 = test/ServiceReplacement
+		SccLocalPath22 = test\\ServiceReplacement
+		SccProjectUniqueName23 = test\\ServiceReplacementTests\\ServiceReplacementTests.csproj
+		SccProjectTopLevelParentUniqueName23 = Julmar.Wpf.Helpers.sln
+		SccProjectName23 = test/ServiceReplacementTests
+		SccLocalPath23 = test\\ServiceReplacementTests
+		SccProjectUniqueName24 = test\\DeferredScrollingTest\\DeferredScrollingTest.csproj
+		SccProjectTopLevelParentUniqueName24 = Julmar.Wpf.Helpers.sln
+		SccProjectName24 = test/DeferredScrollingTest
+		SccLocalPath24 = test\\DeferredScrollingTest
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Julmar.Wpf.Helpers.vsmdi
@@ -177,16 +269,6 @@ Global
 		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF}.Release|x86.ActiveCfg = Release|Any CPU
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580}.Debug|x86.ActiveCfg = Debug|x86
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580}.Debug|x86.Build.0 = Debug|x86
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580}.Release|Any CPU.ActiveCfg = Release|x86
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580}.Release|Mixed Platforms.Build.0 = Release|x86
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580}.Release|x86.ActiveCfg = Release|x86
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580}.Release|x86.Build.0 = Release|x86
 		{4206AC26-0583-4501-812D-E5A14749E422}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{4206AC26-0583-4501-812D-E5A14749E422}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{4206AC26-0583-4501-812D-E5A14749E422}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -338,7 +420,6 @@ Global
 		{525EF1E9-6326-4F73-9F54-C2A72C473F99} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{C1A3F221-3165-4AD9-AABA-6F4D9B2C130D} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{64AE80E3-9AFF-4826-9F62-E9CBD0F318DF} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
-		{602BFDC7-1738-4ABB-92B6-ADD918B7A580} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{4206AC26-0583-4501-812D-E5A14749E422} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{4340208F-70A7-4B4A-8840-F642C06710BA} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{3D696203-A2D9-4C4A-96F4-65ECF716FC1A} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
@@ -353,5 +434,9 @@ Global
 		{2C23803C-3F66-45C0-A2B0-B18DBA964CB9} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{5BDC17CB-CDBA-4253-A5D9-2246DBA4BD60} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{B4A4E314-641C-4095-93B1-ACE8C1B5461B} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal

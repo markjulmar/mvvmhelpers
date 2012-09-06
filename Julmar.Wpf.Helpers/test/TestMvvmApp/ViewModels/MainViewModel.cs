@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Media;
 using JulMar.Core.Undo;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
-using JulMar.Windows.Behaviors;
-using System.Windows;
-using System.Windows.Controls;
 using System.ComponentModel.Composition;
 using JulMar.Core.Interfaces;
 using JulMar.Windows.UI;
-using TestMvvm.Services;
 
 namespace TestMvvm.ViewModels
 {
@@ -19,7 +16,7 @@ namespace TestMvvm.ViewModels
     /// The ViewModel for the application
     /// </summary>
     [ExportViewModel("MainWindow")]
-    public class WinViewModel : ViewModel
+    public class MainViewModel : ViewModel
     {
         #region Data
         private bool _isActive;
@@ -32,17 +29,13 @@ namespace TestMvvm.ViewModels
         public bool IsActive
         {
             get { return _isActive; }
-            set { _isActive = value; RaisePropertyChanged("IsActive");}
+            set { SetPropertyValue(ref _isActive, value, "IsActive");}
         }
 
         public string Title
         {
             get { return _title; }
-            set
-            {
-                _title = value; 
-                RaisePropertyChanged("Title");
-            }
+            set { SetPropertyValue(ref _title, value, "Title"); }
         }
 
         public string BackgroundColor
@@ -51,8 +44,7 @@ namespace TestMvvm.ViewModels
             set
             {
                 Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "BackgroundColor", _color, value));
-                _color = value; 
-                RaisePropertyChanged("BackgroundColor");
+                SetPropertyValue(ref _color, value, "BackgroundColor");
             }
         }
 
@@ -62,29 +54,28 @@ namespace TestMvvm.ViewModels
             set
             {
                 Resolve<IUndoService>().Add(new PropertyChangeUndo(this, "ShowText", _showText, value));
-                _showText = value; 
-                RaisePropertyChanged("ShowText");
+                SetPropertyValue(ref _showText, value, "ShowText");
             }
         }
 
         public ObservableCollection<Element> Elements { get; private set; }
 
         #region Commands
-        public ICommand ActivatedCommand { get; private set; }
-        public ICommand DeactivatedCommand { get; private set; }
-        public ICommand LoadedCommand { get; private set; }
-        public ICommand CloseCommand { get; private set; }
-        public ICommand ExitCommand { get; private set; }
-        public ICommand ShowColorDialogCommand { get; private set; }
-        public ICommand ShowPropertiesCommand { get; private set; }
-        public ICommand MouseEnterLeaveCommand { get; private set; }
-        public ICommand ChangeBackground { get; private set; }
+        public IDelegateCommand ActivatedCommand { get; private set; }
+        public IDelegateCommand DeactivatedCommand { get; private set; }
+        public IDelegateCommand LoadedCommand { get; private set; }
+        public IDelegateCommand ClosingCommand { get; private set; }
+        public IDelegateCommand ExitCommand { get; private set; }
+        public IDelegateCommand ShowColorDialogCommand { get; private set; }
+        public IDelegateCommand ShowPropertiesCommand { get; private set; }
+        public IDelegateCommand MouseEnterLeaveCommand { get; private set; }
+        public IDelegateCommand ChangeBackground { get; private set; }
         #endregion
 
         // Can import services directly, or use Resolve<IUIVisualizer>() to retrieve instance JIT
         [Import] private IUIVisualizer _uiVisualizer = null;
 
-        public WinViewModel()
+        public MainViewModel()
         {
             _title = "MVVM Test";
             _color = "White";
@@ -94,11 +85,11 @@ namespace TestMvvm.ViewModels
             ActivatedCommand = new DelegateCommand(() => IsActive = true);
             DeactivatedCommand = new DelegateCommand(() => IsActive = false);
             LoadedCommand = new DelegateCommand(OnLoaded);
-            CloseCommand = new DelegateCommand(OnClosed, OnCheckClose);
+            ClosingCommand = new DelegateCommand<CancelEventArgs>(OnClosing);
             ExitCommand = new DelegateCommand(RaiseCloseRequest);
             ShowColorDialogCommand = new DelegateCommand<Element>(ShowColorDialog);
             ShowPropertiesCommand = new DelegateCommand(ShowPropertyDialog);
-            MouseEnterLeaveCommand = new DelegateCommand<EventParameters>(OnMouseEnterLeave);
+            MouseEnterLeaveCommand = new DelegateCommand<RoutedEventArgs>(OnMouseEnterLeave);
             ChangeBackground = new DelegateCommand<string>(OnChangeBackground);
         }
 
@@ -123,36 +114,19 @@ namespace TestMvvm.ViewModels
             _uiVisualizer.Show("ColorDialogVisual", new ColorDialogViewModel(parameter), true, null);
         }
 
-        private void OnClosed()
+        private void OnClosing(CancelEventArgs e)
         {
-            Resolve<IErrorVisualizer>().Show("Window was closed", "The window has been closed.");
+            bool canClose = Resolve<IMessageVisualizer>().Show(
+                "Question", "Do you want to close this window?",
+                          new MessageVisualizerOptions(UICommand.YesNo)) == UICommand.Yes;
+
+            e.Cancel = !canClose;
+
         }
 
-        private bool OnCheckClose()
+        private void OnMouseEnterLeave(RoutedEventArgs e)
         {
-            bool canClose = true;
-
-            IMessageVisualizer messageVisualizer = Resolve<IMessageVisualizer>();
-            if (messageVisualizer == null
-                || messageVisualizer.GetType() != typeof(InternalMessageVisualizer))
-            {
-                Resolve<IErrorVisualizer>().Show("Error!", "Message Visualizer was not registered properly!");
-            }
-            else
-                canClose = messageVisualizer.Show("Question", "Do you want to close this window?",
-                                                  new MessageVisualizerOptions(UICommand.YesNo)) == UICommand.Yes;
-
-            return canClose;
-        }
-
-        private void OnMouseEnterLeave(EventParameters ep)
-        {
-            if (ep.CommandParameter != null)
-            {
-                RoutedEventArgs re = (RoutedEventArgs) ep.EventArgs;
-                ItemsControl fe = (ItemsControl) ep.CommandParameter;
-                Title = re.RoutedEvent == UIElement.MouseEnterEvent ? "MVVM Test (Active)" : "MVVM Test (Inactive)";
-            }
+            Title = e.RoutedEvent == UIElement.MouseEnterEvent ? "MVVM Test (Active)" : "MVVM Test (Inactive)";
         }
 
         private void OnChangeBackground(string color)

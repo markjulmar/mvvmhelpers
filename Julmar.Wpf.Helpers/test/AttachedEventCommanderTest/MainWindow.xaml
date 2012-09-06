@@ -12,6 +12,7 @@
         <ListBox ItemsSource="{Binding Data}" Grid.Row="1" Margin="2" FontSize="9pt" />
         
         <Button VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" TextBoxBase.TextChanged="OnTextChanged">
+            <
             <Behaviors:EventCommander.Mappings>
                 <Behaviors:CommandEvent Command="{Binding ShowText}" Event="TextBoxBase.TextChanged" />
             </Behaviors:EventCommander.Mappings>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JulMar.Windows.Extensions;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq.Expressions;
@@ -12,6 +13,14 @@ namespace JulMar.Windows.Mvvm
     /// </summary>
     public class SimpleViewModel : INotifyPropertyChanged
     {
+        /// <summary>
+        /// True/False whether we are currently in design mode
+        /// </summary>
+        protected bool InDesignMode
+        {
+            get { return Designer.InDesignMode; }
+        }
+
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>

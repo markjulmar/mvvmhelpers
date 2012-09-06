@@ -101,9 +101,21 @@ namespace JulMar.Windows.Interactivity
             EventInfo ei = targetType.GetEvent(eventName);
             if (ei != null)
             {
-                var handler = Delegate.CreateDelegate(ei.EventHandlerType, this, "RaiseTrigger");
-                ei.RemoveEventHandler(target, handler);
-                ei.AddEventHandler(target, handler);
+                int paramCount = ((MethodInfo) ei.EventHandlerType.GetMember("Invoke")[0]).GetParameters().Length;
+                if (paramCount == 1)
+                {
+                    var handler = Delegate.CreateDelegate(ei.EventHandlerType, this, "RaiseTriggerWithParameter");
+                    ei.RemoveEventHandler(target, handler);
+                    ei.AddEventHandler(target, handler);
+                }
+                else if (paramCount == 0)
+                {
+                    var handler = Delegate.CreateDelegate(ei.EventHandlerType, this, "RaiseTriggerNoParams");
+                    ei.RemoveEventHandler(target, handler);
+                    ei.AddEventHandler(target, handler);
+                }
+                else
+                    throw new NotSupportedException("Cannot bind to events with more than one parameter");
             }
         }
 
@@ -121,16 +133,35 @@ namespace JulMar.Windows.Interactivity
             EventInfo ei = targetType.GetEvent(eventName);
             if (ei != null)
             {
-                var handler = Delegate.CreateDelegate(ei.EventHandlerType, this, "RaiseTrigger");
-                ei.RemoveEventHandler(target, handler);
+                int paramCount = ((MethodInfo)ei.EventHandlerType.GetMember("Invoke")[0]).GetParameters().Length;
+                if (paramCount == 1)
+                {
+                    var handler = Delegate.CreateDelegate(ei.EventHandlerType, this, "RaiseTriggerWithParameter");
+                    ei.RemoveEventHandler(target, handler);
+                }
+                else if (paramCount == 0)
+                {
+                    var handler = Delegate.CreateDelegate(ei.EventHandlerType, this, "RaiseTriggerNoParams");
+                    ei.RemoveEventHandler(target, handler);
+                }
+                else
+                    throw new NotSupportedException("Cannot bind to events with more than one parameter");
             }
         }
 
         /// <summary>
         /// This is called when the trigger occurs.
         /// </summary>
+        private void RaiseTriggerNoParams()
+        {
+            InvokeActions(null);
+        }
+
+        /// <summary>
+        /// This is called when the trigger occurs.
+        /// </summary>
         /// <param name="parameter"></param>
-        private void RaiseTrigger(object parameter = null)
+        private void RaiseTriggerWithParameter(object parameter)
         {
             InvokeActions(parameter);
         }

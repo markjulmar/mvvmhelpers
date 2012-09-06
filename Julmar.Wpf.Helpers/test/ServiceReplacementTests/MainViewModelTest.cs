@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using JulMar.Core.Services;
 using ServiceReplacement.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using JulMar.Windows.Interfaces;
-using JulMar.Windows.Mvvm;
 using System.Threading;
 using JulMar.Windows.UI;
 
@@ -136,8 +136,8 @@ namespace ServiceReplacementTests
             MockNotificationVisualizer notifyVisualizer = new MockNotificationVisualizer();
             MockMessageVisualizer messageVisualizer = new MockMessageVisualizer { Response = UICommand.Yes };
             
-            ViewModel.ServiceProvider.Add(typeof(INotificationVisualizer), notifyVisualizer);
-            ViewModel.ServiceProvider.Add(typeof(IMessageVisualizer), messageVisualizer);
+            ServiceLocator.Instance.Add(typeof(INotificationVisualizer), notifyVisualizer);
+            ServiceLocator.Instance.Add(typeof(IMessageVisualizer), messageVisualizer);
 
             SynchronizationContext savedContext = SynchronizationContext.Current;
             MockSynchronizationContext mockContext = new MockSynchronizationContext();
@@ -151,8 +151,8 @@ namespace ServiceReplacementTests
             Assert.IsTrue(notifyVisualizer.LastDisposeCall != null);
             Assert.IsTrue(notifyVisualizer.LastDisposeCall > notifyVisualizer.LastBeginCall);
 
-            ViewModel.ServiceProvider.Remove(typeof(INotificationVisualizer));
-            ViewModel.ServiceProvider.Remove(typeof(IMessageVisualizer));
+            ServiceLocator.Instance.Remove(typeof(INotificationVisualizer));
+            ServiceLocator.Instance.Remove(typeof(IMessageVisualizer));
             SynchronizationContext.SetSynchronizationContext(savedContext);
         }
 
@@ -167,8 +167,8 @@ namespace ServiceReplacementTests
             MockNotificationVisualizer notifyVisualizer = new MockNotificationVisualizer();
             MockMessageVisualizer messageVisualizer = new MockMessageVisualizer { Response = UICommand.No };
 
-            ViewModel.ServiceProvider.Add(typeof(INotificationVisualizer), notifyVisualizer);
-            ViewModel.ServiceProvider.Add(typeof(IMessageVisualizer), messageVisualizer);
+            ServiceLocator.Instance.Add(typeof(INotificationVisualizer), notifyVisualizer);
+            ServiceLocator.Instance.Add(typeof(IMessageVisualizer), messageVisualizer);
 
             target.PiText = string.Empty;
             target.CalculatePi.Execute(null);
@@ -177,8 +177,8 @@ namespace ServiceReplacementTests
             Assert.IsTrue(notifyVisualizer.LastBeginCall == null);
             Assert.IsTrue(notifyVisualizer.LastDisposeCall == null);
 
-            ViewModel.ServiceProvider.Remove(typeof(INotificationVisualizer));
-            ViewModel.ServiceProvider.Remove(typeof(IMessageVisualizer));
+            ServiceLocator.Instance.Remove(typeof(INotificationVisualizer));
+            ServiceLocator.Instance.Remove(typeof(IMessageVisualizer));
         }
 
     }

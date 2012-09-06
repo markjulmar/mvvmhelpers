@@ -146,3 +146,21 @@ Fixes for EditingViewModel, also extended with more interception hooks.
 4.10 6/15/2012
 Refactored some of the services to be more inline with the internal metro/Win8 version.
 Merged .NET 3.5/4.0 set together
+
+4.20 9/2012 (matches 1.04 of MvvmHelpers/Metro)
+Several changes based on work done with MVVMHelpers/Metro.
+Removed [ExportService], just use [Export] and ServiceLocator will find it.
+Renamed ServiceProvider to ServiceLocator.
+Renamed IServiceProviderEx to IServiceLocator
+Removed ViewModel.ServiceProvider - replaced with ServiceLocator.Instance
+ServiceLocator is now exported only as IServiceLocator, not IServiceProvider[Ex]
+Removed EventCommander - use EventTrigger from Blend
+Removed LifetimeEvents - use EventTrigger from Blend
+MessageVisualizerOptions is now in JulMar.Windows.UI namespace (was in interfaces)
+Changed InvokeCommand to pass parameter from trigger if no CommandParameter is data bound
+BREAKING CHANGE: Services are no longer marked with [InheritedExport], you must [Export] any services you want to override.  This was done specifically so that you could implement service interfaces without replacing the built-in ones.
+Added Windows 8/2012 constants to SystemInfo
+Updated ViewModelTrigger to support Action and Action<T> delegates
+ViewModelLocator is not public anymore - use IViewModelLocator
+New ViewModelLocatorResource can be placed into resources to find VMs if you don't like ViewModelCreator
+Added ServiceLocatorResource (from Win8/Metro)

@@ -36,14 +36,10 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -97,7 +93,6 @@
     <Compile Include="Actions\ChangeCursorAction.cs" />
     <Compile Include="Triggers\ClickTrigger.cs" />
     <Compile Include="Interactivity\CloseWindowBehavior.cs" />
-    <Compile Include="Triggers\CommandEventTrigger.cs" />
     <Compile Include="Interactivity\MaskedTextBoxBehavior.cs" />
     <Compile Include="Interactivity\DataGridRowDragBehavior.cs" />
     <Compile Include="Interactivity\DataGridRowIndexBehavior.cs" />

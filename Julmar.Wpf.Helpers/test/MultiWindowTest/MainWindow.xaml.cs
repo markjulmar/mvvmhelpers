@@ -35,7 +35,7 @@ namespace MultiWindowTest
                 ownerText = string.Format("Window #{0}", Application.Current.Windows.Cast<Window>().ToList().IndexOf(Owner) + 1);
 
             this.Title = string.Format("Window #: {0} - Owner: {1}", Application.Current.Windows.Count, ownerText);
-            ViewModel.ServiceProvider.Resolve<IMessageMediator>().Register(this);
+            ServiceLocator.Instance.Resolve<IMessageMediator>().Register(this);
 
             DynamicComposer.Instance.Compose(this);
             _uiVisualizer.Register("MainWindow", typeof(MainWindow));
@@ -60,7 +60,7 @@ namespace MultiWindowTest
         private void OnCreateNewModalessWindow(object sender, RoutedEventArgs e)
         {
             this.Background = Brushes.Red;
-            ViewModel.ServiceProvider.Resolve<IMessageMediator>().SendMessage(
+            ServiceLocator.Instance.Resolve<IMessageMediator>().SendMessage(
                 new ShowViewMessage
                     {
                         SetOwner = false,
@@ -78,7 +78,7 @@ namespace MultiWindowTest
         private void OnCreateNewModalessChildWindow(object sender, RoutedEventArgs e)
         {
             this.Background = Brushes.Green;
-            ViewModel.ServiceProvider.Resolve<IMessageMediator>().SendMessage(
+            ServiceLocator.Instance.Resolve<IMessageMediator>().SendMessage(
                 new ShowViewMessage
                 {
                     SetOwner = true,

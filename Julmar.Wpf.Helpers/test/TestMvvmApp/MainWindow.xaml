@@ -3,71 +3,48 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:julmar="http://www.julmar.com/wpfhelpers"
     xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:ic="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" x:Class="TestMvvm.MainWindow"
-        
-    julmar:LifetimeEvent.Loaded="{Binding LoadedCommand}"
-    julmar:LifetimeEvent.Activated="{Binding ActivatedCommand}"
-    julmar:LifetimeEvent.Deactivated="{Binding DeactivatedCommand}"
-    julmar:LifetimeEvent.Close="{Binding CloseCommand}"
-        
-    Title="{Binding Title}" Height="300" Width="500" 
+    xmlns:ic="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" 
+    x:Class="TestMvvm.MainWindow"
+    Title="{Binding Title}" Height="300" Width="500"
+    Background="{julmar:LinearGradientBrush LightGreen, SeaGreen, 65}"
     DataContext="{julmar:ViewModelCreator Key=MainWindow}">
 
-    <Window.Resources>
-        <DataTemplate x:Key="ToolTipPreview">
-            <Label Content="{Binding Value}" />
-        </DataTemplate>
-        
-        <julmar:BindableCommand x:Key="exitCommand" Command="{Binding ExitCommand}" />
-        <julmar:BindableCommand x:Key="propsCommand" Command="{Binding ShowPropertiesCommand}" />
-        
-    </Window.Resources>
-
     <Window.InputBindings>
-        <KeyBinding Key="X" Modifiers="Ctrl+Alt" Command="{StaticResource exitCommand}" />
-        <KeyBinding Key="r" Modifiers="Ctrl+Alt" Command="{StaticResource propsCommand}" />
+        <KeyBinding Key="X" Modifiers="Ctrl+Alt" Command="{Binding ExitCommand}" />
+        <KeyBinding Key="r" Modifiers="Ctrl+Alt" Command="{Binding ShowPropertiesCommand}" />
     </Window.InputBindings>
 
-    <Window.Style>
-        <Style TargetType="{x:Type Window}">
-            <Setter Property="Background" Value="{julmar:LinearGradientBrush LightGreen, SeaGreen, 65}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsActive}" Value="False">
-                    <Setter Property="Background" Value="LightGray" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Style>
-
-    <!-- Can use this syntax: -->
-    <julmar:EventCommander.Mappings>
-        <julmar:CommandEvent Event="MouseEnter" 
-                             Command="{Binding MouseEnterLeaveCommand}"
-                             CommandParameter="{Binding ElementName=itemList}" />
-        <!--<julmar:CommandEvent Event="MouseLeave" 
-                             Command="{Binding MouseEnterLeaveCommand}"
-                             CommandParameter="{Binding ElementName=itemList}" />-->
-    </julmar:EventCommander.Mappings>
-
-    <!-- Or this syntax -->
     <Interactivity:Interaction.Triggers>
-        <julmar:CommandEventTrigger Event="MouseLeave"
-                                    Command="{Binding MouseEnterLeaveCommand}"
-                                    CommandParameter="{Binding ElementName=itemList}">
-            <!-- Actions *after* command executed -->
-        </julmar:CommandEventTrigger>
+        <Interactivity:EventTrigger EventName="MouseEnter">
+            <julmar:InvokeCommand Command="{Binding MouseEnterLeaveCommand}" />
+        </Interactivity:EventTrigger>
 
-        <!-- Can also not specify command, but instead use Actions -->
-        <julmar:CommandEventTrigger Event="Activated">
+        <Interactivity:EventTrigger EventName="MouseLeave">
+            <julmar:InvokeCommand Command="{Binding MouseEnterLeaveCommand}" />
+        </Interactivity:EventTrigger>
+
+        <Interactivity:EventTrigger EventName="Loaded">
+            <julmar:InvokeCommand Command="{Binding LoadedCommand}" />
+        </Interactivity:EventTrigger>
+
+        <Interactivity:EventTrigger EventName="Closing">
+            <julmar:InvokeCommand Command="{Binding ClosingCommand}" />
+        </Interactivity:EventTrigger>
+
+        <Interactivity:EventTrigger EventName="Activated">
+            <julmar:InvokeCommand Command="{Binding ActivatedCommand}" />
             <julmar:ApplyEffect Effect="{x:Null}" />
-        </julmar:CommandEventTrigger>
-        <julmar:CommandEventTrigger Event="Deactivated">
+        </Interactivity:EventTrigger>
+
+        <Interactivity:EventTrigger EventName="Deactivated">
+            <julmar:InvokeCommand Command="{Binding DeactivatedCommand}" />
             <julmar:ApplyEffect>
                 <julmar:ApplyEffect.Effect>
                     <BlurEffect />
                 </julmar:ApplyEffect.Effect>
             </julmar:ApplyEffect>
-        </julmar:CommandEventTrigger>
+        </Interactivity:EventTrigger>
+
     </Interactivity:Interaction.Triggers>
     
     <DockPanel>
@@ -124,8 +101,8 @@
                           Margin="10" BorderBrush="Black" BorderThickness="1">
 
                 <ItemsControl.InputBindings>
-                    <MouseBinding Command="{StaticResource exitCommand}" Gesture="Control+RightClick" />
-                    <MouseBinding Command="{StaticResource propsCommand}" MouseAction="MiddleClick" />
+                    <MouseBinding Command="{Binding ExitCommand}" Gesture="Control+RightClick" />
+                    <MouseBinding Command="{Binding ShowPropertiesCommand}" MouseAction="MiddleClick" />
                 </ItemsControl.InputBindings>
 
                 <ItemsControl.ItemTemplate>

@@ -277,7 +277,15 @@ namespace JulMar.Core
         /// <summary>
         /// Windows 2008 R2
         /// </summary>
-        Windows2008R2
+        Windows2008R2,
+        /// <summary>
+        /// Windows 8
+        /// </summary>
+        Windows8,
+        /// <summary>
+        /// Windows Server 2012
+        /// </summary>
+        Windows2012
     }
 
     /// <summary>
@@ -475,15 +483,15 @@ namespace JulMar.Core
                 {
                     // 6.0 = Windows Vista, Windows Server 2008
                     case 0:
-                        ver = OperatingSystem.WindowsVista;
-                        if (isServer)
-                            ver = OperatingSystem.Windows2008;
+                        ver = (isServer) ? OperatingSystem.Windows2008 : OperatingSystem.WindowsVista;
                         break;
                     // 6.1 = Windows 7, Windows Server 2008 R2
                     case 1:
-                        ver = OperatingSystem.Windows7;
-                        if (isServer)
-                            ver = OperatingSystem.Windows2008R2;
+                        ver = (isServer) ? OperatingSystem.Windows2008R2 : OperatingSystem.Windows7;
+                        break;
+                    // 6.2 = Windows 8, Windows Server 2012
+                    case 2:
+                        ver = (isServer) ? OperatingSystem.Windows2012 : OperatingSystem.Windows8;
                         break;
                 }
             }
@@ -559,6 +567,73 @@ namespace JulMar.Core
         StorageEnterpriseServer = 23,
         ServerForSmallBusiness = 24,
         SmallBusinessServerPremium = 25,
+        HomePremiumN = 26,
+        EnterpriseN = 27,
+        UltimateN = 28,
+        WebServerCore = 29,
+        MediumBusinessManagementServer = 30,
+        MediumBusinessSecurityServer = 31,
+        MediumBusinessMessagingServer = 32,
+        ServerFoundation = 33,
+        HomePremiumServer = 34,
+        ServerForSmallBusinessV = 35,
+        StandardServerV = 36,
+        DataCenterServerV = 37,
+        EnterpriseServerV = 38,
+        DataCenterServerCoreV = 39,
+        StandardServerCoreV = 40,
+        EnterpriseServerCoreV = 41,
+        HyperV = 42,
+        StorageExpressServerCore = 43,
+        StorageStandardServerCore = 44,
+        StorageWorkgroupServerCore = 45,
+        StorageEnterpriseServerCore = 46,
+        StarterN = 47,
+        Professional = 48,
+        ProfessionalN = 49,
+        SmallBusinessSolutionServer = 50,
+        ServerForSmallBusinessSolutions = 51,
+        StandardServerSolutions = 52,
+        StandardServerSolutionsCore = 53,
+        SmallBusinessSolutionServerEM = 54,
+        ServerForSmallBusinessSolutionsEM = 55,
+        EmbeddedServer = 56,
+        EmbeddedServerCore = 57,
+        EssentialBusinessServerManagement = 59,
+        EssentialBusinessServerAdditional = 60,
+        EssentialBusinessServerManagementSvc = 0x3D,
+        EssentialBusinessServerAdditionalSvc = 0x3E,
+        SmallBusinessServerPremiumCore   = 0x3F,
+        ClusterServerV                    = 0x40,
+        Embedded                            = 0x41,
+        StarterE                           = 0x42,
+        HomeBasicE                        = 0x43,
+        HomePremiumE                      = 0x44,
+        ProfessionalE                      = 0x45,
+        EnterpriseE                        = 0x46,
+        UltimateE                          = 0x47,
+        EnterpriseEvaluation               = 0x48,
+        MultipointStandardServer          = 0x4C,
+        MultipointPremimumServer           = 0x4D,
+        StandardEvaluationServer          = 0x4F,
+        DataCenterEvaluationServer        = 0x50,
+        EnterpriseNEvaluationServer             = 0x54,
+        EmbeddedAutomotive                 = 0x55,
+        EmbeddedIndustryA                 = 0x56,
+        ThinPC                              = 0x57,
+        EmbeddedA                          = 0x58,
+        EmbeddedIndustry                   = 0x59,
+        EmbeddedE                          = 0x5A,
+        EmbeddedIndustryE                 = 0x5B,
+        EmbeddedIndustryEA               = 0x5C,
+        StorageWorkgroupEvaluationServer = 0x5F,
+        StorageStandardEvaluationServer  = 0x60,
+        CoreARM                            = 0x61,
+        CoreN                              = 0x62,
+        CoreCountrySpecific                = 0x63,
+        CoreSingleLanguage                 = 0x64,
+        Core                                = 0x65,
+        ProfessionalWMC                    = 0x67,
         Unlicensed = 0xabcdabcd
     }
 

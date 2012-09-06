@@ -1,12 +1,10 @@
 using System;
-using System.ComponentModel.Composition;
 
 namespace JulMar.Windows.Interfaces
 {
     /// <summary>
     /// This is used to display a notification that the program is doing something
     /// </summary>
-    [InheritedExport]
     public interface INotificationVisualizer
     {
         /// <summary>

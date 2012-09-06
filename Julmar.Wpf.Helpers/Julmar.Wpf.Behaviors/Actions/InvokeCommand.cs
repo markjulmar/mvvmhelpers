@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 
 namespace JulMar.Windows.Actions
 {
@@ -47,14 +48,16 @@ namespace JulMar.Windows.Actions
         }
 
         /// <summary>
-        /// This is called to execute the command when the trigger conditions are satisified.
+        /// This is called to execute the command when the trigger conditions are satisfied.
         /// </summary>
         /// <param name="parameter">parameter (not used)</param>
         protected override void Invoke(object parameter)
         {
+            object commandParameter = BindingOperations.IsDataBound(this, CommandParameterProperty) 
+                ? CommandParameter : parameter;
             ICommand command = Command;
-            if ((command != null) && command.CanExecute(CommandParameter))
-                command.Execute(CommandParameter);
+            if ((command != null) && command.CanExecute(commandParameter))
+                command.Execute(commandParameter);
         }
     }
 }

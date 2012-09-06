@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using JulMar.Core.Interfaces;
+using System.ComponentModel.Composition;
 
 namespace JulMar.Core.Undo
 {
     /// <summary>
     /// Class used for Undo/Redo support.
     /// </summary>
-    [ExportService(typeof(IUndoService))]
+    [Export(typeof(IUndoService))]
     public class UndoManager : IUndoService
     {
         private const int DefaultMaxCount = 100;

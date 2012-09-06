@@ -34,14 +34,10 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,8 +80,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviors\BindableCommand.cs" />
-    <Compile Include="Behaviors\EventCommander.cs" />
     <Compile Include="Behaviors\HelpProvider.cs" />
     <Compile Include="Behaviors\LifetimeEvent.cs" />
     <Compile Include="Behaviors\PasswordBoxHelper.cs" />
@@ -110,7 +104,8 @@
     <Compile Include="Interfaces\IMessageVisualizer.cs" />
     <Compile Include="Interfaces\IUICommand.cs" />
     <Compile Include="Interfaces\IUIVisualizer.cs" />
-    <Compile Include="Interfaces\MessageVisualizerOptions.cs" />
+    <Compile Include="Interfaces\IViewModelLocator.cs" />
+    <Compile Include="UI\MessageVisualizerOptions.cs" />
     <Compile Include="Markup\LinearGradientBrushExtension.cs" />
     <Compile Include="Markup\ViewModelCreatorExtension.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
@@ -131,8 +126,10 @@
     <Compile Include="Mvvm\AsyncDelegateCommand.cs" />
     <Compile Include="Mvvm\CloseRequestEventArgs.cs" />
     <Compile Include="Mvvm\EditingViewModel.cs" />
+    <Compile Include="Mvvm\ServiceLocatorResource.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
+    <Compile Include="Mvvm\ViewModelLocatorResource.cs" />
     <Compile Include="UI\UICommand.cs" />
     <Compile Include="Validations\ValidatingViewModel.cs" />
     <Compile Include="UI\MessageVisualizer.cs" />

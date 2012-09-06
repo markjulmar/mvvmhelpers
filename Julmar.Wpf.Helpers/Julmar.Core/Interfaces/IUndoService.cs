@@ -1,11 +1,8 @@
-using System.ComponentModel.Composition;
-
 namespace JulMar.Core.Interfaces
 {
     /// <summary>
     /// This interface describes a simple Undo service
     /// </summary>
-    [InheritedExport]
     public interface IUndoService
     {
         /// <summary>

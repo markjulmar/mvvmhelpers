@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
-using JulMar.Core;
 using JulMar.Core.Services;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
@@ -53,7 +52,7 @@ namespace JulMar.Windows.UI
     /// <summary>
     /// This class implements the IUIVisualizer for WPF.
     /// </summary>
-    [ExportService(typeof(IUIVisualizer))]
+    [Export(typeof(IUIVisualizer))]
     sealed class UIVisualizer : IUIVisualizer
     {
         /// <summary>
@@ -66,13 +65,11 @@ namespace JulMar.Windows.UI
         /// </summary>
         private readonly Dictionary<string, Type> _registeredWindows;
 
-        #pragma warning disable 649
         /// <summary>
         /// MEF registered views
         /// </summary>
         [ImportMany(MefLocatorKey, AllowRecomposition = true)]
         private IEnumerable<Lazy<object, IUIVisualizerMetadata>> _locatedVisuals;
-        #pragma warning restore 649
 
         /// <summary>
         /// Set to true once we have loaded any dynamic visuals.
@@ -332,6 +329,9 @@ namespace JulMar.Windows.UI
         {
             if (!_haveLoadedVisuals)
             {
+                // Compose this element
+                DynamicComposer.Instance.ComposeOnce(this);
+
                 // If we have visuals, register them
                 foreach (var item in _locatedVisuals)
                 {

@@ -1,5 +1,5 @@
+using System.ComponentModel.Composition;
 using System.Windows;
-using JulMar.Core;
 using JulMar.Windows.Interfaces;
 using System;
 
@@ -8,7 +8,7 @@ namespace JulMar.Windows.UI
     /// <summary>
     /// This implements the IErrorVisualizer for WPF.
     /// </summary>
-    [ExportService(typeof(IErrorVisualizer))]
+    [Export(typeof(IErrorVisualizer))]
     sealed class ErrorVisualizer : IErrorVisualizer
     {
         /// <summary>

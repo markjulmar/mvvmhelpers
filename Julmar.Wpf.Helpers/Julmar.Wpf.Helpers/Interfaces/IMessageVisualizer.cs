@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.Composition;
+﻿using JulMar.Windows.UI;
 
 namespace JulMar.Windows.Interfaces
 {
     /// <summary>
     /// This interface abstracts the display of MessageBox style notifications
     /// </summary>
-    [InheritedExport]
     public interface IMessageVisualizer
     {
         /// <summary>

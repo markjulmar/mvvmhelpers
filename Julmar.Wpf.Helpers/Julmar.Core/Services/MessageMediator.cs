@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
 using JulMar.Core.Interfaces;
+using System.ComponentModel.Composition;
 
 namespace JulMar.Core.Services
 {
@@ -12,7 +13,7 @@ namespace JulMar.Core.Services
     /// The message handlers are organized using string-based message keys and are held in a WeakReference
     /// collection.
     /// </summary>
-    [ExportService(typeof(IMessageMediator))]
+    [Export(typeof(IMessageMediator))]
     sealed class MessageMediator : IMessageMediator
     {
         /// <summary>
@@ -274,15 +275,19 @@ namespace JulMar.Core.Services
                 wr = wr.ToList();
             }
 
+            bool foundService = false;
             foreach (var action in wr.Select(cb => cb.GetMethod()).Where(action => action != null))
+            {
                 action.DynamicInvoke(message);
+                foundService = true;
+            }
 
             lock (_registeredHandlers)
             {
                 wr.RemoveAll(wa => wa.HasBeenCollected);
             }
 
-            return true;
+            return foundService;
         }
 
         /// <summary>
@@ -305,15 +310,19 @@ namespace JulMar.Core.Services
                 wr = wr.ToList();
             }
 
+            bool foundService = false;
             foreach (var action in wr.Select(cb => cb.GetMethod()).OfType<Action>())
+            {
                 action.Invoke();
+                foundService = true;
+            }
 
             lock (_registeredHandlers)
             {
                 wr.RemoveAll(wa => wa.HasBeenCollected);
             }
 
-            return true;
+            return foundService;
         }
 
         /// <summary>
@@ -337,8 +346,9 @@ namespace JulMar.Core.Services
         /// <returns>True/False if any handlers were invoked.</returns>
         public bool SendMessage<T>(T message)
         {
+            bool foundService = false;
             if (typeof(T) == typeof(string))
-                SendSimpleMessage(message as string);
+                foundService = SendSimpleMessage(message as string);
 
             Type actionType = typeof(Action<>).MakeGenericType(typeof(T));
 
@@ -348,7 +358,7 @@ namespace JulMar.Core.Services
                 keyList = _registeredHandlers.Keys.Where(key => key is Type && ( ((Type)key).IsAssignableFrom(actionType) || actionType.IsAssignableFrom(((Type)key))) ).ToList();
             }
 
-            return keyList.Aggregate(false, (current, key) => current | SendMessage(key, message));
+            return keyList.Aggregate(false, (current, key) => current | SendMessage(key, message)) || foundService;
         }
 
         /// <summary>

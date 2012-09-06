@@ -24,7 +24,7 @@ namespace JulMar.Wpf.Helpers.UnitTests
         {
             const string targetString = "This is a test";
 
-            ServiceLocator sp = new ServiceLocator();
+            IServiceLocator sp = ServiceLocator.Instance;
 
             sp.Add(typeof(string), targetString);
 
@@ -40,7 +40,7 @@ namespace JulMar.Wpf.Helpers.UnitTests
         {
             const string targetString = "This is a test";
 
-            ServiceLocator sp = new ServiceLocator();
+            IServiceLocator sp = ServiceLocator.Instance;
 
             sp.Add(typeof(string), targetString);
 
@@ -60,7 +60,7 @@ namespace JulMar.Wpf.Helpers.UnitTests
         public void InvalidCastTest()
         {
             object obj = new object();
-            ServiceLocator sp = new ServiceLocator();
+            IServiceLocator sp = ServiceLocator.Instance;
 
             sp.Add(typeof(IComparable), obj);
 
@@ -70,25 +70,15 @@ namespace JulMar.Wpf.Helpers.UnitTests
             sp.Resolve<IComparable>();
         }
 
-        [ExportService(typeof(MyServiceClass))]
+        [Export(typeof(MyServiceClass))]
         class MyServiceClass
         {
         }
 
         [TestMethod]
-        public void TestMefLoader()
-        {
-            IServiceProviderEx sp = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
-            Assert.IsNotNull(sp);
-
-            IServiceProvider sp2 = DynamicComposer.Instance.GetExportedValue<IServiceProvider>();
-            Assert.AreSame(sp,sp2);
-        }
-
-        [TestMethod]
         public void TestMyServiceExport()
         {
-            IServiceProviderEx sp = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
+            IServiceLocator sp = DynamicComposer.Instance.GetExportedValue<IServiceLocator>();
             Assert.IsNotNull(sp);
 
             var msc = sp.Resolve<MyServiceClass>();
@@ -97,7 +87,7 @@ namespace JulMar.Wpf.Helpers.UnitTests
 
         interface IMyServiceClass2 {}
 
-        [ExportService(typeof(IMyServiceClass2))]
+        [Export(typeof(IMyServiceClass2))]
         class MyServiceClass2 : IMyServiceClass2
         {
         }
@@ -105,40 +95,45 @@ namespace JulMar.Wpf.Helpers.UnitTests
         [TestMethod]
         public void TestMyServiceExportInterface()
         {
-            IServiceProviderEx sp = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
+            IServiceLocator sp = DynamicComposer.Instance.GetExportedValue<IServiceLocator>();
             Assert.IsNotNull(sp);
 
             var msc = sp.Resolve<IMyServiceClass2>();
             Assert.IsNotNull(msc);
         }
 
-        interface IMyServiceClassBase {}
-
-        [InheritedExport]
-        interface IMyServiceClass3 : IMyServiceClassBase { }
-
-        [ExportService(typeof(IMyServiceClass3))]
-        class MyServiceClass3 : IMyServiceClass3
-        {
-        }
-
         [TestMethod]
         public void TestMyServiceExportInterfaceInherited()
         {
-            IServiceProviderEx sp = DynamicComposer.Instance.GetExportedValue<IServiceProviderEx>();
+            IServiceLocator sp = DynamicComposer.Instance.GetExportedValue<IServiceLocator>();
             Assert.IsNotNull(sp);
 
             var msc = sp.Resolve<IMyServiceClassBase>();
             Assert.IsNull(msc);
         }
 
-        [Import] private IMyServiceClass3 TestImport = null;
+        [InheritedExport]
+        interface IMyServiceClassBase { }
+
+        interface IMyServiceClass3 : IMyServiceClassBase { }
+
+        [Export(typeof(IMyServiceClass3))]
+        class MyServiceClass3 : IMyServiceClass3
+        {
+        }
+
+        private class TestImportClass
+        {
+            [Import]
+            internal IMyServiceClass3 TheTestImport = null;
+        }
 
         [TestMethod]
         public void ImportTestClass()
         {
-            DynamicComposer.Instance.Compose(this);
-            Assert.IsNotNull(TestImport);
+            TestImportClass theClass = new TestImportClass();
+            DynamicComposer.Instance.Compose(theClass);
+            Assert.IsNotNull(theClass.TheTestImport);
         }
     }
 }

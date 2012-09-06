@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using JulMar.Core;
 using JulMar.Windows.Interfaces;
+using System.ComponentModel.Composition;
 
 namespace ServiceReplacement.Services
 {
@@ -17,7 +17,7 @@ namespace ServiceReplacement.Services
         }
     }
 
-    [ExportService(typeof(INotificationVisualizer))]
+    [Export(typeof(INotificationVisualizer))]
     class NotificationVisualizer : INotificationVisualizer
     {
         private static bool _showingNotification;

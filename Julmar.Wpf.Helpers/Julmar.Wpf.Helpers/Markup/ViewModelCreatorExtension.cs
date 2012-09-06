@@ -2,8 +2,10 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Markup;
+using JulMar.Core.Services;
 using JulMar.Windows.Extensions;
 using JulMar.Windows.Mvvm;
+using JulMar.Windows.Interfaces;
 
 namespace JulMar.Windows.Markup
 {
@@ -115,8 +117,8 @@ namespace JulMar.Windows.Markup
         {
             if (!string.IsNullOrEmpty(Key))
             {
-                var vm = ViewModel.ServiceProvider.Resolve<ViewModelLocator>().Locate(Key);
-                if (vm != null)
+                object vm;
+                if (ServiceLocator.Instance.Resolve<IViewModelLocator>().TryLocate(Key, out vm))
                     return vm;
             }
 

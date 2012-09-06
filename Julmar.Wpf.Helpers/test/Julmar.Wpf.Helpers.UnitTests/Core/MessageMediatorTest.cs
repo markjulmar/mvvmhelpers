@@ -212,12 +212,29 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         public void DeadInstanceTest()
         {
             var target = new MessageMediator();
+            var tc = new TestCounter();
+            WeakReference wr = new WeakReference(tc);
+            target.Register(tc);
+            tc = null;
 
-            target.Register(new TestCounter());
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
             GC.Collect();
 
+            // If it's still alive, might be debug
+            if (wr.IsAlive)
+            {
+                Assert.Inconclusive("Target still alive - debug mode?");
+                tc = (TestCounter)wr.Target;
+                if (tc != null)
+                {
+                    target.Unregister(wr.Target);
+                    return;
+                }
+            }
+
             bool hadTarget = target.SendMessage("test2", "Test2");
-            Assert.AreEqual(true, hadTarget, "Mediator did not return success");
+            Assert.IsFalse(hadTarget, "Mediator located dead reference - debug mode?");
         }
 
         [TestMethod]

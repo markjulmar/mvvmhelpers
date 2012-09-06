@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Windows;
+using JulMar.Windows.Interfaces;
 
-namespace JulMar.Windows.Interfaces
+namespace JulMar.Windows.UI
 {
     /// <summary>
     /// Options passed to IMessageVisualizer.  Can create derived class to pass
