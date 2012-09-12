@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml;
 
-namespace System.Windows.Behaviors
+namespace JulMar.Windows.Behaviors
 {
     /// <summary>
     /// This class allows ElementName bindings to be carried into attached properties
@@ -9,32 +9,32 @@ namespace System.Windows.Behaviors
     /// <example>
     /// <![CDATA[
     /// <Page.Resources>
-    ///    <NameScopeBinding Element="{Binding ElementName=theList}" />
+    ///    <NameScopeBinding Source="{Binding ElementName=theList}" />
     /// </Page.Resources>
     /// <ListBox x:Name=theList>
     ///    <interactivity:Interaction.Triggers>
     ///       <interactivity:EventTrigger EventName="SelectionChanged">
-    ///          <julmar:InvokeCommand Command="{Binding SelectCommand}" CommandParameter="{Binding Element.SelectedItem, Source={StaticResource theList}}" />
+    ///          <julmar:InvokeCommand Command="{Binding SelectCommand}" CommandParameter="{Binding Source.SelectedItem, Source={StaticResource theList}}" />
     ///       </interactivity:EventTrigger>
     ///    <interactivity:Interaction.Triggers>
     /// </ListBox>
     /// ]]>
     /// </example>
-    public class NameScopeBinding : FrameworkElement
+    public sealed class NameScopeBinding : DependencyObject
     {
         /// <summary>
         /// Backing storage for Element property
         /// </summary>
-        public static readonly DependencyProperty ElementProperty = DependencyProperty.Register(
-            "Element", typeof(object), typeof(NameScopeBinding), new PropertyMetadata(null));
+        public static readonly DependencyProperty SourceProperty = 
+            DependencyProperty.Register("Source", typeof(object), typeof(NameScopeBinding), new PropertyMetadata(null));
 
         /// <summary>
-        /// Element to bind to and make available as a resource
+        /// Source to bind to and make available as a resource
         /// </summary>
-        public object Element
+        public object Source
         {
-            get { return GetValue(ElementProperty); }
-            set { SetValue(ElementProperty, value); }
+            get { return GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
         }
     }
 }

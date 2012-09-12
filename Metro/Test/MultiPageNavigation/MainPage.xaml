@@ -8,12 +8,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:common="using:App1.Common"
     xmlns:interactivity="using:System.Windows.Interactivity" xmlns:julmar="using:JulMar.Windows.Interactivity"
-    xmlns:Behaviors="using:System.Windows.Behaviors" 
-    mc:Ignorable="d" 
+    xmlns:Behaviors1="using:JulMar.Windows.Behaviors" mc:Ignorable="d" 
     DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=ViewModels[Main]}">
 
     <Page.Resources>
-        <Behaviors:NameScopeBinding x:Key="ItemListView" Element="{Binding ElementName=lstModules}" />
+        <Behaviors1:NameScopeBinding x:Key="ItemListView" Source="{Binding ElementName=lstModules}" />
     </Page.Resources>
     
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
@@ -36,7 +35,7 @@
             <Button Content="Button w/InvokeCommand">
                 <interactivity:Interaction.Triggers>
                     <interactivity:EventTrigger EventName="Click">
-                        <julmar:InvokeCommand Command="{Binding SelectModuleFromElementCommand}" CommandParameter="{Binding Element.SelectedItem, Source={StaticResource ItemListView}}">
+                        <julmar:InvokeCommand Command="{Binding SelectModuleFromElementCommand}" CommandParameter="{Binding Source.SelectedItem, Source={StaticResource ItemListView}}">
                         </julmar:InvokeCommand>
                     </interactivity:EventTrigger>
                 </interactivity:Interaction.Triggers>

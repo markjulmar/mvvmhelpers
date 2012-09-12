@@ -1,14 +1,10 @@
 ﻿<Application
-    x:Class="ViewModelInjection.App"
+    x:Class="NavigationSample.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ViewModelInjection" xmlns:Mvvm="using:JulMar.Windows.Mvvm">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Mvvm="using:JulMar.Windows.Mvvm">
 
     <Application.Resources>
-
         <ResourceDictionary>
-            <Mvvm:ViewModelLocatorResource x:Key="VMLocator" />
-
             <ResourceDictionary.MergedDictionaries>
                 <!-- 
                     Styles that define common aspects of the platform look and feel
@@ -17,7 +13,12 @@
                 <ResourceDictionary Source="Common/StandardStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-        </ResourceDictionary>
+            <!-- Application-specific resources -->
+            <x:String x:Key="AppName">NavigationSample</x:String>
 
+            <!-- ViewModel Locator -->
+            <Mvvm:ViewModelLocatorResource x:Key="VMLocator" />
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
