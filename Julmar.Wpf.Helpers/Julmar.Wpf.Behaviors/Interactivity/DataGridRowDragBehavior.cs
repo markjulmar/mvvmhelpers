@@ -19,6 +19,7 @@ namespace JulMar.Windows.Interactivity
     /// <summary>
     /// This class enables a DataGrid to drag/drop to reorder rows.
     /// </summary>
+    [Obsolete("Prefer to ItemsControlDragDropBehavior instead of DataGridDragRowBehavior.")]
     public class DataGridDragRowBehavior : Behavior<DataGrid>
     {
         /// <summary>

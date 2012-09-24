@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Collections;
+using JulMar.Core.Collections;
 
 namespace NavigationSample.ViewModels
 {
@@ -10,7 +10,7 @@ namespace NavigationSample.ViewModels
     public class SampleDataGroupViewModel : BaseViewModel
     {
         public IList<SampleDataItemViewModel> Items { get; private set; }
-        public IReadOnlyList<SampleDataItemViewModel> TopItems { get; private set; }
+        public IList<SampleDataItemViewModel> TopItems { get; private set; }
 
         public SampleDataGroupViewModel(string id, string title, string subtitle, string imagePath, string description)
             : base(id, title, subtitle, imagePath, description)
