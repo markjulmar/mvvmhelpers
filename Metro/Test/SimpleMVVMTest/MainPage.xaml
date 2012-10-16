@@ -8,8 +8,12 @@
     xmlns:Converters="using:JulMar.Windows.Converters" xmlns:Interactivity="using:System.Windows.Interactivity"
     xmlns:Interactivity1="using:JulMar.Windows.Interactivity"
     xmlns:Actions="using:JulMar.Windows.Interactivity.Actions" xmlns:Input="using:JulMar.Windows.Interactivity.Input"
-    mc:Ignorable="d">
+    xmlns:UI="using:JulMar.Windows.UI" mc:Ignorable="d">
 
+    <UI:InputBinder.Mappings>
+        <UI:InputBinding Command="{Binding ShowText}" Key="Control+S" />
+    </UI:InputBinder.Mappings>
+    
     <Page.Resources>
         <Converters:ToStringConverter x:Key="toString" />
     </Page.Resources>
@@ -24,9 +28,19 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <Interactivity:Interaction.Triggers>
+            <Interactivity1:ViewModelTrigger Target="{Binding}" EventName="ChangeColor">
+                <Interactivity1:ChangePropertyAction PropertyName="Background" Value="Red" />
+            </Interactivity1:ViewModelTrigger>
+        </Interactivity:Interaction.Triggers>
 
+        <TextBox Text="{Binding TextToDisplay, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                 Margin="20" Width="200"
+                 UI:AccessKey.Accelerator="Alt+T" />
+        
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Orientation="Horizontal">
             <Button Content="Show Text" 
+                ToolTipService.ToolTip="Shortcut (CTRL+S)"
                 Margin="20" Padding="10,5"
                 Command="{Binding ShowText}" />
 
@@ -40,6 +54,8 @@
                 </Interactivity:Interaction.Triggers>
             </Button>
 
+            <Button Content="Change Bkgnd via VM Trigger"
+                    Command="{Binding RunAction}" />
         </StackPanel>
         
         <CheckBox Content="Show Advanced Message" HorizontalAlignment="Right" VerticalAlignment="Center"

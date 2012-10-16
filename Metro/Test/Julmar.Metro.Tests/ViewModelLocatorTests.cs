@@ -1,5 +1,6 @@
 ﻿using JulMar.Core.Interfaces;
 using JulMar.Core.Services;
+using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using System;

@@ -2,12 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Composition;
-using System.Composition.Convention;
 using System.Composition.Hosting;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using JulMar.Windows.Mvvm;
+using JulMar.Windows.Extensions;
 
 namespace JulMar.Core.Services
 {
@@ -240,16 +239,32 @@ namespace JulMar.Core.Services
         /// <returns></returns>
         internal async static Task<IEnumerable<Assembly>> GetPackageAssemblyListAsync()
         {
-            var folder = global::Windows.ApplicationModel.Package.Current.InstalledLocation;
+            var installFolder = global::Windows.ApplicationModel.Package.Current.InstalledLocation;
 
-            var result = from file in await folder.GetFilesAsync()
-                         where file.FileType == ".dll" || file.FileType == ".exe"
-                         let filename = file.Name.Substring(0, file.Name.Length - file.FileType.Length)
-                         select new AssemblyName { Name = filename }
-                             into name
-                             select Assembly.Load(name);
+            // If we are in the designer, then load all subdirectories which have DLLs too.
+            // This allows the ViewModelLocator and ServiceLocator to find elements properly
+            // when being shadow copied
+            if (Designer.InDesignMode)
+            {
+                // Grab all the possibilities
+                var assemblies = new List<Assembly>();
+                foreach (var folder in await installFolder.GetFoldersAsync())
+                {
+                    assemblies.AddRange((await folder.GetFilesAsync())
+                            .Where(file => file.FileType == ".dll" || file.FileType == ".exe")
+                            .Select(file => file.Name.Substring(0, file.Name.Length - file.FileType.Length))
+                            .Distinct()
+                            .Select(asmName => Assembly.Load(new AssemblyName(asmName))));
+                }
+                return assemblies;
+            }
 
-            return result.ToList();
+            // Otherwise we just look in the package folder.
+            return ((await installFolder.GetFilesAsync())
+                .Where(file => file.FileType == ".dll" || file.FileType == ".exe")
+                .Select(file => file.Name.Substring(0, file.Name.Length - file.FileType.Length))
+                .Select(asmName => Assembly.Load(new AssemblyName(asmName))))
+                .ToList();
         }
 
         /// <summary>

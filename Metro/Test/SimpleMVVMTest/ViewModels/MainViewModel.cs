@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using JulMar.Windows.Interfaces;
+using JulMar.Windows.UI;
 using Windows.UI.Popups;
 using UICommand = JulMar.Windows.UI.UICommand;
 using JulMar.Windows.Mvvm;
@@ -24,6 +25,7 @@ namespace SimpleMvvmTest.ViewModels
         private string _text;
         private bool _isChanging;
         private bool _showAdvanced;
+        private string _textToDisplay;
 
         public string Text
         {
@@ -46,6 +48,10 @@ namespace SimpleMvvmTest.ViewModels
         public ICommand ShowText { get; private set; }
         public ICommand MouseEnter { get; private set; }
         public ICommand MouseLeave { get; private set; }
+        public IDelegateCommand RunAction { get; set; }
+
+        // ViewModel trigger
+        public event Action ChangeColor;
 
         public MainViewModel()
         {
@@ -54,6 +60,19 @@ namespace SimpleMvvmTest.ViewModels
             ShowText = new DelegateCommand(OnClickButton);
             MouseEnter = new AsyncDelegateCommand(OnGoForward, () => !_isChanging, () => _isChanging = false);
             MouseLeave = new AsyncDelegateCommand(OnGoBackward, () => !_isChanging, () => _isChanging = false);
+            RunAction = new DelegateCommand(DoRunAction);
+        }
+
+        public string TextToDisplay
+        {
+            get { return _textToDisplay; }
+            set { SetPropertyValue(ref _textToDisplay, value); }
+        }
+
+        private void DoRunAction()
+        {
+            if (ChangeColor != null)
+                ChangeColor();
         }
 
         public void JustShowText()
@@ -80,7 +99,7 @@ namespace SimpleMvvmTest.ViewModels
             else
             {
                 await Resolve<IMessageVisualizer>()
-                    .ShowAsync("Hello Metro", "A Message Prompt with OK");
+                    .ShowAsync(TextToDisplay, "A Message Prompt with OK");
             }
         }
 

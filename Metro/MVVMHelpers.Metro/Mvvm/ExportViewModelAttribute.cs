@@ -22,7 +22,7 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         /// <param name="key">Key used to lookup ViewModel</param>
         public ExportViewModelAttribute(string key)
-            : base(ViewModelLocatorImpl.MefLocatorKey, typeof(object))
+            : base(ViewModelLocator.MefLocatorKey, typeof(object))
         {
             Key = key;
         }

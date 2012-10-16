@@ -4,13 +4,13 @@ using JulMar.Core.Internal;
 using JulMar.Windows.Interfaces;
 using Windows.UI.Popups;
 
-namespace JulMar.Windows.UI
+namespace JulMar.Windows.UI.Internal
 {
     /// <summary>
     /// This class implements the IMessageVisualizer for Metro
     /// </summary>
     [DefaultExport(typeof(IMessageVisualizer))]
-    public sealed class MessageVisualizer : IMessageVisualizer
+    sealed class MessageVisualizer : IMessageVisualizer
     {
         /// <summary>
         /// ShowAsync is used for simple notifications with an OK button.
@@ -31,6 +31,12 @@ namespace JulMar.Windows.UI
         /// <returns></returns>
         public Task<IUICommand> ShowAsync(string message, string title, MessageVisualizerOptions visualizerOptions)
         {
+            // Cannot have nulls - throws exception.
+            if (string.IsNullOrEmpty(message))
+                message = string.Empty;
+            if (string.IsNullOrEmpty(title))
+                title = string.Empty;
+
             if (visualizerOptions == null)
             {
                 visualizerOptions = new MessageVisualizerOptions(UICommand.Ok);

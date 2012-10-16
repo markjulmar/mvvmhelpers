@@ -279,15 +279,20 @@ namespace JulMar.Core.Services
                 wr = wr.ToList();
             }
 
+            bool foundHandler = false;
+
             foreach (var action in wr.Select(cb => cb.GetMethod()).Where(action => action != null))
+            {
                 action.DynamicInvoke(message);
+                foundHandler = true;
+            }
 
             lock (_registeredHandlers)
             {
                 wr.RemoveAll(wa => wa.HasBeenCollected);
             }
 
-            return true;
+            return foundHandler;
         }
 
         /// <summary>
@@ -310,15 +315,19 @@ namespace JulMar.Core.Services
                 wr = wr.ToList();
             }
 
+            bool foundHandler = false;
             foreach (var action in wr.Select(cb => cb.GetMethod()).OfType<Action>())
+            {
                 action.Invoke();
+                foundHandler = true;
+            }
 
             lock (_registeredHandlers)
             {
                 wr.RemoveAll(wa => wa.HasBeenCollected);
             }
 
-            return true;
+            return foundHandler;
         }
 
         /// <summary>
@@ -342,8 +351,12 @@ namespace JulMar.Core.Services
         /// <returns>True/False if any handlers were invoked.</returns>
         public bool SendMessage<T>(T message)
         {
+            bool foundHandler = false;
+
+            // If it's just a string, it might be the key with no parameters.
+            // Attempt to locate a method by key
             if (typeof(T) == typeof(string))
-                SendSimpleMessage(message as string);
+                foundHandler = SendSimpleMessage(message as string);
 
             Type actionType = typeof(Action<>).MakeGenericType(typeof(T));
 
@@ -354,7 +367,7 @@ namespace JulMar.Core.Services
                     || actionType.GetTypeInfo().IsAssignableFrom((((Type)key).GetTypeInfo()))) ).ToList();
             }
 
-            return keyList.Aggregate(false, (current, key) => current | SendMessage(key, message));
+            return keyList.Aggregate(false, (current, key) => current | SendMessage(key, message)) || foundHandler;
         }
 
         /// <summary>

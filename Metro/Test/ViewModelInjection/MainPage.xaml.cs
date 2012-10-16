@@ -4,6 +4,7 @@ using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
 using System.Composition;
 using System.Threading.Tasks;
+using JulMar.Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;

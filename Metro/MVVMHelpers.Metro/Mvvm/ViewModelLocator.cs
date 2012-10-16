@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
 using JulMar.Core.Internal;
 using JulMar.Core.Services;
-using JulMar.Core.Interfaces;
 using System.Reflection;
+using JulMar.Windows.Interfaces;
 
 namespace JulMar.Windows.Mvvm.Internal
 {
@@ -14,7 +14,7 @@ namespace JulMar.Windows.Mvvm.Internal
     /// This class holds ViewModels that are registered with the ExportViewModelAttribute.
     /// </summary>
     [DefaultExport(typeof(IViewModelLocator)), Shared]
-    sealed class ViewModelLocatorImpl : IViewModelLocator
+    sealed class ViewModelLocator : IViewModelLocator
     {
         private IList<Lazy<object, ViewModelMetadata>> _locatedViewModels;
 
@@ -92,6 +92,9 @@ namespace JulMar.Windows.Mvvm.Internal
                         // on type and use MEF to recreate one.
                         var locatedVms = GatherViewModelData();
                         var entry = locatedVms.First(vmd => vmd.Metadata.Key == key);
+
+                        Debug.Assert(entry != null);
+                        Debug.Assert(entry.IsValueCreated == false);
                         returnValue = entry.Value;
                     }
                     else 
@@ -113,114 +116,10 @@ namespace JulMar.Windows.Mvvm.Internal
             DynamicComposer.Instance.Compose(data);
             return data.LocatedViewModels;
         }
-
-        /// <summary>
-        /// Dictionary based on a delegate function. Note that this does
-        /// not support enumeration of keys or values - it only supports
-        /// read-only retrieval of dynamic keys.
-        /// </summary>
-        /// <typeparam name="TK">Key type</typeparam>
-        /// <typeparam name="TV">Value type</typeparam>
-        internal class DelegateDictionary<TK,TV> : IReadOnlyDictionary<TK,TV>
-        {
-            private readonly Func<TK, TV> _getValue;
-
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            /// <param name="getValueFunc">Function to retrieve key/value pairs</param>
-            internal DelegateDictionary(Func<TK,TV> getValueFunc)
-            {
-                _getValue = getValueFunc;
-            }
-
-            /// <summary>
-            /// Returns an enumerator that iterates through the collection.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-            /// </returns>
-            public IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
-            {
-                yield break;
-            }
-
-            /// <summary>
-            /// Returns an enumerator that iterates through a collection.
-            /// </summary>
-            /// <returns>
-            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-            /// </returns>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                yield break;
-            }
-
-            /// <summary>
-            /// Gets the number of elements in the collection.
-            /// </summary>
-            /// <returns>
-            /// The number of elements in the collection. 
-            /// </returns>
-            public int Count { get { return 0; } }
-
-            /// <summary>
-            /// Determines whether the read-only dictionary contains an element that has the specified key.
-            /// </summary>
-            /// <returns>
-            /// true if the read-only dictionary contains an element that has the specified key; otherwise, false.
-            /// </returns>
-            /// <param name="key">The key to locate.</param><exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
-            public bool ContainsKey(TK key)
-            {
-                return false;
-            }
-
-            /// <summary>
-            /// Gets the value that is associated with the specified key.
-            /// </summary>
-            /// <returns>
-            /// true if the object that implements the <see cref="T:System.Collections.Generic.IReadOnlyDictionary`2"/> interface contains an element that has the specified key; otherwise, false.
-            /// </returns>
-            /// <param name="key">The key to locate.</param><param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value"/> parameter. This parameter is passed uninitialized.</param><exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
-            public bool TryGetValue(TK key, out TV value)
-            {
-                value = default(TV);
-                return false;
-            }
-
-            /// <summary>
-            /// Gets the element that has the specified key in the read-only dictionary.
-            /// </summary>
-            /// <returns>
-            /// The element that has the specified key in the read-only dictionary.
-            /// </returns>
-            /// <param name="key">The key to locate.</param><exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception><exception cref="T:System.Collections.Generic.KeyNotFoundException">The property is retrieved and <paramref name="key"/> is not found. </exception>
-            public TV this[TK key]
-            {
-                get { return _getValue(key); }
-            }
-
-            /// <summary>
-            /// Gets an enumerable collection that contains the keys in the read-only dictionary. 
-            /// </summary>
-            /// <returns>
-            /// An enumerable collection that contains the keys in the read-only dictionary.
-            /// </returns>
-            public IEnumerable<TK> Keys { get { yield break; } }
-
-            /// <summary>
-            /// Gets an enumerable collection that contains the values in the read-only dictionary.
-            /// </summary>
-            /// <returns>
-            /// An enumerable collection that contains the values in the read-only dictionary.
-            /// </returns>
-            public IEnumerable<TV> Values { get { yield break; } }
-        }
     }
 
     /// <summary>
-    /// Interface used to populate metadata we use for services.
+    /// Class used to populate metadata used to identify view models
     /// </summary>
     public sealed class ViewModelMetadata
     {
@@ -231,14 +130,14 @@ namespace JulMar.Windows.Mvvm.Internal
     }
 
     /// <summary>
-    /// Class used to locate view models but keep property semi-hidden
+    /// Class used to locate view models but keep property hidden
     /// </summary>
-    public sealed class ViewModelData
+    internal sealed class ViewModelData
     {
         /// <summary>
         /// Located view models
         /// </summary>
-        [ImportMany(ViewModelLocatorImpl.MefLocatorKey)]
+        [ImportMany(ViewModelLocator.MefLocatorKey)]
         public IList<Lazy<object, ViewModelMetadata>> LocatedViewModels { get; set; }
     }
 }

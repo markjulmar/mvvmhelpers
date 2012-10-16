@@ -1,7 +1,9 @@
 ﻿using System;
 using JulMar.Core;
+using JulMar.Core.Interfaces;
 using JulMar.Core.Services;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using System.Composition;
 
 namespace JulMar.Wpf.Helpers.UnitTests.Core
 {
@@ -124,16 +126,20 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         /// Test a single registration
         ///</summary>
         [TestMethod]
-        public void SingleRegisterTest()
+        public void RegisterSingleHandler()
         {
             var target = new MessageMediator();
             bool passedTest = false;
 
-            target.RegisterHandler("test", (string o) => passedTest = (o == "Test"));
+            Action<string> handler = o => passedTest = (o == "Test");
+            target.RegisterHandler("test", handler);
             bool hadTarget = target.SendMessage("test", "Test");
 
-            Assert.AreEqual(true, hadTarget, "Mediator did not return success");
-            Assert.AreEqual(true, passedTest, "Did not receive message");
+            Assert.IsTrue(hadTarget, "Mediator did not return success");
+            Assert.IsTrue(passedTest, "Did not receive message");
+
+            target.UnregisterHandler("test", handler);
+            Assert.IsFalse(target.SendMessage("test", "Test"));
         }
 
         /// <summary>
@@ -144,7 +150,7 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         {
             var target = new MessageMediator();
             bool passedTest = target.SendMessage("test", "Test");
-            Assert.AreEqual(false, passedTest, "Mediator returned success");
+            Assert.IsFalse(passedTest, "Mediator located unregistered target?");
         }
 
         /// <summary>
@@ -154,13 +160,15 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         public void RegisterInstanceTest()
         {
             var target = new MessageMediator();
-
             TestCounter counter = new TestCounter();
             target.Register(counter);
             bool hadTarget = target.SendMessage("test2", "Test2");
 
-            Assert.AreEqual(true, hadTarget, "Mediator did not return success");
+            Assert.IsTrue(hadTarget, "Mediator did not return success");
             Assert.AreEqual(1, counter.Count, "Method did not receive message");
+
+            target.Unregister(counter);
+            Assert.IsFalse(target.SendMessage("test2", "Test2"));
         }
 
         /// <summary>
@@ -170,17 +178,19 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         public void RegisterInstanceTest2()
         {
             var target = new MessageMediator();
-
             TestCounter counter = new TestCounter();
             target.Register(counter);
 
             bool hadTarget = target.SendMessage("test2", "Test2");
-            Assert.AreEqual(true, hadTarget, "Mediator did not return success");
+            Assert.IsTrue(hadTarget, "Mediator did not return success");
 
             hadTarget = target.SendMessage("test", "Test2");
-            Assert.AreEqual(true, hadTarget, "Mediator did not return success");
+            Assert.IsTrue(hadTarget, "Mediator did not return success");
 
             Assert.AreEqual(2, counter.Count, "Method did not receive message");
+
+            target.Unregister(counter);
+            Assert.IsFalse(target.SendMessage("test", "Test2"));
         }
 
         /// <summary>
@@ -190,18 +200,17 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         public void UnregisterInstanceTest()
         {
             var target = new MessageMediator();
-
             TestCounter counter = new TestCounter();
             target.Register(counter);
             bool hadTarget = target.SendMessage("test2", "Test2");
 
-            Assert.AreEqual(true, hadTarget, "Mediator did not return success");
+            Assert.IsTrue(hadTarget, "Mediator did not return success");
             Assert.AreEqual(1, counter.Count, "Method did not receive message");
 
             target.Unregister(counter);
             hadTarget = target.SendMessage("test2", "Test2");
 
-            Assert.AreEqual(false, hadTarget, "Mediator did not return success");
+            Assert.IsFalse(hadTarget, "Mediator did not return success");
             Assert.AreEqual(1, counter.Count, "Method did not receive message");
         }
 
@@ -212,12 +221,29 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
         public void DeadInstanceTest()
         {
             var target = new MessageMediator();
+            var tc = new TestCounter();
+            WeakReference wr = new WeakReference(tc);
+            target.Register(tc);
+            tc = null;
 
-            target.Register(new TestCounter());
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
             GC.Collect();
 
+            // If it's still alive, might be debug
+            if (wr.IsAlive)
+            {
+                Assert.Inconclusive("Target still alive - debug mode?");
+                tc = (TestCounter)wr.Target;
+                if (tc != null)
+                {
+                    target.Unregister(wr.Target);
+                    return;
+                }
+            }
+
             bool hadTarget = target.SendMessage("test2", "Test2");
-            Assert.AreEqual(true, hadTarget, "Mediator did not return success");
+            Assert.IsFalse(hadTarget, "Mediator located dead reference - debug mode?");
         }
 
         [TestMethod]
@@ -228,11 +254,13 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
             target.Register(tc);
 
             bool hadTarget = target.SendMessage("Test2");
-            Assert.AreEqual(true, hadTarget, "Mediator did not return success");
+            Assert.IsTrue(hadTarget, "Mediator did not return success");
             hadTarget = target.SendMessage("test3", "Test2");
-            Assert.AreEqual(true, hadTarget, "Mediator did not return success");
+            Assert.IsTrue(hadTarget, "Mediator did not return success");
+            Assert.AreEqual(2, tc.Count);
 
-            Assert.AreEqual<int>(2, tc.Count);
+            target.Unregister(tc);
+            Assert.IsFalse(target.SendMessage("test3", "Test2"));
         }
 
         [TestMethod]
@@ -243,12 +271,16 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
             target.Register(tc);
 
             bool hadTarget = target.SendMessage(5);
-            Assert.AreEqual(false, hadTarget, "Mediator found unexpected target");
+            Assert.IsFalse(hadTarget, "Mediator found unexpected target");
 
             target.RegisterHandler<int>(tc.MessageHandler5);
             hadTarget = target.SendMessage(5);
-            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
-            Assert.AreEqual<int>(5, tc.Count);
+            Assert.IsTrue(hadTarget, "Mediator did not find target");
+            Assert.AreEqual(5, tc.Count);
+
+            target.Unregister(tc);
+            target.UnregisterHandler<int>(tc.MessageHandler5);
+            Assert.IsFalse(target.SendMessage(5));
         }
 
         [TestMethod]
@@ -260,11 +292,15 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
 
             target.RegisterHandler<int>("test6", tc.MessageHandler6);
             bool hadTarget = target.SendMessage(5);
-            Assert.AreEqual(false, hadTarget, "Mediator found unexpected target");
+            Assert.IsFalse(hadTarget, "Mediator found unexpected target");
 
             hadTarget = target.SendMessage("test6", 5);
-            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
-            Assert.AreEqual<int>(5, tc.Count);
+            Assert.IsTrue(hadTarget, "Mediator did not find target");
+            Assert.AreEqual(5, tc.Count);
+
+            target.UnregisterHandler<int>("test6", tc.MessageHandler6);
+            target.Unregister(tc);
+            Assert.IsFalse(target.SendMessage("test6", 5));
         }
 
         [TestMethod]
@@ -275,15 +311,19 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
 
             target.Register(tc);
             bool hadTarget = target.SendMessage(5);
-            Assert.AreEqual(false, hadTarget, "Mediator found unexpected target");
+            Assert.IsFalse(hadTarget, "Mediator found unexpected target");
 
             hadTarget = target.SendMessage("test7", 1);
-            Assert.AreEqual(true, hadTarget, "Mediator did not find expected target");
+            Assert.IsTrue(hadTarget, "Mediator did not find expected target");
 
             target.RegisterHandler<int>("test7", tc.MessageHandler6);
             hadTarget = target.SendMessage("test7", 1);
-            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
-            Assert.AreEqual<int>(3, tc.Count);
+            Assert.IsTrue(hadTarget, "Mediator did not find target");
+            Assert.AreEqual(3, tc.Count);
+
+            target.UnregisterHandler<int>("test7", tc.MessageHandler6);
+            target.Unregister(tc);
+            Assert.IsFalse(target.SendMessage("test7", 1));
         }
 
         [TestMethod]
@@ -293,15 +333,8 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
             var tc = new TestCounter();
 
             target.Register(tc);
-
-            try
-            {
-                target.RegisterHandler<int>("test", tc.MessageHandler5);
-                Assert.Fail("Did not throw exception on invalid register");
-            }
-            catch (ArgumentException)
-            {
-            }
+            Assert.ThrowsException<ArgumentException>(() => target.RegisterHandler<int>("test", tc.MessageHandler5));
+            target.Unregister(tc);
         }
 
         [TestMethod]
@@ -313,8 +346,11 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
             target.Register(tc);
 
             bool hadTarget = target.SendMessage("test", new DataEvent("Test"));
-            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
+            Assert.IsTrue(hadTarget, "Mediator did not find target");
             Assert.AreEqual(2, tc.Count);
+
+            target.Unregister(tc);
+            Assert.IsFalse(target.SendMessage("test", new DataEvent("Test")));
         }
 
         [TestMethod]
@@ -325,10 +361,13 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
 
             target.Register(tc);
 
-            bool hadTarget = target.SendMessage<IDataEvent>(new DataEvent("Test"));
-            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
             // Should invoke two methods - interface AND direct
+            bool hadTarget = target.SendMessage<IDataEvent>(new DataEvent("Test"));
+            Assert.IsTrue(hadTarget, "Mediator did not find target");
             Assert.AreEqual(5, tc.Count);
+
+            target.Unregister(tc);
+            Assert.IsFalse(target.SendMessage<IDataEvent>(new DataEvent("Test")));
         }
 
         [TestMethod]
@@ -339,10 +378,13 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
 
             target.Register(tc);
 
-            bool hadTarget = target.SendMessage(new DataEvent("Test"));
-            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
             // Should invoke two methods - interface AND direct
+            bool hadTarget = target.SendMessage(new DataEvent("Test"));
+            Assert.IsTrue(hadTarget, "Mediator did not find target");
             Assert.AreEqual(5, tc.Count);
+
+            target.Unregister(tc);
+            Assert.IsFalse(target.SendMessage(new DataEvent("Test")));
         }
        
         [TestMethod]
@@ -354,13 +396,37 @@ namespace JulMar.Wpf.Helpers.UnitTests.Core
             target.Register(tc);
 
             bool hadTarget = target.SendMessage(new DataEvent("Test"));
-            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
+            Assert.IsTrue(hadTarget, "Mediator did not find target");
 
             hadTarget = target.SendMessage(new DataEventUpper("Test"));
-            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
+            Assert.IsTrue(hadTarget, "Mediator did not find target");
 
             hadTarget = target.SendMessage(new DataEventLower("Test"));
-            Assert.AreEqual(true, hadTarget, "Mediator did not find target");
+            Assert.IsTrue(hadTarget, "Mediator did not find target");
+
+            target.Unregister(tc);
+            Assert.IsFalse(target.SendMessage(new DataEvent("Test")));
+            Assert.IsFalse(target.SendMessage(new DataEventUpper("Test")));
+            Assert.IsFalse(target.SendMessage(new DataEventLower("Test")));
+        }
+
+        class ImportTestClass
+        {
+            [Import]
+            public IMessageMediator Mediator { get; set; }
+
+            public ImportTestClass()
+            {
+                DynamicComposer.Instance.Compose(this);
+            }
+        }
+
+        [TestMethod]
+        public void TestSingleInstance()
+        {
+            var target = new ImportTestClass();
+            var other = DynamicComposer.Instance.GetExportedValue<IMessageMediator>();
+            Assert.AreSame(target.Mediator, other);
         }
 
     }

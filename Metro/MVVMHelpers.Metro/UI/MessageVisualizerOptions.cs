@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Windows.UI.Popups;
 
-namespace JulMar.Windows.Interfaces
+namespace JulMar.Windows.UI
 {
     /// <summary>
     /// Options passed to IMessageVisualizer.  Can create derived class to pass

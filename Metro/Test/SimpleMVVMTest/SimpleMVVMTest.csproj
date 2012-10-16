@@ -106,7 +106,7 @@
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <ProjectReference Include="..\..\Julmar.Metro.Behaviors\Julmar.Metro.Behaviors.csproj">
-      <Project>{A11FD7E6-5B51-488A-957D-756F3ADFC93F}</Project>
+      <Project>{a11fd7e6-5b51-488a-957d-756f3adfc93f}</Project>
       <Name>Julmar.Metro.Behaviors</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Julmar.Windows.Interactivity\Julmar.Windows.Interactivity.csproj">

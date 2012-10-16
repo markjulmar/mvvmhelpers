@@ -1,6 +1,6 @@
 using System.Composition;
-using JulMar.Core.Interfaces;
 using JulMar.Core.Services;
+using JulMar.Windows.Interfaces;
 
 namespace JulMar.Windows.Mvvm
 {

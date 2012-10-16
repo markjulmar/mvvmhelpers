@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
@@ -59,25 +58,25 @@ namespace JulMar.Core.Extensions
         /// <param name="collection">Underlying collection to sort</param>
         /// <param name="reverse">True to reverse the collection</param>
         /// <param name="comparer">Comparer interface (defaults to default comparer for types)</param>
-        public static void BubbleSort(this IList collection, bool reverse = false, IComparer comparer = null)
+        public static void BubbleSort<T>(this IList<T> collection, bool reverse = false, IComparer<T> comparer = null)
         {
             for (int index = collection.Count - 1; index >= 0; index--)
             {
                 for (int child = 1; child <= index; child++)
                 {
-                    object d1 = collection[child - 1];
-                    object d2 = collection[child];
+                    T d1 = collection[child - 1];
+                    T d2 = collection[child];
 
                     if (comparer == null)
                     {
                         if (d1.GetType() == d2.GetType())
                         {
                             Type comparerType = typeof(Comparer<>).MakeGenericType(d1.GetType());
-                            comparer = (IComparer)comparerType.GetTypeInfo().GetDeclaredProperty("Default").GetValue(null, null);
+                            comparer = (IComparer<T>)comparerType.GetTypeInfo().GetDeclaredProperty("Default").GetValue(null, null);
                         }
                         else
                         {
-                            comparer = Comparer<object>.Default;
+                            comparer = Comparer<T>.Default;
                         }
                     }
 

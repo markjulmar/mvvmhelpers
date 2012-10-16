@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using JulMar.Core.Extensions;
 using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
 using NavigationSample.DataModel;
@@ -14,6 +16,7 @@ namespace NavigationSample.ViewModels
     [ExportViewModel("MainViewModel"), Shared]
     public class MainViewModel : ViewModel, INavigationAware
     {
+        private bool _isReverseSorted = false;
         private readonly SampleDataSource _dataSource;
         private SampleDataItemViewModel _selectedItem;
         private SampleDataGroupViewModel _selectedGroup;
@@ -32,6 +35,11 @@ namespace NavigationSample.ViewModels
         /// Display the group details; expects the parameter to be a group item
         /// </summary>
         public IDelegateCommand ShowGroupDetails { get; private set; }
+
+        /// <summary>
+        /// Sort the groups by name
+        /// </summary>
+        public IDelegateCommand SortByName { get; private set; }
 
         /// <summary>
         /// Selected item
@@ -57,11 +65,23 @@ namespace NavigationSample.ViewModels
         public MainViewModel()
         {
             _dataSource = new SampleDataSource();
+            
+            // Commands
             ShowItemDetails = new DelegateCommand<SampleDataItemViewModel>(OnShowItemDetails, it => it != null);
             ShowGroupDetails = new DelegateCommand<SampleDataGroupViewModel>(OnShowGroupDetails, it => it != null);
+            SortByName = new DelegateCommand(OnSortGroupsByName);
 
             SelectedItem = AllGroups[0].Items[0];
             SelectedGroup = AllGroups[0];
+        }
+
+        /// <summary>
+        /// Sort the items
+        /// </summary>
+        private void OnSortGroupsByName()
+        {
+            _isReverseSorted = !_isReverseSorted;
+            _dataSource.Groups.BubbleSort(_isReverseSorted, Comparer<SampleDataGroupViewModel>.Create((g1,g2) => String.Compare(g1.Title, g2.Title, StringComparison.Ordinal)));
         }
 
         /// <summary>

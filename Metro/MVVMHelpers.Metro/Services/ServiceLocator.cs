@@ -45,7 +45,7 @@ namespace JulMar.Core.Services
         /// Internal implementation of the service provider; public so MEF can create/expose it.
         /// </summary>
         [DefaultExport(typeof(IServiceLocator)), Shared]
-        public sealed class ServiceProviderImpl : IServiceLocator
+        sealed class ServiceProvider : IServiceLocator
         {
             /// <summary>
             /// Lock

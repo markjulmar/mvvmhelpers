@@ -8,10 +8,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModels="using:NavigationSample.ViewModels" xmlns:Interactivity="using:System.Windows.Interactivity"
     xmlns:Interactivity1="using:JulMar.Windows.Interactivity" xmlns:Behaviors="using:JulMar.Windows.Behaviors"
-    xmlns:Converters="using:JulMar.Windows.Converters"
+    xmlns:UI="using:JulMar.Windows.UI"
     DataContext="{Binding Source={StaticResource VMLocator}, Path=ViewModels[MainViewModel]}"
     mc:Ignorable="d">
 
+    <UI:InputBinder.Mappings>
+        <UI:InputBinding Command="{Binding SortByName}" Key="Control S" />
+    </UI:InputBinder.Mappings>
+    
+    
     <Page.Resources>
         <CollectionViewSource x:Name="groupedItemsViewSource"
             Source="{Binding AllGroups}"
@@ -19,7 +24,6 @@
             ItemsPath="TopItems"
             d:Source="{Binding AllGroups, Source={d:DesignInstance ViewModels:MainViewModel, IsDesignTimeCreatable=True}}"/>
 
-        <Converters:DebugConverter x:Key="debug" />
         <Behaviors:NameScopeBinding x:Key="MainVm" Source="{Binding}" />
 
         <!-- Data Template used for the items on this page -->

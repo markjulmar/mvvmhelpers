@@ -178,31 +178,60 @@ namespace JulMar.Windows.Services
             }
 
             Type entry;
-            if (_registeredPages.TryGetValue(pageKey, out entry))
+            return _registeredPages.TryGetValue(pageKey, out entry) 
+                && NavigateTo(entry, argument, viewModel);
+        }
+
+        /// <summary>
+        /// Navigate to a specific page
+        /// </summary>
+        /// <param name="pageType">Page Type</param>
+        public bool NavigateTo(Type pageType)
+        {
+            return NavigateTo(pageType, null, null);
+        }
+
+        /// <summary>
+        /// Navigate to a specific page
+        /// </summary>
+        /// <param name="pageType">Page Type</param>
+        /// <param name="argument">Argument to pass (primitive type, may be null)</param>
+        public bool NavigateTo(Type pageType, object argument)
+        {
+            return NavigateTo(pageType, null, null);
+        }
+
+        /// <summary>
+        /// Navigate to a specific page, passing parameters
+        /// </summary>
+        /// <param name="pageType">Page Type</param>
+        /// <param name="argument">Argument to pass (primitive type, may be null)</param>
+        /// <param name="viewModel">ViewModel to assign (may be null)</param>
+        public bool NavigateTo(Type pageType, object argument, object viewModel)
+        {
+            if (pageType == null)
+                throw new ArgumentNullException("pageType");
+
+            if (viewModel != null)
             {
-                if (viewModel != null)
+                NavigatedEventHandler connectViewModel = (s, e) =>
                 {
-                    NavigatedEventHandler connectViewModel = (s, e) =>
+                    if (e.SourcePageType == pageType)
                     {
-                        if (e.SourcePageType == entry)
-                        {
-                            var fe = e.Content as FrameworkElement;
-                            if (fe != null)
-                                fe.DataContext = viewModel;
-                        }
-                    };
+                        var fe = e.Content as FrameworkElement;
+                        if (fe != null)
+                            fe.DataContext = viewModel;
+                    }
+                };
 
-                    RootFrame.Navigated += connectViewModel;
-                    bool rc = RootFrame.Navigate(entry, argument);
-                    RootFrame.Navigated -= connectViewModel;
-                    return rc;
-                }
-
-                // Otherwise, just navigate
-                return RootFrame.Navigate(entry, argument);
+                RootFrame.Navigated += connectViewModel;
+                bool rc = RootFrame.Navigate(pageType, argument);
+                RootFrame.Navigated -= connectViewModel;
+                return rc;
             }
 
-            return false;
+            // Otherwise, just navigate
+            return RootFrame.Navigate(pageType, argument);
         }
 
         /// <summary>

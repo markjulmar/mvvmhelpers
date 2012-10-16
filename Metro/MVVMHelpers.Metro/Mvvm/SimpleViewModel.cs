@@ -26,6 +26,14 @@ namespace JulMar.Windows.Mvvm
         }
 
         /// <summary>
+        /// True/False whether we are currently in design mode
+        /// </summary>
+        protected bool InDesignMode
+        {
+            get { return Designer.InDesignMode; }
+        }
+
+        /// <summary>
         /// This can be used to indicate that all property values have changed.
         /// </summary>
         protected void RaiseAllPropertiesChanged()

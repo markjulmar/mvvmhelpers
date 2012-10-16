@@ -1,37 +1,42 @@
-﻿using System.Diagnostics;
-using JulMar.Windows.Interfaces;
+﻿using JulMar.Windows.Interfaces;
 using JulMar.Windows.Mvvm;
-using System.Composition;
 
 namespace ViewModelInjection.ViewModels
 {
-[ExportViewModel("theVM")]
-public class MainViewModel : ViewModel
-{
-    private bool _canShowCommand;
-    public bool CanShowCommand
+    [ExportViewModel("theVM")]
+    public class MainViewModel : ViewModel
     {
-        get { return _canShowCommand; }
-        set
+        private bool _canShowCommand;
+        private string _helloMessage;
+
+        public bool CanShowCommand
         {
-            if (SetPropertyValue(ref _canShowCommand, value))
-                ShowMessage.RaiseCanExecuteChanged();
+            get { return _canShowCommand; }
+            set
+            {
+                if (SetPropertyValue(ref _canShowCommand, value))
+                    ShowMessage.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string HelloMessage
+        {
+            get { return _helloMessage; }
+            set { SetPropertyValue(ref _helloMessage, value); }
+        }
+
+        public IDelegateCommand ShowMessage { get; private set; }
+
+        public MainViewModel()
+        {
+            HelloMessage = "Hello from MVVMHelpers";
+            ShowMessage = new DelegateCommand(OnShowCommand, () => CanShowCommand == true);
+            CanShowCommand = true;
+        }
+
+        private void OnShowCommand()
+        {
+            Resolve<IMessageVisualizer>().ShowAsync("Test Message", "Test Title");
         }
     }
-
-    public IDelegateCommand ShowMessage { get; private set; }
-
-    public MainViewModel()
-    {
-        ShowMessage = new DelegateCommand(OnShowCommand, () => CanShowCommand == true);
-    }
-
-    [Import]
-    public IMessageVisualizer messageVisualizer { get; set; }
-
-    private void OnShowCommand()
-    {
-        messageVisualizer.ShowAsync("Test Message", "Test Title");
-    }
-}
 }

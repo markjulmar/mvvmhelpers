@@ -8,7 +8,7 @@ using Windows.UI.Xaml;
 namespace JulMar.Windows.Interactivity
 {
     /// <summary>
-    /// This is a Blend trigger that binds to a IViewModelTrigger and invokes actions when it 
+    /// This is a Blend trigger that binds to an event within a ViewModel and invokes actions when it 
     /// is raised by the ViewModel.  This allows the VM to trigger behaviors in the View easily.
     /// </summary>
     public class ViewModelTrigger : TriggerBase<FrameworkElement>
@@ -49,7 +49,8 @@ namespace JulMar.Windows.Interactivity
         protected override void OnAttached()
         {
             base.OnAttached();
-            RegisterEvent(Target, EventName);
+            if (Target != null && !string.IsNullOrEmpty(EventName))
+                RegisterEvent(Target, EventName);
         }
 
         /// <summary>
@@ -58,7 +59,8 @@ namespace JulMar.Windows.Interactivity
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            UnregisterEvent(Target, EventName);
+            if (Target != null && !string.IsNullOrEmpty(EventName))
+                UnregisterEvent(Target, EventName);
         }
 
         /// <summary>
@@ -69,6 +71,8 @@ namespace JulMar.Windows.Interactivity
         private static void OnEventNameChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
         {
             ViewModelTrigger vmt = (ViewModelTrigger) dpo;
+            if (vmt.Target == null)
+                return;
 
             string oldEventName = e.OldValue as string;
             if (!string.IsNullOrEmpty(oldEventName))
@@ -84,6 +88,8 @@ namespace JulMar.Windows.Interactivity
         private static void OnTargetChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
         {
             ViewModelTrigger vmt = (ViewModelTrigger)dpo;
+            if (string.IsNullOrEmpty(vmt.EventName))
+                return;
 
             object oldTarget = e.OldValue;
             if (oldTarget != null)
@@ -149,11 +155,6 @@ namespace JulMar.Windows.Interactivity
         }
 
         /// <summary>
-        /// Delegate method
-        /// </summary>
-        private Delegate _method;
-
-        /// <summary>
         /// Retrieves a delegate to our OnEventRaised method which may be used with a specific
         /// EventHandler subtype based on an EventInfo.
         /// </summary>
@@ -165,35 +166,39 @@ namespace JulMar.Windows.Interactivity
                 throw new ArgumentNullException("ei");
             if (ei.EventHandlerType == null)
                 throw new ArgumentException("EventHandlerType is null");
-            if (_method == null)
+
+            int paramCount = ei.EventHandlerType.GetTypeInfo().DeclaredMethods.First(mi => mi.Name == "Invoke").GetParameters().Length;
+            if (paramCount == 0)
             {
                 MethodInfo methodInfo = typeof(ViewModelTrigger).GetTypeInfo().DeclaredMethods.FirstOrDefault(
-                        mi => mi.Name == "OnEventRaised" && mi.IsPrivate && !mi.IsStatic);
-
-                _method = methodInfo.CreateDelegate(ei.EventHandlerType, this);
+                        mi => mi.Name == "OnEventRaisedWithNoParameter" && mi.IsPrivate && !mi.IsStatic);
+                return methodInfo.CreateDelegate(ei.EventHandlerType, this);
             }
-
-            return _method;
+            else if (paramCount == 1)
+            {
+                MethodInfo methodInfo = typeof(ViewModelTrigger).GetTypeInfo().DeclaredMethods.FirstOrDefault(
+                        mi => mi.Name == "OnEventRaisedWithParameter" && mi.IsPrivate && !mi.IsStatic);
+                return methodInfo.CreateDelegate(ei.EventHandlerType, this);
+            }
+            else
+                throw new NotSupportedException("Cannot bind to events with more than one parameter");
         }
 
         /// <summary>
         /// This is invoked by the event - it runs all the actions
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnEventRaised(object sender, object e)
+        private void OnEventRaisedWithParameter(object parameter)
         {
-            // If we didn't get the DC from the binding (not sure why WinRT won't
-            // carry this across), then just reach in and get it ourselves.
-            if (DataContext == null)
-            {
-                var fe = sender as FrameworkElement;
-                if (fe != null)
-                    DataContext = fe.DataContext;
-            }
+            this.InvokeActions(parameter);
+        }
 
+        /// <summary>
+        /// This is invoked by the event - it runs all the actions
+        /// </summary>
+        private void OnEventRaisedWithNoParameter()
+        {
             // Invoke our actions
-            this.InvokeActions(e);
+            this.InvokeActions(null);
         }
     }
 }

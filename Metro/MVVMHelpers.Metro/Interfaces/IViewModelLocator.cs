@@ -1,4 +1,4 @@
-namespace JulMar.Core.Interfaces
+namespace JulMar.Windows.Interfaces
 {
     /// <summary>
     /// ViewModel locator interfaces
