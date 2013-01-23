@@ -69,7 +69,7 @@ namespace JulMar.Windows.UI
         /// MEF registered views
         /// </summary>
         [ImportMany(MefLocatorKey, AllowRecomposition = true)]
-        private IEnumerable<Lazy<object, IUIVisualizerMetadata>> _locatedVisuals;
+        private IEnumerable<Lazy<object, IUIVisualizerMetadata>> _locatedVisuals = null;
 
         /// <summary>
         /// Set to true once we have loaded any dynamic visuals.

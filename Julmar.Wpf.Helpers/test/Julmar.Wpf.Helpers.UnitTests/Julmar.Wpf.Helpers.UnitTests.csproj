@@ -99,6 +99,7 @@
     <Compile Include="Core\CollectionExtensionMoveTests.cs" />
     <Compile Include="Core\CollectionExtensionSwapTests.cs" />
     <Compile Include="Converters\ArrayToStringConverterTest.cs" />
+    <Compile Include="Core\WeakDelegateTests.cs" />
     <Compile Include="Extensions\DispatcherExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensionsTest.cs" />
     <Compile Include="Extensions\CollectionExtensionsTest.cs" />

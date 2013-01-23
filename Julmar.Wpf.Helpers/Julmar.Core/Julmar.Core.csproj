@@ -112,6 +112,7 @@
     <Compile Include="Undo\UndoManager.cs" />
     <Compile Include="Undo\UndoOperationSet.cs" />
     <Compile Include="Collections\WeakReferenceList.cs" />
+    <Compile Include="WeakDelegate.cs" />
     <Compile Include="WeakEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
