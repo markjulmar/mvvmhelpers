@@ -1,52 +1,49 @@
 ﻿using System;
 using JulMar.Core.Interfaces;
 using JulMar.Core.Services;
+using System.Runtime.Serialization;
 
 namespace JulMar.Windows.Mvvm
 {
     /// <summary>
     /// This class is used as the basis for all ViewModel objects
     /// </summary>
+    [DataContract]
     public class ViewModel : SimpleViewModel, IDisposable
     {
         /// <summary>
         /// Constructor - registers with the message mediator and hooks up any imports/exports
         /// with the default MEF catalog
         /// </summary>
-        protected ViewModel() : this(true, true)
+        protected ViewModel()
         {
+            Initialize();
         }
 
         /// <summary>
-        /// Constructor - registers with the message mediator and hooks up any imports/exports
-        /// with the default MEF catalog
+        /// This should be called during construction and de-serialization to properly setup the
+        /// object.
         /// </summary>
-        protected ViewModel(bool registerWithMediator, bool composeImports)
+        protected void Initialize()
         {
             // Register with the message mediator - this will locate and bind all message
             // targets on this instance. Shouldn't really need to check for existence - it should
             // always be present, but just in case someone Unregisters it..
-            if (registerWithMediator)
+            var mediator = Resolve<IMessageMediator>();
+            if (mediator != null)
             {
-                var mediator = Resolve<IMessageMediator>();
-                if (mediator != null)
-                {
-                    mediator.Register(this);
-                }
+                mediator.Register(this);
             }
 
             // Hook up any MEF imports/exports
-            if (composeImports)
+            try
             {
-                try
-                {
-                    DynamicComposer.Instance.Compose(this);
-                }
-                catch
-                {
-                    // Can throw if in invalid state - i.e. creating VM on behalf of a view.
-                    // .. or if we are already composing the parts and this was created as a result.
-                }
+                DynamicComposer.Instance.Compose(this);
+            }
+            catch
+            {
+                // Can throw if in invalid state - i.e. creating VM on behalf of a view.
+                // .. or if we are already composing the parts and this was created as a result.
             }
         }
 

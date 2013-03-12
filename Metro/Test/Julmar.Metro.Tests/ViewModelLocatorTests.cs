@@ -151,7 +151,7 @@ namespace Julmar.Metro.Tests
         [TestMethod]
         public void TestViewModelLocatorResource()
         {
-            ViewModelLocatorResource vmRes = new ViewModelLocatorResource();
+            ViewModelLocator vmRes = new ViewModelLocator();
             object value = vmRes.ViewModels["myViewModel2"];
             Assert.IsInstanceOfType(value, typeof(SampleViewModel2));
             Assert.IsNotNull(value);

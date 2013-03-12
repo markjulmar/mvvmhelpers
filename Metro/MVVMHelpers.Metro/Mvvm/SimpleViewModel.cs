@@ -4,12 +4,14 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using JulMar.Windows.Extensions;
+using System.Runtime.Serialization;
 
 namespace JulMar.Windows.Mvvm
 {
     /// <summary>
     /// This class implements the simplest view model -- one that implements INPC.
     /// </summary>
+    [DataContract]
     public class SimpleViewModel : INotifyPropertyChanged
     {
         /// <summary>

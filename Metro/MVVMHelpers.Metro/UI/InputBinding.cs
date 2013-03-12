@@ -14,6 +14,9 @@ using Windows.UI.Xaml.Input;
 
 namespace JulMar.Windows.UI
 {
+    /// <summary>
+    /// InputBinder binds keyboard events to ICommand implementations
+    /// </summary>
     public static class InputBinder
     {
         private static Page _activePage;
@@ -104,7 +107,7 @@ namespace JulMar.Windows.UI
         /// Called when the window gets or loses input focus
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="args"></param>
+        /// <param name="e"></param>
         private static void CoreWindowOnActivated(CoreWindow sender, WindowActivatedEventArgs e)
         {
             if (e.WindowActivationState == CoreWindowActivationState.Deactivated)

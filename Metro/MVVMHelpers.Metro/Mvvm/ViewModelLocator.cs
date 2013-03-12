@@ -1,143 +1,82 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Composition;
-using System.Diagnostics;
-using System.Linq;
-using JulMar.Core.Internal;
 using JulMar.Core.Services;
-using System.Reflection;
 using JulMar.Windows.Interfaces;
+using Windows.UI.Xaml;
 
-namespace JulMar.Windows.Mvvm.Internal
+namespace JulMar.Windows.Mvvm
 {
     /// <summary>
-    /// This class holds ViewModels that are registered with the ExportViewModelAttribute.
+    /// ViewModel locator resource lookup.  This provides markup support for the 
+    /// IViewModelLocator service.  It can be used two different ways:
+    ///   a) By placing an instance of the ViewModelLocator into Application.Resources in XAML and
+    ///      then data binding to the resource with the [ViewModelKey] path (array indexer).
+    ///   b) Through the ViewModelLocator.Key attached property which sets the 
+    ///      DataContext of the element to which it is attached
     /// </summary>
-    [DefaultExport(typeof(IViewModelLocator)), Shared]
-    sealed class ViewModelLocator : IViewModelLocator
+    public sealed class ViewModelLocator
     {
-        private IList<Lazy<object, ViewModelMetadata>> _locatedViewModels;
+        /// <summary>
+        /// ViewModel key
+        /// </summary>
+        public static readonly DependencyProperty KeyProperty =
+                DependencyProperty.RegisterAttached("Key", typeof(string), 
+                    typeof(ViewModelLocator), new PropertyMetadata(default(string), OnViewModelKeyChanged));
 
         /// <summary>
-        /// Key used to bind exports together
+        /// ViewModel dictionary - can be used as indexer operator in Binding expressions.
         /// </summary>
-        internal const string MefLocatorKey = "JulMar.ViewModel.Export";
+        [Import]
+        public IViewModelLocator ViewModels { get; set; }
 
         /// <summary>
-        /// Operator to retrieve view models.
+        /// Constructor
         /// </summary>
-        /// <returns>Read-only version of view model collection</returns>
-        public object this[string key]
+        public ViewModelLocator()
         {
-            get 
-            { 
-                object value;
-                return TryLocate(key, out value) ? value : null;
-            }
+            DynamicComposer.Instance.Compose(this);
         }
 
         /// <summary>
-        /// Finds the VM based on the key.
+        /// Called when the ViewModelKey property is changed on an UI element.
         /// </summary>
-        /// <param name="key">Key to search for</param>
-        /// <returns>Located view model or null</returns>
-        public object Locate(string key)
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void OnViewModelKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            object value;
-            if (!TryLocate(key, out value))
-                throw new Exception("Could not locate view model: " + key);
-            
-            return value;
-        }
-
-        /// <summary>
-        /// Finds the VM based on the key.
-        /// </summary>
-        /// <param name="key">Key to search for</param>
-        /// <param name="returnValue">Located view model or null</param>
-        /// <returns>true/false if VM was found</returns>
-        public bool TryLocate(string key, out object returnValue)
-        {
-            returnValue = null;
-
-            // Populate our list the first call
-            if (_locatedViewModels == null)
+            FrameworkElement fe = d as FrameworkElement;
+            if (fe != null)
             {
-                _locatedViewModels = GatherViewModelData();
-            }
-
-            // First look for the key in our metadata collection
-            var vmType = _locatedViewModels.FirstOrDefault(vm => vm.Metadata.Key == key);
-            if (vmType != null)
-            {
-                // First time?  Just create it and return
-                if (!vmType.IsValueCreated)
+                string key = e.NewValue as string;
+                if (!string.IsNullOrEmpty(key))
                 {
-                    returnValue = vmType.Value;
-                }
-                else
-                {
-                    // Object should already be there.
-                    Type type = vmType.Value.GetType();
-
-                    // Parts in MEF Win8 are always non-shared, so look for new SharedAttribute to indicate they
-                    // are shared.
-                    var attributes = type.GetTypeInfo().CustomAttributes.Where(a => a.AttributeType  == typeof(SharedAttribute)).ToArray();
-                    if (attributes.Length == 0)
+                    IViewModelLocator vmLocator = ServiceLocator.Instance.Resolve<IViewModelLocator>();
+                    object viewModel;
+                    if (vmLocator.TryLocate(key, out viewModel) && viewModel != null)
                     {
-                        // Attempt to create a brand new one.
-                        // No easy way to do this because Lazy<T> always returns same instance above
-                        // so, non-shared instances are not possible .. and since we are exporting as typeof(object)
-                        // to gather the VMs (otherwise the above ImportMany doesn't work) we can't differentiate based
-                        // on type and use MEF to recreate one.
-                        var locatedVms = GatherViewModelData();
-                        var entry = locatedVms.First(vmd => vmd.Metadata.Key == key);
-
-                        Debug.Assert(entry != null);
-                        Debug.Assert(entry.IsValueCreated == false);
-                        returnValue = entry.Value;
+                        fe.DataContext = viewModel;
                     }
-                    else 
-                        returnValue = vmType.Value;
                 }
             }
-
-            return returnValue != null;
         }
 
         /// <summary>
-        /// This method uses an internal object to gather the list of ViewModels based
-        /// on the ExportViewModel attribute.
+        /// Get the ViewModelKey property value
         /// </summary>
+        /// <param name="fe"></param>
         /// <returns></returns>
-        private static IList<Lazy<object, ViewModelMetadata>> GatherViewModelData()
+        public static string GetKey(FrameworkElement fe)
         {
-            var data = new ViewModelData();
-            DynamicComposer.Instance.Compose(data);
-            return data.LocatedViewModels;
+            return (string) fe.GetValue(KeyProperty);
         }
-    }
 
-    /// <summary>
-    /// Class used to populate metadata used to identify view models
-    /// </summary>
-    public sealed class ViewModelMetadata
-    {
         /// <summary>
-        /// Key used to export the ViewModel.  We only allow one export for VMs.
+        /// Sets the ViewModelKey property value.
         /// </summary>
-        public string Key { get; set; }
-    }
-
-    /// <summary>
-    /// Class used to locate view models but keep property hidden
-    /// </summary>
-    internal sealed class ViewModelData
-    {
-        /// <summary>
-        /// Located view models
-        /// </summary>
-        [ImportMany(ViewModelLocator.MefLocatorKey)]
-        public IList<Lazy<object, ViewModelMetadata>> LocatedViewModels { get; set; }
+        /// <param name="fe"></param>
+        /// <param name="key"></param>
+        public static void SetKey(FrameworkElement fe, string key)
+        {
+            fe.SetValue(KeyProperty, key);
+        }
     }
 }

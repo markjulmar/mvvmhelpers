@@ -119,6 +119,7 @@
     <Compile Include="Collections\WeakReferenceList.cs" />
     <Compile Include="Concurrency\ObjectLockExtensions.cs" />
     <Compile Include="Concurrency\ReaderWriterLockSlimExtensions.cs" />
+    <Compile Include="Controls\FlyoutPage.cs" />
     <Compile Include="Converters\ArrayToStringConverter.cs" />
     <Compile Include="Converters\BooleanToBrushConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Extensions\NotifyPropertyHelpers.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Interfaces\IDelegateCommand.cs" />
+    <Compile Include="Interfaces\IFlyoutVisualizer.cs" />
     <Compile Include="Interfaces\IMessageMediator.cs" />
     <Compile Include="Interfaces\IMessageVisualizer.cs" />
     <Compile Include="Interfaces\INavigationAware.cs" />
@@ -147,6 +149,10 @@
     <Compile Include="Interfaces\IServiceLocator.cs" />
     <Compile Include="IO\RandomAccessStream.cs" />
     <Compile Include="IO\StreamExtensions.cs" />
+    <Compile Include="Interfaces\IStateManager.cs" />
+    <Compile Include="Interfaces\IViewModelStateManagement.cs" />
+    <Compile Include="UI\FlyoutVisualizer.cs" />
+    <Compile Include="Services\StateManager.cs" />
     <Compile Include="Services\PageNavigator.cs" />
     <Compile Include="UI\AccessKey.cs" />
     <Compile Include="UI\InputBinding.cs" />
@@ -158,8 +164,8 @@
     <Compile Include="Interfaces\IViewModelLocator.cs" />
     <Compile Include="Mvvm\ExportViewModelAttribute.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
+    <Compile Include="Mvvm\ViewModelLocatorService.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
-    <Compile Include="Mvvm\ViewModelLocatorResource.cs" />
     <Compile Include="Services\ServiceLocatorResource.cs" />
     <Compile Include="UI\UICommand.cs" />
     <Compile Include="Mvvm\ViewModel.cs" />
@@ -174,25 +180,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Composition.AttributedModel, Version=1.0.15.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.16.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Composition.1.0.15\lib\netcore45\System.Composition.AttributedModel.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Composition.1.0.16\lib\netcore45\System.Composition.AttributedModel.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.Convention, Version=1.0.15.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Composition.Convention, Version=1.0.16.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Composition.1.0.15\lib\netcore45\System.Composition.Convention.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Composition.1.0.16\lib\netcore45\System.Composition.Convention.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.Hosting, Version=1.0.15.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Composition.Hosting, Version=1.0.16.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Composition.1.0.15\lib\netcore45\System.Composition.Hosting.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Composition.1.0.16\lib\netcore45\System.Composition.Hosting.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.Runtime, Version=1.0.15.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Composition.Runtime, Version=1.0.16.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Composition.1.0.15\lib\netcore45\System.Composition.Runtime.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Composition.1.0.16\lib\netcore45\System.Composition.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.TypedParts, Version=1.0.15.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Composition.TypedParts, Version=1.0.16.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Composition.1.0.15\lib\netcore45\System.Composition.TypedParts.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Composition.1.0.16\lib\netcore45\System.Composition.TypedParts.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' ">

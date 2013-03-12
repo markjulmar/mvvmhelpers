@@ -41,3 +41,10 @@ Changed MessageMediator back to public type so it can be used multiple times
 Changed ServiceProvider implementation class from public to internal.
 Moved MessageVisualizerOptions to JulMar.Windows.UI (was in interfaces)
 Updated some unit tests
+
+1.05 3/2013
+Minor bug fixes
+Added Flyout control and IFlyoutVisualizer
+Integrated StateManager into PageNavigator and abstracted with IStateManager
+Added support to locate ViewModels through attached property (still supports dictionary)
+Added support to provide custom serialization on a ViewModel by implementing IViewModelStateManagement

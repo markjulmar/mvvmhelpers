@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace JulMar.Windows.Interfaces
 {
@@ -7,6 +8,12 @@ namespace JulMar.Windows.Interfaces
     /// </summary>
     public interface IPageNavigator
     {
+        /// <summary>
+        /// Optional state manager, if supplied it will be passed with the navigation events
+        /// allowing the page to save session state.
+        /// </summary>
+        IStateManager StateManager { get; set; }
+
         /// <summary>
         /// Returns the current page key (if known)
         /// </summary>
@@ -47,27 +54,6 @@ namespace JulMar.Windows.Interfaces
         bool NavigateTo(string pageKey, object argument, object viewModel);
 
         /// <summary>
-        /// Navigate to a specific page
-        /// </summary>
-        /// <param name="pageType">Page Type</param>
-        bool NavigateTo(Type pageType);
-
-        /// <summary>
-        /// Navigate to a specific page
-        /// </summary>
-        /// <param name="pageType">Page Type</param>
-        /// <param name="argument">Argument to pass (primitive type, may be null)</param>
-        bool NavigateTo(Type pageType, object argument);
-
-        /// <summary>
-        /// Navigate to a specific page, passing parameters
-        /// </summary>
-        /// <param name="pageType">Page Type</param>
-        /// <param name="argument">Argument to pass (primitive type, may be null)</param>
-        /// <param name="viewModel">ViewModel to assign (may be null)</param>
-        bool NavigateTo(Type pageType, object argument, object viewModel);
-
-        /// <summary>
         /// Go backward in the navigation chain
         /// </summary>
         bool GoBack();
@@ -86,5 +72,20 @@ namespace JulMar.Windows.Interfaces
         /// Return whether there is a page ahead the current page in the navigation service
         /// </summary>
         bool CanGoForward { get; }
+
+        /// <value>
+        /// The back stack depth.
+        /// </value>
+        int BackStackDepth { get; }
+
+        /// <summary>
+        /// Used to save the navigation stack and should be called in the suspending event.
+        /// </summary>
+        Task SaveAsync();
+
+        /// <summary>
+        /// Restore the navigation stack
+        /// </summary>
+        Task<bool> LoadAsync();
     }
 }

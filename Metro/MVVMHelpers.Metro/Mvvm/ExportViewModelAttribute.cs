@@ -1,6 +1,5 @@
 using System;
 using System.Composition;
-using JulMar.Windows.Mvvm.Internal;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -22,7 +21,7 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         /// <param name="key">Key used to lookup ViewModel</param>
         public ExportViewModelAttribute(string key)
-            : base(ViewModelLocator.MefLocatorKey, typeof(object))
+            : base(ViewModelLocatorService.MefLocatorKey, typeof(object))
         {
             Key = key;
         }

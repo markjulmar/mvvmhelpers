@@ -1,0 +1,29 @@
+﻿<Controls:FlyoutPage
+    x:Class="PopupTest.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:si="using:System.Windows.Interactivity" xmlns:i="using:JulMar.Windows.Interactivity"
+    xmlns:Controls="using:JulMar.Windows.Controls" xmlns:Mvvm="using:JulMar.Windows.Mvvm" mc:Ignorable="d"
+    Mvvm:ViewModelLocator.Key="SettingsViewModel">
+    
+    <StackPanel Background="White">
+        <TextBlock Margin="5" Text="Select a Search Type:" FontSize="40" Foreground="Black" />
+        
+        <ComboBox x:Name="cb" Margin="5" Width="200" BorderBrush="Black"
+                  ItemsSource="{Binding ListSearchType}" SelectedItem="{Binding SelectedSearchType, Mode=TwoWay}">
+            <si:Interaction.Triggers>
+                <si:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommand CommandParameter="PanelSearch" Command="{Binding SearchComboSelectionChangedCommand}"/>
+                </si:EventTrigger>
+            </si:Interaction.Triggers>
+        </ComboBox>
+
+        <TextBlock Margin="5" Text="Search Type Count (Increments on each selection)" />
+        <TextBlock Foreground="Blue" FontWeight="Bold" FontSize="20"
+                   Text="{Binding SelectedCommandSearchTypeCount}" Margin="10" />
+        <TextBlock FontSize="20" Text="{Binding SelectedSearchType}" Margin="10" />
+
+    </StackPanel>
+</Controls:FlyoutPage>

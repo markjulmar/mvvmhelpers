@@ -36,7 +36,7 @@ namespace App1
             base.OnNavigatedTo(e);
         }
 
-        protected void buttonDetails_Click(object sender, RoutedEventArgs e)
+        private void buttonDetails_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(DetailsPage));
         }
