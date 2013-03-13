@@ -10,6 +10,7 @@ using JulMar.Core.Internal;
 using JulMar.Windows.Interfaces;
 using Windows.Security.Cryptography.DataProtection;
 using Windows.Storage;
+using System.Composition;
 
 namespace JulMar.Windows.Services
 {
@@ -25,7 +26,7 @@ namespace JulMar.Windows.Services
     /// <summary>
     /// State Manager class to load and save a ViewModel to a dictionary
     /// </summary>
-    [DefaultExport(typeof(IStateManager))]
+    [DefaultExport(typeof(IStateManager)), Shared]
     public sealed class StateManager : IStateManager
     {
         /// <summary>
@@ -92,7 +93,19 @@ namespace JulMar.Windows.Services
         /// <param name="viewModel">ViewModel object</param>
         public void LoadObject(string key, object viewModel)
         {
-            Load(GetDictionary(key, false), viewModel);
+            if (viewModel == null)
+                throw new ArgumentNullException("viewModel");
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException("key");
+
+            var properties = viewModel.GetType().GetRuntimeProperties()
+                .Where(c => c.GetCustomAttribute(typeof(ViewModelStateAttribute)) != null)
+                .ToArray();
+
+            // Check for the support to save
+            if (viewModel is IViewModelStateManagement
+                || properties.Length > 0)
+                Load(GetDictionary(key, false), viewModel, properties);
         }
 
         /// <summary>
@@ -102,7 +115,19 @@ namespace JulMar.Windows.Services
         /// <param name="viewModel"></param>
         public void SaveObject(string key, object viewModel)
         {
-            Save(GetDictionary(key), viewModel);
+            if (viewModel == null)
+                throw new ArgumentNullException("viewModel");
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException("key");
+
+            var properties = viewModel.GetType().GetRuntimeProperties()
+                .Where(c => c.GetCustomAttribute(typeof (ViewModelStateAttribute)) != null)
+                .ToArray();
+
+            // Check for the support to save
+            if (viewModel is IViewModelStateManagement
+                || properties.Length > 0)
+                Save(GetDictionary(key), viewModel, properties);
         }
 
         /// <summary>
@@ -176,7 +201,8 @@ namespace JulMar.Windows.Services
         /// </summary>
         /// <param name="stateDictionary"></param>
         /// <param name="viewModel"></param>
-        private static void Load(IDictionary<string, object> stateDictionary, object viewModel)
+        /// <param name="properties"></param>
+        private static void Load(IDictionary<string, object> stateDictionary, object viewModel, IEnumerable<PropertyInfo> properties)
         {
             if (stateDictionary == null || viewModel == null)
                 return;
@@ -189,8 +215,7 @@ namespace JulMar.Windows.Services
             }
 
             // Otherwise use reflection to pull all the properties.
-            foreach (PropertyInfo propertyInfo in viewModel.GetType().GetRuntimeProperties()
-                    .Where(c => c.GetCustomAttribute(typeof(ViewModelStateAttribute)) != null))
+            foreach (PropertyInfo propertyInfo in properties)
             {
                 if (stateDictionary.ContainsKey(propertyInfo.Name))
                     propertyInfo.SetValue(viewModel, stateDictionary[propertyInfo.Name]);
@@ -202,7 +227,8 @@ namespace JulMar.Windows.Services
         /// </summary>
         /// <param name="stateDictionary"></param>
         /// <param name="viewModel"></param>
-        private static void Save(IDictionary<string, object> stateDictionary, object viewModel)
+        /// <param name="properties"></param>
+        private static void Save(IDictionary<string, object> stateDictionary, object viewModel, IEnumerable<PropertyInfo> properties)
         {
             if (stateDictionary == null || viewModel == null)
                 return;
@@ -214,9 +240,9 @@ namespace JulMar.Windows.Services
                 return;
             }
 
-            foreach (PropertyInfo propertyInfo in viewModel.GetType().GetRuntimeProperties().Where(c => c.GetCustomAttribute(typeof(ViewModelStateAttribute)) != null))
+            foreach (PropertyInfo propertyInfo in properties)
             {
-                stateDictionary.Add(propertyInfo.Name, propertyInfo.GetValue(viewModel));
+                stateDictionary[propertyInfo.Name] = propertyInfo.GetValue(viewModel);
             }
         }
     }

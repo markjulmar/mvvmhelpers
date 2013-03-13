@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,8 +11,15 @@ namespace JulMar.Windows.Interfaces
     {
         /// <summary>
         /// Filename to use for storage
+        /// Other implementations might not use this.
         /// </summary>
         string Filename { get; set; }
+
+        /// <summary>
+        /// List of known types which may be serialized by the state manager
+        /// Other implementations might not use this.
+        /// </summary>
+        IList<Type> KnownTypes { get; }
 
         /// <summary>
         /// Retrieve the state dictionary for a given key

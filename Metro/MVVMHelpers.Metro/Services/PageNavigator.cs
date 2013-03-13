@@ -77,7 +77,7 @@ namespace JulMar.Windows.Services
     /// <summary>
     /// Page navigation service
     /// </summary>
-    [DefaultExport(typeof (IPageNavigator))]
+    [DefaultExport(typeof (IPageNavigator)), Shared]
     internal sealed class PageNavigator : IPageNavigator
     {
         internal const string MefLocatorKey = "JulMar.PageView.Export";
@@ -116,12 +116,19 @@ namespace JulMar.Windows.Services
         private void RootFrameOnNavigated(object sender, NavigationEventArgs e)
         {
             FrameworkElement fe = e.Content as FrameworkElement;
-            bool assignDataContext = true;
+            object viewModel = _watchForViewModel;
+            _watchForViewModel = null;
 
-            if (_watchForViewModel == null && fe != null)
+            if (fe != null)
             {
-                _watchForViewModel = fe.DataContext;
-                assignDataContext = false;
+                if (viewModel == null)
+                {
+                    viewModel = fe.DataContext;
+                }
+                else
+                {
+                    fe.DataContext = viewModel;
+                }
             }
 
             // Clear any forward navigation when adding a new page
@@ -130,38 +137,46 @@ namespace JulMar.Windows.Services
                 ClearForwardHistory();
             }
 
-            // See if the ViewModel participates in navigation-aware services.
-            INavigationAware navm = _watchForViewModel as INavigationAware;
-            if (navm != null)
+            HandleOnNavigatingTo(fe, viewModel, e.NavigationMode, e.Parameter);
+        }
+
+        /// <summary>
+        /// Handles the navigation when we are moving TO a new view/viewmodel.
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="viewModel"></param>
+        /// <param name="navMode"></param>
+        /// <param name="parameter"></param>
+        private void HandleOnNavigatingTo(FrameworkElement view, object viewModel, NavigationMode navMode, object parameter)
+        {
+            // Load the object state
+            IDictionary<string, object> stateDictionary = null;
+            if (viewModel != null)
             {
-                IDictionary<string, object> stateDictionary = null;
                 if (StateManager != null)
                 {
                     string key = GenerateStateKey(ViewModelKeyPrefix);
-                    StateManager.LoadObject(key, navm);
+                    StateManager.LoadObject(key, viewModel);
                     stateDictionary = StateManager.GetDictionary(key, false);
                 }
 
-                navm.OnNavigatedTo(new NavigatedToEventArgs(e.NavigationMode, e.Parameter, stateDictionary));
+                // See if the ViewModel participates in navigation-aware services.
+                INavigationAware navm = viewModel as INavigationAware;
+                if (navm != null)
+                    navm.OnNavigatedTo(new NavigatedToEventArgs(navMode, parameter, stateDictionary));
             }
 
-            // Assign the data context.
-            if (assignDataContext && fe != null)
-                fe.DataContext = _watchForViewModel;
-
             // See if the VIEW participates in navigation-aware services.
-            INavigationAware naView = fe as INavigationAware;
+            INavigationAware naView = view as INavigationAware;
             if (naView != null)
             {
-                IDictionary<string, object> stateDictionary = null;
+                stateDictionary = null;
                 if (StateManager != null)
                 {
                     string key = GenerateStateKey(PageKeyPrefix);
-                    StateManager.LoadObject(key, naView);
                     stateDictionary = StateManager.GetDictionary(key, false);
                 }
-
-                naView.OnNavigatedTo(new NavigatedToEventArgs(e.NavigationMode, e.Parameter, stateDictionary));
+                naView.OnNavigatedTo(new NavigatedToEventArgs(navMode, parameter, stateDictionary));
             }
         }
 
@@ -173,39 +188,66 @@ namespace JulMar.Windows.Services
         private void RootFrameOnNavigating(object sender, NavigatingCancelEventArgs e)
         {
             Frame frame = (Frame)sender;
-            if (frame.Content != null)
+            bool cancel = e.Cancel;
+            HandleOnNavigatingFrom(frame, e.NavigationMode, ref cancel, false);
+            e.Cancel = cancel;
+        }
+
+        /// <summary>
+        /// Handles the OnNavigatingFrom event which notifies a page/ViewModel that we are
+        /// moving AWAY from that view.
+        /// </summary>
+        /// <param name="rootFrame"></param>
+        /// <param name="navMode"></param>
+        /// <param name="cancel"></param>
+        /// <param name="suspending"></param>
+        private void HandleOnNavigatingFrom(Frame rootFrame, NavigationMode navMode, ref bool cancel, bool suspending)
+        {
+            if (rootFrame.Content != null)
             {
-                FrameworkElement fe = frame.Content as FrameworkElement;
+                IDictionary<string, object> stateDictionary = null;
+                FrameworkElement fe = rootFrame.Content as FrameworkElement;
                 if (fe != null)
                 {
-                    // See if the ViewModel participates in navigation-aware services.
-                    INavigationAware navm = fe.DataContext as INavigationAware;
-                    if (navm != null)
+                    if (fe.DataContext != null)
                     {
-                        IDictionary<string, object> stateDictionary = null;
+                        // Attempt to save the object off.
                         if (StateManager != null)
                         {
                             string key = GenerateStateKey(ViewModelKeyPrefix);
-                            StateManager.SaveObject(key, navm);
+                            StateManager.SaveObject(key, fe.DataContext);
                             stateDictionary = StateManager.GetDictionary(key, true);
                         }
 
-                        navm.OnNavigatingFrom(new NavigatingFromEventArgs(e.NavigationMode, e.Cancel, stateDictionary));
+                        // See if the ViewModel participates in navigation-aware services.
+                        INavigationAware navm = fe.DataContext as INavigationAware;
+                        if (navm != null)
+                        {
+                            var e = (suspending)
+                                        ? new NavigatingFromEventArgs(navMode, cancel, stateDictionary)
+                                        : new NavigatingFromEventArgs(stateDictionary);
+                            navm.OnNavigatingFrom(e);
+                            cancel = e.Cancel;
+                        }
                     }
 
                     // See if the VIEW participates in navigation-aware services.
                     INavigationAware naView = fe as INavigationAware;
                     if (naView != null)
                     {
-                        IDictionary<string, object> stateDictionary = null;
+                        // Save off the VIEW
+                        stateDictionary = null;
                         if (StateManager != null)
                         {
                             string key = GenerateStateKey(PageKeyPrefix);
-                            StateManager.LoadObject(key, naView);
                             stateDictionary = StateManager.GetDictionary(key, false);
                         }
 
-                        naView.OnNavigatingFrom(new NavigatingFromEventArgs(e.NavigationMode, e.Cancel, stateDictionary));
+                        var e = (suspending)
+                                    ? new NavigatingFromEventArgs(navMode, cancel, stateDictionary)
+                                    : new NavigatingFromEventArgs(stateDictionary);
+                        naView.OnNavigatingFrom(e);
+                        cancel = e.Cancel;
                     }
                 }
             }
@@ -359,7 +401,6 @@ namespace JulMar.Windows.Services
             if (pageType == null)
                 throw new ArgumentNullException("pageType");
 
-
             try
             {
                 _watchForViewModel = viewModel;
@@ -440,28 +481,8 @@ namespace JulMar.Windows.Services
         /// </summary>
         private void ProcessSuspend()
         {
-            if (StateManager == null)
-                return;
-
-            var currentView = RootFrame.Content as FrameworkElement;
-            if (currentView == null) 
-                return;
-
-            // See if the ViewModel supports navigation-aware services.
-            var navm = currentView.DataContext as INavigationAware;
-            if (navm != null)
-            {
-                var stateDictionary = StateManager.GetDictionary(GenerateStateKey(ViewModelKeyPrefix), true);
-                navm.OnNavigatingFrom(new NavigatingFromEventArgs(stateDictionary));
-            }
-
-            // See if the VIEW supports navigation-aware services.
-            var naView = currentView as INavigationAware;
-            if (naView != null)
-            {
-                var stateDictionary = StateManager.GetDictionary(GenerateStateKey(PageKeyPrefix), true);
-                naView.OnNavigatingFrom(new NavigatingFromEventArgs(stateDictionary));
-            }
+            bool cancel = false;
+            HandleOnNavigatingFrom(RootFrame, NavigationMode.Refresh, ref cancel, true);
         }
 
         /// <summary>
@@ -469,27 +490,10 @@ namespace JulMar.Windows.Services
         /// </summary>
         private void ProcessRestore()
         {
-            if (StateManager == null)
-                return;
-
             var currentView = RootFrame.Content as FrameworkElement;
-            if (currentView == null)
-                return;
-
-            // See if the ViewModel supports navigation-aware services.
-            var navm = currentView.DataContext as INavigationAware;
-            if (navm != null)
+            if (currentView != null)
             {
-                var stateDictionary = StateManager.GetDictionary(GenerateStateKey(ViewModelKeyPrefix), false);
-                navm.OnNavigatedTo(new NavigatedToEventArgs(NavigationMode.Refresh, null, stateDictionary));
-            }
-
-            // See if the VIEW supports navigation-aware services.
-            var naView = currentView as INavigationAware;
-            if (naView != null)
-            {
-                var stateDictionary = StateManager.GetDictionary(GenerateStateKey(PageKeyPrefix), false);
-                naView.OnNavigatedTo(new NavigatedToEventArgs(NavigationMode.Refresh, null, stateDictionary));
+                HandleOnNavigatingTo(currentView, currentView.DataContext, NavigationMode.Refresh, null);
             }
         }
 
