@@ -50,4 +50,10 @@ Added support to locate ViewModels through attached property (still supports dic
 Added support to provide custom serialization on a ViewModel by implementing IViewModelStateManagement
 
 1.06 3/2013
-Bug fixes and Refactorings
+Fixes for PageNavigator/StateManager
+Expose KnownTypes on IStateManager
+Allow persistence even when objects do not participate in INavigateAware
+Refactored code to share persistence on suspend + navigation.
+
+1.07 3/2013
+Fixes to reattach event handlers from EventTrigger when UIElement is unloaded/loaded multiple times.
