@@ -111,10 +111,26 @@ namespace System.Windows.Interactivity
         }
 
         /// <summary>
+        /// Called when the attached object  is loaded.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnAssociatedObjectLoaded(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement fe = sender as FrameworkElement;
+            if (fe != null)
+            {
+                AssociatedObjectInternal = fe;
+                fe.Loaded -= OnAssociatedObjectLoaded;
+            }
+        }
+
+        /// <summary>
         /// Called when the associated object is unloaded
         /// </summary>
         private void OnAssociatedObjectUnloaded(object sender, RoutedEventArgs e)
         {
+            _associatedObject.Loaded += OnAssociatedObjectLoaded;
             AssociatedObjectInternal = null;
         }
     }

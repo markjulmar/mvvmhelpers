@@ -48,3 +48,6 @@ Added Flyout control and IFlyoutVisualizer
 Integrated StateManager into PageNavigator and abstracted with IStateManager
 Added support to locate ViewModels through attached property (still supports dictionary)
 Added support to provide custom serialization on a ViewModel by implementing IViewModelStateManagement
+
+1.06 3/2013
+Bug fixes and Refactorings

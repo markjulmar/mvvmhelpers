@@ -95,6 +95,9 @@ namespace System.Windows.Interactivity
             }
         }
 
+        private Func<Delegate, EventRegistrationToken> _addHandler;
+        private Action<EventRegistrationToken> _removeHandler; 
+
         /// <summary>
         /// Register an event handler for a given object and event name.
         /// </summary>
@@ -109,9 +112,12 @@ namespace System.Windows.Interactivity
             // WinRT events cannot be subscribed to through normal events because it uses
             // event tokens to map events to handlers. The compiler emits calls through WRM to do the work.
             var handler = GetEventMethod(eventInfo);
-            WindowsRuntimeMarshal.AddEventHandler(
-                d => (EventRegistrationToken)eventInfo.AddMethod.Invoke(obj, new object[] { d }),
-                et => eventInfo.RemoveMethod.Invoke(obj, new object[] { et }), handler);
+
+            // Save off the handlers so we can properly unregister later.
+            _addHandler = d => (EventRegistrationToken) eventInfo.AddMethod.Invoke(obj, new object[] {d});
+            _removeHandler = et => eventInfo.RemoveMethod.Invoke(obj, new object[] {et});
+
+            WindowsRuntimeMarshal.AddEventHandler(_addHandler, _removeHandler, handler);
         }
 
         /// <summary>
@@ -122,11 +128,13 @@ namespace System.Windows.Interactivity
         private void UnregisterEvent(object obj, string eventName)
         {
             EventInfo eventInfo = LookForEventDeclaration(obj, eventName);
-            if (eventInfo != null)
+            if (eventInfo != null && _removeHandler != null)
             {
                 var handler = GetEventMethod(eventInfo);
-                WindowsRuntimeMarshal.RemoveEventHandler(
-                    et => eventInfo.RemoveMethod.Invoke(obj, new object[] {et}), handler);
+                WindowsRuntimeMarshal.RemoveEventHandler(_removeHandler, handler);
+
+                _addHandler = null;
+                _removeHandler = null;
             }
         }
 

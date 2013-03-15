@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="TestApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TestApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:si="using:System.Windows.Interactivity" xmlns:i="using:JulMar.Windows.Interactivity"
+    xmlns:Mvvm="using:JulMar.Windows.Mvvm" xmlns:ViewModels="using:TestApp.ViewModels" mc:Ignorable="d"
+    Mvvm:ViewModelLocator.Key="MainVm"
+    d:DataContext="{d:DesignInstance Type=ViewModels:MainViewModel, IsDesignTimeCreatable=True}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="SearchCostCenterTemplate">
+            <StackPanel>
+                <TextBlock Text="Cost Center" />
+                <TextBox Margin="5" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+    
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <ToggleButton IsChecked="{Binding SearchCostCenterPopUpIsOpen, Mode=TwoWay}" Margin="20"
+                      Content="Show Popup" VerticalAlignment="Top" HorizontalAlignment="Center"
+                      FontSize="40" />
+        
+        <TextBlock Text="{Binding Counter}" FontSize="40"
+                   HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" />
+        
+        <Popup x:Name="SearchCostCenterPopUp" IsOpen="{Binding SearchCostCenterPopUpIsOpen, Mode=TwoWay}" Grid.Row="1">
+            <Grid Height="530" Width="400" Margin="460,29,0,0" Background="DarkBlue">
+                <StackPanel HorizontalAlignment="Left" Height="530" VerticalAlignment="Top" Width="400" Margin="10,10,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock TextWrapping="Wrap" Text="Search Cost Center" FontSize="20" FontFamily="Global User Interface" Margin="0"/>
+                    </StackPanel>
+
+                    <StackPanel  Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Search by" Width="100" VerticalAlignment="Top" FontSize="20" Margin="0,10,20,0"/>
+                        <ComboBox ItemsSource="{Binding ListSearchByForCostCenter, Mode=TwoWay}"  SelectedItem="{Binding SelectedSearchByForCostCenter, Mode=TwoWay}" Margin="0,0,0,27" Width="250"/>
+                    </StackPanel>
+                    <StackPanel  Margin="0,0,10,0" Orientation="Horizontal">
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Keyword" Width="100" VerticalAlignment="Top" FontSize="20" Margin="0,10,20,0"/>
+                        <TextBox Text="{Binding SearchKeywordForCostCenter, Mode=TwoWay}" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,0,0,0" Width="250"/>
+                    </StackPanel>
+                    <StackPanel Height="80" Margin="0,0,10,0" Orientation="Horizontal" HorizontalAlignment="Center" Width="300">
+                        <Button Command="{Binding SearchCommand}" CommandParameter="CostCenter" Content="Search" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Width="150" Height="50"/>
+                        <Button Command="{Binding CancelCommand}" CommandParameter="CostCenter"  Content="Cancel" Height="50" Width="150" Margin="0,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+                    </StackPanel>
+                    <ListView Height="300" Width="350" ItemsSource="{Binding ListSearchCostCenter, Mode=TwoWay}" SelectedItem="{Binding SelectedSearchCostCenter, Mode=TwoWay}" 
+                              ItemTemplate="{StaticResource SearchCostCenterTemplate}">
+                        <si:Interaction.Triggers>
+                            <si:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommand CommandParameter="CostCenter" Command="{Binding SelectionChangedCommand}"/>
+                            </si:EventTrigger>
+                        </si:Interaction.Triggers>
+                    </ListView>
+                </StackPanel>
+            </Grid>
+        </Popup>
+
+    </Grid>
+</Page>
