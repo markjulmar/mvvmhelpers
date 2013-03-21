@@ -57,3 +57,6 @@ Refactored code to share persistence on suspend + navigation.
 
 1.07 3/2013
 Fixes to reattach event handlers from EventTrigger when UIElement is unloaded/loaded multiple times.
+
+1.08 ?
+Added SynchronizedCollectionBehavior (ported from WPF version)
