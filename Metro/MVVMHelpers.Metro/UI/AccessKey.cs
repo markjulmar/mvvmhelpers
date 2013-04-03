@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JulMar.Core.Extensions;
+using JulMar.Windows.Extensions;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -47,6 +48,9 @@ namespace JulMar.Windows.UI
 
         private static void OnAcceleratorChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
         {
+            if (Designer.InDesignMode)
+                return;
+
             Control owner = dpo as Control;
             if (owner == null)
                 return;

@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\BindableCommand.cs" />
     <Compile Include="Behaviors\EventCommander.cs" />
+    <Compile Include="Behaviors\FocusManager.cs" />
     <Compile Include="Behaviors\NameScopeBinding.cs" />
     <Compile Include="Behaviors\StyleSetter.cs" />
     <Compile Include="Collections\CollectionSubset.cs" />

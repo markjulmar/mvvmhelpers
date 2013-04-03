@@ -123,14 +123,17 @@ namespace JulMar.Windows.Interactivity.Input
         /// <param name="eventArgs"></param>
         protected override void OnEvent(object eventArgs)
         {
-            this._targetElement = Window.Current.CoreWindow;
-            if (this.FiredOn == KeyTriggerFiredOn.KeyDown)
+            _targetElement = Window.Current.CoreWindow;
+            if (_targetElement == null)
+                return;
+
+            if (FiredOn == KeyTriggerFiredOn.KeyDown)
             {
-                this._targetElement.KeyDown += OnKeyPress;
+                _targetElement.KeyDown += OnKeyPress;
             }
             else
             {
-                this._targetElement.KeyUp += OnKeyPress;
+                _targetElement.KeyUp += OnKeyPress;
             }
         }
 
