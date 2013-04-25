@@ -45,7 +45,7 @@ namespace AutoSerializingNavigationTest
         /// search results, and so forth.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        protected async override void OnLaunched(LaunchActivatedEventArgs args)
         {
             IPageNavigator pageNavigator = ServiceLocator.Instance.Resolve<IPageNavigator>();
                 
@@ -58,13 +58,13 @@ namespace AutoSerializingNavigationTest
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
-                if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
-
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
+
+                if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                {
+                    await pageNavigator.LoadAsync();
+                }
             }
 
             if (rootFrame.Content == null)
@@ -88,10 +88,13 @@ namespace AutoSerializingNavigationTest
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
+            IPageNavigator pageNavigator = ServiceLocator.Instance.Resolve<IPageNavigator>();
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+
+            await pageNavigator.SaveAsync();
+
             deferral.Complete();
         }
     }

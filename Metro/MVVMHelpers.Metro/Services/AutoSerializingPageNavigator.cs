@@ -16,6 +16,13 @@ namespace JulMar.Windows.Services
     /// <summary>
     /// Page navigation service with auto-serialization support (JSon)
     /// </summary>
+    /// <example>
+    /// Replace default navigator in App.xaml.cs constructor:
+    ///      ServiceLocator.Instance.Add(typeof(IPageNavigator), new AutoSerializingPageNavigator());
+    /// </example>
+    /// <remarks>
+    /// Note that view model must all be serializable and use OnDeserialized initializers.
+    /// </remarks>
     public sealed class AutoSerializingPageNavigator : IPageNavigator
     {
         private readonly IDictionary<string, Type> _registeredPages = new ConcurrentDictionary<string, Type>();
@@ -99,16 +106,7 @@ namespace JulMar.Windows.Services
         /// <param name="e"></param>
         private void RootFrameOnNavigated(object sender, NavigationEventArgs e)
         {
-            object viewModel = null;
-            string viewModelData = e.Parameter as string;
-            if (!string.IsNullOrEmpty(viewModelData))
-            {
-                int index = viewModelData.IndexOf('!');
-                string type = viewModelData.Substring(0, index);
-                viewModelData = viewModelData.Substring(index+1);
-                viewModel = Json.Deserialize(Type.GetType(type), viewModelData);
-            }
-
+            object viewModel = InflateViewModel(e.Parameter as string);
             FrameworkElement fe = e.Content as FrameworkElement;
             if (fe != null && viewModel != null)
             {
@@ -122,6 +120,23 @@ namespace JulMar.Windows.Services
             }
 
             HandleOnNavigatingTo(fe, e.NavigationMode, viewModel ?? e.Parameter);
+        }
+
+        /// <summary>
+        /// Creates the ViewModel from a string.
+        /// </summary>
+        /// <param name="viewModelData"></param>
+        /// <returns></returns>
+        private object InflateViewModel(string viewModelData)
+        {
+            if (!string.IsNullOrEmpty(viewModelData))
+            {
+                int index = viewModelData.IndexOf('!');
+                string type = viewModelData.Substring(1, index);
+                viewModelData = viewModelData.Substring(index + 1);
+                return Json.Deserialize(Type.GetType(type), viewModelData);
+            }
+            return null;
         }
 
         /// <summary>
@@ -293,7 +308,7 @@ namespace JulMar.Windows.Services
             if (pageType == null)
                 throw new ArgumentNullException("pageType");
 
-            string viewModelType = argument != null ? argument.GetType().AssemblyQualifiedName : null;
+            string viewModelType = argument != null ? "$" + argument.GetType().AssemblyQualifiedName : null;
             return NavigationFrame.Navigate(pageType, argument != null ? viewModelType + "!" + Json.Serialize(argument) : null);
         }
 
@@ -361,6 +376,8 @@ namespace JulMar.Windows.Services
         {
             if (StateManager != null)
             {
+                ProcessSuspend();
+
                 string frameKey = string.IsNullOrEmpty(_frameKey) ? PageNavigator.DefaultFrameKey : _frameKey;
                 var frameDictionary = StateManager.GetDictionary(frameKey, true);
                 frameDictionary[PageNavigator.NavigationStackKey] = NavigationFrame.GetNavigationState();
@@ -392,7 +409,11 @@ namespace JulMar.Windows.Services
                         if (frameDictionary.ContainsKey(PageNavigator.NavigationStackKey))
                         {
                             // This will restore the parameter
-                            NavigationFrame.SetNavigationState((string)frameDictionary[PageNavigator.NavigationStackKey]);
+                            string navData = (string) frameDictionary[PageNavigator.NavigationStackKey];
+                            NavigationFrame.SetNavigationState(navData);
+                            int index = navData.LastIndexOf('$');
+                            if (index != -1)
+                            ProcessRestore(navData.Substring(index));
                             return true;
                         }
                     }
@@ -400,6 +421,29 @@ namespace JulMar.Windows.Services
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// This is used to process a suspension
+        /// </summary>
+        private void ProcessSuspend()
+        {
+            bool cancel = false;
+            HandleOnNavigatingFrom(NavigationFrame, NavigationMode.Refresh, ref cancel, true);
+        }
+
+        /// <summary>
+        /// Restore the current VM state after suspension
+        /// </summary>
+        private void ProcessRestore(string parameter)
+        {
+            var currentView = NavigationFrame.Content as FrameworkElement;
+            if (currentView != null)
+            {
+                object viewModel = InflateViewModel(parameter);
+                HandleOnNavigatingTo(NavigationFrame, NavigationMode.Refresh, viewModel ?? parameter);
+                currentView.DataContext = viewModel;
+            }
         }
 
         /// <summary>
