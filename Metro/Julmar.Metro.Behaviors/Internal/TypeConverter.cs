@@ -93,8 +93,10 @@ namespace JulMar.Windows.Interactivity.Internal
                         return System.Convert.ToBoolean(source);
                     else if (type == typeof(Color))
                         return ParseColor(source.ToString());
-                    else if (type == typeof(Brush))
-                        return ParseBrush(source.ToString());
+                    else if (type == typeof (Brush))
+                    {
+                        return source is Brush ? source : ParseBrush(source.ToString());
+                    }
                 }
 
                 // Generic conversion, last resort.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace JulMar.Core.Interfaces
 {
@@ -42,5 +43,10 @@ namespace JulMar.Core.Interfaces
         /// <typeparam name="T">Type to resolve</typeparam>
         /// <returns>Implementation</returns>
         T Resolve<T>();
+
+        /// <summary>
+        /// This returns all the registered services
+        /// </summary>
+        IReadOnlyDictionary<Type, object> RegisteredServices { get; }
     }
 }

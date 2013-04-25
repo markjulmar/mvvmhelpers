@@ -60,3 +60,5 @@ Fixes to reattach event handlers from EventTrigger when UIElement is unloaded/lo
 
 1.08 ?
 Added SynchronizedCollectionBehavior (ported from WPF version)
+Added new AutoSerializingPageNavigator
+Added support to replace [Imports] using ServiceLocator

@@ -17,14 +17,14 @@ namespace JulMar.Windows.Mvvm
         /// </summary>
         protected ViewModel()
         {
-            Initialize();
+            Initialize(new StreamingContext());
         }
 
         /// <summary>
-        /// This should be called during construction and de-serialization to properly setup the
-        /// object.
+        /// Setup the view model
         /// </summary>
-        protected void Initialize()
+        [OnDeserialized]
+        private void Initialize(StreamingContext context)
         {
             // Register with the message mediator - this will locate and bind all message
             // targets on this instance. Shouldn't really need to check for existence - it should

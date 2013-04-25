@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Linq;
 using JulMar.Core.Interfaces;
 using JulMar.Core.Internal;
+using JulMar.Core.Services.Internal;
 
 namespace JulMar.Core.Services
 {
@@ -24,18 +26,22 @@ namespace JulMar.Core.Services
     /// </example>
     public sealed class ServiceLocator
     {
-        /// <summary>
-        /// Lazy created instance located through MEF.
-        /// </summary>
-        private static readonly Lazy<IServiceLocator> _instance = 
-            new Lazy<IServiceLocator>(() => DynamicComposer.Instance.GetExportedValue<IServiceLocator>());
+        private static IServiceLocator _instance;
 
         /// <summary>
         /// Service locator
         /// </summary>
         public static IServiceLocator Instance
         {
-            get { return _instance.Value; }
+            get { return _instance ?? (_instance = new ServiceProvider()); }
+            set
+            {
+                if (_instance != null)
+                    throw new InvalidOperationException("ServiceLocator has already been set.");
+                if (_instance == null)
+                    throw new ArgumentNullException("value", "Cannot set service locator to null.");
+                _instance = value;
+            }
         }
     }
 
@@ -86,7 +92,7 @@ namespace JulMar.Core.Services
             {
                 lock (_lock)
                 {
-                    if (Exists(type))
+                    if (_serviceContainer.ContainsKey(type))
                         Remove(type);
                     _serviceContainer.Add(type, value);
                 }
@@ -99,12 +105,7 @@ namespace JulMar.Core.Services
             /// <param name="value">Value</param>
             public void Add<T>(T value)
             {
-                lock (_lock)
-                {
-                    if (Exists(typeof(T)))
-                        Remove(typeof(T));
-                    _serviceContainer.Add(typeof(T), value);
-                }
+                Add(typeof(T), value);
             }
 
             /// <summary>
@@ -117,7 +118,7 @@ namespace JulMar.Core.Services
                 {
                     if (_serviceContainer != null)
                     {
-                        if (Exists(type))
+                        if (_serviceContainer.ContainsKey(type))
                             _serviceContainer.Remove(type);
                     }
                 }
@@ -133,6 +134,22 @@ namespace JulMar.Core.Services
             public T Resolve<T>()
             {
                 return (T) GetService(typeof(T));
+            }
+
+            /// <summary>
+            /// This returns all the registered services
+            /// </summary>
+            public IReadOnlyDictionary<Type, object> RegisteredServices
+            {
+                get
+                {
+                    lock (_lock)
+                    {
+                        return _serviceContainer != null
+                                   ? _serviceContainer.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
+                                   : new Dictionary<Type, object>();
+                    }
+                }
             }
 
             /// <summary>

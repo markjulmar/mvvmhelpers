@@ -152,6 +152,9 @@
     <Compile Include="IO\StreamExtensions.cs" />
     <Compile Include="Interfaces\IStateManager.cs" />
     <Compile Include="Interfaces\IViewModelStateManagement.cs" />
+    <Compile Include="Serialization\JSON.cs" />
+    <Compile Include="Services\AutoSerializingPageNavigator.cs" />
+    <Compile Include="Internal\ServiceLocatorExportProvider.cs" />
     <Compile Include="UI\FlyoutVisualizer.cs" />
     <Compile Include="Services\StateManager.cs" />
     <Compile Include="Services\PageNavigator.cs" />

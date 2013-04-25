@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Reflection;
-using JulMar.Core.Internal;
 using System.Collections.Generic;
-using System.Composition;
 using System.Linq;
 using JulMar.Core.Services;
 using JulMar.Windows.Interfaces;
+using JulMar.Windows.Serialization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using System.Collections.Concurrent;
@@ -15,83 +14,15 @@ using System.Threading.Tasks;
 namespace JulMar.Windows.Services
 {
     /// <summary>
-    /// Class used to populate metadata used to identify views which 
-    /// may be navigated to/from.
+    /// Page navigation service with auto-serialization support (JSon)
     /// </summary>
-    public sealed class PageViewMetadata
+    public sealed class AutoSerializingPageNavigator : IPageNavigator
     {
-        /// <summary>
-        /// Key used to export the view.
-        /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// Type used to instantiate the view.
-        /// </summary>
-        public Type Type { get; set; }
-    }
-
-    /// <summary>
-    /// This is used to decorate a specific page in the UI and associate
-    /// it to a string key.
-    /// </summary>
-    [MetadataAttribute]
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class ExportPageAttribute : ExportAttribute
-    {
-        /// <summary>
-        /// Key used to export the view.
-        /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// Type used to instantiate the view.
-        /// </summary>
-        public Type Type { get; set; }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="key">Key used to locate page</param>
-        /// <param name="type">Page type</param>
-        public ExportPageAttribute(string key, Type type)
-            : base(PageNavigator.MefLocatorKey, typeof(Page))
-        {
-            Key = key;
-            Type = type;
-        }
-    }
-
-    /// <summary>
-    /// Class used to locate views but keep property hidden
-    /// </summary>
-    internal sealed class PageViewData
-    {
-        /// <summary>
-        /// Located view models
-        /// </summary>
-        [ImportMany(PageNavigator.MefLocatorKey)]
-        public IList<Lazy<Page, PageViewMetadata>> LocatedPages { get; set; }
-    }
-
-    /// <summary>
-    /// Page navigation service
-    /// </summary>
-    [DefaultExport(typeof (IPageNavigator)), Shared]
-    public sealed class PageNavigator : IPageNavigator
-    {
-        internal const string MefLocatorKey = "JulMar.PageView.Export";
-        internal const string PageKeyPrefix = "page-";
-        internal const string DefaultFrameKey = "vmFrameKey";
-        internal const string NavigationStackKey = "NavigationStack";
-        internal const string ViewModelKeyPrefix = "pagevm-";
-
         private readonly IDictionary<string, Type> _registeredPages = new ConcurrentDictionary<string, Type>();
         private bool _autoLocatedPages, _initialized;
-        private object _watchForViewModel;
         private Frame _frame;
-        private IStateManager _stateManager;
         private string _frameKey;
+        private IStateManager _stateManager;
 
         /// <summary>
         /// The root Frame 
@@ -110,78 +41,6 @@ namespace JulMar.Windows.Services
 
             NavigationFrame.Navigating += RootFrameOnNavigating;
             NavigationFrame.Navigated += RootFrameOnNavigated;
-        }
-
-        /// <summary>
-        /// This handles the Navigated TO event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RootFrameOnNavigated(object sender, NavigationEventArgs e)
-        {
-            FrameworkElement fe = e.Content as FrameworkElement;
-            object viewModel = _watchForViewModel;
-            _watchForViewModel = null;
-
-            if (fe != null)
-            {
-                if (viewModel == null)
-                {
-                    viewModel = fe.DataContext;
-                }
-                else
-                {
-                    fe.DataContext = viewModel;
-                }
-            }
-
-            // Clear any forward navigation when adding a new page
-            if (e.NavigationMode == NavigationMode.New)
-            {
-                ClearForwardHistory();
-            }
-
-            HandleOnNavigatingTo(fe, viewModel, e.NavigationMode, e.Parameter);
-        }
-
-        /// <summary>
-        /// Handles the navigation when we are moving TO a new view/viewmodel.
-        /// </summary>
-        /// <param name="view"></param>
-        /// <param name="viewModel"></param>
-        /// <param name="navMode"></param>
-        /// <param name="parameter"></param>
-        private void HandleOnNavigatingTo(FrameworkElement view, object viewModel, NavigationMode navMode, object parameter)
-        {
-            // Load the object state
-            IDictionary<string, object> stateDictionary = null;
-            if (viewModel != null)
-            {
-                if (StateManager != null)
-                {
-                    string key = GenerateStateKey(ViewModelKeyPrefix);
-                    StateManager.LoadObject(key, viewModel);
-                    stateDictionary = StateManager.GetDictionary(key, false);
-                }
-
-                // See if the ViewModel participates in navigation-aware services.
-                INavigationAware navm = viewModel as INavigationAware;
-                if (navm != null)
-                    navm.OnNavigatedTo(new NavigatedToEventArgs(navMode, parameter, stateDictionary));
-            }
-
-            // See if the VIEW participates in navigation-aware services.
-            INavigationAware naView = view as INavigationAware;
-            if (naView != null)
-            {
-                stateDictionary = null;
-                if (StateManager != null)
-                {
-                    string key = GenerateStateKey(PageKeyPrefix);
-                    stateDictionary = StateManager.GetDictionary(key, false);
-                }
-                naView.OnNavigatedTo(new NavigatedToEventArgs(navMode, parameter, stateDictionary));
-            }
         }
 
         /// <summary>
@@ -209,41 +68,17 @@ namespace JulMar.Windows.Services
         {
             if (rootFrame.Content != null)
             {
-                IDictionary<string, object> stateDictionary = null;
                 FrameworkElement fe = rootFrame.Content as FrameworkElement;
                 if (fe != null)
                 {
-                    if (fe.DataContext != null)
-                    {
-                        // Attempt to save the object off.
-                        if (StateManager != null)
-                        {
-                            string key = GenerateStateKey(ViewModelKeyPrefix);
-                            StateManager.SaveObject(key, fe.DataContext);
-                            stateDictionary = StateManager.GetDictionary(key, true);
-                        }
-
-                        // See if the ViewModel participates in navigation-aware services.
-                        INavigationAware navm = fe.DataContext as INavigationAware;
-                        if (navm != null)
-                        {
-                            var e = (suspending)
-                                        ? new NavigatingFromEventArgs(navMode, cancel, stateDictionary)
-                                        : new NavigatingFromEventArgs(stateDictionary);
-                            navm.OnNavigatingFrom(e);
-                            cancel = e.Cancel;
-                        }
-                    }
-
-                    // See if the VIEW participates in navigation-aware services.
                     INavigationAware naView = fe as INavigationAware;
                     if (naView != null)
                     {
                         // Save off the VIEW
-                        stateDictionary = null;
+                        IDictionary<string, object> stateDictionary = null;
                         if (StateManager != null)
                         {
-                            string key = GenerateStateKey(PageKeyPrefix);
+                            string key = GenerateStateKey(PageNavigator.PageKeyPrefix);
                             stateDictionary = StateManager.GetDictionary(key, false);
                         }
 
@@ -254,6 +89,79 @@ namespace JulMar.Windows.Services
                         cancel = e.Cancel;
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// This handles the Navigated TO event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RootFrameOnNavigated(object sender, NavigationEventArgs e)
+        {
+            object viewModel = null;
+            string viewModelData = e.Parameter as string;
+            if (!string.IsNullOrEmpty(viewModelData))
+            {
+                int index = viewModelData.IndexOf('!');
+                string type = viewModelData.Substring(0, index);
+                viewModelData = viewModelData.Substring(index+1);
+                viewModel = Json.Deserialize(Type.GetType(type), viewModelData);
+            }
+
+            FrameworkElement fe = e.Content as FrameworkElement;
+            if (fe != null && viewModel != null)
+            {
+                fe.DataContext = viewModel;
+            }
+
+            // Clear any forward navigation when adding a new page
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                ClearForwardHistory();
+            }
+
+            HandleOnNavigatingTo(fe, e.NavigationMode, viewModel ?? e.Parameter);
+        }
+
+        /// <summary>
+        /// Handles the navigation when we are moving TO a new view/viewmodel.
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="viewModel"></param>
+        /// <param name="navMode"></param>
+        /// <param name="parameter"></param>
+        private void HandleOnNavigatingTo(FrameworkElement view, NavigationMode navMode, object parameter)
+        {
+            // See if the VIEW participates in navigation-aware services.
+            INavigationAware naView = view as INavigationAware;
+            if (naView != null)
+            {
+                IDictionary<string, object> stateDictionary = null;
+                if (StateManager != null)
+                {
+                    string key = GenerateStateKey(PageNavigator.PageKeyPrefix);
+                    stateDictionary = StateManager.GetDictionary(key, false);
+                }
+                naView.OnNavigatedTo(new NavigatedToEventArgs(navMode, parameter, stateDictionary));
+            }
+        }
+
+        /// <summary>
+        /// Clear the back history
+        /// </summary>
+        private void ClearForwardHistory()
+        {
+            if (StateManager == null)
+                return;
+
+            // Remove Page keys
+            var nextPageKey = GenerateStateKey(PageNavigator.PageKeyPrefix);
+            var nextPageIndex = this.BackStackDepth;
+            while (StateManager.RemoveDictionary(nextPageKey))
+            {
+                nextPageIndex++;
+                nextPageKey = PageNavigator.PageKeyPrefix + nextPageIndex;
             }
         }
 
@@ -334,17 +242,6 @@ namespace JulMar.Windows.Services
         /// <param name="argument">Argument to pass (primitive type, may be null)</param>
         public bool NavigateTo(string pageKey, object argument)
         {
-            return NavigateTo(pageKey, argument, null);
-        }
-
-        /// <summary>
-        /// Navigate to a specific page, passing parameters
-        /// </summary>
-        /// <param name="pageKey">Page key</param>
-        /// <param name="argument">Argument to pass (primitive type, may be null)</param>
-        /// <param name="viewModel">ViewModel to assign (may be null)</param>
-        public bool NavigateTo(string pageKey, object argument, object viewModel)
-        {
             if (string.IsNullOrEmpty(pageKey))
                 throw new ArgumentNullException("pageKey");
 
@@ -360,8 +257,19 @@ namespace JulMar.Windows.Services
             }
 
             Type entry;
-            return _registeredPages.TryGetValue(pageKey, out entry) 
-                && NavigateTo(entry, argument, viewModel);
+            return _registeredPages.TryGetValue(pageKey, out entry)
+                && NavigateTo(entry, argument);
+        }
+
+        /// <summary>
+        /// Navigate to a specific page, passing parameters
+        /// </summary>
+        /// <param name="pageKey">Page key</param>
+        /// <param name="argument">Argument to pass (primitive type, may be null)</param>
+        /// <param name="viewModel">ViewModel to assign (may be null)</param>
+        public bool NavigateTo(string pageKey, object argument, object viewModel)
+        {
+            throw new NotSupportedException("Direct view model object not supported - pass serializable ViewModel as argument instead.");
         }
 
         /// <summary>
@@ -370,7 +278,7 @@ namespace JulMar.Windows.Services
         /// <param name="pageType">Page Type</param>
         public bool NavigateTo(Type pageType)
         {
-            return NavigateTo(pageType, null, null);
+            return NavigateTo(pageType, null);
         }
 
         /// <summary>
@@ -380,16 +288,13 @@ namespace JulMar.Windows.Services
         /// <param name="argument">Argument to pass (primitive type, may be null)</param>
         public bool NavigateTo(Type pageType, object argument)
         {
-            return NavigateTo(pageType, null, null);
-        }
+            Initialize();
 
-        /// <summary>
-        /// Generates the state key name
-        /// </summary>
-        /// <returns></returns>
-        private string GenerateStateKey(string keyPrefix)
-        {
-            return keyPrefix + NavigationFrame.BackStackDepth;
+            if (pageType == null)
+                throw new ArgumentNullException("pageType");
+
+            string viewModelType = argument != null ? argument.GetType().AssemblyQualifiedName : null;
+            return NavigationFrame.Navigate(pageType, argument != null ? viewModelType + "!" + Json.Serialize(argument) : null);
         }
 
         /// <summary>
@@ -400,20 +305,16 @@ namespace JulMar.Windows.Services
         /// <param name="viewModel">ViewModel to assign (may be null)</param>
         public bool NavigateTo(Type pageType, object argument, object viewModel)
         {
-            Initialize();
+            throw new NotSupportedException("Direct view model object not supported - pass serializable ViewModel as argument instead.");
+        }
 
-            if (pageType == null)
-                throw new ArgumentNullException("pageType");
-
-            try
-            {
-                _watchForViewModel = viewModel;
-                return NavigationFrame.Navigate(pageType, argument);
-            }
-            finally
-            {
-                _watchForViewModel = null;
-            }
+        /// <summary>
+        /// Generates the state key name
+        /// </summary>
+        /// <returns></returns>
+        private string GenerateStateKey(string keyPrefix)
+        {
+            return keyPrefix + NavigationFrame.BackStackDepth;
         }
 
         /// <summary>
@@ -454,65 +355,15 @@ namespace JulMar.Windows.Services
         public bool CanGoForward { get { return NavigationFrame.CanGoForward; } }
 
         /// <summary>
-        /// Clear the back history
-        /// </summary>
-        private void ClearForwardHistory()
-        {
-            if (StateManager == null)
-                return;
-
-            // Remove ViewModel keys
-            var nextPageKey = GenerateStateKey(ViewModelKeyPrefix);
-            int nextPageIndex = this.BackStackDepth;
-            while (StateManager.RemoveDictionary(nextPageKey))
-            {
-                nextPageIndex++;
-                nextPageKey = ViewModelKeyPrefix + nextPageIndex;
-            }
-
-            // Remove Page keys
-            nextPageKey = GenerateStateKey(PageKeyPrefix);
-            nextPageIndex = this.BackStackDepth;
-            while (StateManager.RemoveDictionary(nextPageKey))
-            {
-                nextPageIndex++;
-                nextPageKey = PageKeyPrefix + nextPageIndex;
-            }
-        }
-
-        /// <summary>
-        /// This is used to process a suspension
-        /// </summary>
-        private void ProcessSuspend()
-        {
-            bool cancel = false;
-            HandleOnNavigatingFrom(NavigationFrame, NavigationMode.Refresh, ref cancel, true);
-        }
-
-        /// <summary>
-        /// Restore the current VM state after suspension
-        /// </summary>
-        private void ProcessRestore()
-        {
-            var currentView = NavigationFrame.Content as FrameworkElement;
-            if (currentView != null)
-            {
-                HandleOnNavigatingTo(currentView, currentView.DataContext, NavigationMode.Refresh, null);
-            }
-        }
-
-        /// <summary>
         /// Used to save the navigation stack and should be called in the suspending event.
         /// </summary>
         public async Task SaveAsync()
         {
             if (StateManager != null)
             {
-                ProcessSuspend();
-
-                string frameKey = string.IsNullOrEmpty(_frameKey) ? DefaultFrameKey : _frameKey;
+                string frameKey = string.IsNullOrEmpty(_frameKey) ? PageNavigator.DefaultFrameKey : _frameKey;
                 var frameDictionary = StateManager.GetDictionary(frameKey, true);
-                frameDictionary[NavigationStackKey] = NavigationFrame.GetNavigationState();
+                frameDictionary[PageNavigator.NavigationStackKey] = NavigationFrame.GetNavigationState();
 
                 await StateManager.SaveAsync();
             }
@@ -533,15 +384,15 @@ namespace JulMar.Windows.Services
                 bool loaded = await StateManager.LoadAsync();
                 if (loaded)
                 {
-                    string frameKey = string.IsNullOrEmpty(_frameKey) ? DefaultFrameKey : _frameKey;
+                    string frameKey = string.IsNullOrEmpty(_frameKey) ? PageNavigator.DefaultFrameKey : _frameKey;
 
                     var frameDictionary = StateManager.GetDictionary(frameKey, false);
                     if (frameDictionary != null)
                     {
-                        if (frameDictionary.ContainsKey(NavigationStackKey))
+                        if (frameDictionary.ContainsKey(PageNavigator.NavigationStackKey))
                         {
-                            NavigationFrame.SetNavigationState((string)frameDictionary[NavigationStackKey]);
-                            ProcessRestore();
+                            // This will restore the parameter
+                            NavigationFrame.SetNavigationState((string)frameDictionary[PageNavigator.NavigationStackKey]);
                             return true;
                         }
                     }

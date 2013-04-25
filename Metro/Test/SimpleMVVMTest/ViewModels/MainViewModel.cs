@@ -52,7 +52,10 @@ namespace SimpleMvvmTest.ViewModels
         public string TextToDisplay
         {
             get { return _textToDisplay; }
-            set { SetPropertyValue(ref _textToDisplay, value); }
+            set
+            {
+                SetPropertyValue(ref _textToDisplay, value != null ? value.ToUpper() : "");
+            }
         }
 
         private void DoRunAction()

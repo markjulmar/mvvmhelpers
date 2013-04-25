@@ -11,7 +11,8 @@
     xmlns:ja="using:JulMar.Windows.Interactivity.Actions" 
     xmlns:in="using:JulMar.Windows.Interactivity.Input"
     xmlns:ui="using:JulMar.Windows.UI" 
-    xmlns:viewModels="using:SimpleMvvmTest.ViewModels" mc:Ignorable="d"
+    xmlns:viewModels="using:SimpleMvvmTest.ViewModels" xmlns:interactivity="using:JulMar.Windows.Interactivity.Interactivity"
+      mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=True}"
     jvm:ViewModelLocator.Key="MainVM">
     
@@ -21,6 +22,7 @@
     
     <Page.Resources>
         <jc:ToStringConverter x:Key="toString" />
+        <jc:DebugConverter x:Key="dbgCvt" />
     </Page.Resources>
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
@@ -39,9 +41,14 @@
             </ji:ViewModelTrigger>
         </i:Interaction.Triggers>
 
-        <TextBox Text="{Binding TextToDisplay, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+        <TextBox HorizontalAlignment="Center" VerticalAlignment="Bottom"
                  Margin="20" Width="200" 
-                 ui:AccessKey.Accelerator="Alt+T" />
+                 ui:AccessKey.Accelerator="Alt+T">
+            <i:Interaction.Behaviors>
+                <!-- UpdateSourceTrigger=PropertyChanged -->
+                <interactivity:UpdateSourceTriggerBehavior Text="{Binding TextToDisplay, Mode=TwoWay, Converter={StaticResource dbgCvt}}" />
+            </i:Interaction.Behaviors>
+        </TextBox> 
         
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Orientation="Horizontal">
             <Button Content="Show Message Prompt" 

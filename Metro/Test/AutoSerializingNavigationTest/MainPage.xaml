@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="AutoSerializingNavigationTest.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AutoSerializingNavigationTest"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:si="using:System.Windows.Interactivity"
+    xmlns:i="using:JulMar.Windows.Interactivity"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Text="Auto Serializing Example" Grid.Column="1"
+                   Style="{StaticResource PageHeaderTextStyle}" />
+        
+        <GridView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Colors}" IsItemClickEnabled="True">
+            <si:Interaction.Triggers>
+                <si:EventTrigger EventName="ItemClick">
+                    <i:InvokeCommand Command="{Binding SelectSpecificColor}"/>
+                </si:EventTrigger>
+            </si:Interaction.Triggers>
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="200" Height="200" Margin="5">
+                        <Rectangle Fill="{Binding Color}" />
+                        <Border Height="25" Background="#60000000" VerticalAlignment="Top">
+                            <TextBlock Text="{Binding Color}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+        
+    </Grid>
+</Page>

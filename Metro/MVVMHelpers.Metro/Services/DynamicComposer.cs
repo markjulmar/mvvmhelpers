@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using JulMar.Windows.Extensions;
+using JulMar.Windows.Internal;
 
 namespace JulMar.Core.Services
 {
@@ -78,6 +79,7 @@ namespace JulMar.Core.Services
                     // Set up the container with base services
                     _container = _container
                         .WithAssembly(typeof(DynamicComposer).GetTypeInfo().Assembly)
+                        .WithProvider(new ServiceLocatorExportProvider())
                         .WithProvider(new DefaultExportDescriptorProvider());
 
                     if (CreatingContainer != null)
