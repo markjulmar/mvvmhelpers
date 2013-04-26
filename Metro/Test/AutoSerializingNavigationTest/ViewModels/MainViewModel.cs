@@ -11,6 +11,12 @@ using System.Runtime.Serialization;
 
 namespace AutoSerializingNavigationTest.ViewModels
 {
+    /// <summary>
+    /// ViewModel decorated with DataContract - so we need to be explicit
+    /// about which properties are serialized through [DataMember].
+    /// Also, constructor is not called in this case - so we must use
+    /// [OnDeserializing].
+    /// </summary>
     [DataContract]
     public sealed class MainViewModel : ViewModel
     {

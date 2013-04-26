@@ -24,8 +24,16 @@
         
         <TextBlock Text="{Binding Color}" Grid.Column="1"
                    Style="{StaticResource PageHeaderTextStyle}" />
-
+        
         <Rectangle Fill="{Binding Color}" Grid.Column="1" Grid.Row="1" Margin="20" />
 
+        <StackPanel HorizontalAlignment="Center"
+                  VerticalAlignment="Center" Grid.Column="1"
+                  Grid.Row="1">
+            <CheckBox Content="{Binding Color}" Margin="5"
+                  IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+            <TextBox Width="200" Margin="10" x:Name="aTextBox" Text="Change this text before suspending." />
+        </StackPanel>
+        
     </Grid>
 </Page>

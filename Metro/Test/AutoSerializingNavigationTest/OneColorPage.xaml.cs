@@ -1,19 +1,5 @@
-﻿using JulMar.Windows.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+﻿using JulMar.Windows.Interfaces;
+using JulMar.Windows.Services;
 
 namespace AutoSerializingNavigationTest
 {
@@ -21,20 +7,22 @@ namespace AutoSerializingNavigationTest
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     [ExportPage("OneColorView", typeof(OneColorPage))]
-    public sealed partial class OneColorPage : Page
+    public sealed partial class OneColorPage : INavigationAware
     {
         public OneColorPage()
         {
             this.InitializeComponent();
         }
 
-        /// <summary>
-        /// Invoked when this page is about to be displayed in a Frame.
-        /// </summary>
-        /// <param name="e">Event data that describes how this page was reached.  The Parameter
-        /// property is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        public void OnNavigatingFrom(NavigatingFromEventArgs e)
         {
+            e.State["aTextBox"] = aTextBox.Text;
+        }
+
+        public void OnNavigatedTo(NavigatedToEventArgs e)
+        {
+            if (e.State != null && e.State.ContainsKey("aTextBox"))
+                aTextBox.Text = (string) e.State["aTextBox"];
         }
     }
 }
