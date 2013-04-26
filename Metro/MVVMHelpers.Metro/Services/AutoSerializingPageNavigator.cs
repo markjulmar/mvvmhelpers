@@ -157,7 +157,7 @@ namespace JulMar.Windows.Services
                 int index = viewModelData.IndexOf('!');
                 string type = viewModelData.Substring(1, index);
                 viewModelData = viewModelData.Substring(index + 1);
-                return Json.Deserialize(Type.GetType(type), viewModelData);
+                return Json.Deserialize(Type.GetType(type), viewModelData, StateManager.KnownTypes);
             }
             return null;
         }
@@ -360,7 +360,7 @@ namespace JulMar.Windows.Services
             {
                 try
                 {
-                    argument = viewModelType + "!" + Json.Serialize(argument);
+                    argument = viewModelType + "!" + Json.Serialize(argument, StateManager.KnownTypes);
                 }
                 catch (Exception)
                 {

@@ -153,6 +153,7 @@
     <Compile Include="Interfaces\IStateManager.cs" />
     <Compile Include="Interfaces\IViewModelStateManagement.cs" />
     <Compile Include="Serialization\JSON.cs" />
+    <Compile Include="Serialization\XML.cs" />
     <Compile Include="Services\AutoSerializingPageNavigator.cs" />
     <Compile Include="Internal\ServiceLocatorExportProvider.cs" />
     <Compile Include="UI\FlyoutVisualizer.cs" />
@@ -171,6 +172,30 @@
     <Compile Include="Mvvm\ViewModelLocatorService.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
     <Compile Include="Services\ServiceLocatorResource.cs" />
+    <Compile Include="UI\Notifications\BadgeContent\IBadgeNotificationContent.cs" />
+    <Compile Include="UI\Notifications\BadgeContent\GlyphValue.cs" />
+    <Compile Include="UI\Notifications\BadgeContent\BadgeGlyphNotificationContent.cs" />
+    <Compile Include="UI\Notifications\BadgeContent\BadgeNumericNotificationContent.cs" />
+    <Compile Include="UI\Notifications\NotificationContentValidationException.cs" />
+    <Compile Include="UI\Notifications\INotificationContentImage.cs" />
+    <Compile Include="UI\Notifications\INotificationContent.cs" />
+    <Compile Include="UI\Notifications\INotificationContentText.cs" />
+    <Compile Include="UI\Notifications\NotificationBase.cs" />
+    <Compile Include="UI\Notifications\TileContent\TileBranding.cs" />
+    <Compile Include="UI\Notifications\TileContent\TileContent.cs" />
+    <Compile Include="UI\Notifications\TileContent\TileContentFactory.cs" />
+    <Compile Include="UI\Notifications\TileContent\TileInterfaces.cs" />
+    <Compile Include="UI\Notifications\TileContent\TileNotificationBase.cs" />
+    <Compile Include="UI\Notifications\ToastContent\ToastAudio.cs" />
+    <Compile Include="UI\Notifications\ToastContent\ToastContent.cs" />
+    <Compile Include="UI\Notifications\ToastContent\IToastAudio.cs" />
+    <Compile Include="UI\Notifications\ToastContent\IToastNotificationContent.cs" />
+    <Compile Include="UI\Notifications\ToastContent\ToastAudioContent.cs" />
+    <Compile Include="UI\Notifications\ToastContent\ToastContentFactory.cs" />
+    <Compile Include="UI\Notifications\ToastContent\ToastDuration.cs" />
+    <Compile Include="UI\Notifications\ToastContent\ToastInterfaces.cs" />
+    <Compile Include="UI\Notifications\ToastContent\ToastNotificationBase.cs" />
+    <Compile Include="UI\Notifications\Util.cs" />
     <Compile Include="UI\UICommand.cs" />
     <Compile Include="Mvvm\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -204,6 +229,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Composition.1.0.16\lib\netcore45\System.Composition.TypedParts.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UI\Notifications\Copyright.txt" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

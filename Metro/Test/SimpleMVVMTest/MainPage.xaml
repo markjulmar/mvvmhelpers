@@ -66,6 +66,8 @@
 
             <Button Content="Change Bkgnd via VM Trigger" Command="{Binding RunAction}" 
                     jb:FocusManager.InitialFocus="true" />
+            
+            <Button Content="Show Toast" Click="OnShowToast" />
         </StackPanel>
         
         <CheckBox Content="Show Advanced Message" HorizontalAlignment="Right" VerticalAlignment="Center"

@@ -56,7 +56,7 @@ namespace SimpleMVVMTest
 
             // Create a Frame to act navigation context and navigate to the first page
             var rootFrame = new Frame();
-            if (!rootFrame.Navigate(typeof(MainPage)))
+            if (!rootFrame.Navigate(typeof(MainPage), args.Arguments))
             {
                 throw new Exception("Failed to create initial page");
             }
