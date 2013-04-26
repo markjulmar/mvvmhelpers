@@ -179,6 +179,7 @@ namespace JulMar.Windows.Services
                 if (StateManager != null)
                 {
                     string key = GenerateStateKey(PageNavigator.ViewModelKeyPrefix);
+                    StateManager.LoadObject(key, viewModel);
                     stateDictionary = StateManager.GetDictionary(key, false);
                 }
                 navm.OnNavigatedTo(new NavigatedToEventArgs(navMode, parameter, stateDictionary));
