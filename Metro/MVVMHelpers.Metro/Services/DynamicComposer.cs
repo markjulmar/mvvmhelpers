@@ -1,4 +1,5 @@
-﻿using JulMar.Core.Internal;
+﻿using JulMar.Core.Interfaces;
+using JulMar.Core.Internal;
 using System;
 using System.Collections.Generic;
 using System.Composition;
@@ -108,6 +109,13 @@ namespace JulMar.Core.Services
         /// <returns>Created object</returns>
         public T GetExportedValue<T>()
         {
+            // Special case the service locator if we've already used the built-in one.
+            // This is done because the locator does not come through the MEF system itself 
+            // and therefore isn't registered with the host.
+            if ((typeof(T) == typeof(IServiceLocator)
+                 || typeof(T) == typeof(IServiceProvider)) && ServiceLocator.HasBeenCreated)
+                return (T) ServiceLocator.Instance;
+
             return Host.GetExport<T>();
         }
 

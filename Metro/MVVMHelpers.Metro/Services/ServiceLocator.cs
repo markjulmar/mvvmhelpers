@@ -43,6 +43,11 @@ namespace JulMar.Core.Services
                 _instance = value;
             }
         }
+
+        internal static bool HasBeenCreated
+        {
+            get { return _instance != null; }
+        }
     }
 
     namespace Internal

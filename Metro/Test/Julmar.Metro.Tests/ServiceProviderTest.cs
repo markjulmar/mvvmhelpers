@@ -74,13 +74,23 @@ namespace JulMar.Wpf.Helpers.UnitTests
         }
 
         [TestMethod]
-        public void TestMefLoader()
+        public void TestMefLoaderWithServiceLocator()
         {
             IServiceLocator sp = ServiceLocator.Instance;
             Assert.IsNotNull(sp);
 
             IServiceLocator sp2 = DynamicComposer.Instance.GetExportedValue<IServiceLocator>();
             Assert.AreSame(sp,sp2);
+        }
+
+        [TestMethod]
+        public void TestMefLoaderWithServiceProvider()
+        {
+            IServiceLocator sp = ServiceLocator.Instance;
+            Assert.IsNotNull(sp);
+
+            IServiceProvider sp2 = DynamicComposer.Instance.GetExportedValue<IServiceProvider>();
+            Assert.AreSame(sp, sp2);
         }
 
         [TestMethod]
