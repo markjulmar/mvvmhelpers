@@ -133,6 +133,7 @@
     <Compile Include="Media\StoryboardAction.cs" />
     <Compile Include="Media\StoryboardCompletedTrigger.cs" />
     <Compile Include="Media\StoryboardTrigger.cs" />
+    <Compile Include="Triggers\BindingTrigger.cs" />
     <Compile Include="Triggers\DataTrigger.cs" />
     <Compile Include="Interactivity\DragPositionBehavior.cs" />
     <Compile Include="Actions\GotoStateAction.cs" />

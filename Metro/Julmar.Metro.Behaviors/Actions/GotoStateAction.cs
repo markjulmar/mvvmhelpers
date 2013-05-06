@@ -1,14 +1,13 @@
 ﻿using System.Windows.Interactivity;
 using JulMar.Windows.Interactivity.Internal;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace JulMar.Windows.Interactivity
 {
     /// <summary>
     /// This method provides a VSM change based on a trigger action
     /// </summary>
-    public class GoToStateAction : TargetedTriggerAction<Control>
+    public class GoToStateAction : TargetedTriggerAction<FrameworkElement>
     {
         /// <summary>
         /// Backing storage for the state name to transition to
@@ -58,10 +57,14 @@ namespace JulMar.Windows.Interactivity
         {
             if (base.Target != null)
             {
+                string stateName = this.StateName;
+                if (string.IsNullOrEmpty(stateName) && parameter is string)
+                    stateName = parameter.ToString();
+
                 // Locate the nearest state group
                 var stateControl = VisualStateUtilities.FindNearestStatefulControl(base.Target);
                 if (stateControl != null)
-                    VisualStateUtilities.GoToState(stateControl, this.StateName, UseTransitions);
+                    VisualStateUtilities.GoToState(stateControl, stateName, UseTransitions);
             }
         }
     }
