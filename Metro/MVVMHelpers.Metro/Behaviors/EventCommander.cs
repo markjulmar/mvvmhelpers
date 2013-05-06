@@ -265,7 +265,7 @@ namespace JulMar.Windows.Behaviors
                 throw new ArgumentException("EventHandlerType is null");
             if (_method == null)
             {
-                MethodInfo methodInfo = typeof(EventCommander).GetTypeInfo().DeclaredMethods.FirstOrDefault(
+                MethodInfo methodInfo = GetType().GetTypeInfo().DeclaredMethods.FirstOrDefault(
                         mi => mi.Name == "OnEventRaised" && mi.IsPrivate && !mi.IsStatic);
 
                 _method = methodInfo.CreateDelegate(ei.EventHandlerType, this);

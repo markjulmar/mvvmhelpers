@@ -76,10 +76,16 @@
         <TextBlock Text="Move mouse over to animate color" HorizontalAlignment="Center"
                    VerticalAlignment="Center" Margin="0,-250,0,0" TextWrapping="Wrap" TextAlignment="Center" />
         <Rectangle Fill="{Binding Color}" Margin="50" Stroke="White" StrokeThickness="1" Width="200" Height="200">
+            <!-- Can use older EventCommander style -->
+            <jb:EventCommander.Mappings>
+                <jb:CommandEvent Command="{Binding MouseEnter}" Event="PointerEntered" />
+                <!--<jb:CommandEvent Command="{Binding MouseLeave}" Event="PointerExited" />-->
+            </jb:EventCommander.Mappings>
+            <!-- Or newer EventTrigger style -->
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PointerEntered">
+                <!--<i:EventTrigger EventName="PointerEntered">
                     <ji:InvokeCommand Command="{Binding MouseEnter}" />
-                </i:EventTrigger>
+                </i:EventTrigger>-->
                 <i:EventTrigger EventName="PointerExited">
                     <ji:InvokeCommand Command="{Binding MouseLeave}" />
                 </i:EventTrigger>
