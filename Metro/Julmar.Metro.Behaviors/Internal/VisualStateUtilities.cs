@@ -89,6 +89,7 @@ namespace JulMar.Windows.Interactivity.Internal
         private static bool ShouldContinueTreeWalk(FrameworkElement element)
         {
             if (element == null || element is UserControl)
+                return false;
 
             if (element.Parent == null)
             {

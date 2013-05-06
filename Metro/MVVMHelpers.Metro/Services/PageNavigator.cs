@@ -380,7 +380,7 @@ namespace JulMar.Windows.Services
         /// <param name="argument">Argument to pass (primitive type, may be null)</param>
         public bool NavigateTo(Type pageType, object argument)
         {
-            return NavigateTo(pageType, null, null);
+            return NavigateTo(pageType, argument, null);
         }
 
         /// <summary>

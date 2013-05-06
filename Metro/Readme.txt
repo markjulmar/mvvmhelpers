@@ -62,3 +62,7 @@ Fixes to reattach event handlers from EventTrigger when UIElement is unloaded/lo
 Added SynchronizedCollectionBehavior (ported from WPF version)
 Added new AutoSerializingPageNavigator
 Added support to replace [Imports] using ServiceLocator
+
+1.09 5/2013
+Fixed bug in PageNavigator.NavigateTo(Type,object) not passing along argument.
+Fixed bug in VisualStateUtilities.ShouldContinueTreeWalk - missing test.
