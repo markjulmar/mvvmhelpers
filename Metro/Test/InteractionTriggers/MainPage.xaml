@@ -25,10 +25,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
-        <ToggleButton IsChecked="{Binding SearchCostCenterPopUpIsOpen, Mode=TwoWay}" Margin="20"
-                      Content="Show Popup" VerticalAlignment="Top" HorizontalAlignment="Center"
+
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center">
+            <ToggleButton IsChecked="{Binding SearchCostCenterPopUpIsOpen, Mode=TwoWay}" Margin="20"
+                      Content="Show Popup" 
                       FontSize="40" />
+            <Button Command="{Binding GotoPage2}" Content="Goto Page 2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Width="150" Height="50"/>
+        </StackPanel>
         
         <TextBlock Text="{Binding Counter}" FontSize="40"
                    HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" />

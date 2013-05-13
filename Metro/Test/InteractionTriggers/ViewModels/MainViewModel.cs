@@ -6,7 +6,7 @@ using System.Linq;
 namespace TestApp.ViewModels
 {
     [ExportViewModel("MainVm")]
-    public sealed class MainViewModel : SimpleViewModel
+    public sealed class MainViewModel : ViewModel
     {
         private bool _searchCostCenterPopUpIsOpen;
         private string _selectedSearchByForCostCenter;
@@ -42,6 +42,7 @@ namespace TestApp.ViewModels
         public IDelegateCommand SearchCommand { get; private set; }
         public IDelegateCommand CancelCommand { get; private set; }
         public IDelegateCommand SelectionChangedCommand { get; private set; }
+        public IDelegateCommand GotoPage2 { get; private set; }
 
         public IList<string> ListSearchCostCenter { get; private set; }
         public string SelectedSearchCostCenter
@@ -64,6 +65,13 @@ namespace TestApp.ViewModels
             SearchCommand = new DelegateCommand(() => { });
             CancelCommand = new DelegateCommand(() => SearchCostCenterPopUpIsOpen = false);
             SelectionChangedCommand = new DelegateCommand(OnSelectedChanged);
+            GotoPage2 = new DelegateCommand(OnGotoPage2);
+        }
+
+        private void OnGotoPage2(object obj)
+        {
+            IPageNavigator pageNavigator = Resolve<IPageNavigator>();
+            pageNavigator.NavigateTo("Page2");
         }
 
         private void OnSelectedChanged()

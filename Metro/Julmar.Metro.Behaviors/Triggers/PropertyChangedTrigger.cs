@@ -1,6 +1,8 @@
-﻿using System.Windows.Interactivity;
+﻿using System.Linq;
+using System.Windows.Interactivity;
 using JulMar.Windows.Interactivity.Internal;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
 
 namespace JulMar.Windows.Interactivity
 {
@@ -49,6 +51,14 @@ namespace JulMar.Windows.Interactivity
         }
 
         /// <summary>
+        /// Override to hook into data context changed
+        /// </summary>
+        protected override void OnDataContextChanged()
+        {
+            DataBindingHelper.EnsureBindingUpToDate(this, BindingProperty);
+        }
+
+        /// <summary>
         /// Handler method for the binding change
         /// </summary>
         /// <param name="dpo"></param>
@@ -64,7 +74,7 @@ namespace JulMar.Windows.Interactivity
         protected override void OnDetaching()
         {
             base.PreviewInvoke -= this.OnPreviewInvoke;
-            this.OnDetaching();
+            base.OnDetaching();
         }
 
         /// <summary>

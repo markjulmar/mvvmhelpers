@@ -84,6 +84,11 @@
         </StackPanel>
         
         <Interactivity:Interaction.Triggers>
+            <!-- Initially move to the top state -->
+            <Interactivity:EventTrigger EventName="Loaded">
+                <Interactivity1:GoToStateAction StateName="Top" />
+            </Interactivity:EventTrigger>
+            
             <!-- Play sound after 1 second -->
             <Interactivity1:TimerTrigger MillisecondsPerTick="1000" TotalTicks="1">
                 <Media:PlaySoundAction Source="tada.wav" Volume="1" />
