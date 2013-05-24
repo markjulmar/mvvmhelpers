@@ -21,16 +21,37 @@ namespace JulMar.Windows.Interactivity.Interactivity
         /// Text property - set in XAML
         /// </summary>
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(WatermarkTextBehavior),
+            DependencyProperty.RegisterAttached("Text", typeof(string), typeof(WatermarkTextBehavior),
                                                 new PropertyMetadata(null, OnTextChanged));
 
         /// <summary>
-        /// Get or set the watermark text.
+        /// Get or set the watermark text on the behavior.
         /// </summary>
-        public string Text
+        public string WatermarkText
         {
             get { return (string) GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
+        }
+
+        /// <summary>
+        /// Attached property version to attach the behavior to a TextBox
+        /// </summary>
+        /// <param name="tb"></param>
+        /// <returns></returns>
+        public static string GetText(TextBox tb)
+        {
+            return (string) tb.GetValue(TextProperty);
+        }
+
+        /// <summary>
+        /// Attached property version to attach the behavior to a TextBox
+        /// </summary>
+        /// <param name="tb"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static void SetText(TextBox tb, string text)
+        {
+            tb.SetValue(TextProperty, text);
         }
 
         /// <summary>
@@ -64,15 +85,49 @@ namespace JulMar.Windows.Interactivity.Interactivity
         }
 
         /// <summary>
-        /// This is called when the watermark text is changed.
+        /// This is called when the watermark text is changed on either a WatermarkTextboxBehavior
+        /// OR on a TextBox directly to attach/detach the behavior.
         /// </summary>
         /// <param name="dpo"></param>
         /// <param name="e"></param>
         private static void OnTextChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
         {
-            WatermarkTextBehavior wtb = (WatermarkTextBehavior) dpo;
-            if (wtb.AssociatedObject != null)
-                wtb.OnSetWatermarkText();
+            WatermarkTextBehavior wtb = dpo as WatermarkTextBehavior;
+            if (wtb != null)
+            {
+                if (wtb.AssociatedObject != null)
+                    wtb.OnSetWatermarkText();
+            }
+            // Attach/Detach request
+            else
+            {
+                TextBox tb = dpo as TextBox;
+                if (tb != null)
+                {
+                    string text = (e.NewValue ?? "").ToString();
+                    var behaviors = Interaction.GetBehaviors(tb);
+                    var thisBehavior = behaviors.FirstOrDefault(b => b is WatermarkTextBehavior) as WatermarkTextBehavior;
+
+                    if (string.IsNullOrWhiteSpace(text))
+                    {
+                        if (thisBehavior != null)
+                        {
+                            behaviors.Remove(thisBehavior);
+                        }
+                    }
+                    else
+                    {
+                        if (thisBehavior == null)
+                        {
+                            thisBehavior = new WatermarkTextBehavior() { WatermarkText = text };
+                            behaviors.Add(thisBehavior);
+                        }
+                        else
+                            thisBehavior.WatermarkText = text;
+                    }
+                    
+                }
+            }
         }
 
         /// <summary>
@@ -121,7 +176,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
                 Brush fgColor = AssociatedObject.Foreground;
                 _fgColor = fgColor != Control.ForegroundProperty.GetMetadata(typeof (TextBox)).DefaultValue ? fgColor : null;
                 AssociatedObject.Foreground = this.Foreground;
-                AssociatedObject.Text = this.Text + WmtMarker;
+                AssociatedObject.Text = this.WatermarkText + WmtMarker;
             }
         }
 
@@ -132,7 +187,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
         {
             if (!string.IsNullOrEmpty(AssociatedObject.Text))
             {
-                if (AssociatedObject.Text == this.Text + WmtMarker)
+                if (AssociatedObject.Text == this.WatermarkText + WmtMarker)
                 {
                     AssociatedObject.Foreground = this.Foreground;
                 }
@@ -146,7 +201,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
         {
             if (!string.IsNullOrEmpty(AssociatedObject.Text))
             {
-                if (AssociatedObject.Text == this.Text + WmtMarker)
+                if (AssociatedObject.Text == this.WatermarkText + WmtMarker)
                 {
                     if (_fgColor != null)
                         AssociatedObject.Foreground = _fgColor;
@@ -204,7 +259,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
         private void TbOnTextChanged(object sender, TextChangedEventArgs e)
         {
             // Only process when the Textbox does not have focus.
-            if (!IsFocused() && AssociatedObject.Text != this.Text+WmtMarker)
+            if (!IsFocused() && AssociatedObject.Text != this.WatermarkText + WmtMarker)
             {
                 // Cleared via property.
                 if (string.IsNullOrEmpty(AssociatedObject.Text))

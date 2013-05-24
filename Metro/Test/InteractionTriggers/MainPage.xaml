@@ -100,10 +100,13 @@
                                  HorizontalAlignment="Left"
                                  Text="{Binding SearchKeywordForCostCenter,
                                                 Mode=TwoWay}"
-                                 TextWrapping="Wrap">
+                                 TextWrapping="Wrap"
+                                 interactivity:WatermarkTextBehavior.Text="Search Keyword...">
+                            <!-- Alternative form
                             <si:Interaction.Behaviors>
-                                <interactivity:WatermarkTextBehavior Foreground="Red" Text="Keyword..." />
+                                <interactivity:WatermarkTextBehavior Foreground="Red" WatermarkText="Keyword..." />
                             </si:Interaction.Behaviors>
+                            -->
                         </TextBox>
                     </StackPanel>
                     <StackPanel Width="300"
