@@ -5,15 +5,15 @@ using Windows.UI.Xaml.Controls;
 namespace JulMar.Windows.Behaviors
 {
     /// <summary>
-    /// FocusManager class which allows you to set focus initially to a Control
+    /// Focus Scope class which allows you to set focus initially to a Control
     /// </summary>
-    public static class FocusManager
+    public static class FocusScope
     {
         /// <summary>
         /// Focus property - set this on a UI element to change focus when loaded.
         /// </summary>
         public static readonly DependencyProperty InitialFocusProperty =
-            DependencyProperty.RegisterAttached("InitialFocus", typeof (bool), typeof (FocusManager), new PropertyMetadata(default(bool), OnSetFocusChanged));
+            DependencyProperty.RegisterAttached("InitialFocus", typeof (bool), typeof (FocusScope), new PropertyMetadata(default(bool), OnSetFocusChanged));
 
         /// <summary>
         /// Get the initial focus property from a Control

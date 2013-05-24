@@ -123,6 +123,7 @@
     <Compile Include="Interactivity\ComparisonConditionType.cs" />
     <Compile Include="Interactivity\SynchronizedCollectionBehavior.cs" />
     <Compile Include="Interactivity\UpdateSourceTrigger.cs" />
+    <Compile Include="Interactivity\WatermarkTextBehavior.cs" />
     <Compile Include="Internal\ComparisonLogic.cs" />
     <Compile Include="Internal\DataBindingHelper.cs" />
     <Compile Include="Internal\TypeConverter.cs" />

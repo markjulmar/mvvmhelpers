@@ -66,3 +66,5 @@ Added support to replace [Imports] using ServiceLocator
 1.09 5/2013
 Fixed bug in PageNavigator.NavigateTo(Type,object) not passing along argument.
 Fixed bug in VisualStateUtilities.ShouldContinueTreeWalk - missing test.
+Renamed FocusManager to FocusScope to avoid namespace collision with WinRT Xaml type
+Added WatermarkTextBehavior

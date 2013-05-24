@@ -65,7 +65,7 @@
             </Button>
 
             <Button Content="Change Bkgnd via VM Trigger" Command="{Binding RunAction}" 
-                    jb:FocusManager.InitialFocus="true" />
+                    jb:FocusScope.InitialFocus="true" />
             
             <Button Content="Show Toast" Click="OnShowToast" />
         </StackPanel>
