@@ -57,8 +57,8 @@ namespace JulMar.Windows.Interactivity.Interactivity
         /// <summary>
         /// Text color property - set in XAML
         /// </summary>
-        public static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.Register("Foreground", typeof(Brush), typeof(WatermarkTextBehavior),
+        public static readonly DependencyProperty WatermarkColorProperty =
+            DependencyProperty.Register("WatermarkColor", typeof(Brush), typeof(WatermarkTextBehavior),
                             new PropertyMetadata(new SolidColorBrush(Colors.Gray), OnColorChanged));
 
         /// <summary>
@@ -78,10 +78,10 @@ namespace JulMar.Windows.Interactivity.Interactivity
         /// <summary>
         /// Get or set the watermark text color.
         /// </summary>
-        public Brush Foreground
+        public Brush WatermarkColor
         {
-            get { return (Brush)GetValue(ForegroundProperty); }
-            set { SetValue(ForegroundProperty, value); }
+            get { return (Brush)GetValue(WatermarkColorProperty); }
+            set { SetValue(WatermarkColorProperty, value); }
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
             {
                 Brush fgColor = AssociatedObject.Foreground;
                 _fgColor = fgColor != Control.ForegroundProperty.GetMetadata(typeof (TextBox)).DefaultValue ? fgColor : null;
-                AssociatedObject.Foreground = this.Foreground;
+                AssociatedObject.Foreground = this.WatermarkColor;
                 AssociatedObject.Text = this.WatermarkText + WmtMarker;
             }
         }
@@ -189,7 +189,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
             {
                 if (AssociatedObject.Text == this.WatermarkText + WmtMarker)
                 {
-                    AssociatedObject.Foreground = this.Foreground;
+                    AssociatedObject.Foreground = this.WatermarkColor;
                 }
             }
         }

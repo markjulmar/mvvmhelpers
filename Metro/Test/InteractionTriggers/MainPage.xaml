@@ -104,7 +104,7 @@
                                  interactivity:WatermarkTextBehavior.Text="Search Keyword...">
                             <!-- Alternative form
                             <si:Interaction.Behaviors>
-                                <interactivity:WatermarkTextBehavior Foreground="Red" WatermarkText="Keyword..." />
+                                <interactivity:WatermarkTextBehavior WatermarkColor="Red" WatermarkText="Keyword..." />
                             </si:Interaction.Behaviors>
                             -->
                         </TextBox>
