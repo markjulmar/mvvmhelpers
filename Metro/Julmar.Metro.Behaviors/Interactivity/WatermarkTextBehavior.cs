@@ -34,6 +34,60 @@ namespace JulMar.Windows.Interactivity.Interactivity
         }
 
         /// <summary>
+        /// Backing storage for IsWatermarkVisible property.
+        /// </summary>
+        public static readonly DependencyProperty IsWatermarkVisibleProperty =
+            DependencyProperty.Register("IsWatermarkVisible", typeof (bool), typeof (WatermarkTextBehavior), new PropertyMetadata(default(bool), OnChangeWatermarkVisibility));
+
+        /// <summary>
+        /// This is called when the watermark visibility changes.
+        /// </summary>
+        /// <param name="dpo"></param>
+        /// <param name="e"></param>
+        private static void OnChangeWatermarkVisibility(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
+        {
+            WatermarkTextBehavior wtb = (WatermarkTextBehavior) dpo;
+            if ((bool) e.NewValue == true)
+            {
+                if (!wtb.OnSetWatermarkText())
+                {
+                    wtb.IsWatermarkVisible = false;
+                }
+            }
+            else
+            {
+                wtb.OnRemoveWatermarkText();
+            }
+        }
+
+        /// <summary>
+        /// Returns whether the watermark is currently visible.  This can be databound to test within a ViewModel.
+        /// This should be used to determine if the Text property of the TextBox is valid or not.
+        /// </summary>
+        public bool IsWatermarkVisible
+        {
+            get { return (bool)GetValue(IsWatermarkVisibleProperty); }
+            set { SetValue(IsWatermarkVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Helper method to determine if the TextBox has any text in it.
+        /// </summary>
+        /// <param name="tb"></param>
+        /// <returns></returns>
+        public static bool GetWatermarkVisible(TextBox tb)
+        {
+            var behaviors = Interaction.GetBehaviors(tb);
+            var thisBehavior = behaviors.FirstOrDefault(b => b is WatermarkTextBehavior) as WatermarkTextBehavior;
+            if (thisBehavior != null && thisBehavior.AssociatedObject == tb)
+            {
+                return thisBehavior.IsWatermarkVisible;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Attached property version to attach the behavior to a TextBox
         /// </summary>
         /// <param name="tb"></param>
@@ -96,7 +150,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
             if (wtb != null)
             {
                 if (wtb.AssociatedObject != null)
-                    wtb.OnSetWatermarkText();
+                    wtb.IsWatermarkVisible = true;
             }
             // Attach/Detach request
             else
@@ -106,7 +160,8 @@ namespace JulMar.Windows.Interactivity.Interactivity
                 {
                     string text = (e.NewValue ?? "").ToString();
                     var behaviors = Interaction.GetBehaviors(tb);
-                    var thisBehavior = behaviors.FirstOrDefault(b => b is WatermarkTextBehavior) as WatermarkTextBehavior;
+                    var thisBehavior =
+                        behaviors.FirstOrDefault(b => b is WatermarkTextBehavior) as WatermarkTextBehavior;
 
                     if (string.IsNullOrWhiteSpace(text))
                     {
@@ -119,13 +174,13 @@ namespace JulMar.Windows.Interactivity.Interactivity
                     {
                         if (thisBehavior == null)
                         {
-                            thisBehavior = new WatermarkTextBehavior() { WatermarkText = text };
+                            thisBehavior = new WatermarkTextBehavior() {WatermarkText = text};
                             behaviors.Add(thisBehavior);
                         }
                         else
                             thisBehavior.WatermarkText = text;
                     }
-                    
+
                 }
             }
         }
@@ -140,9 +195,9 @@ namespace JulMar.Windows.Interactivity.Interactivity
             AssociatedObject.LostFocus += TbOnLostFocus;
             AssociatedObject.TextChanged += TbOnTextChanged;
             AssociatedObject.Loaded += TbOnLoaded;
-            
+
             if (AssociatedObject.Parent != null)
-                OnSetWatermarkText();
+                IsWatermarkVisible = true;
         }
 
         /// <summary>
@@ -152,7 +207,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
         /// <param name="routedEventArgs"></param>
         private void TbOnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            OnSetWatermarkText();
+            IsWatermarkVisible = true;
         }
 
         /// <summary>
@@ -163,13 +218,14 @@ namespace JulMar.Windows.Interactivity.Interactivity
             AssociatedObject.GotFocus -= TbOnGotFocus;
             AssociatedObject.LostFocus -= TbOnLostFocus;
             AssociatedObject.TextChanged -= TbOnTextChanged;
-            OnRemoveWatermarkText();
+            
+            IsWatermarkVisible = false;
         }
 
         /// <summary>
         /// Method to set the watermark text
         /// </summary>
-        private void OnSetWatermarkText()
+        private bool OnSetWatermarkText()
         {
             if (string.IsNullOrEmpty(AssociatedObject.Text))
             {
@@ -177,7 +233,10 @@ namespace JulMar.Windows.Interactivity.Interactivity
                 _fgColor = fgColor != Control.ForegroundProperty.GetMetadata(typeof (TextBox)).DefaultValue ? fgColor : null;
                 AssociatedObject.Foreground = this.WatermarkColor;
                 AssociatedObject.Text = this.WatermarkText + WmtMarker;
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>
@@ -187,7 +246,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
         {
             if (!string.IsNullOrEmpty(AssociatedObject.Text))
             {
-                if (AssociatedObject.Text == this.WatermarkText + WmtMarker)
+                if (IsWatermarkVisible)
                 {
                     AssociatedObject.Foreground = this.WatermarkColor;
                 }
@@ -197,19 +256,22 @@ namespace JulMar.Windows.Interactivity.Interactivity
         /// <summary>
         /// This is used to remove the watermark text
         /// </summary>
-        private void OnRemoveWatermarkText()
+        private bool OnRemoveWatermarkText()
         {
             if (!string.IsNullOrEmpty(AssociatedObject.Text))
             {
-                if (AssociatedObject.Text == this.WatermarkText + WmtMarker)
+                if (AssociatedObject.Text == WatermarkText + WmtMarker)
                 {
                     if (_fgColor != null)
                         AssociatedObject.Foreground = _fgColor;
                     else
                         AssociatedObject.ClearValue(Control.ForegroundProperty);
                     AssociatedObject.Text = "";
+                    return true;
                 }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -219,7 +281,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
         /// <param name="routedEventArgs"></param>
         private void TbOnLostFocus(object sender, RoutedEventArgs routedEventArgs)
         {
-            OnSetWatermarkText();
+            IsWatermarkVisible = true;
         }
 
         /// <summary>
@@ -229,7 +291,7 @@ namespace JulMar.Windows.Interactivity.Interactivity
         /// <param name="routedEventArgs"></param>
         private void TbOnGotFocus(object sender, RoutedEventArgs routedEventArgs)
         {
-            OnRemoveWatermarkText();
+            IsWatermarkVisible = false;
         }
 
         /// <summary>
@@ -259,12 +321,12 @@ namespace JulMar.Windows.Interactivity.Interactivity
         private void TbOnTextChanged(object sender, TextChangedEventArgs e)
         {
             // Only process when the Textbox does not have focus.
-            if (!IsFocused() && AssociatedObject.Text != this.WatermarkText + WmtMarker)
+            if (!IsFocused() && !IsWatermarkVisible)
             {
                 // Cleared via property.
                 if (string.IsNullOrEmpty(AssociatedObject.Text))
                 {
-                    OnSetWatermarkText();
+                    IsWatermarkVisible = true;
                 }
                 // Set via property - remove color
                 else

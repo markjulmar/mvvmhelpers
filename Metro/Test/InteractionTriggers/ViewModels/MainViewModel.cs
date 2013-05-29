@@ -13,6 +13,7 @@ namespace TestApp.ViewModels
         private string _searchKeywordForCostCenter;
         private string _selectedSearchCostCenter;
         private int _counter;
+        private bool _isWatermarkVisible;
 
         public int Counter
         {
@@ -49,6 +50,12 @@ namespace TestApp.ViewModels
         {
             get { return _selectedSearchCostCenter; }
             set { SetPropertyValue(ref _selectedSearchCostCenter, value); }
+        }
+
+        public bool IsWatermarkVisible
+        {
+            get { return _isWatermarkVisible; }
+            set { SetPropertyValue(ref _isWatermarkVisible,value); }
         }
 
         public MainViewModel()

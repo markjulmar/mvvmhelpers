@@ -68,3 +68,6 @@ Fixed bug in PageNavigator.NavigateTo(Type,object) not passing along argument.
 Fixed bug in VisualStateUtilities.ShouldContinueTreeWalk - missing test.
 Renamed FocusManager to FocusScope to avoid namespace collision with WinRT Xaml type
 Added WatermarkTextBehavior
+
+1.10 6/2013
+Added IsWatermarkTextVisible property to WatermarkTextBoxBehavior.

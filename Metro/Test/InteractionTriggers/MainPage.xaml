@@ -100,15 +100,15 @@
                                  HorizontalAlignment="Left"
                                  Text="{Binding SearchKeywordForCostCenter,
                                                 Mode=TwoWay}"
-                                 TextWrapping="Wrap"
-                                 interactivity:WatermarkTextBehavior.Text="Search Keyword...">
-                            <!-- Alternative form
+                                 TextWrapping="Wrap">
+                            <!--
+                                 interactivity:WatermarkTextBehavior.Text="Search Keyword..."> -->
                             <si:Interaction.Behaviors>
-                                <interactivity:WatermarkTextBehavior WatermarkColor="Red" WatermarkText="Keyword..." />
+                                <interactivity:WatermarkTextBehavior WatermarkColor="Red" WatermarkText="Keyword..."  IsWatermarkVisible="{Binding IsWatermarkVisible, Mode=TwoWay}"/>
                             </si:Interaction.Behaviors>
-                            -->
                         </TextBox>
                     </StackPanel>
+                    <CheckBox IsChecked="{Binding IsWatermarkVisible}" Content="IsWatermark Visible" />
                     <StackPanel Width="300"
                                 Height="80"
                                 Margin="0,0,10,0"
