@@ -11,7 +11,7 @@ namespace JulMar.Windows.Interactivity
     /// </summary>
     public class DoubleClickTrigger : TriggerBase<UIElement>
     {
-        private int _lastClick;
+        private uint _lastClick;
 
         /// <summary>
         /// Called after the behavior is attached to an AssociatedObject.
@@ -45,13 +45,13 @@ namespace JulMar.Windows.Interactivity
         private void HandleButtonUp(object sender, MouseButtonEventArgs mouseEventArgs)
         {
             if (mouseEventArgs.ChangedButton == MouseButton.Left &&
-                (mouseEventArgs.Timestamp - _lastClick) < SystemInfo.DoubleClickTime)
+                ((uint)mouseEventArgs.Timestamp - _lastClick) < SystemInfo.DoubleClickTime)
             {
                 this.InvokeActions(mouseEventArgs);
                 _lastClick = 0; // Require 2 clicks again
             }
             else 
-                _lastClick = mouseEventArgs.Timestamp;
+                _lastClick = (uint) mouseEventArgs.Timestamp;
         }
     }
 }
