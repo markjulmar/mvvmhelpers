@@ -1,4 +1,5 @@
-﻿namespace System.Runtime.CompilerServices
+﻿#if NETV4
+namespace System.Runtime.CompilerServices
 {
     /// <summary>
     /// This attribute is used to inject the caller member name in C# 5.0
@@ -24,3 +25,4 @@
     {
     }
 }
+#endif

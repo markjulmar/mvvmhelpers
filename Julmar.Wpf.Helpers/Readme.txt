@@ -164,3 +164,7 @@ Updated ViewModelTrigger to support Action and Action<T> delegates
 ViewModelLocator is not public anymore - use IViewModelLocator
 New ViewModelLocatorResource can be placed into resources to find VMs if you don't like ViewModelCreator
 Added ServiceLocatorResource (from Win8/Metro)
+
+4.21 6/2013
+Bug fix for DoubleClickTrigger
+Changed version to .NET 4.5
