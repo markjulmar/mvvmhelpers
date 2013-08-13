@@ -168,3 +168,6 @@ Added ServiceLocatorResource (from Win8/Metro)
 4.21 6/2013
 Bug fix for DoubleClickTrigger
 Changed version to .NET 4.5
+
+4.22 8/2013
+Bug fix to allow "#" in path when loading julmar.wpf.helpers.dll

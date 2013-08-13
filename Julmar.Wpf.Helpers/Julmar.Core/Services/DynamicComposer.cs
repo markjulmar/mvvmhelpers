@@ -291,7 +291,7 @@ namespace JulMar.Core.Services
             // See if helpers is available as well.
             Assembly asm = Assembly.Load("julmar.wpf.helpers");
             if (asm != null)
-                AddAssemblyToCatalog(new Uri(asm.CodeBase).LocalPath, defaultCatalog);
+                defaultCatalog.Catalogs.Add(new AssemblyCatalog(asm));
 
             // Create the aggregate catalog to hold each of the directory catalogs.
             var catalog = new AggregateCatalog();

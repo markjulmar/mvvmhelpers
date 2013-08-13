@@ -58,9 +58,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceReplacementTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeferredScrollingTest", "test\DeferredScrollingTest\DeferredScrollingTest.csproj", "{B4A4E314-641C-4095-93B1-ACE8C1B5461B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCompositionWithEmbeddedHash", "test\C#\TestCompositionWithEmbeddedHash\TestCompositionWithEmbeddedHash.csproj", "{3BED1617-2A09-439A-A081-C62D51443582}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 25
+		SccNumberOfProjects = 26
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
 		SccLocalPath0 = .
@@ -156,6 +158,10 @@ Global
 		SccProjectTopLevelParentUniqueName24 = Julmar.Wpf.Helpers.sln
 		SccProjectName24 = test/DeferredScrollingTest
 		SccLocalPath24 = test\\DeferredScrollingTest
+		SccProjectUniqueName25 = test\\C#\\TestCompositionWithEmbeddedHash\\TestCompositionWithEmbeddedHash.csproj
+		SccProjectTopLevelParentUniqueName25 = Julmar.Wpf.Helpers.sln
+		SccProjectName25 = test/C#/TestCompositionWithEmbeddedHash
+		SccLocalPath25 = test\\C#\\TestCompositionWithEmbeddedHash
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Julmar.Wpf.Helpers.vsmdi
@@ -409,6 +415,16 @@ Global
 		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Release|Mixed Platforms.Build.0 = Release|x86
 		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Release|x86.ActiveCfg = Release|x86
 		{B4A4E314-641C-4095-93B1-ACE8C1B5461B}.Release|x86.Build.0 = Release|x86
+		{3BED1617-2A09-439A-A081-C62D51443582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BED1617-2A09-439A-A081-C62D51443582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BED1617-2A09-439A-A081-C62D51443582}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3BED1617-2A09-439A-A081-C62D51443582}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3BED1617-2A09-439A-A081-C62D51443582}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3BED1617-2A09-439A-A081-C62D51443582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BED1617-2A09-439A-A081-C62D51443582}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BED1617-2A09-439A-A081-C62D51443582}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3BED1617-2A09-439A-A081-C62D51443582}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3BED1617-2A09-439A-A081-C62D51443582}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -434,6 +450,7 @@ Global
 		{2C23803C-3F66-45C0-A2B0-B18DBA964CB9} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{5BDC17CB-CDBA-4253-A5D9-2246DBA4BD60} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 		{B4A4E314-641C-4095-93B1-ACE8C1B5461B} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
+		{3BED1617-2A09-439A-A081-C62D51443582} = {36509B3E-AEE1-41AD-A58D-9DF20C2C7B7A}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
