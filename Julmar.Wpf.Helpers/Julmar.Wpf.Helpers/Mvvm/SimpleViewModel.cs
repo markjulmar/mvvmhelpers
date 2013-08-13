@@ -67,7 +67,11 @@ namespace JulMar.Windows.Mvvm
         /// a specific property has changed value.
         /// </summary>
         /// <param name="propertyName">Primary property</param>
+#if NET45
         protected void RaisePropertyChanged([CallerMemberName] string propertyName= "")
+#else
+        protected void RaisePropertyChanged(string propertyName)
+#endif
         {
             Debug.Assert(!string.IsNullOrEmpty(propertyName) && GetType().GetProperty(propertyName) != null);
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
@@ -97,7 +101,11 @@ namespace JulMar.Windows.Mvvm
         /// <param name="storageField">Storage field</param>
         /// <param name="newValue">New value</param>
         /// <param name="propertyName">Property Name</param>
+#if NET45
         protected bool SetPropertyValue<T>(ref T storageField, T newValue, [CallerMemberName] string propertyName = "")
+#else
+        protected bool SetPropertyValue<T>(ref T storageField, T newValue, string propertyName)
+#endif
         {
             Debug.Assert(!string.IsNullOrEmpty(propertyName) && GetType().GetProperty(propertyName) != null);
             if (Object.Equals(storageField, newValue))

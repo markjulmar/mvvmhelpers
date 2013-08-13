@@ -5,6 +5,8 @@ using System.Linq;
 using JulMar.Core.Services;
 using JulMar.Windows.Interfaces;
 using System.Diagnostics;
+using System.Reflection;
+using System.Security;
 
 namespace JulMar.Windows.Mvvm
 {
@@ -123,7 +125,7 @@ namespace JulMar.Windows.Mvvm
             if (vmType != null)
             {
                 // First time?  Just create it and return
-                if (!vmType.IsValueCreated)
+                if (!IsValueCreated(vmType))
                 {
                     returnValue = vmType.Value;
                 }
@@ -144,7 +146,7 @@ namespace JulMar.Windows.Mvvm
                         var locatedVms = GatherViewModelData();
                         var entry = locatedVms.First(vmd => vmd.Metadata.Key.Any(uiKey => uiKey == key));
                         Debug.Assert(entry != null);
-                        Debug.Assert(entry.IsValueCreated == false);
+                        Debug.Assert(IsValueCreated(entry) == false);
                         
                         returnValue = entry.Value;
                     }
@@ -166,6 +168,33 @@ namespace JulMar.Windows.Mvvm
             var data = new ViewModelData();
             DynamicComposer.Instance.Compose(data);
             return data.LocatedViewModels;
+        }
+
+        /// <summary>
+        /// Silly workaround to determine if the Lazy(Of T) has been created yet.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        private bool IsValueCreated<T>(Lazy<T> val)
+        {
+#if NET35
+            try
+            {
+                Type t = val.GetType().BaseType;
+                var fa = t.GetField("_isValueCreated", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (fa != null)
+                {
+                    return (bool)fa.GetValue(val);
+                }
+            }
+            catch
+            {
+            }
+            return false;
+#else
+            return val.IsValueCreated;
+#endif
         }
     }
 }

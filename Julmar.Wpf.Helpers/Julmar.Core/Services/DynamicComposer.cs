@@ -11,16 +11,16 @@ using System.ComponentModel.Composition.Primitives;
 namespace JulMar.Core.Services
 {
     /// <summary>
-    /// Inversion of Control Composer - currently based on MEF (4.0).
+    /// Inversion of Control Composer - currently based on MEF.
     /// </summary>
     public sealed class DynamicComposer : IDisposable
     {
         private static readonly Lazy<DynamicComposer> _singleton = new Lazy<DynamicComposer>(() => new DynamicComposer());
         private Lazy<CompositionContainer> _container;
-#if NET35
-        private bool _isCreated = false;
-#endif
         private AggregateCatalog _userDefinedCatalogs;
+#if NET35
+        private bool _isContainerCreated;
+#endif
 
         /// <summary>
         /// IoC instance
@@ -63,7 +63,7 @@ namespace JulMar.Core.Services
             if (_container == null)
                 throw new ObjectDisposedException("IoCComposer has been disposed.");
 #if NET35
-            if (_isCreated)
+            if (_isContainerCreated)
 #else
             if (_container.IsValueCreated)
 #endif
@@ -310,10 +310,6 @@ namespace JulMar.Core.Services
             var container = new CompositionContainer(catalog, defaultCatalogEp);
             defaultCatalogEp.SourceProvider = container;
 
-#if NET35
-            _isCreated = true;
-#endif
-
             return container;
         }
 
@@ -366,7 +362,7 @@ namespace JulMar.Core.Services
         public void Dispose()
         {
 #if NET35
-            if (_isCreated)
+            if (_isContainerCreated)
 #else
             if (_container.IsValueCreated)
 #endif

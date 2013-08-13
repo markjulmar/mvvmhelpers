@@ -44,7 +44,11 @@ namespace JulMar.Windows.Extensions
         /// <param name="self">Object that implements INotifyPropertyChanged</param>
         /// <param name="propertyChangedHandler">Event Handler for INotifyPropertyChanged</param>
         /// <param name="propertyName">Property Name (string)</param>
+#if NET45
         public static void RaisePropertyChanged(this INotifyPropertyChanged self, PropertyChangedEventHandler propertyChangedHandler, [CallerMemberName] string propertyName = "")
+#else
+        public static void RaisePropertyChanged(this INotifyPropertyChanged self, PropertyChangedEventHandler propertyChangedHandler, string propertyName)
+#endif
         {
             Debug.Assert(!string.IsNullOrEmpty(propertyName) && self.GetType().GetProperty(propertyName) != null);
             if (propertyChangedHandler != null)

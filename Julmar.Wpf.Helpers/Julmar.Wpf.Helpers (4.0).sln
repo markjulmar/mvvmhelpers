@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Wpf.Behaviors (4.0)", "Julmar.Wpf.Behaviors\Julmar.Wpf.Behaviors (4.0).csproj", "{E5662DCB-CE30-4AC2-A113-62F070D722B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Wpf.Helpers (4.0)", "Julmar.Wpf.Helpers\Julmar.Wpf.Helpers (4.0).csproj", "{37EAC372-5684-45E2-B999-986F98EFE40D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Core (4.0)", "Julmar.Core\Julmar.Core (4.0).csproj", "{DDB17800-0841-47A1-8AF6-89DAB38DAE98}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Julmar.Wpf.Behaviors\\Julmar.Wpf.Behaviors\u0020(4.0).csproj
+		SccProjectName1 = Julmar.Wpf.Behaviors
+		SccLocalPath1 = Julmar.Wpf.Behaviors
+		SccProjectUniqueName2 = Julmar.Wpf.Helpers\\Julmar.Wpf.Helpers\u0020(4.0).csproj
+		SccProjectName2 = Julmar.Wpf.Helpers
+		SccLocalPath2 = Julmar.Wpf.Helpers
+		SccProjectUniqueName3 = Julmar.Core\\Julmar.Core\u0020(4.0).csproj
+		SccProjectName3 = Julmar.Core
+		SccLocalPath3 = Julmar.Core
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Julmar.Wpf.Helpers.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5662DCB-CE30-4AC2-A113-62F070D722B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5662DCB-CE30-4AC2-A113-62F070D722B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5662DCB-CE30-4AC2-A113-62F070D722B6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E5662DCB-CE30-4AC2-A113-62F070D722B6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E5662DCB-CE30-4AC2-A113-62F070D722B6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E5662DCB-CE30-4AC2-A113-62F070D722B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5662DCB-CE30-4AC2-A113-62F070D722B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5662DCB-CE30-4AC2-A113-62F070D722B6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E5662DCB-CE30-4AC2-A113-62F070D722B6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E5662DCB-CE30-4AC2-A113-62F070D722B6}.Release|x86.ActiveCfg = Release|Any CPU
+		{37EAC372-5684-45E2-B999-986F98EFE40D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37EAC372-5684-45E2-B999-986F98EFE40D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37EAC372-5684-45E2-B999-986F98EFE40D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{37EAC372-5684-45E2-B999-986F98EFE40D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{37EAC372-5684-45E2-B999-986F98EFE40D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{37EAC372-5684-45E2-B999-986F98EFE40D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37EAC372-5684-45E2-B999-986F98EFE40D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37EAC372-5684-45E2-B999-986F98EFE40D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{37EAC372-5684-45E2-B999-986F98EFE40D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{37EAC372-5684-45E2-B999-986F98EFE40D}.Release|x86.ActiveCfg = Release|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DDB17800-0841-47A1-8AF6-89DAB38DAE98}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -171,3 +171,4 @@ Changed version to .NET 4.5
 
 4.22 8/2013
 Bug fix to allow "#" in path when loading julmar.wpf.helpers.dll
+Updated .NET 3.5, 4.0 and 4.5 versions of library.

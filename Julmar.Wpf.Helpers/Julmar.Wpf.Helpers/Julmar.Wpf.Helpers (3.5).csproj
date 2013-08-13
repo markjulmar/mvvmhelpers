@@ -114,7 +114,7 @@
     <Compile Include="Interfaces\IMessageVisualizer.cs" />
     <Compile Include="Interfaces\IUICommand.cs" />
     <Compile Include="Interfaces\IUIVisualizer.cs" />
-    <Compile Include="Interfaces\MessageVisualizerOptions.cs" />
+    <Compile Include="Interfaces\IViewModelLocator.cs" />
     <Compile Include="Markup\LinearGradientBrushExtension.cs" />
     <Compile Include="Markup\ViewModelCreatorExtension.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
@@ -135,8 +135,11 @@
     <Compile Include="Mvvm\CloseRequestEventArgs.cs" />
     <Compile Include="Mvvm\DelegateCommand.cs" />
     <Compile Include="Mvvm\EditingViewModel.cs" />
+    <Compile Include="Mvvm\ServiceLocatorResource.cs" />
     <Compile Include="Mvvm\SimpleViewModel.cs" />
     <Compile Include="Mvvm\ViewModelLocator.cs" />
+    <Compile Include="Mvvm\ViewModelLocatorResource.cs" />
+    <Compile Include="UI\MessageVisualizerOptions.cs" />
     <Compile Include="UI\UICommand.cs" />
     <Compile Include="Validations\ValidatingViewModel.cs" />
     <Compile Include="UI\MessageVisualizer.cs" />

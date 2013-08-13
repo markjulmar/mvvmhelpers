@@ -24,6 +24,7 @@ namespace JulMar.Windows.Collections
     /// This collection, while safe, is generally somewhat slower because it does all the write work on the UI thread.
     /// </remarks>
     /// <typeparam name="T">Type this collection holds</typeparam>
+    [Obsolete]
     public class MTObservableCollection<T> : IList<T>, IList, INotifyCollectionChanged, INotifyPropertyChanged
     {
         #region Private Data
