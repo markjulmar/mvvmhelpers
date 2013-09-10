@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>MVVMHelpers.Metro</id>
+    <version>2013.1.00.06</version>
+    <title>MVVM Helpers for Metro based applications</title>
+    <authors>Mark Smith</authors>
+    <owners>Mark Smith</owners>
+    <licenseUrl>http://mvvmhelpers.codeplex.com/license</licenseUrl>
+    <projectUrl>http://mvvmhelpers.codeplex.com/</projectUrl>
+    <iconUrl>http://www.julmar.com/images/mvvmHelpers.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MVVM Helpers (Metro) is a library of helpers for Windows 8 / Metro to implement the MVVM design pattern, it also includes extension methods, Blend behaviors (with a version of System.Windows.Interactivity) and general .NET classes to aid in the development of Metro-based applications.</description>
+    <releaseNotes>For Windows Store application development</releaseNotes>
+    <copyright>(C) 2012-2013 JulMar Technology, Inc.</copyright>
+    <language>en-US</language>
+    <tags>mvvm metro win8 ui blend behaviors .NET</tags>
+    <dependencies>
+      <dependency id="Microsoft.Composition" version="1.0.16" />
+    </dependencies>
+    <references>
+      <reference file="JulMar.Metro.Behaviors.dll" />
+      <reference file="JulMar.Metro.Helpers.dll" />
+      <reference file="JulMar.Windows.Interactivity.dll" />
+    </references>
+  </metadata>
+</package>

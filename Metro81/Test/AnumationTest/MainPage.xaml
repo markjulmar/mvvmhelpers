@@ -1,0 +1,63 @@
+﻿<Page
+    x:Class="AnumationTest.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AnumationTest"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Interactivity="using:System.Windows.Interactivity" xmlns:Media="using:JulMar.Windows.Interactivity.Media"
+    xmlns:Interactivity1="using:JulMar.Windows.Interactivity" mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.Resources>
+            <Storyboard x:Key="fadeOut">
+                <DoubleAnimation Storyboard.TargetName="theBall" Storyboard.TargetProperty="Opacity" 
+                                 From="1" To="0" Duration="0:0:2" />
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="goButton" Storyboard.TargetProperty="Visibility">
+                    <DiscreteObjectKeyFrame KeyTime="0:0:2" Value="Collapsed" />
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="backButton" Storyboard.TargetProperty="Visibility">
+                    <DiscreteObjectKeyFrame KeyTime="0:0:2" Value="Visible" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard x:Key="fadeIn">
+                <DoubleAnimation Storyboard.TargetName="theBall" Storyboard.TargetProperty="Opacity" 
+                                 From="0" To="1" Duration="0:0:2" />
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="goButton" Storyboard.TargetProperty="Visibility">
+                    <DiscreteObjectKeyFrame KeyTime="0:0:2" Value="Visible" />
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="backButton" Storyboard.TargetProperty="Visibility">
+                    <DiscreteObjectKeyFrame KeyTime="0:0:2" Value="Collapsed" />
+                </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+        </Grid.Resources>
+
+        <Interactivity:Interaction.Triggers>
+            <Media:StoryboardCompletedTrigger Storyboard="{StaticResource fadeOut}">
+                <Interactivity1:ChangePropertyAction TargetName="theRect" Value="1" PropertyName="Opacity" />
+            </Media:StoryboardCompletedTrigger>
+        </Interactivity:Interaction.Triggers>
+
+        <Ellipse x:Name="theBall" Width="100" Height="100" Fill="Red" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <Rectangle x:Name="theRect" Width="100" Height="100" Fill="Orange" Opacity="0" />
+
+        <Button x:Name="goButton" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20" Padding="10,5" Content="Go">
+            <Interactivity:Interaction.Triggers>
+                <Interactivity:EventTrigger EventName="Click">
+                    <Media:ControlStoryboardAction Storyboard="{StaticResource fadeOut}" ControlStoryboardOption="Play"/>
+                </Interactivity:EventTrigger>
+            </Interactivity:Interaction.Triggers>
+        </Button>
+
+        <Button x:Name="backButton" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20" Padding="10,5" Content="Back" Visibility="Collapsed">
+            <Interactivity:Interaction.Triggers>
+                <Interactivity:EventTrigger EventName="Click">
+                    <Media:ControlStoryboardAction Storyboard="{StaticResource fadeIn}" ControlStoryboardOption="Play"/>
+                </Interactivity:EventTrigger>
+            </Interactivity:Interaction.Triggers>
+        </Button>
+
+
+    </Grid>
+</Page>
