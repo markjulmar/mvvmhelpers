@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Interactivity;
 
-namespace JulMar.Windows.Interactivity
+namespace VMTriggers
 {
     /// <summary>
     /// This is a Blend trigger that binds to a IViewModelTrigger and invokes actions when it 
@@ -21,8 +21,8 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         public object Target
         {
-            get { return this.GetValue(TargetProperty); }
-            set { this.SetValue(TargetProperty, value); }
+            get { return GetValue(TargetProperty); }
+            set { SetValue(TargetProperty, value); }
         }
 
         /// <summary>
@@ -35,8 +35,8 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         public string EventName
         {
-            get { return (string)this.GetValue(EventNameProperty); }
-            set { this.SetValue(EventNameProperty, value); }
+            get { return (string)GetValue(EventNameProperty); }
+            set { SetValue(EventNameProperty, value); }
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace JulMar.Windows.Interactivity
         protected override void OnAttached()
         {
             base.OnAttached();
-            this.Register(this.Target, this.EventName);
+            Register(Target, EventName);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace JulMar.Windows.Interactivity
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            this.Unregister(this.Target, this.EventName);
+            Unregister(Target, EventName);
         }
 
         /// <summary>
@@ -155,12 +155,12 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         private void RaiseTriggerNoParams()
         {
-            if (!this.Dispatcher.CheckAccess())
+            if (!Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(this.RaiseTriggerNoParams);
+                Dispatcher.Invoke(this.RaiseTriggerNoParams);
                 return;
             }
-            this.InvokeActions(null);
+            InvokeActions(null);
         }
 
         /// <summary>
@@ -169,12 +169,12 @@ namespace JulMar.Windows.Interactivity
         /// <param name="parameter"></param>
         private void RaiseTriggerWithParameter(object parameter)
         {
-            if (!this.Dispatcher.CheckAccess())
+            if (!Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => this.RaiseTriggerWithParameter(parameter));
+                Dispatcher.Invoke(() => this.RaiseTriggerWithParameter(parameter));
                 return;
             }
-            this.InvokeActions(parameter);
+            InvokeActions(parameter);
         }
     }
 }

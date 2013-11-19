@@ -172,3 +172,8 @@ Changed version to .NET 4.5
 4.22 8/2013
 Bug fix to allow "#" in path when loading julmar.wpf.helpers.dll
 Updated .NET 3.5, 4.0 and 4.5 versions of library.
+
+4.23 11/2013
+Added GotoVisualStateAction which uses passed parameter if no state value is set.
+Fixed ViewModelTrigger to pass along state and marshal to UI thread if called on background thread
+Added AlwaysRunOnChanges property to BindingTrigger.

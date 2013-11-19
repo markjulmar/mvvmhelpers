@@ -67,6 +67,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -80,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Actions\ApplyEffect.cs" />
     <Compile Include="Actions\ChangeThemeAction.cs" />
+    <Compile Include="Actions\GotoVisualStateAction.cs" />
     <Compile Include="Actions\InvokeCommand.cs" />
     <Compile Include="Actions\SelectAllTextAction.cs" />
     <Compile Include="Actions\SetFocusAction.cs" />

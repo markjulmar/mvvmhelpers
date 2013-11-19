@@ -13,15 +13,9 @@ namespace JulMar.Windows.Interactivity
     /// </summary>
     public class BindingTrigger : TriggerBase<UIElement>
     {
-        // These are used to bind to a property for comparison
         private BindingBase _binding;
-
-        private static readonly DependencyProperty InternalBindingValueProperty =
-            DependencyProperty.Register(
-                "_InternalBindingValue",
-                typeof(object),
-                typeof(BindingTrigger),
-                new PropertyMetadata(OnSourceBindingValueChanged));
+        private static readonly DependencyProperty InternalBindingValueProperty = DependencyProperty.Register("_InternalBindingValue", 
+            typeof (object), typeof (BindingTrigger), new PropertyMetadata(OnValueChanged));
 
         /// <summary>
         /// Binding declaration of the conditional 
@@ -29,48 +23,13 @@ namespace JulMar.Windows.Interactivity
         public BindingBase Binding
         {
             get { return _binding; }
-            set
-            {
-                _binding = value;
-                BindingOperations.SetBinding(this, InternalBindingValueProperty, Binding);
-            }
-        }
-
-        /// <summary>
-        /// Backing storage for the AlwaysRunOnChanges property.
-        /// </summary>
-        public static readonly DependencyProperty AlwaysRunOnChangesProperty =
-            DependencyProperty.Register(
-                "AlwaysRunOnChangesProperty",
-                typeof(bool),
-                typeof(BindingTrigger),
-                new PropertyMetadata(false));
-
-        /// <summary>
-        /// This is used to always raise our invoke when
-        /// the source binding changes.
-        /// </summary>
-        public bool AlwaysRunOnChanges
-        {
-            get
-            {
-                return (bool)this.GetValue(AlwaysRunOnChangesProperty);
-            }
-
-            set
-            {
-                SetValue(AlwaysRunOnChangesProperty, value);
-            }
+            set { _binding = value;BindingOperations.SetBinding(this, InternalBindingValueProperty, Binding); }
         }
 
         /// <summary>
         /// Value to test against
         /// </summary>
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value",
-            typeof(object),
-            typeof(BindingTrigger),
-            new UIPropertyMetadata(null, OnValueChanged));
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(object), typeof(BindingTrigger), new UIPropertyMetadata(null, OnValueChanged));
 
         /// <summary>
         /// Gets or sets the Value property.
@@ -88,43 +47,23 @@ namespace JulMar.Windows.Interactivity
         /// <param name="e"></param>
         private static void OnValueChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
         {
-            ((BindingTrigger) dpo).CheckValue(false);
-        }
-
-        /// <summary>
-        /// This is called when source binding value changes.
-        /// </summary>
-        /// <param name="dpo"></param>
-        /// <param name="e"></param>
-        private static void OnSourceBindingValueChanged(DependencyObject dpo, DependencyPropertyChangedEventArgs e)
-        {
-            ((BindingTrigger)dpo).CheckValue(true);
+            ((BindingTrigger) dpo).CheckValue();
         }
 
         /// <summary>
         /// This compares a changed value
         /// </summary>
-        private void CheckValue(bool isSourceChange)
+        private void CheckValue()
         {
-            // Get the new value (SOURCE)
             object newValue = GetValue(InternalBindingValueProperty);
-            // Get our comparison value
             object referenceValue = this.Value;
-
-            // If this is a source change, and we always notify on
-            // every property change, then send the notification.
-            if (isSourceChange && AlwaysRunOnChanges)
-            {
-                this.InvokeActions(newValue);
-                return;
-            }
 
             // Simple object test
             if (newValue == null && referenceValue == null ||
                 ReferenceEquals(newValue, referenceValue) ||
                 Equals(newValue, referenceValue))
             {
-                this.InvokeActions(newValue);
+                this.InvokeActions(null);
                 return;
             }
 
@@ -137,7 +76,7 @@ namespace JulMar.Windows.Interactivity
             {
                 if (String.Compare((string)referenceValue, newValue.ToString()) == 0)
                 {
-                    this.InvokeActions(newValue);
+                    this.InvokeActions(null);
                     return;
                 }
             }
@@ -150,7 +89,7 @@ namespace JulMar.Windows.Interactivity
                 {
                     if (tc.ConvertFrom(newValue) == referenceValue)
                     {
-                        this.InvokeActions(newValue);
+                        this.InvokeActions(null);
                         return;
                     }
                 }
