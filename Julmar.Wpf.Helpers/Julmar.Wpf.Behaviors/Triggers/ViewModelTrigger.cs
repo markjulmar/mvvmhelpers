@@ -157,7 +157,7 @@ namespace JulMar.Windows.Interactivity
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(this.RaiseTriggerNoParams);
+                this.Dispatcher.Invoke((Action)this.RaiseTriggerNoParams);
                 return;
             }
             this.InvokeActions(null);
@@ -171,7 +171,7 @@ namespace JulMar.Windows.Interactivity
         {
             if (!this.Dispatcher.CheckAccess())
             {
-                this.Dispatcher.Invoke(() => this.RaiseTriggerWithParameter(parameter));
+                this.Dispatcher.Invoke((Action)(() => this.RaiseTriggerWithParameter(parameter)));
                 return;
             }
             this.InvokeActions(parameter);
