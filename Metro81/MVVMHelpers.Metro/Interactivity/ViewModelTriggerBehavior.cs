@@ -1,4 +1,5 @@
 ﻿using Windows.ApplicationModel;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Markup;
 using Microsoft.Xaml.Interactivity;
 using System;
@@ -209,6 +210,12 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         private void OnEventRaisedWithParameter(object parameter)
         {
+            if (!Dispatcher.HasThreadAccess)
+            {
+                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => this.OnEventRaisedWithParameter(parameter));
+                return;
+            }
+
             this.InvokeActions(parameter);
         }
 
@@ -217,6 +224,12 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         private void OnEventRaisedWithNoParameter()
         {
+            if (!Dispatcher.HasThreadAccess)
+            {
+                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, this.OnEventRaisedWithNoParameter);
+                return;
+            }
+
             // Invoke our actions
             this.InvokeActions(null);
         }
