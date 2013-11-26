@@ -36,6 +36,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoSerializingNavigationTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationTest", "Test\AnimationTest\AnimationTest.csproj", "{780194E0-5BA5-4936-AE10-2DBC92330C2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusTests", "Test\FocusTests\FocusTests.csproj", "{49325E91-67E7-4283-AC91-3128AAFE5AC8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4BA43D03-9E07-40D6-B3A6-7C30EF3A22AC}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 11
@@ -422,6 +431,30 @@ Global
 		{780194E0-5BA5-4936-AE10-2DBC92330C2D}.Release|x86.ActiveCfg = Release|x86
 		{780194E0-5BA5-4936-AE10-2DBC92330C2D}.Release|x86.Build.0 = Release|x86
 		{780194E0-5BA5-4936-AE10-2DBC92330C2D}.Release|x86.Deploy.0 = Release|x86
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|ARM.ActiveCfg = Debug|ARM
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|ARM.Build.0 = Debug|ARM
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|ARM.Deploy.0 = Debug|ARM
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|x64.ActiveCfg = Debug|x64
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|x64.Build.0 = Debug|x64
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|x64.Deploy.0 = Debug|x64
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|x86.ActiveCfg = Debug|x86
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|x86.Build.0 = Debug|x86
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Debug|x86.Deploy.0 = Debug|x86
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|ARM.ActiveCfg = Release|ARM
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|ARM.Build.0 = Release|ARM
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|ARM.Deploy.0 = Release|ARM
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|x64.ActiveCfg = Release|x64
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|x64.Build.0 = Release|x64
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|x64.Deploy.0 = Release|x64
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|x86.ActiveCfg = Release|x86
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|x86.Build.0 = Release|x86
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -439,5 +472,6 @@ Global
 		{880EE5E5-09A0-43AB-9E6D-7E1F7B8E0720} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
 		{EA737BBB-8A56-4111-A09E-C225C4ADDFED} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
 		{780194E0-5BA5-4936-AE10-2DBC92330C2D} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
+		{49325E91-67E7-4283-AC91-3128AAFE5AC8} = {CE3FE322-B65C-4806-92CB-09952A9A267C}
 	EndGlobalSection
 EndGlobal

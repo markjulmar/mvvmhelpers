@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.Composition</id>
+    <version>1.0.10-rc</version>
+    <title>MEF for web and Metro style apps</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://go.microsoft.com/fwlink/?LinkID=253010&amp;clcid=0x409</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Portable, lightweight, throughput-optimised composition container for MEF.</description>
+    <copyright>Copyright © 2011 Microsoft</copyright>
+    <tags>MEF Microsoft System Composition IOC Dependency Injection DI Metro</tags>
+  </metadata>
+</package>

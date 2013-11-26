@@ -3,6 +3,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Interactivity;
+
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 
 namespace JulMar.Windows.Interactivity
@@ -187,16 +189,28 @@ namespace JulMar.Windows.Interactivity
         /// <summary>
         /// This is invoked by the event - it runs all the actions
         /// </summary>
-        private void OnEventRaisedWithParameter(object parameter)
+        private async void OnEventRaisedWithParameter(object parameter)
         {
+            if (!Dispatcher.HasThreadAccess)
+            {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => this.OnEventRaisedWithParameter(parameter));
+                return;
+            }
+
             this.InvokeActions(parameter);
         }
 
         /// <summary>
         /// This is invoked by the event - it runs all the actions
         /// </summary>
-        private void OnEventRaisedWithNoParameter()
+        private async void OnEventRaisedWithNoParameter()
         {
+            if (!Dispatcher.HasThreadAccess)
+            {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, this.OnEventRaisedWithNoParameter);
+                return;
+            }
+
             // Invoke our actions
             this.InvokeActions(null);
         }

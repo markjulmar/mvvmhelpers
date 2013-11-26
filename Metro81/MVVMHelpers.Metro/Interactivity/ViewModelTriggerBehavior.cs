@@ -208,11 +208,11 @@ namespace JulMar.Windows.Interactivity
         /// <summary>
         /// This is invoked by the event - it runs all the actions
         /// </summary>
-        private void OnEventRaisedWithParameter(object parameter)
+        private async void OnEventRaisedWithParameter(object parameter)
         {
             if (!Dispatcher.HasThreadAccess)
             {
-                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => this.OnEventRaisedWithParameter(parameter));
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => this.OnEventRaisedWithParameter(parameter));
                 return;
             }
 
@@ -222,11 +222,11 @@ namespace JulMar.Windows.Interactivity
         /// <summary>
         /// This is invoked by the event - it runs all the actions
         /// </summary>
-        private void OnEventRaisedWithNoParameter()
+        private async void OnEventRaisedWithNoParameter()
         {
             if (!Dispatcher.HasThreadAccess)
             {
-                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, this.OnEventRaisedWithNoParameter);
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, this.OnEventRaisedWithNoParameter);
                 return;
             }
 

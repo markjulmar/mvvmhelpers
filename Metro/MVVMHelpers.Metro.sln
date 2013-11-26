@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julmar.Metro.Helpers", "MVVMHelpers.Metro\Julmar.Metro.Helpers.csproj", "{B640DE74-ACEB-4A7D-9FC5-14F58E63921F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{CE3FE322-B65C-4806-92CB-09952A9A267C}"
@@ -41,6 +43,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynchronizedList", "Test\SynchronizedList\SynchronizedList.csproj", "{880EE5E5-09A0-43AB-9E6D-7E1F7B8E0720}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoSerializingNavigationTest", "Test\AutoSerializingNavigationTest\AutoSerializingNavigationTest.csproj", "{EA737BBB-8A56-4111-A09E-C225C4ADDFED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{143B119C-1862-42F0-845D-F6AF5A5501B4}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution

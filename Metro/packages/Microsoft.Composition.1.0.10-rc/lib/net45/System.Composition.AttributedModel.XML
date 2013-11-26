@@ -138,8 +138,18 @@
         <member name="M:System.Composition.ImportAttribute.#ctor">
             <summary>
                 Initializes a new instance of the <see cref="T:System.Composition.ImportAttribute"/> class, importing the 
-                export without a contract name.
+                export with the default contract name.
             </summary>
+        </member>
+        <member name="M:System.Composition.ImportAttribute.#ctor(System.Type)">
+            <summary>
+                Initializes a new instance of the <see cref="T:System.Composition.ImportAttribute"/> class, importing the
+                export with the contract name derived from the specified type.
+            </summary>
+            <param name="contractType">
+                A <see cref="T:System.Type"/> of which to derive the contract name of the export to import, or 
+                <see langword="null"/> to use the default contract name.
+            </param>
         </member>
         <member name="M:System.Composition.ImportAttribute.#ctor(System.String)">
             <summary>
@@ -151,21 +161,52 @@
                  <see langword="null"/> or an empty string ("") to use the default contract name.
             </param>
         </member>
+        <member name="M:System.Composition.ImportAttribute.#ctor(System.String,System.Type)">
+            <summary>
+                Initializes a new instance of the <see cref="T:System.Composition.ImportAttribute"/> class, importing the
+                export with the specified contract name.
+            </summary>
+            <param name="contractName">
+                 A <see cref="T:System.String"/> containing the contract name of the export to import, or 
+                 <see langword="null"/> or an empty string ("") to use the default contract name.
+            </param>
+            <param name="contractType">The contract type for the import.</param>
+        </member>
         <member name="P:System.Composition.ImportAttribute.ContractName">
             <summary>
                 Gets the contract name of the export to import.
             </summary>
             <value>
                  A <see cref="T:System.String"/> containing the contract name of the export to import. The 
-                 default value is null.
+                 default value is an empty string ("").
+            </value>
+        </member>
+        <member name="P:System.Composition.ImportAttribute.ContractType">
+            <summary>
+                Get the contract type of the export to import.
+            </summary>
+            <value>
+                A <see cref="T:System.Type"/> of the export that this import is expecting. The default value is
+                <see langword="null"/> which means that the type will be obtained by looking at the type on
+                the member that this import is attached to. If the type is <see cref="T:System.Object"/> then the
+                importer is delaring they can accept any exported type.
             </value>
         </member>
         <member name="P:System.Composition.ImportAttribute.AllowDefault">
             <summary>
-                Gets or sets a value indicating whether the property, field or parameter will be left 
-                at its default value when an export with the contract name is not present in 
+                Gets or sets a value indicating whether the property, field or parameter will be set 
+                to its type's default value when an export with the contract name is not present in 
                 the container.
             </summary>
+            <remarks>
+                <para>
+                    The default value of a property's, field's or parameter's type is 
+                    <see langword="null"/> for reference types and 0 for numeric value types. For 
+                    other value types, the default value will be each field of the value type 
+                    initialized to zero, if the field is a value type or <see langword="null"/> if 
+                    the field is a reference type.
+                </para>
+            </remarks>
         </member>
         <member name="T:System.Composition.ImportingConstructorAttribute">
             <summary>
@@ -190,8 +231,18 @@
         <member name="M:System.Composition.ImportManyAttribute.#ctor">
             <summary>
                 Initializes a new instance of the <see cref="T:System.Composition.ImportManyAttribute"/> class, importing the 
-                set of exports without a contract name.
+                set of exports with the default contract name.
             </summary>
+        </member>
+        <member name="M:System.Composition.ImportManyAttribute.#ctor(System.Type)">
+            <summary>
+                Initializes a new instance of the <see cref="T:System.Composition.ImportManyAttribute"/> class, importing the
+                set of exports with the contract name derived from the specified type.
+            </summary>
+            <param name="contractType">
+                A <see cref="T:System.Type"/> of which to derive the contract name of the exports to import, or 
+                <see langword="null"/> to use the default contract name.
+            </param>
         </member>
         <member name="M:System.Composition.ImportManyAttribute.#ctor(System.String)">
             <summary>
@@ -200,8 +251,19 @@
             </summary>
             <param name="contractName">
                  A <see cref="T:System.String"/> containing the contract name of the exports to import, or 
-                 <see langword="null"/>.
+                 <see langword="null"/> or an empty string ("") to use the default contract name.
             </param>
+        </member>
+        <member name="M:System.Composition.ImportManyAttribute.#ctor(System.String,System.Type)">
+            <summary>
+                Initializes a new instance of the <see cref="T:System.Composition.ImportManyAttribute"/> class, importing the
+                set of exports with the specified contract name.
+            </summary>
+            <param name="contractName">
+                 A <see cref="T:System.String"/> containing the contract name of the exports to import, or 
+                 <see langword="null"/> or an empty string ("") to use the default contract name.
+            </param>
+            <param name="contractType">The contract type associated with the import.</param>
         </member>
         <member name="P:System.Composition.ImportManyAttribute.ContractName">
             <summary>
@@ -209,7 +271,18 @@
             </summary>
             <value>
                  A <see cref="T:System.String"/> containing the contract name of the exports to import. The 
-                 default value is null.
+                 default value is an empty string ("").
+            </value>
+        </member>
+        <member name="P:System.Composition.ImportManyAttribute.ContractType">
+            <summary>
+                Get the contract type of the export to import.
+            </summary>
+            <value>
+                A <see cref="T:System.Type"/> of the export that this import is expecting. The default value is
+                <see langword="null"/> which means that the type will be obtained by looking at the type on
+                the member that this import is attached to. If the type is <see cref="T:System.Object"/> then the
+                importer is delaring they can accept any exported type.
             </value>
         </member>
         <member name="T:System.Composition.ImportMetadataConstraintAttribute">

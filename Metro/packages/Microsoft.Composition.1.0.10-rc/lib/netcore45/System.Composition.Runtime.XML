@@ -313,36 +313,5 @@
             <param name="message">The exception message.</param>
             <param name="innerException">The inner exception.</param>
         </member>
-        <member name="T:System.Composition.Properties.Resources">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:System.Composition.Properties.Resources.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:System.Composition.Properties.Resources.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:System.Composition.Properties.Resources.CompositionContext_NoExportFoundForContract">
-            <summary>
-              Looks up a localized string similar to No export was found for the contract &apos;{0}&apos;..
-            </summary>
-        </member>
-        <member name="P:System.Composition.Properties.Resources.CompositionFailedDefaultExceptionMessage">
-            <summary>
-              Looks up a localized string similar to Composition failed..
-            </summary>
-        </member>
-        <member name="P:System.Composition.Properties.Resources.Formatter_ListSeparatorWithSpace">
-            <summary>
-              Looks up a localized string similar to , .
-            </summary>
-        </member>
     </members>
 </doc>
