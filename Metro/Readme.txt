@@ -71,3 +71,6 @@ Added WatermarkTextBehavior
 
 1.10 6/2013
 Added IsWatermarkTextVisible property to WatermarkTextBoxBehavior.
+
+2.00 11/2013
+Synchronized with Windows 8.1 version
