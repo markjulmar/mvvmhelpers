@@ -1,0 +1,86 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity" 
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:julmar="using:JulMar.Windows.Interactivity"
+    xmlns:focusTests="using:FocusTests"
+    x:Class="FocusTests.MainPage"
+    d:DataContext="{d:DesignInstance Type=focusTests:MainViewModel, IsDesignTimeCreatable=True}"
+    mc:Ignorable="d">
+
+	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <interactivity:Interaction.Behaviors>
+            <julmar:ViewModelTriggerBehavior EventName="AddComplete" Target="{Binding}">
+                <julmar:SetFocusAction Target="{Binding ElementName=EntryLabelTextBox}" />
+            </julmar:ViewModelTriggerBehavior>
+        </interactivity:Interaction.Behaviors>
+        
+		<Grid.RowDefinitions>
+			<RowDefinition Height="100" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+        
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="100" />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+        
+		<TextBlock Text="Focus Test" Grid.Column="1" VerticalAlignment="Bottom" FontSize="36" 
+			Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}" />
+        
+		<Grid Grid.Row="1" Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+            
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+
+                <TextBox x:Name="EntryLabelTextBox" PlaceholderText="New Label" Margin="5" Text="{Binding Text, Mode=TwoWay}">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Loaded">
+                            <julmar:SetFocusAction Target="{Binding ElementName=EntryLabelTextBox}" />
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </TextBox>
+				<Button Content="Add" Padding="20,5" Margin="5" Grid.Column="1" >
+					<interactivity:Interaction.Behaviors>
+						<core:EventTriggerBehavior EventName="Click">
+							<julmar:InvokeCommand Command="{Binding AddTag}" 
+                                                  CommandParameter="{Binding ElementName=EntryLabelTextBox, Path=Text}"/>
+                        </core:EventTriggerBehavior>
+					</interactivity:Interaction.Behaviors>
+				</Button>
+			</Grid>
+            
+			<ListView Grid.Row="1" Margin="5" ItemsSource="{Binding Tags}">
+				<ListView.ItemsPanel>
+					<ItemsPanelTemplate>
+						<ItemsWrapGrid />
+					</ItemsPanelTemplate>
+				</ListView.ItemsPanel>
+                
+				<ListView.ItemTemplate>
+					<DataTemplate>
+                        <Border CornerRadius="10" Background="SkyBlue" BorderBrush="DeepSkyBlue" MinWidth="75">
+							<TextBlock HorizontalAlignment="Center" Foreground="DarkBlue"
+                                       VerticalAlignment="Center" Text="{Binding}"
+								       Margin="10"/>
+						</Border>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+            
+		</Grid>
+        
+        
+	</Grid>
+</Page>
