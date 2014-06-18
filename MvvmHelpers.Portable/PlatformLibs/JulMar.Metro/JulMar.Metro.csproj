@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JulMar</RootNamespace>
+    <AssemblyName>MvvmHelpers.WinRT</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE, WINRT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MvvmHelpers.WinRT.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE, WINRT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <ProjectReference Include="..\..\JulMar.Core\JulMar.Core.csproj">
+      <Project>{be9bbc74-3e57-487f-ac02-0529c17c4958}</Project>
+      <Name>JulMar.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behaviors\BindableCommand.cs" />
+    <Compile Include="Behaviors\EventCommander.cs" />
+    <Compile Include="Behaviors\FocusManager.cs" />
+    <Compile Include="Behaviors\NameScopeBinding.cs" />
+    <Compile Include="Behaviors\StyleSetter.cs" />
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Extensions\Designer.cs" />
+    <Compile Include="Extensions\UICommandExtensions.cs" />
+    <Compile Include="Interactivity\BindingTriggerBehavior.cs" />
+    <Compile Include="Interactivity\DragPositionBehavior.cs" />
+    <Compile Include="Interactivity\Input\KeyTriggerBehavior.cs" />
+    <Compile Include="Interactivity\Input\KeyTriggerFiredOn.cs" />
+    <Compile Include="Interactivity\Input\ModifierKeys.cs" />
+    <Compile Include="Interactivity\Internal\ComparisonLogic.cs" />
+    <Compile Include="Interactivity\Internal\DataBindingHelper.cs" />
+    <Compile Include="Interactivity\InvokeCommand.cs" />
+    <Compile Include="Interactivity\Media\StoryboardCompletedTriggerBehavior.cs" />
+    <Compile Include="Interactivity\SetFocusAction.cs" />
+    <Compile Include="Interactivity\SynchronizedCollectionBehavior.cs" />
+    <Compile Include="Interactivity\TimerTriggerBehavior.cs" />
+    <Compile Include="Interactivity\ViewModelTriggerBehavior.cs" />
+    <Compile Include="Interfaces\INavigationAware.cs" />
+    <Compile Include="Interfaces\IPageNavigator.cs" />
+    <Compile Include="IO\RandomAccessStream.cs" />
+    <Compile Include="IO\StreamExtensions.cs" />
+    <Compile Include="Mvvm\ViewModelLocator.cs" />
+    <Compile Include="Notifications\BadgeContent\BadgeGlyphNotificationContent.cs" />
+    <Compile Include="Notifications\BadgeContent\BadgeNumericNotificationContent.cs" />
+    <Compile Include="Notifications\BadgeContent\GlyphValue.cs" />
+    <Compile Include="Notifications\BadgeContent\IBadgeNotificationContent.cs" />
+    <Compile Include="Notifications\INotificationContent.cs" />
+    <Compile Include="Notifications\INotificationContentImage.cs" />
+    <Compile Include="Notifications\INotificationContentText.cs" />
+    <Compile Include="Notifications\NotificationBase.cs" />
+    <Compile Include="Notifications\NotificationContentValidationException.cs" />
+    <Compile Include="Notifications\TileContent\TileBranding.cs" />
+    <Compile Include="Notifications\TileContent\TileContent.cs" />
+    <Compile Include="Notifications\TileContent\TileContentFactory.cs" />
+    <Compile Include="Notifications\TileContent\TileInterfaces.cs" />
+    <Compile Include="Notifications\TileContent\TileNotificationBase.cs" />
+    <Compile Include="Notifications\ToastContent\IToastAudio.cs" />
+    <Compile Include="Notifications\ToastContent\IToastNotificationContent.cs" />
+    <Compile Include="Notifications\ToastContent\ToastAudio.cs" />
+    <Compile Include="Notifications\ToastContent\ToastAudioContent.cs" />
+    <Compile Include="Notifications\ToastContent\ToastContent.cs" />
+    <Compile Include="Notifications\ToastContent\ToastContentFactory.cs" />
+    <Compile Include="Notifications\ToastContent\ToastDuration.cs" />
+    <Compile Include="Notifications\ToastContent\ToastInterfaces.cs" />
+    <Compile Include="Notifications\ToastContent\ToastNotificationBase.cs" />
+    <Compile Include="Notifications\Util.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AutoSerializingPageNavigator.cs" />
+    <Compile Include="Services\PageNavigator.cs" />
+    <Compile Include="Services\ServiceLocatorResource.cs" />
+    <Compile Include="Services\StateManager.cs" />
+    <Compile Include="UI\AccessKey.cs" />
+    <Compile Include="UI\InputBinding.cs" />
+    <Compile Include="UI\MessageVisualizer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Notifications\Copyright.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
+      <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
+    <VisualStudioVersion>12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="..\Shared\Shared.projitems" Label="Shared" Condition="Exists('..\Shared\Shared.projitems')" />
+  <Import Project="..\Shared.Xaml\Shared.Xaml.projitems" Label="Shared" Condition="Exists('..\Shared.Xaml\Shared.Xaml.projitems')" />
+  <Import Project="..\..\SharedProjects\JulMar.Shared\Shared.projitems" Label="Shared" Condition="Exists('..\..\SharedProjects\JulMar.Shared\Shared.projitems')" />
+  <Import Project="..\..\SharedProjects\JulMar.Shared.Xaml\Shared.Xaml.projitems" Label="Shared" Condition="Exists('..\..\SharedProjects\JulMar.Shared.Xaml\Shared.Xaml.projitems')" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)\..\..\bin\$(TargetFileName)"
+copy "$(TargetDir)\$(TargetName).xml" "$(ProjectDir)\..\..\bin\$(TargetName).xml"
+copy "$(TargetDir)\$(TargetName).pri" "$(ProjectDir)\..\..\bin\$(TargetName).pri"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

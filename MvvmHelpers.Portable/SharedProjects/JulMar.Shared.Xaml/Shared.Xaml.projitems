@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="SharedProjectFile_SccProperties">
+    <SharedProjectFile_ProjectGuid>{e465b9eb-f8a8-4e94-9561-dc9e21f2beac}</SharedProjectFile_ProjectGuid>
+    <SharedProjectFile_SccProjectName>SAK</SharedProjectFile_SccProjectName>
+    <SharedProjectFile_SccAuxPath>SAK</SharedProjectFile_SccAuxPath>
+    <SharedProjectFile_SccLocalPath>SAK</SharedProjectFile_SccLocalPath>
+    <SharedProjectFile_SccProvider>SAK</SharedProjectFile_SccProvider>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d6c5fcd1-70f7-4f61-8743-2439e0f338dd</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Shared.Xaml</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToBrushConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\IntegerToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\KeyToResourceConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ListBoxItemToIndexConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\MultiConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\NullOrEmptyVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\NullVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ValidationErrorConverter.cs" />
+  </ItemGroup>
+</Project>

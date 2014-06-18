@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="SharedProjectFile_SccProperties">
+    <SharedProjectFile_ProjectGuid>{85c86424-2569-4a23-bbbe-d42f4d20ee93}</SharedProjectFile_ProjectGuid>
+    <SharedProjectFile_SccProjectName>SAK</SharedProjectFile_SccProjectName>
+    <SharedProjectFile_SccAuxPath>SAK</SharedProjectFile_SccAuxPath>
+    <SharedProjectFile_SccLocalPath>SAK</SharedProjectFile_SccLocalPath>
+    <SharedProjectFile_SccProvider>SAK</SharedProjectFile_SccProvider>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{8DF8224B-B890-466C-BA5E-DAACF62D6FBE}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ArrayToStringConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\DebugConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\DoubleToIntegerConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\IntegerToBooleanConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\MathConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\NotBooleanConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\NullBooleanConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\NullOrEmptyBooleanConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\NumericToDoubleConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ToStringConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\DelegateValueConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Converters\" />
+  </ItemGroup>
+</Project>

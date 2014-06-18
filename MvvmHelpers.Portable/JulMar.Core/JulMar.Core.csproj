@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BE9BBC74-3E57-487F-AC02-0529C17C4958}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JulMar</RootNamespace>
+    <AssemblyName>MvvmHelpers.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MvvmHelpers.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\Shims\JulMar.PlatformHelpers\JulMar.PlatformHelpers.csproj">
+      <Project>{08091165-9e30-48ce-9f1b-fcc0d41b9deb}</Project>
+      <Name>JulMar.PlatformHelpers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\CollectionSubset.cs" />
+    <Compile Include="Collections\ObservableDictionary.cs" />
+    <Compile Include="Collections\WeakReferenceList.cs" />
+    <Compile Include="Concurrency\ObjectLockExtensions.cs" />
+    <Compile Include="Concurrency\Range.cs" />
+    <Compile Include="Concurrency\ReaderWriterLockSlimExtensions.cs" />
+    <Compile Include="Core\ExportServiceAttribute.cs" />
+    <Compile Include="Core\ExportViewModelAttribute.cs" />
+    <Compile Include="Core\PropertyObserver.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Interfaces\IDelegateCommand.cs" />
+    <Compile Include="Interfaces\IErrorVisualizer.cs" />
+    <Compile Include="Interfaces\IMessageVisualizer.cs" />
+    <Compile Include="Interfaces\INotificationVisualizer.cs" />
+    <Compile Include="Interfaces\IServiceLocater.cs" />
+    <Compile Include="Interfaces\IStateManager.cs" />
+    <Compile Include="Interfaces\IUICommand.cs" />
+    <Compile Include="Interfaces\IUIVisualizer.cs" />
+    <Compile Include="Interfaces\IViewModelLocater.cs" />
+    <Compile Include="Interfaces\IViewModelStateManagement.cs" />
+    <Compile Include="Interfaces\MessageVisualizerOptions.cs" />
+    <Compile Include="Mvvm\AsyncDelegateCommand.cs" />
+    <Compile Include="Mvvm\BindingContext.cs" />
+    <Compile Include="Mvvm\DelegateCommand.cs" />
+    <Compile Include="Mvvm\CommandBinder.cs" />
+    <Compile Include="Mvvm\SimpleViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\JSON.cs" />
+    <Compile Include="Serialization\XML.cs" />
+    <Compile Include="Interfaces\IMessageMediator.cs" />
+    <Compile Include="Services\MessageMediator.cs" />
+    <Compile Include="Services\PlatformServices.cs" />
+    <Compile Include="Services\ServiceLocater.cs" />
+    <Compile Include="Services\ViewModelLocaterService.cs" />
+    <Compile Include="UI\ExportUIVisualizerAttribute.cs" />
+    <Compile Include="UI\UICommand.cs" />
+    <Compile Include="Interfaces\IValueConverter.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)\..\bin\$(TargetFileName)"
+copy "$(TargetDir)\$(TargetName).xml" "$(ProjectDir)\..\bin\$(TargetName).xml"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

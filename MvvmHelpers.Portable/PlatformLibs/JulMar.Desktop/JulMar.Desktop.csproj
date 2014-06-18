@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JulMar</RootNamespace>
+    <AssemblyName>MvvmHelpers.Desktop</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DESKTOP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MvvmHelpers.Desktop.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;DESKTOP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.5\Libraries\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.5\Libraries\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interactivity\Actions\ApplyEffect.cs" />
+    <Compile Include="Interactivity\Actions\ChangeCursorAction.cs" />
+    <Compile Include="Interactivity\Actions\ChangeThemeAction.cs" />
+    <Compile Include="Interactivity\Actions\GotoVisualStateAction.cs" />
+    <Compile Include="Interactivity\Actions\InvokeCommand.cs" />
+    <Compile Include="Interactivity\Actions\MessageBoxAction.cs" />
+    <Compile Include="Interactivity\Actions\SelectAllTextAction.cs" />
+    <Compile Include="Interactivity\Actions\SetFocusAction.cs" />
+    <Compile Include="Behaviors\HelpProvider.cs" />
+    <Compile Include="Behaviors\PasswordBoxHelper.cs" />
+    <Compile Include="Behaviors\RenderBehavior.cs" />
+    <Compile Include="Behaviors\SynchronizeScrollingBehavior.cs" />
+    <Compile Include="Interactivity\DragDropEventArgs.cs" />
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Extensions\Designer.cs" />
+    <Compile Include="Interactivity\AutoDisabledImageBehavior.cs" />
+    <Compile Include="Interactivity\CloseWindowBehavior.cs" />
+    <Compile Include="Interactivity\DataGridRowDragBehavior.cs" />
+    <Compile Include="Interactivity\DataGridRowIndexBehavior.cs" />
+    <Compile Include="Interactivity\DeferredScrollBehavior.cs" />
+    <Compile Include="Interactivity\DragPositionBehavior.cs" />
+    <Compile Include="Interactivity\ItemsControlDragDropBehavior.cs" />
+    <Compile Include="Interactivity\ListViewColumnAutoSizeBehavior.cs" />
+    <Compile Include="Interactivity\ListViewSortBehavior.cs" />
+    <Compile Include="Interactivity\MaskedTextBoxBehavior.cs" />
+    <Compile Include="Interactivity\MouseGestureScrollViewerBehavior.cs" />
+    <Compile Include="Interactivity\MultiSelectTreeViewBehavior.cs" />
+    <Compile Include="Interactivity\NumericTextBoxBehavior.cs" />
+    <Compile Include="Interactivity\ScrollbarPreviewBehavior.cs" />
+    <Compile Include="Interactivity\ScrollingPreviewBehavior.cs" />
+    <Compile Include="Interactivity\SelectedItemsCollectionSynchronizerBehavior.cs" />
+    <Compile Include="Interactivity\SelectTextOnFocusBehavior.cs" />
+    <Compile Include="Interactivity\SynchronizedScrollingBehavior.cs" />
+    <Compile Include="Interactivity\ViewportSynchronizerBehavior.cs" />
+    <Compile Include="Interactivity\WatermarkTextBehavior.cs" />
+    <Compile Include="Interactivity\Internal\DragAdorner.cs" />
+    <Compile Include="Interactivity\Internal\DragInfo.cs" />
+    <Compile Include="Interactivity\Internal\DragUtilities.cs" />
+    <Compile Include="Interactivity\Internal\InsertAdorner.cs" />
+    <Compile Include="Markup\FirstFocusedElementExtension.cs" />
+    <Compile Include="Markup\LinearGradientBrushExtension.cs" />
+    <Compile Include="Markup\ViewModelCreatorExtension.cs" />
+    <Compile Include="Mvvm\ViewModelLocator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Interactivity\StyleInteraction.cs" />
+    <Compile Include="Interactivity\Triggers\BindingTrigger.cs" />
+    <Compile Include="Interactivity\Triggers\DoubleClickTrigger.cs" />
+    <Compile Include="Interactivity\Triggers\ViewModelTrigger.cs" />
+    <Compile Include="SystemInfo.cs" />
+    <Compile Include="UI\ErrorVisualizer.cs" />
+    <Compile Include="UI\FrameworkElementAdorner.cs" />
+    <Compile Include="UI\MessageVisualizer.cs" />
+    <Compile Include="UI\NotificationVisualizer.cs" />
+    <Compile Include="UI\TextPath.cs" />
+    <Compile Include="UI\UIVisualizer.cs" />
+    <Compile Include="UI\WaitCursor.cs" />
+    <Compile Include="UI\Validations\IValidator.cs" />
+    <Compile Include="UI\Validations\RegexValidatorAttribute.cs" />
+    <Compile Include="UI\Validations\RequiredAttribute.cs" />
+    <Compile Include="UI\Validations\RequiredIntegerRange.cs" />
+    <Compile Include="UI\Validations\RequiredLengthAttribute.cs" />
+    <Compile Include="UI\Validations\ValidatingViewModel.cs" />
+    <Compile Include="UI\Validations\ValidationManager.cs" />
+    <Compile Include="UI\Validations\ValidatorAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\JulMar.Core\JulMar.Core.csproj">
+      <Project>{BE9BBC74-3E57-487F-AC02-0529C17C4958}</Project>
+      <Name>JulMar.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\Shared\Shared.projitems" Label="Shared" Condition="Exists('..\Shared\Shared.projitems')" />
+  <Import Project="..\..\SharedProjects\JulMar.Shared.Xaml\Shared.Xaml.projitems" Label="Shared" Condition="Exists('..\..\SharedProjects\JulMar.Shared.Xaml\Shared.Xaml.projitems')" />
+  <Import Project="..\..\SharedProjects\JulMar.Shared\Shared.projitems" Label="Shared" Condition="Exists('..\..\SharedProjects\JulMar.Shared\Shared.projitems')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)\..\..\bin\$(TargetFileName)"
+copy "$(TargetDir)\$(TargetName).xml" "$(ProjectDir)\..\..\bin\$(TargetName).xml"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

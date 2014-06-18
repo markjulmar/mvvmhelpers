@@ -1,0 +1,296 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.PlatformHelpers", "Shims\JulMar.PlatformHelpers\JulMar.PlatformHelpers.csproj", "{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shims", "Shims", "{95227E65-91FB-49CE-A633-DB4EEFDFC404}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.PlatformHelpers.Desktop", "Shims\JulMar.PlatformHelpers.Desktop\JulMar.PlatformHelpers.Desktop.csproj", "{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.Platform.Helpers.Metro", "Shims\JulMar.Platform.Helpers.Metro\JulMar.Platform.Helpers.Metro.csproj", "{00FEFB95-3267-4C81-82F5-9CC323545494}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.Platform.Helpers.WP8", "Shims\JulMar.Platform.Helpers.WP8\JulMar.Platform.Helpers.WP8.csproj", "{E2B91A05-7C9F-419E-A5B5-874F3B755D42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.PlatformHelpers.Droid", "Shims\JulMar.PlatformHelpers.Droid\JulMar.PlatformHelpers.Droid.csproj", "{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.PlatformHelpers.iOS", "Shims\JulMar.PlatformHelpers.iOS\JulMar.PlatformHelpers.iOS.csproj", "{CB61F43E-8833-47BA-AB10-D991A099F791}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.Core", "JulMar.Core\JulMar.Core.csproj", "{BE9BBC74-3E57-487F-AC02-0529C17C4958}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{70178E75-1E03-45E8-8F38-93ABFDD629DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.Android", "PlatformLibs\JulMar.Android\JulMar.Android.csproj", "{AAE05A59-9728-4A90-823D-95FF4E867D72}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{E44BD9DD-878E-4905-8E17-73C2B528E72B}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "SharedProjects\JulMar.Shared\Shared.shproj", "{8DF8224B-B890-466C-BA5E-DAACF62D6FBE}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared.Xaml", "SharedProjects\JulMar.Shared.Xaml\Shared.Xaml.shproj", "{D6C5FCD1-70F7-4F61-8743-2439E0F338DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.Desktop", "PlatformLibs\JulMar.Desktop\JulMar.Desktop.csproj", "{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.iOS", "PlatformLibs\JulMar.iOS\JulMar.iOS.csproj", "{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.Metro", "PlatformLibs\JulMar.Metro\JulMar.Metro.csproj", "{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JulMar.WindowsPhone", "PlatformLibs\JulMar.WindowsPhone\JulMar.WindowsPhone.csproj", "{340D2F36-47E1-4FED-BD00-8A676D7DA89F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{503EC205-2BBB-4612-B306-8B7C50E37E81}"
+	ProjectSection(SolutionItems) = preProject
+		mvvmHelpers.nuspec = mvvmHelpers.nuspec
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SharedProjects\JulMar.Shared.Xaml\Shared.Xaml.projitems*{d6c5fcd1-70f7-4f61-8743-2439e0f338dd}*SharedItemsImports = 13
+		SharedProjects\JulMar.Shared\Shared.projitems*{aae05a59-9728-4a90-823d-95ff4e867d72}*SharedItemsImports = 4
+		SharedProjects\JulMar.Shared\Shared.projitems*{53fc5051-ce70-4b05-b0c2-31bc5c1841b9}*SharedItemsImports = 4
+		SharedProjects\JulMar.Shared\Shared.projitems*{8df8224b-b890-466c-ba5e-daacf62d6fbe}*SharedItemsImports = 13
+		SharedProjects\JulMar.Shared\Shared.projitems*{340d2f36-47e1-4fed-bd00-8a676d7da89f}*SharedItemsImports = 4
+		SharedProjects\JulMar.Shared.Xaml\Shared.Xaml.projitems*{340d2f36-47e1-4fed-bd00-8a676d7da89f}*SharedItemsImports = 4
+		SharedProjects\JulMar.Shared\Shared.projitems*{f9c3ff68-0f64-4f14-ad9b-fa1805fa674e}*SharedItemsImports = 4
+		SharedProjects\JulMar.Shared.Xaml\Shared.Xaml.projitems*{f9c3ff68-0f64-4f14-ad9b-fa1805fa674e}*SharedItemsImports = 4
+		SharedProjects\JulMar.Shared\Shared.projitems*{a2d23c04-8cba-4794-aaa3-5fce4844afa7}*SharedItemsImports = 4
+		SharedProjects\JulMar.Shared.Xaml\Shared.Xaml.projitems*{a2d23c04-8cba-4794-aaa3-5fce4844afa7}*SharedItemsImports = 4
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 17
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = JulMar.Core\\JulMar.Core.csproj
+		SccProjectName1 = JulMar.Core
+		SccLocalPath1 = JulMar.Core
+		SccProjectUniqueName2 = PlatformLibs\\JulMar.Android\\JulMar.Android.csproj
+		SccProjectTopLevelParentUniqueName2 = MVVMHelpers.sln
+		SccProjectName2 = PlatformLibs/JulMar.Android
+		SccLocalPath2 = PlatformLibs\\JulMar.Android
+		SccProjectUniqueName3 = PlatformLibs\\JulMar.Desktop\\JulMar.Desktop.csproj
+		SccProjectTopLevelParentUniqueName3 = MVVMHelpers.sln
+		SccProjectName3 = PlatformLibs/JulMar.Desktop
+		SccLocalPath3 = PlatformLibs\\JulMar.Desktop
+		SccProjectUniqueName4 = PlatformLibs\\JulMar.iOS\\JulMar.iOS.csproj
+		SccProjectTopLevelParentUniqueName4 = MVVMHelpers.sln
+		SccProjectName4 = PlatformLibs/JulMar.iOS
+		SccLocalPath4 = PlatformLibs\\JulMar.iOS
+		SccProjectUniqueName5 = PlatformLibs\\JulMar.Metro\\JulMar.Metro.csproj
+		SccProjectTopLevelParentUniqueName5 = MVVMHelpers.sln
+		SccProjectName5 = PlatformLibs/JulMar.Metro
+		SccLocalPath5 = PlatformLibs\\JulMar.Metro
+		SccProjectUniqueName6 = PlatformLibs\\JulMar.WindowsPhone\\JulMar.WindowsPhone.csproj
+		SccProjectTopLevelParentUniqueName6 = MVVMHelpers.sln
+		SccProjectName6 = PlatformLibs/JulMar.WindowsPhone
+		SccLocalPath6 = PlatformLibs\\JulMar.WindowsPhone
+		SccProjectUniqueName7 = SharedProjects\\JulMar.Shared.Xaml\\Shared.Xaml.projitems
+		SccProjectTopLevelParentUniqueName7 = MVVMHelpers.sln
+		SccProjectName7 = SharedProjects/JulMar.Shared.Xaml
+		SccLocalPath7 = SharedProjects\\JulMar.Shared.Xaml
+		SccProjectUniqueName8 = SharedProjects\\JulMar.Shared.Xaml\\Shared.Xaml.shproj
+		SccProjectTopLevelParentUniqueName8 = MVVMHelpers.sln
+		SccProjectName8 = SharedProjects/JulMar.Shared.Xaml
+		SccLocalPath8 = SharedProjects\\JulMar.Shared.Xaml
+		SccProjectUniqueName9 = SharedProjects\\JulMar.Shared\\Shared.projitems
+		SccProjectName9 = SharedProjects/JulMar.Shared
+		SccLocalPath9 = SharedProjects\\JulMar.Shared
+		SccProjectUniqueName10 = SharedProjects\\JulMar.Shared\\Shared.shproj
+		SccProjectTopLevelParentUniqueName10 = MVVMHelpers.sln
+		SccProjectName10 = SharedProjects/JulMar.Shared
+		SccLocalPath10 = SharedProjects\\JulMar.Shared
+		SccProjectUniqueName11 = Shims\\JulMar.Platform.Helpers.Metro\\JulMar.Platform.Helpers.Metro.csproj
+		SccProjectTopLevelParentUniqueName11 = MVVMHelpers.sln
+		SccProjectName11 = Shims/JulMar.Platform.Helpers.Metro
+		SccLocalPath11 = Shims\\JulMar.Platform.Helpers.Metro
+		SccProjectUniqueName12 = Shims\\JulMar.Platform.Helpers.WP8\\JulMar.Platform.Helpers.WP8.csproj
+		SccProjectTopLevelParentUniqueName12 = MVVMHelpers.sln
+		SccProjectName12 = Shims/JulMar.Platform.Helpers.WP8
+		SccLocalPath12 = Shims\\JulMar.Platform.Helpers.WP8
+		SccProjectUniqueName13 = Shims\\JulMar.PlatformHelpers.Desktop\\JulMar.PlatformHelpers.Desktop.csproj
+		SccProjectTopLevelParentUniqueName13 = MVVMHelpers.sln
+		SccProjectName13 = Shims/JulMar.PlatformHelpers.Desktop
+		SccLocalPath13 = Shims\\JulMar.PlatformHelpers.Desktop
+		SccProjectUniqueName14 = Shims\\JulMar.PlatformHelpers.Droid\\JulMar.PlatformHelpers.Droid.csproj
+		SccProjectTopLevelParentUniqueName14 = MVVMHelpers.sln
+		SccProjectName14 = Shims/JulMar.PlatformHelpers.Droid
+		SccLocalPath14 = Shims\\JulMar.PlatformHelpers.Droid
+		SccProjectUniqueName15 = Shims\\JulMar.PlatformHelpers.iOS\\JulMar.PlatformHelpers.iOS.csproj
+		SccProjectTopLevelParentUniqueName15 = MVVMHelpers.sln
+		SccProjectName15 = Shims/JulMar.PlatformHelpers.iOS
+		SccLocalPath15 = Shims\\JulMar.PlatformHelpers.iOS
+		SccProjectUniqueName16 = Shims\\JulMar.PlatformHelpers\\JulMar.PlatformHelpers.csproj
+		SccProjectTopLevelParentUniqueName16 = MVVMHelpers.sln
+		SccProjectName16 = Shims/JulMar.PlatformHelpers
+		SccLocalPath16 = Shims\\JulMar.PlatformHelpers
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}.Release|ARM.ActiveCfg = Release|Any CPU
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}.Release|x64.ActiveCfg = Release|Any CPU
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB}.Release|x86.ActiveCfg = Release|Any CPU
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}.Release|ARM.ActiveCfg = Release|Any CPU
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}.Release|x64.ActiveCfg = Release|Any CPU
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC}.Release|x86.ActiveCfg = Release|Any CPU
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Debug|ARM.ActiveCfg = Debug|ARM
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Debug|ARM.Build.0 = Debug|ARM
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Debug|x64.ActiveCfg = Debug|x64
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Debug|x64.Build.0 = Debug|x64
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Debug|x86.ActiveCfg = Debug|x86
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Debug|x86.Build.0 = Debug|x86
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Release|ARM.ActiveCfg = Release|ARM
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Release|ARM.Build.0 = Release|ARM
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Release|x64.ActiveCfg = Release|x64
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Release|x64.Build.0 = Release|x64
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Release|x86.ActiveCfg = Release|x86
+		{00FEFB95-3267-4C81-82F5-9CC323545494}.Release|x86.Build.0 = Release|x86
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Debug|ARM.ActiveCfg = Debug|ARM
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Debug|ARM.Build.0 = Debug|ARM
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Debug|x86.ActiveCfg = Debug|x86
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Debug|x86.Build.0 = Debug|x86
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Release|ARM.ActiveCfg = Release|ARM
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Release|ARM.Build.0 = Release|ARM
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Release|x64.ActiveCfg = Release|Any CPU
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Release|x86.ActiveCfg = Release|x86
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42}.Release|x86.Build.0 = Release|x86
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}.Release|ARM.ActiveCfg = Release|Any CPU
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}.Release|x64.ActiveCfg = Release|Any CPU
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445}.Release|x86.ActiveCfg = Release|Any CPU
+		{CB61F43E-8833-47BA-AB10-D991A099F791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB61F43E-8833-47BA-AB10-D991A099F791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB61F43E-8833-47BA-AB10-D991A099F791}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{CB61F43E-8833-47BA-AB10-D991A099F791}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CB61F43E-8833-47BA-AB10-D991A099F791}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CB61F43E-8833-47BA-AB10-D991A099F791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB61F43E-8833-47BA-AB10-D991A099F791}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB61F43E-8833-47BA-AB10-D991A099F791}.Release|ARM.ActiveCfg = Release|Any CPU
+		{CB61F43E-8833-47BA-AB10-D991A099F791}.Release|x64.ActiveCfg = Release|Any CPU
+		{CB61F43E-8833-47BA-AB10-D991A099F791}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE9BBC74-3E57-487F-AC02-0529C17C4958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE9BBC74-3E57-487F-AC02-0529C17C4958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE9BBC74-3E57-487F-AC02-0529C17C4958}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{BE9BBC74-3E57-487F-AC02-0529C17C4958}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BE9BBC74-3E57-487F-AC02-0529C17C4958}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BE9BBC74-3E57-487F-AC02-0529C17C4958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE9BBC74-3E57-487F-AC02-0529C17C4958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE9BBC74-3E57-487F-AC02-0529C17C4958}.Release|ARM.ActiveCfg = Release|Any CPU
+		{BE9BBC74-3E57-487F-AC02-0529C17C4958}.Release|x64.ActiveCfg = Release|Any CPU
+		{BE9BBC74-3E57-487F-AC02-0529C17C4958}.Release|x86.ActiveCfg = Release|Any CPU
+		{AAE05A59-9728-4A90-823D-95FF4E867D72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE05A59-9728-4A90-823D-95FF4E867D72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE05A59-9728-4A90-823D-95FF4E867D72}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{AAE05A59-9728-4A90-823D-95FF4E867D72}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AAE05A59-9728-4A90-823D-95FF4E867D72}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AAE05A59-9728-4A90-823D-95FF4E867D72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE05A59-9728-4A90-823D-95FF4E867D72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAE05A59-9728-4A90-823D-95FF4E867D72}.Release|ARM.ActiveCfg = Release|Any CPU
+		{AAE05A59-9728-4A90-823D-95FF4E867D72}.Release|x64.ActiveCfg = Release|Any CPU
+		{AAE05A59-9728-4A90-823D-95FF4E867D72}.Release|x86.ActiveCfg = Release|Any CPU
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}.Release|x64.ActiveCfg = Release|Any CPU
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E}.Release|x86.ActiveCfg = Release|Any CPU
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}.Release|ARM.ActiveCfg = Release|Any CPU
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}.Release|x64.ActiveCfg = Release|Any CPU
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}.Release|x86.ActiveCfg = Release|Any CPU
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Debug|ARM.ActiveCfg = Debug|ARM
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Debug|ARM.Build.0 = Debug|ARM
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Debug|x64.ActiveCfg = Debug|x64
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Debug|x64.Build.0 = Debug|x64
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Debug|x86.ActiveCfg = Debug|x86
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Debug|x86.Build.0 = Debug|x86
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Release|ARM.ActiveCfg = Release|ARM
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Release|ARM.Build.0 = Release|ARM
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Release|x64.ActiveCfg = Release|x64
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Release|x64.Build.0 = Release|x64
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Release|x86.ActiveCfg = Release|x86
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7}.Release|x86.Build.0 = Release|x86
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Debug|ARM.ActiveCfg = Debug|ARM
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Debug|ARM.Build.0 = Debug|ARM
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Debug|x86.ActiveCfg = Debug|x86
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Debug|x86.Build.0 = Debug|x86
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Release|ARM.ActiveCfg = Release|ARM
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Release|ARM.Build.0 = Release|ARM
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Release|x64.ActiveCfg = Release|Any CPU
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Release|x86.ActiveCfg = Release|x86
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{08091165-9E30-48CE-9F1B-FCC0D41B9DEB} = {95227E65-91FB-49CE-A633-DB4EEFDFC404}
+		{EA52AA7D-0D46-49C4-89E3-E28815AEF1CC} = {95227E65-91FB-49CE-A633-DB4EEFDFC404}
+		{00FEFB95-3267-4C81-82F5-9CC323545494} = {95227E65-91FB-49CE-A633-DB4EEFDFC404}
+		{E2B91A05-7C9F-419E-A5B5-874F3B755D42} = {95227E65-91FB-49CE-A633-DB4EEFDFC404}
+		{1F1EBB2E-EBD7-4EBD-B6C3-45115A7D1445} = {95227E65-91FB-49CE-A633-DB4EEFDFC404}
+		{CB61F43E-8833-47BA-AB10-D991A099F791} = {95227E65-91FB-49CE-A633-DB4EEFDFC404}
+		{AAE05A59-9728-4A90-823D-95FF4E867D72} = {70178E75-1E03-45E8-8F38-93ABFDD629DA}
+		{8DF8224B-B890-466C-BA5E-DAACF62D6FBE} = {E44BD9DD-878E-4905-8E17-73C2B528E72B}
+		{D6C5FCD1-70F7-4F61-8743-2439E0F338DD} = {E44BD9DD-878E-4905-8E17-73C2B528E72B}
+		{F9C3FF68-0F64-4F14-AD9B-FA1805FA674E} = {70178E75-1E03-45E8-8F38-93ABFDD629DA}
+		{53FC5051-CE70-4B05-B0C2-31BC5C1841B9} = {70178E75-1E03-45E8-8F38-93ABFDD629DA}
+		{A2D23C04-8CBA-4794-AAA3-5FCE4844AFA7} = {70178E75-1E03-45E8-8F38-93ABFDD629DA}
+		{340D2F36-47E1-4FED-BD00-8A676D7DA89F} = {70178E75-1E03-45E8-8F38-93ABFDD629DA}
+	EndGlobalSection
+EndGlobal

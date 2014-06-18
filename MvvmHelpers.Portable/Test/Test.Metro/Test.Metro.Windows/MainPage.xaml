@@ -1,0 +1,19 @@
+﻿<Page
+    x:Class="Test.Metro.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:Test.Shared.ViewModels"
+    xmlns:mvvm="using:JulMar.Mvvm"
+    d:DataContext="{d:DesignInstance Type=viewModels:TestViewModel, IsDesignTimeCreatable=True}"
+    mc:Ignorable="d"
+    mvvm:ViewModelLocator.Key="TestVm">
+
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <TextBlock Text="{Binding TotalClicks}" />
+        <Button Command="{Binding IncrementCounter}">Increment</Button>
+        <CheckBox IsChecked="{Binding CounterEnabled, Mode=TwoWay}">Enable Counter</CheckBox>
+    </StackPanel>
+</Page>

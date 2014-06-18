@@ -1,0 +1,11 @@
+﻿All of the code in this folder was taken from the Tile samples in the SDK - it has been modified and split up
+to match the conventions in MVVMHelpers, but all the files should be considered with the following copyright header
+which was present in the original code:
+
+// THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+// ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+// PARTICULAR PURPOSE.
+//
+// Copyright (c) Microsoft Corporation. All rights reserved
+
