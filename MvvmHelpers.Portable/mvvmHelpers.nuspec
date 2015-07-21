@@ -19,6 +19,7 @@
       <group targetFramework="win8" />
       <group targetFramework="monoandroid" />
       <group targetFramework="monotouch" />
+      <group targetFramework="Xamarin.iOS10" />
       <group targetFramework="portable-net45+netcore45+wpa81+monotouch+monoandroid" />
       <!-- Can have dependencies for a specific target
       <group targetFramework="...">
@@ -55,6 +56,13 @@
     <file src="bin\MvvmHelpers.Bootstrap.iOS.dll" target="lib\monotouch\MvvmHelpers.Bootstrap.dll" />
     <file src="bin\MvvmHelpers.iOS.dll" target="lib\monotouch\MvvmHelpers.iOS.dll" />
     <file src="bin\MvvmHelpers.iOS.xml" target="lib\monotouch\MvvmHelpers.iOS.xml" />
+
+    <!-- iOS Unified (64-bit) -->
+    <file src="bin\MvvmHelpers.Core.dll" target="lib\Xamarin.iOS10\MvvmHelpers.Core.dll" />
+    <file src="bin\MvvmHelpers.Core.xml" target="lib\Xamarin.iOS10\MvvmHelpers.Core.xml" />
+    <file src="bin\MvvmHelpers.Bootstrap.iOS.Unified.dll" target="lib\Xamarin.iOS10\MvvmHelpers.Bootstrap.dll" />
+    <file src="bin\MvvmHelpers.iOS.Unified.dll" target="lib\Xamarin.iOS10\MvvmHelpers.iOS.Unified.dll" />
+    <file src="bin\MvvmHelpers.iOS.Unified.xml" target="lib\Xamarin.iOS10\MvvmHelpers.iOS.Unified.xml" />
 
     <!-- WinRT -->
     <file src="bin\MvvmHelpers.Core.dll" target="lib\win8\MvvmHelpers.Core.dll" />

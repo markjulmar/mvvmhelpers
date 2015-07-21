@@ -8,9 +8,9 @@
     <ProjectGuid>{B9BA9CF7-27E5-4E1E-A828-2F6C6C414F47}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>JulMar.iOS.Unified</RootNamespace>
+    <RootNamespace>JulMar</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>JulMar.iOS.Unified</AssemblyName>
+    <AssemblyName>MvvmHelpers.iOS.Unified</AssemblyName>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -36,7 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <DocumentationFile>bin\iPhone\Release\JulMar.iOS.Unified.XML</DocumentationFile>
+    <DocumentationFile>bin\iPhone\Release\MvvmHelpers.iOS.Unified.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\JulMar.iOS\Extensions\UIViewExtensions.cs">
