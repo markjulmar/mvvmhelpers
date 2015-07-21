@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.7.2">
     <id>MVVMHelpers.PCL</id>
-    <version>1.0.140602</version>
+    <version>1.0.150721</version>
     <authors>Mark Smith</authors>
     <owners>JulMar Technology,Inc.</owners>
     <licenseUrl>http://mvvmhelpers.codeplex.com/license</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>http://www.julmar.com/images/mvvmHelpers.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MVVM Helpers is a library of classes for WPF, WinRT, WinPRT, Xamarin.iOS and Xamarin.Android to implement the MVVM design pattern. It also includes several Blend behaviors, attached behaviors, extension methods and general .NET classes to aid in the development of .NET applications.</description>
-    <copyright>(C) 2009-2014 JulMar Technology, Inc.</copyright>
+    <copyright>(C) 2009-2015 JulMar Technology, Inc.</copyright>
     <language>en-US</language>
     <tags>mvvm wpf ios xamarin android winrt winprt ui blend behaviors .NET</tags>
     <dependencies>

@@ -6,8 +6,11 @@ using JulMar.Core;
 using JulMar.Extensions;
 using JulMar.Interfaces;
 using JulMar.UI;
-
+#if CLASSIC
 using MonoTouch.UIKit;
+#else
+using UIKit;
+#endif
 
 [assembly:ExportService(typeof(IMessageVisualizer), typeof(MessageVisualizer), IsFallback = true)]
     
@@ -58,7 +61,7 @@ namespace JulMar.UI
             CancellationTokenSource cts = new CancellationTokenSource();
             alertDialog.Dismissed += (sender, args) =>
                 {
-                    selectedCommand = visualizerOptions.Commands[args.ButtonIndex];
+                    selectedCommand = visualizerOptions.Commands[(int)args.ButtonIndex];
                     cts.Cancel();
                 };
 

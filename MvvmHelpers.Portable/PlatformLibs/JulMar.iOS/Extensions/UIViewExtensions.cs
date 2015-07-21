@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+#if CLASSIC
 using MonoTouch.UIKit;
+#else
+using UIKit;
+#endif
 
 namespace JulMar.Extensions
 {
@@ -16,9 +20,8 @@ namespace JulMar.Extensions
         /// <returns></returns>
         public static IEnumerable<UIView> Descendants(this UIView view)
         {
-            return view.Subviews == null
-                ? Enumerable.Empty<UIView>()
-                : view.Subviews.Concat(view.Subviews.SelectMany(child => child.Descendants()));
+            return view.Subviews?.Concat(view.Subviews.SelectMany(child => child.Descendants())) 
+                ?? Enumerable.Empty<UIView>();
         }
     }
 }

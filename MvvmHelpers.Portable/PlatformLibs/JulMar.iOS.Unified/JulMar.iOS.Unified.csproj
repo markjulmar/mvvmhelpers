@@ -2,13 +2,15 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{53FC5051-CE70-4B05-B0C2-31BC5C1841B9}</ProjectGuid>
-    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B9BA9CF7-27E5-4E1E-A828-2F6C6C414F47}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>JulMar</RootNamespace>
+    <RootNamespace>JulMar.iOS.Unified</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>MvvmHelpers.iOS</AssemblyName>
+    <AssemblyName>JulMar.iOS.Unified</AssemblyName>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -19,13 +21,12 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Debug</OutputPath>
-    <DefineConstants>DEBUG;__MOBILE__;__IOS__;CLASSIC</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchDebug>true</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <DocumentationFile>bin\iPhone\Debug\MvvmHelpers.iOS.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -35,17 +36,20 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <DefineConstants>__MOBILE__;__IOS__;CLASSIC</DefineConstants>
-    <DocumentationFile>bin\iPhone\Release\MvvmHelpers.iOS.XML</DocumentationFile>
+    <DocumentationFile>bin\iPhone\Release\JulMar.iOS.Unified.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Extensions\UIViewExtensions.cs" />
+    <Compile Include="..\JulMar.iOS\Extensions\UIViewExtensions.cs">
+      <Link>Extensions\UIViewExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\JulMar.iOS\UI\MessageVisualizer.cs">
+      <Link>UI\MessageVisualizer.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\MessageVisualizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\JulMar.Core\JulMar.Core.csproj">
-      <Project>{BE9BBC74-3E57-487F-AC02-0529C17C4958}</Project>
+      <Project>{be9bbc74-3e57-487f-ac02-0529c17c4958}</Project>
       <Name>JulMar.Core</Name>
     </ProjectReference>
   </ItemGroup>
@@ -54,13 +58,11 @@
     <Reference Include="System.Runtime" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="monotouch" />
+    <Reference Include="Xamarin.iOS" />
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Globalization" />
   </ItemGroup>
-  <Import Project="..\Shared\Shared.projitems" Label="Shared" Condition="Exists('..\Shared\Shared.projitems')" />
-  <Import Project="..\..\SharedProjects\JulMar.Shared\Shared.projitems" Label="Shared" Condition="Exists('..\..\SharedProjects\JulMar.Shared\Shared.projitems')" />
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)\..\..\bin\$(TargetFileName)"
 copy "$(TargetDir)\$(TargetName).xml" "$(ProjectDir)\..\..\bin\$(TargetName).xml"</PostBuildEvent>
