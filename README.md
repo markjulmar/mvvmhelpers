@@ -1,4 +1,3 @@
-**Project Description**
 MvvmHelpers is a cross-platform library for creating applications using the Model-View-ViewModel pattern which was popularized by the XAML frameworks. 
 
 The library supports:
