@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Collections.Specialized;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace JulMar.Windows.Interactivity
 {

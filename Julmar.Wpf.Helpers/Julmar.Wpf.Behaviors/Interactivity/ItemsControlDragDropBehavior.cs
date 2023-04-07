@@ -1,10 +1,10 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using JulMar.Windows.Internal;
+using Microsoft.Xaml.Behaviors;
+using System;
 using System.Windows;
-using System.Windows.Input;
+using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Interactivity;
-using JulMar.Windows.Internal;
+using System.Windows.Input;
 
 namespace JulMar.Windows.Interactivity
 {
@@ -14,13 +14,14 @@ namespace JulMar.Windows.Interactivity
     /// </summary>
     /// <remarks>
     /// This was originally taken from a sample posted by Bea Stollnitz
-    /// See http://www.beacosta.com/blog/?p=53 for the original article. 
+    /// See http://www.beacosta.com/blog/?p=53 for the original article.
     /// I have also borrowed elements from http://code.google.com/p/gong-wpf-dragdrop/
-    /// which was an extension of the above codebase. 
+    /// which was an extension of the above codebase.
     /// </remarks>
-    public class ItemsControlDragDropBehavior : Behavior<ItemsControl>
+    public class ItemsControlDragDropBehavior : Behavior<UIElement>
     {
         #region Private Data
+
         private bool _isMouseDown;
         private object _data;
         private Point _dragStartPosition;
@@ -29,7 +30,8 @@ namespace JulMar.Windows.Interactivity
         private InsertAdorner _insertAdorner;
         private int _dragScrollWaitCounter;
         private const int DragWaitCounterThreshold = 10;
-        #endregion
+
+        #endregion Private Data
 
         /// <summary>
         /// Key used for drag/drop operations
@@ -65,7 +67,7 @@ namespace JulMar.Windows.Interactivity
         /// This event is raised when a target is identified
         /// </summary>
         public event EventHandler<DragDropEventArgs> DropEnter;
-        
+
         /// <summary>
         /// This event is raised when a drop is initiated
         /// </summary>
@@ -108,7 +110,7 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var itemsControl = (ItemsControl)sender;
             Point p = e.GetPosition(itemsControl);
@@ -125,14 +127,14 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void PreviewMouseMove(object sender, MouseEventArgs e)
+        private void PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (_isMouseDown)
             {
                 var itemsControl = (ItemsControl)sender;
                 Point currentPosition = e.GetPosition(itemsControl);
-                if ((_isDragging == false) && (Math.Abs(currentPosition.X - _dragStartPosition.X) > SystemParameters.MinimumHorizontalDragDistance) ||
-                    (Math.Abs(currentPosition.Y - _dragStartPosition.Y) > SystemParameters.MinimumVerticalDragDistance))
+                if (_isDragging == false && Math.Abs(currentPosition.X - _dragStartPosition.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(currentPosition.Y - _dragStartPosition.Y) > SystemParameters.MinimumVerticalDragDistance)
                 {
                     // Do not allow if sorted and we only allow this element as
                     // the drop target.
@@ -150,7 +152,7 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             ResetState();
         }
@@ -160,13 +162,13 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void PreviewDragEnter(object sender, DragEventArgs e)
+        private void PreviewDragEnter(object sender, DragEventArgs e)
         {
             e.Handled = true;
             e.Effects = DragDropEffects.None;
 
             var itemsControl = (ItemsControl)sender;
-            
+
             // Do not allow if sorted.
             if (!DragUtilities.CanReorderCollectionView(itemsControl))
                 return;
@@ -184,7 +186,7 @@ namespace JulMar.Windows.Interactivity
                             allowedEffects = DragDropEffects.None;
                         else if (DropEnter != null)
                         {
-                            DragDropEventArgs de = new DragDropEventArgs(data.Source, itemsControl, data.Data) {AllowedEffects = allowedEffects};
+                            DragDropEventArgs de = new DragDropEventArgs(data.Source, itemsControl, data.Data) { AllowedEffects = allowedEffects };
                             DropEnter(this, de);
                             allowedEffects = de.AllowedEffects;
                             if (de.Cancel)
@@ -201,19 +203,18 @@ namespace JulMar.Windows.Interactivity
             }
         }
 
-
         /// <summary>
         /// New drop target being dragged over
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void PreviewDragOver(object sender, DragEventArgs e)
+        private void PreviewDragOver(object sender, DragEventArgs e)
         {
             e.Handled = true;
             e.Effects = DragDropEffects.None;
 
             var itemsControl = (ItemsControl)sender;
-            
+
             // Do not allow if sorted.
             if (!DragUtilities.CanReorderCollectionView(itemsControl))
                 return;
@@ -226,7 +227,7 @@ namespace JulMar.Windows.Interactivity
                     if (!data.AllowOnlySelf || itemsControl == data.Source)
                     {
                         var allowedEffects = e.AllowedEffects;
-                        
+
                         if (itemsControl == data.Source && !AllowSelf)
                             allowedEffects = DragDropEffects.None;
                         else if (DropEnter != null)
@@ -252,7 +253,7 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void DragLeave(object sender, DragEventArgs e)
+        private void DragLeave(object sender, DragEventArgs e)
         {
             DestroyAdorners();
             e.Handled = true;
@@ -263,7 +264,7 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void PreviewQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
+        private void PreviewQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
         {
             // If the user presses ESC then cancel the operation
             if (e.EscapePressed)
@@ -280,7 +281,7 @@ namespace JulMar.Windows.Interactivity
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void PreviewDrop(object sender, DragEventArgs e)
+        private void PreviewDrop(object sender, DragEventArgs e)
         {
             var itemsControl = (ItemsControl)sender;
             DestroyAdorners();
@@ -348,10 +349,10 @@ namespace JulMar.Windows.Interactivity
 
             UIElement draggedItemContainer = DragUtilities.GetItemContainerFromPoint(itemsControl, _dragStartPosition);
             _isDragging = true;
-            
-            DataObject dObject = new DataObject(ItemTypeKey, new DragInfo { Data = _data, Source = itemsControl, AllowOnlySelf = AllowOnlySelf } );
+
+            DataObject dObject = new DataObject(ItemTypeKey, new DragInfo { Data = _data, Source = itemsControl, AllowOnlySelf = AllowOnlySelf });
             DragDropEffects e = DragDrop.DoDragDrop(itemsControl, dObject, allowedEffects);
-            
+
             if ((e & DragDropEffects.Move) != 0)
             {
                 if (draggedItemContainer != null)
@@ -374,7 +375,7 @@ namespace JulMar.Windows.Interactivity
         /// <param name="allowedEffects"></param>
         /// <param name="keyStates"></param>
         /// <returns></returns>
-        static DragDropEffects GetDropEffectType(DragDropEffects allowedEffects, DragDropKeyStates keyStates)
+        private static DragDropEffects GetDropEffectType(DragDropEffects allowedEffects, DragDropKeyStates keyStates)
         {
             // None?
             if (allowedEffects == DragDropEffects.None)
@@ -382,10 +383,10 @@ namespace JulMar.Windows.Interactivity
 
             return (allowedEffects & (DragDropEffects.Move | DragDropEffects.Copy)) ==
                    (DragDropEffects.Move | DragDropEffects.Copy)
-                       ? (((keyStates & DragDropKeyStates.ControlKey) != 0)
+                       ? (keyStates & DragDropKeyStates.ControlKey) != 0
                               ? DragDropEffects.Copy
-                              : DragDropEffects.Move)
-                       : ((allowedEffects & DragDropEffects.Copy) != 0 ? DragDropEffects.Copy : DragDropEffects.Move);
+                              : DragDropEffects.Move
+                       : (allowedEffects & DragDropEffects.Copy) != 0 ? DragDropEffects.Copy : DragDropEffects.Move;
         }
 
         /// <summary>
@@ -406,7 +407,7 @@ namespace JulMar.Windows.Interactivity
                     if (scrollViewer != null && scrollViewer.CanContentScroll
                         && scrollViewer.ComputedVerticalScrollBarVisibility == Visibility.Visible)
                     {
-                        scrollViewer.ScrollToVerticalOffset((isMouseAtTop.Value) ? scrollViewer.VerticalOffset - 1.0 : scrollViewer.VerticalOffset + 1.0);
+                        scrollViewer.ScrollToVerticalOffset(isMouseAtTop.Value ? scrollViewer.VerticalOffset - 1.0 : scrollViewer.VerticalOffset + 1.0);
                         e.Effects = DragDropEffects.Scroll;
                     }
                 }
@@ -488,7 +489,7 @@ namespace JulMar.Windows.Interactivity
                 UIElement itemContainer = DragUtilities.GetItemContainerFromPoint(itemsControl, e.GetPosition(itemsControl));
                 if (itemContainer != null)
                 {
-                    _insertAdorner = new InsertAdorner(DragUtilities.IsPointInTopHalf(itemsControl, e), 
+                    _insertAdorner = new InsertAdorner(DragUtilities.IsPointInTopHalf(itemsControl, e),
                         DragUtilities.IsItemControlOrientationHorizontal(itemsControl),
                         itemContainer, AdornerLayer.GetAdornerLayer(itemsControl), itemsControl);
                 }

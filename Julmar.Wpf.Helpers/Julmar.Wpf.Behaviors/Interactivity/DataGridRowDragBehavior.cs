@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 using JulMar.Windows.Extensions;
 #if WPF_TOOLKIT
 using Microsoft.Windows.Controls;

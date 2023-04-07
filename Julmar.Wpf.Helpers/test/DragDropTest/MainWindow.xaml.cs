@@ -23,5 +23,15 @@ namespace ItemsControlDragDropBehavior.TestApp
             else
                 e.AllowedEffects = DragDropEffects.None;
         }
+
+        private void DropEnter_Changed(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void OnListViewDropEnter(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }

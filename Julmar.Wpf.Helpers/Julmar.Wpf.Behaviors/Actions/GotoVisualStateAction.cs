@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using Microsoft.Expression.Interactivity;
-using Microsoft.Expression.Interactivity.Core;
+using Microsoft.Xaml.Behaviors;
+using Microsoft.Xaml.Behaviors.Core;
 
 namespace JulMar.Windows.Actions
 {
