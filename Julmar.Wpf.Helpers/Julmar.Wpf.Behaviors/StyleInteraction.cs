@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
-using TriggerAction = System.Windows.Interactivity.TriggerAction;
-using TriggerBase = System.Windows.Interactivity.TriggerBase;
-using TriggerCollection = System.Windows.Interactivity.TriggerCollection;
+using TriggerAction = Microsoft.Xaml.Behaviors.TriggerAction;
+using TriggerBase = Microsoft.Xaml.Behaviors.TriggerBase;
+using TriggerCollection = Microsoft.Xaml.Behaviors.TriggerCollection;
 
 namespace JulMar.Windows
 {

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 using System.Windows.Threading;
 
 // Taken from mvvmhelpers.codeplex.com (JulMar.Behaviors.dll) 4.08

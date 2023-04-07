@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Linq;
-using System.Windows.Controls;
 using System.Collections;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.ComponentModel;
 
 namespace JulMar.Windows.Internal
 {
@@ -14,7 +14,7 @@ namespace JulMar.Windows.Internal
     /// Drag Utilities - this was taken from a sample posted by Bea Stollnitz
     /// See http://www.beacosta.com/blog/?p=53 for the original article.
     /// </summary>
-    static class DragUtilities
+    internal static class DragUtilities
     {
         /// <summary>
         /// Returns if the specified object is in the ItemsControl.
@@ -113,7 +113,7 @@ namespace JulMar.Windows.Internal
 
                 if (index == -1)
                     index = itemsControl.Items.IndexOf(itemToRemove);
-    
+
                 if (index != -1)
                     RemoveItem(itemsControl, index);
             }
@@ -216,7 +216,7 @@ namespace JulMar.Windows.Internal
             return pt.Y > 0.0 && pt.Y < 25
                 ? true
                 : (pt.Y > itemsControl.ActualHeight - 25 && pt.Y < itemsControl.ActualHeight
-                        ? (bool?) false
+                        ? (bool?)false
                         : null);
         }
 

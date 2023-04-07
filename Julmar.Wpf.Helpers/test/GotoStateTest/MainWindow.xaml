@@ -1,7 +1,8 @@
 ﻿<Window x:Class="VMTriggers.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Custom="http://www.julmar.com/wpfhelpers"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+        xmlns:Custom="http://www.julmar.com/wpfhelpers"
         Title="MainWindow" Height="200" Width="525">
 	<Grid Background="Black">
 		<VisualStateManager.VisualStateGroups>
@@ -44,7 +45,7 @@
 		</VisualStateManager.VisualStateGroups>
        
 		<VisualStateManager.CustomVisualStateManager>
-			<ei:ExtendedVisualStateManager/>
+			<i:ExtendedVisualStateManager/>
 		</VisualStateManager.CustomVisualStateManager>
         
 		<UniformGrid Rows="2" Margin="20">
