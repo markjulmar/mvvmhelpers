@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using JulMar.Windows.Behaviors;
+using Microsoft.Xaml.Behaviors;
 
 namespace JulMar.Windows.Interactivity
 {
