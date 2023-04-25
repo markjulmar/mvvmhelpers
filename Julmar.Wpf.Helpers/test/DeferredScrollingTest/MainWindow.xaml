@@ -1,8 +1,8 @@
 ﻿<Window x:Class="DeferredScrollingTest.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:julmar="clr-namespace:JulMar.Windows.Interactivity;assembly=Julmar.Wpf.Behaviors"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" Title="Amazing Technicolor" Height="350" Width="525">
+        xmlns:julmar="http://www.julmar.com/wpfhelpers"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" Title="Amazing Technicolor" Height="350" Width="525">
     
     <Window.Resources>
         <DataTemplate x:Key="ColorSwatchTemplate">

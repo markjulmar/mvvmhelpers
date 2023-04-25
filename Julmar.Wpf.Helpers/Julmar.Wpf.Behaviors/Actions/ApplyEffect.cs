@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 using System.Windows.Media.Effects;
 
 namespace JulMar.Windows.Actions

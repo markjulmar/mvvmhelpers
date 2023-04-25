@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 
@@ -12,7 +12,7 @@ namespace JulMar.Windows.Actions
     /// it has a problem in it as of the current (first) release.  Once it is fixed, this
     /// command can go away.
     /// </summary>
-    [DefaultTrigger(typeof(ButtonBase), typeof(System.Windows.Interactivity.EventTrigger), "Click"), DefaultTrigger(typeof(UIElement), typeof(System.Windows.Interactivity.EventTrigger), "MouseLeftButtonDown")]
+    [DefaultTrigger(typeof(ButtonBase), typeof(Microsoft.Xaml.Behaviors.EventTrigger), "Click"), DefaultTrigger(typeof(UIElement), typeof(Microsoft.Xaml.Behaviors.EventTrigger), "MouseLeftButtonDown")]
     public class InvokeCommand : TriggerAction<FrameworkElement>
     {
         /// <summary>

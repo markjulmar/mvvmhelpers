@@ -2,12 +2,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:julmar="http://www.julmar.com/wpfhelpers"
-    xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:Core="clr-namespace:JulMar.Core;assembly=Julmar.Core" MinWidth="300" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow" ShowInTaskbar="False"
+    xmlns:Interactivity="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:Core="clr-namespace:JulMar.Core;assembly=Julmar.Core" MinWidth="300" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow" ShowInTaskbar="False"
     ResizeMode="NoResize" Title="TestMvvm Properties" SizeToContent="WidthAndHeight"
     julmar:HelpProvider.Filename="Julmar.Wpf.Helpers.chm">
-    
+
     <Grid Background="{julmar:LinearGradientBrush AliceBlue, SkyBlue, 90}">
-        
+
         <Grid.Resources>
             <Style TargetType="Label">
                 <Setter Property="HorizontalAlignment" Value="Right" />
@@ -29,12 +30,12 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
         </Grid.Resources>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-    
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -42,13 +43,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <Label Content="Title:" />
         <TextBox Text="{Binding Title}" julmar:HelpProvider.Keyword="Title">
-        	<Interactivity:Interaction.Behaviors>
-        		<julmar:WatermarkTextBoxBehavior Text="Enter the Title Here"/>
+            <Interactivity:Interaction.Behaviors>
+                <julmar:WatermarkTextBoxBehavior Text="Enter the Title Here"/>
                 <julmar:MaskedTextBoxBehavior Mask="^\D*$" />
-        	</Interactivity:Interaction.Behaviors>
+            </Interactivity:Interaction.Behaviors>
             <TextBox.Style>
                 <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                     <Setter Property="FontStyle" Value="Normal" />
@@ -64,9 +65,9 @@
 
         <Label Grid.Row="1" Content="# of Shapes:" />
         <TextBox Grid.Row="1" Text="{Binding ShapeCount, UpdateSourceTrigger=PropertyChanged}">
-        	<Interactivity:Interaction.Behaviors>
-        		<julmar:NumericTextBoxBehavior AllowMouseDrag="True" Minimum="1" Maximum="500" />
-        	</Interactivity:Interaction.Behaviors>
+            <Interactivity:Interaction.Behaviors>
+                <julmar:NumericTextBoxBehavior AllowMouseDrag="True" Minimum="1" Maximum="500" />
+            </Interactivity:Interaction.Behaviors>
         </TextBox>
 
         <Label Grid.Row="2" Content="Running on:" />

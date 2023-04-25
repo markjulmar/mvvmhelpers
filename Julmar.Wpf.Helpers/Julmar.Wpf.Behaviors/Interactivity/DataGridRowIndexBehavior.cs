@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.Windows.Data;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 using System.Windows;
 using System.Windows.Threading;
 using JulMar.Windows.Extensions;
